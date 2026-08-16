@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Shield, Factory, CheckCircle2, AlertTriangle, Layers, Activity } from 'lucide-react';
+import { Shield, Factory, CheckCircle2, AlertTriangle, Layers, Activity, FileText } from 'lucide-react';
 import { QmsNonConformanceModule } from './components/QmsNonConformanceModule';
 import { IndustrialMesModule } from './components/IndustrialMesModule';
+import { QmsDocumentModule } from './components/QmsDocumentModule';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'qms' | 'mes'>('mes');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'qms' | 'mes' | 'documents'>('documents');
 
   // Tenant e Unit de Desenvolvimento
   const currentTenantId = 'tenant-industrial-demo-uuid';
@@ -62,6 +63,15 @@ export default function App() {
             <Layers className="w-4 h-4" />
             <span>Terminal Chão de Fábrica (MES)</span>
           </button>
+          <button
+            onClick={() => setActiveTab('documents')}
+            className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition ${
+              activeTab === 'documents' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
+            }`}
+          >
+            <FileText className="w-4 h-4" />
+            <span>Documentos SGQ (ISO 7.5)</span>
+          </button>
         </aside>
 
         {/* Content Area */}
@@ -114,6 +124,10 @@ export default function App() {
 
           {activeTab === 'mes' && (
             <IndustrialMesModule tenantId={currentTenantId} unitId={currentUnitId} />
+          )}
+
+          {activeTab === 'documents' && (
+            <QmsDocumentModule tenantId={currentTenantId} unitId={currentUnitId} />
           )}
         </main>
       </div>
