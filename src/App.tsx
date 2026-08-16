@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { Shield, Factory, CheckCircle2, AlertTriangle, Layers, Activity } from 'lucide-react';
+import { Shield, Factory, CheckCircle2, AlertTriangle, Layers, Activity, FileCheck } from 'lucide-react';
+import { QmsNonConformanceModule } from './components/QmsNonConformanceModule';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'qms' | 'mes'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'qms' | 'mes'>('qms');
+
+  // Tenant e Unit de Desenvolvimento
+  const currentTenantId = 'tenant-industrial-demo-uuid';
+  const currentUnitId = 'unit-sp-planta-01-uuid';
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
@@ -45,7 +50,7 @@ export default function App() {
             }`}
           >
             <CheckCircle2 className="w-4 h-4" />
-            <span>SGQ & ISO 9001</span>
+            <span>SGQ & Ciclo CAPA</span>
           </button>
           <button
             onClick={() => setActiveTab('mes')}
@@ -80,7 +85,7 @@ export default function App() {
                     <span className="text-3xl font-bold text-white">2</span>
                     <span className="text-xs text-amber-400 font-medium">Ciclo CAPA ativo</span>
                   </div>
-                  <div className="mt-4 text-xs text-slate-400">1 em investigação • 1 em ação preventiva</div>
+                  <div className="mt-4 text-xs text-slate-400">1 em investigação • 1 em verificação</div>
                 </div>
 
                 <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
@@ -94,19 +99,16 @@ export default function App() {
               </div>
 
               <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
-                <h3 className="text-base font-semibold text-white">Conexão com Lovable e Supabase DEV</h3>
+                <h3 className="text-base font-semibold text-white">Conexão Operacional Multi-Tenant</h3>
                 <p className="text-sm text-slate-400 mt-1">
-                  Este projeto está integrado via GitHub, com banco PostgreSQL na região de São Paulo, políticas de RLS e trilha de auditoria imutável ISO 9001.
+                  Ambiente conectado ao Supabase DEV (São Paulo), banco PostgreSQL com políticas de RLS e trilha de auditoria imutável ativa.
                 </p>
               </div>
             </div>
           )}
 
           {activeTab === 'qms' && (
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
-              <h3 className="text-base font-semibold text-white">Módulo SGQ & Gestão ISO 9001</h3>
-              <p className="text-sm text-slate-400 mt-1">Controle de Documentos (Cláusula 7.5) e Gestão de Não Conformidades (Cláusulas 8.7/10.2).</p>
-            </div>
+            <QmsNonConformanceModule tenantId={currentTenantId} unitId={currentUnitId} />
           )}
 
           {activeTab === 'mes' && (
