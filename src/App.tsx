@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Shield, Factory, CheckCircle2, AlertTriangle, Layers, Activity, FileCheck } from 'lucide-react';
+import { Shield, Factory, CheckCircle2, AlertTriangle, Layers, Activity } from 'lucide-react';
 import { QmsNonConformanceModule } from './components/QmsNonConformanceModule';
+import { IndustrialMesModule } from './components/IndustrialMesModule';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'qms' | 'mes'>('qms');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'qms' | 'mes'>('mes');
 
   // Tenant e Unit de Desenvolvimento
   const currentTenantId = 'tenant-industrial-demo-uuid';
@@ -59,7 +60,7 @@ export default function App() {
             }`}
           >
             <Layers className="w-4 h-4" />
-            <span>Ordens & Chão de Fábrica</span>
+            <span>Terminal Chão de Fábrica (MES)</span>
           </button>
         </aside>
 
@@ -112,10 +113,7 @@ export default function App() {
           )}
 
           {activeTab === 'mes' && (
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
-              <h3 className="text-base font-semibold text-white">Módulo MES & Controle de Chão de Fábrica</h3>
-              <p className="text-sm text-slate-400 mt-1">Apontamentos em tempo real, gestão de centros de trabalho e ordens de produção (ISA-95).</p>
-            </div>
+            <IndustrialMesModule tenantId={currentTenantId} unitId={currentUnitId} />
           )}
         </main>
       </div>
