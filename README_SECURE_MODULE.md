@@ -11,19 +11,15 @@ Atendendo aos requisitos do "SaaS Industrial Secreto":
 - As tabelas `chat_rooms`, `chat_participants` e `chat_messages` possuem **RLS Extremo**: um usuário só consegue acessar e ler mensagens de salas onde foi explicitamente adicionado como participante na tabela `chat_participants`.
 - Relaciona-se com a trigger de auditoria para atender à ISO 9001 (embora o conteúdo do chat não vá para o log para não inchar o DB, a criação/remoção de salas e participantes é auditada).
 
-## 3. Gestão e Relacionamento de Documentos (Kanban)
+## 3. Gestão e Relacionamento de Documentos (Kanban e Upload Inteligente)
 - **Tabela:** `document_groups` e `documents` (com referências a `chat_room_id` e `kanban_card_id`).
 - Permite que documentos confidenciais de transações de terra, laudos, CAR, etc., transitem na mesma esteira visual (Kanban) ou sejam trocados em uma sala de chat restrita (negociações).
 - Os documentos herdam as políticas do tenant_id. A gestão completa via pipeline (Kanban) foi estabelecida pelas tabelas `kanban_boards`, `kanban_columns` e `kanban_cards`.
-
-## Pendências Typescript no Repositório
-Observou-se que o repositório atual possui falhas de tipagem no `src/services/` (`industrial-mes.service.ts`, `qms-capa.service.ts`, `qms-document.service.ts`) relacionadas aos tipos inferidos do schema do Supabase (argumentos sendo reconhecidos como `never`). Para resolver esses bugs, normalmente é necessário gerar as tipagens do Supabase novamente com `npx supabase gen types typescript --local > src/types/supabase.ts`, mas isso foge ao escopo estrito da implementação de backend solicitada nesta etapa.
+- **Inteligência Consultiva no Upload:** A página `SecureUploadPage` varre o nome e o tipo do arquivo em tempo real (ex: CAR, Matrícula, Laudo, CCIR) e *recomenda agrupamentos e passos no Kanban*, atuando como um consultor e ajudando na tomada de decisões.
+- **Storage Seguro (Cofre):** Criação do bucket privado `secure_documents` e políticas restritas `tenant_id` garantindo isolamento total de disco.
 
 ## 4. Frontend e Interface (React + Tailwind)
-Foram desenvolvidos dois componentes de interface de alto nível focados na experiência do usuário e na segurança:
-- **`SecureChat.tsx`**: Interface similar ao WhatsApp Web, porém com comunicação blindada.
-  - Implementa subscrições `Supabase Realtime` (WebSockets) com RLS para atualização de mensagens em tempo real.
-  - Alerta visual no cabeçalho ("Canal Seguro & Restrito") e sinalização de anexos protegidos.
-- **`KanbanBoard.tsx`**: Pipeline visual de processos, laudos e documentos (Arrastar e Soltar).
-  - Desenvolvido utilizando `@hello-pangea/dnd`.
-  - Cada "Card" do Kanban agrupa visualmente a quantidade de documentos vinculados (ex: CAR, Matrícula) e possui um atalho para a sala de Chat Segura referente àquela negociação específica.
+Foram desenvolvidos componentes de interface de alto nível focados na experiência do usuário e na segurança:
+- **`SecureChat.tsx`**: Interface similar ao WhatsApp Web, porém com comunicação blindada e suporte a websockets (Realtime).
+- **`KanbanBoard.tsx`**: Pipeline visual de processos, laudos e documentos via Drag & Drop.
+- **`SecureUploadPage.tsx`**: Tela com área de soltar arquivos e feedback automático consultivo (parecer técnico simulado).
