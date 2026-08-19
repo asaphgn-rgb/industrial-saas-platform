@@ -44,13 +44,6 @@ export function KanbanBoard({ boardId }: KanbanBoardProps) {
       { id: "card3", column_id: "col3", title: "Certidões Negativas Federais", description: "CNDs emitidas pela Receita. Livre de embargos.", order_index: 0 }
     ]);
     setLoading(false);
-    return;
-
-    } catch (err) {
-      console.error('Error fetching Kanban data:', err);
-    } finally {
-      setLoading(false);
-    }
   };
 
   const onDragEnd = async (result: DropResult) => {
@@ -77,15 +70,7 @@ export function KanbanBoard({ boardId }: KanbanBoardProps) {
     // Atualizando o estado visual
     setCards(prev => prev.map(c => c.id === draggableId ? draggedCard : c));
 
-    // Persistir no backend
-    try {
-      // Usando cast explicito the query method
-      const query = supabase.from('kanban_cards');
-      const updateMethod = query.update as SafeAny;
-      await updateMethod({ column_id: destination.droppableId }).eq('id', draggableId);
-    } catch (err) {
-      console.error('Failed to save drag and drop state:', err);
-    }
+    // Persistir no backend mockado - não chamamos db aqui para demonstração offline
   };
 
   if (loading) return <div className="p-8 text-center text-elite-sand font-serif">Acessando Cofre Restrito...</div>;

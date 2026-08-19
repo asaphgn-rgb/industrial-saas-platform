@@ -31,37 +31,12 @@ export function SecureChat({ roomId, currentUserId }: SecureChatProps) {
       { id: "3", sender_id: currentUserId, content: "Sim. A análise preliminar está limpa. Estou anexando o relatório da auditoria fiscal do INCRA agora.", created_at: new Date(Date.now() - 900000).toISOString(), attachment_url: "mock.pdf", is_read: true }
     ]);
     setLoading(false);
-    return;
-
-    } catch (err) {
-      console.error('Error fetching messages:', err);
-    } finally {
-      setLoading(false);
-    }
   };
 
   useEffect(() => {
     fetchMessages();
 
-    const channel = supabase
-      .channel(`room_${roomId}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'chat_messages',
-          filter: `room_id=eq.${roomId}`,
-        },
-        (payload) => {
-          setMessages((prev) => [...prev, payload.new as Message]);
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    // Removemos a subscription do Realtime para o mock não travar caso o DB falhe offline
   }, [roomId]);
 
   useEffect(() => {
@@ -73,6 +48,7 @@ export function SecureChat({ roomId, currentUserId }: SecureChatProps) {
     if (!newMessage.trim()) return;
     const msg = newMessage;
     setNewMessage("");
+
     // MOCK PARA DEMONSTRAÇÃO
     const newMsg: Message = {
       id: Math.random().toString(),
@@ -82,11 +58,6 @@ export function SecureChat({ roomId, currentUserId }: SecureChatProps) {
       is_read: false
     };
     setMessages(prev => [...prev, newMsg]);
-    return;
-
-    } catch (err) {
-      console.error('Error sending message:', err);
-    }
   };
 
   if (loading) return <div className="flex h-full items-center justify-center p-4"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-elite-navy"></div></div>;
