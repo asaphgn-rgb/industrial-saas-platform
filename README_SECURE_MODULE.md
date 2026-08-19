@@ -23,3 +23,7 @@ Foram desenvolvidos componentes de interface de alto nível focados na experiên
 - **`SecureChat.tsx`**: Interface similar ao WhatsApp Web, porém com comunicação blindada e suporte a websockets (Realtime).
 - **`KanbanBoard.tsx`**: Pipeline visual de processos, laudos e documentos via Drag & Drop.
 - **`SecureUploadPage.tsx`**: Tela com área de soltar arquivos e feedback automático consultivo (parecer técnico simulado).
+
+## 5. Build Completo
+A aplicação foi empacotada para produção na pasta `/dist/`. 
+Para disponibilizar o aplicativo, pode ser feito o deploy instantâneo na Vercel, Netlify ou no Supabase Hosting, apontando para o diretório `dist/`.
