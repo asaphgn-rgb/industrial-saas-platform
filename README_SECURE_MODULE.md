@@ -18,3 +18,12 @@ Atendendo aos requisitos do "SaaS Industrial Secreto":
 
 ## Pendências Typescript no Repositório
 Observou-se que o repositório atual possui falhas de tipagem no `src/services/` (`industrial-mes.service.ts`, `qms-capa.service.ts`, `qms-document.service.ts`) relacionadas aos tipos inferidos do schema do Supabase (argumentos sendo reconhecidos como `never`). Para resolver esses bugs, normalmente é necessário gerar as tipagens do Supabase novamente com `npx supabase gen types typescript --local > src/types/supabase.ts`, mas isso foge ao escopo estrito da implementação de backend solicitada nesta etapa.
+
+## 4. Frontend e Interface (React + Tailwind)
+Foram desenvolvidos dois componentes de interface de alto nível focados na experiência do usuário e na segurança:
+- **`SecureChat.tsx`**: Interface similar ao WhatsApp Web, porém com comunicação blindada.
+  - Implementa subscrições `Supabase Realtime` (WebSockets) com RLS para atualização de mensagens em tempo real.
+  - Alerta visual no cabeçalho ("Canal Seguro & Restrito") e sinalização de anexos protegidos.
+- **`KanbanBoard.tsx`**: Pipeline visual de processos, laudos e documentos (Arrastar e Soltar).
+  - Desenvolvido utilizando `@hello-pangea/dnd`.
+  - Cada "Card" do Kanban agrupa visualmente a quantidade de documentos vinculados (ex: CAR, Matrícula) e possui um atalho para a sala de Chat Segura referente àquela negociação específica.
