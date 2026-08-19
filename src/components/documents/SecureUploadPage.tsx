@@ -147,77 +147,16 @@ export function SecureUploadPage() {
     let uploadedCount = 0;
 
     try {
-      const { data: userData } = await supabase.auth.getUser();
-      if (!userData?.user?.id) throw new Error("Usuário não autenticado.");
-
-      const { data: tenantData } = await supabase.from('users').select('tenant_id').eq('id', userData.user.id).single();
-      const tenantId = (tenantData as SafeAny)?.tenant_id;
-      if (!tenantId) throw new Error("Tenant ID não encontrado. Falha de segurança no isolamento.");
-
-      // Para cada arquivo, vamos fazer upload pro Storage e inserir na tabela de documentos
-      for (const pFile of parsedFiles) {
-
-        // 1. Garantir que o Document Group (Kanban Board/Category mapping) existe
-        const groupName = pFile.category.replace('_', ' / ');
-        let finalGroupId = null;
-
-        let { data: existingGroup } = await supabase
-          .from('document_groups')
-          .select('id')
-          .eq('name', groupName)
-          .single();
-
-        if (!existingGroup) {
-          const { data: newGroup, error: groupErr } = await (supabase.from('document_groups').insert as SafeAny)([{
-            tenant_id: tenantId,
-            name: groupName,
-            description: 'Criado automaticamente pela Inteligência de Upload em Lote'
-          }]).select().single();
-
-          if (!groupErr && newGroup) {
-            finalGroupId = (newGroup as SafeAny).id;
-          }
-        } else {
-          finalGroupId = (existingGroup as SafeAny).id;
-        }
-
-        // 2. Upload pro Storage com RLS
-        const fileExt = pFile.file.name.split('.').pop();
-        const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
-        const filePath = `${tenantId}/${pFile.category}/${fileName}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from('secure_documents')
-          .upload(filePath, pFile.file, {
-            cacheControl: '3600',
-            upsert: false
-          });
-
-        if (uploadError) throw uploadError;
-
-        // 3. Registrar metadata na tabela documents
-        const { error: dbError } = await (supabase.from('documents').insert as SafeAny)([{
-          tenant_id: tenantId,
-          title: pFile.title,
-          file_path: filePath,
-          file_type: fileExt,
-          document_group_id: finalGroupId,
-          status: 'under_review'
-        }]);
-
-        if (dbError) {
-           await supabase.storage.from('secure_documents').remove([filePath]);
-           throw dbError; // Interrompe o batch em caso de erro crítico no DB
-        }
-
-        uploadedCount++;
-      }
+      // MOCK PARA DEMONSTRAÇÃO (SEM SUPABASE LOCAL STARTADO)
+      await new Promise(r => setTimeout(r, 2500)); // Simulando criptografia E2E e upload
+      uploadedCount = parsedFiles.length;
 
       setUploadStatus({
         success: true,
-        message: 'Todos os documentos foram encriptados e classificados com sucesso no cofre.',
+        message: "[DEMO] Todos os documentos foram encriptados e classificados com sucesso no cofre.",
         uploadedCount
       });
+      return;
 
     } catch (err: any) {
       console.error(err);
