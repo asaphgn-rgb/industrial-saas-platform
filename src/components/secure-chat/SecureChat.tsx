@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Send, Paperclip, ShieldAlert, Lock, User, FileText } from 'lucide-react';
+import { Send, Paperclip, ShieldAlert, Lock, User, FileText, CheckCheck } from 'lucide-react';
 import { SafeAny } from '../../types/supabase-override';
 
 interface Message {
@@ -78,7 +78,7 @@ export function SecureChat({ roomId, currentUserId }: SecureChatProps) {
     try {
       const { data: userData } = await supabase.auth.getUser();
       if (!userData?.user?.id) throw new Error('User not found');
-      
+
       const { data: tenantData } = await supabase
         .from('users')
         .select('*')
@@ -104,58 +104,73 @@ export function SecureChat({ roomId, currentUserId }: SecureChatProps) {
     }
   };
 
-  if (loading) return <div className="flex h-full items-center justify-center p-4"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div></div>;
+  if (loading) return <div className="flex h-full items-center justify-center p-4"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-elite-navy"></div></div>;
 
   return (
-    <div className="flex flex-col h-full w-full max-w-4xl mx-auto bg-gray-50 border border-gray-200 rounded-lg shadow-sm overflow-hidden">
-      {/* Header Blindado */}
-      <div className="flex items-center justify-between px-4 py-3 bg-slate-900 text-white shadow-md z-10">
-        <div className="flex items-center space-x-3">
-          <div className="p-2 bg-slate-800 rounded-full">
-            <Lock className="w-5 h-5 text-emerald-400" />
+    <div className="flex flex-col h-full w-full max-w-5xl mx-auto bg-white border border-elite-sand/20 rounded-2xl shadow-premium overflow-hidden font-sans">
+      {/* Header Blindado Premium */}
+      <div className="flex items-center justify-between px-6 py-4 bg-elite-navy text-white z-10">
+        <div className="flex items-center space-x-4">
+          <div className="p-2.5 bg-slate-800 rounded-xl shadow-inner-gold">
+            <Lock className="w-5 h-5 text-elite-gold" />
           </div>
           <div>
-            <h3 className="font-semibold text-sm">Canal Seguro & Restrito</h3>
-            <p className="text-xs text-slate-400">Comunicação e Documentos em Ambiente Isolado</p>
+            <h3 className="font-bold text-base tracking-wide font-serif">Canal Criptografado (B2B)</h3>
+            <p className="text-[11px] text-elite-sand uppercase tracking-widest mt-0.5">Comunicação Protegida por Protocolo E2E</p>
           </div>
         </div>
-        <ShieldAlert className="w-5 h-5 text-slate-500" />
+        <div className="hidden md:flex items-center px-3 py-1.5 bg-slate-800 rounded-lg border border-slate-700">
+           <ShieldAlert className="w-4 h-4 text-elite-gold mr-2" />
+           <span className="text-[10px] uppercase font-bold text-elite-paper tracking-wider">Nível Máximo de Sigilo</span>
+        </div>
       </div>
 
       {/* Área de Mensagens */}
-      <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-[#e5ddd5] dark:bg-slate-800">
-        <div className="text-center my-4">
-          <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded shadow-sm">
-            As mensagens e anexos neste canal são restritos aos participantes autorizados. (Auditado: ISO 9001)
+      <div className="flex-1 p-6 overflow-y-auto space-y-6 bg-[#f4f2ef] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-opacity-50">
+        <div className="text-center my-6">
+          <span className="text-[10px] uppercase font-bold tracking-widest bg-elite-gold text-elite-navy px-4 py-2 rounded-full shadow-sm">
+            Canal monitorado por política restrita de isolamento de dados
           </span>
         </div>
-        
+
         {messages.map((msg) => {
           const isMine = msg.sender_id === currentUserId;
           return (
-            <div key={msg.id} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
+            <div key={msg.id} className={`flex ${isMine ? 'justify-end' : 'justify-start'} group`}>
               <div
-                className={`max-w-[75%] rounded-lg px-4 py-2 shadow-sm relative ${
-                  isMine ? 'bg-[#dcf8c6] text-slate-900 rounded-tr-none' : 'bg-white text-slate-900 rounded-tl-none'
+                className={`max-w-[70%] rounded-2xl px-5 py-3 shadow-md relative ${
+                  isMine
+                    ? 'bg-elite-navy text-white rounded-br-sm shadow-premium'
+                    : 'bg-white text-elite-navy rounded-bl-sm border border-elite-sand/30 shadow-sm'
                 }`}
               >
                 {!isMine && (
-                  <div className="flex items-center space-x-1 mb-1">
-                     <User className="w-3 h-3 text-slate-400"/>
-                     <span className="text-xs font-semibold text-slate-500">Parceiro (Membro Restrito)</span>
+                  <div className="flex items-center space-x-2 mb-2 pb-2 border-b border-slate-100">
+                     <div className="w-6 h-6 rounded-full bg-elite-paper flex items-center justify-center">
+                        <User className="w-3 h-3 text-elite-navy"/>
+                     </div>
+                     <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">Parte Autorizada</span>
                   </div>
                 )}
-                <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+
                 {msg.attachment_url && (
-                   <div className="mt-2 flex items-center p-2 bg-black/5 rounded cursor-pointer hover:bg-black/10 transition">
-                      <FileText className="w-4 h-4 mr-2 text-slate-600"/>
-                      <span className="text-xs font-medium truncate">Anexo Protegido por RLS</span>
+                   <div className={`mt-3 flex items-center p-3 rounded-xl cursor-pointer transition-colors ${
+                     isMine ? 'bg-slate-800/50 hover:bg-slate-800' : 'bg-elite-paper hover:bg-elite-sand/20'
+                   }`}>
+                      <FileText className={`w-5 h-5 mr-3 ${isMine ? 'text-elite-gold' : 'text-elite-navy'}`}/>
+                      <div>
+                        <span className="text-xs font-bold block">Documento Anexado</span>
+                        <span className="text-[10px] opacity-70 uppercase tracking-wider">Auditado pelo RLS</span>
+                      </div>
                    </div>
                 )}
-                <div className="text-right mt-1">
-                  <span className="text-[10px] text-slate-500">
+
+                <div className={`text-right mt-2 flex items-center justify-end space-x-1 ${isMine ? 'text-slate-400' : 'text-slate-400'}`}>
+                  <span className="text-[10px] font-bold">
                     {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </span>
+                  {isMine && <CheckCheck className={`w-3.5 h-3.5 ${msg.is_read ? 'text-elite-gold' : 'text-slate-500'}`} />}
                 </div>
               </div>
             </div>
@@ -165,20 +180,20 @@ export function SecureChat({ roomId, currentUserId }: SecureChatProps) {
       </div>
 
       {/* Input de Mensagem */}
-      <form onSubmit={handleSendMessage} className="p-3 bg-gray-100 flex items-end space-x-2">
+      <form onSubmit={handleSendMessage} className="p-4 bg-white border-t border-elite-sand/20 flex items-end space-x-3">
         <button
           type="button"
-          className="p-2 text-slate-500 hover:text-slate-700 hover:bg-gray-200 rounded-full transition"
-          title="Anexar Documento (CAR, Matrícula, Laudos)"
+          className="p-3 text-slate-400 hover:text-elite-navy hover:bg-elite-paper rounded-xl transition-colors"
+          title="Anexar Documento Sigiloso"
         >
           <Paperclip className="w-5 h-5" />
         </button>
-        
+
         <textarea
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Digite uma mensagem ou arraste um documento..."
-          className="flex-1 max-h-32 min-h-[44px] rounded-2xl border-none focus:ring-2 focus:ring-emerald-500 p-3 text-sm resize-none"
+          placeholder="Comunicação segura E2E..."
+          className="flex-1 max-h-32 min-h-[52px] bg-elite-paper/50 rounded-xl border border-transparent hover:border-elite-sand/40 focus:bg-white focus:border-elite-gold focus:ring-1 focus:ring-elite-gold p-4 text-sm resize-none transition-all outline-none text-elite-navy"
           rows={1}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -187,11 +202,11 @@ export function SecureChat({ roomId, currentUserId }: SecureChatProps) {
             }
           }}
         />
-        
+
         <button
           type="submit"
           disabled={!newMessage.trim()}
-          className="p-3 bg-emerald-600 text-white rounded-full hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center"
+          className="p-4 bg-elite-navy text-elite-gold rounded-xl hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center justify-center shadow-md shadow-elite-navy/20"
         >
           <Send className="w-5 h-5" />
         </button>

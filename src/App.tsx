@@ -9,7 +9,10 @@ import {
   FileText,
   UploadCloud,
   LayoutDashboard,
-  MessageSquareLock
+  MessageSquareLock,
+  Lock,
+  Search,
+  Settings
 } from 'lucide-react';
 import { QmsNonConformanceModule } from './components/QmsNonConformanceModule';
 import { IndustrialMesModule } from './components/IndustrialMesModule';
@@ -33,116 +36,122 @@ export default function App() {
   const demoUserId = '22222222-2222-2222-2222-222222222222';
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans">
-      {/* Top Header */}
-      <header className="border-b border-slate-200 bg-white px-6 py-4 flex items-center justify-between shadow-sm z-20 relative">
-        <div className="flex items-center space-x-3">
-          <div className="bg-slate-900 p-2.5 rounded-lg text-emerald-400">
+    <div className="min-h-screen bg-elite-paper text-elite-navy flex flex-col font-sans">
+      {/* Top Header - Estilo Premium Glassmorphism */}
+      <header className="glass-panel sticky top-0 px-8 py-5 flex items-center justify-between z-30 border-b border-elite-sand/20">
+        <div className="flex items-center space-x-4">
+          <div className="bg-gradient-to-br from-elite-navy to-slate-800 p-2.5 rounded-xl text-elite-gold shadow-premium">
             <ShieldCheck className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-lg font-bold text-slate-800 tracking-tight">Cofre de Negociações & SGQ</h1>
-            <p className="text-xs text-slate-500 font-medium">Ambiente Restrito e Auditável (ISO 9001)</p>
+            <h1 className="text-xl font-bold tracking-tight text-elite-navy">Vault <span className="font-light text-slate-500">| B2B Intelligence</span></h1>
+            <p className="text-[11px] uppercase tracking-widest text-elite-sand font-semibold mt-0.5">Ambiente Altamente Restrito</p>
           </div>
         </div>
-        <div className="flex items-center space-x-4">
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700 border border-emerald-200 shadow-sm">
-            <ShieldCheck className="w-3.5 h-3.5 mr-1.5" /> Blindagem Ativa (RLS)
-          </span>
-          <div className="h-8 w-8 bg-slate-200 rounded-full flex items-center justify-center border border-slate-300">
-            <span className="text-sm font-bold text-slate-600">FA</span>
+
+        <div className="hidden md:flex items-center space-x-6 text-sm">
+           <div className="relative">
+             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+             <input type="text" placeholder="Pesquisar no cofre..." className="pl-9 pr-4 py-2 bg-slate-100/50 border border-slate-200 rounded-full text-xs focus:outline-none focus:ring-1 focus:ring-elite-gold focus:bg-white w-64 transition-all" />
+           </div>
+        </div>
+
+        <div className="flex items-center space-x-6">
+          <div className="flex flex-col items-end">
+             <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200">
+               <Lock className="w-3 h-3" />
+               <span>End-to-End Encrypted</span>
+             </span>
+          </div>
+          <div className="flex items-center space-x-3 pl-6 border-l border-slate-200">
+             <button className="text-slate-400 hover:text-elite-navy transition-colors">
+               <Settings className="w-5 h-5" />
+             </button>
+             <div className="h-10 w-10 bg-gradient-to-br from-elite-navy to-slate-800 rounded-full flex items-center justify-center shadow-inner-gold cursor-pointer transform hover:scale-105 transition-transform">
+               <span className="text-sm font-bold text-elite-gold">FA</span>
+             </div>
           </div>
         </div>
       </header>
 
       {/* Main Container */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Sidebar */}
-        <aside className="w-72 border-r border-slate-200 bg-white p-4 flex flex-col space-y-6 overflow-y-auto z-10 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+        {/* Sidebar - Estilo Clean Luxury */}
+        <aside className="w-72 bg-elite-white border-r border-elite-sand/20 p-6 flex flex-col space-y-8 overflow-y-auto z-10 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
 
           {/* Sessão: Módulos Seguros */}
           <div>
-            <h3 className="px-3 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Ambiente Restrito</h3>
-            <div className="space-y-1">
+            <h3 className="text-[10px] font-bold text-elite-sand uppercase tracking-[0.2em] mb-4 pl-2">Due Diligence</h3>
+            <div className="space-y-1.5">
               <button
                 onClick={() => setActiveTab('pipeline_secure')}
-                className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition ${
-                  activeTab === 'pipeline_secure' ? 'bg-emerald-600 text-white shadow-md' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+                  activeTab === 'pipeline_secure'
+                    ? 'bg-elite-navy text-white shadow-premium'
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-elite-navy'
                 }`}
               >
-                <LayoutDashboard className={`w-4 h-4 ${activeTab === 'pipeline_secure' ? 'text-emerald-100' : 'text-slate-400'}`} />
-                <span>Pipeline de Negociações</span>
+                <LayoutDashboard className={`w-4 h-4 ${activeTab === 'pipeline_secure' ? 'text-elite-gold' : 'text-slate-400'}`} />
+                <span className="tracking-wide">Pipeline Estratégico</span>
               </button>
 
               <button
                 onClick={() => setActiveTab('upload_secure')}
-                className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition ${
-                  activeTab === 'upload_secure' ? 'bg-emerald-600 text-white shadow-md' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+                  activeTab === 'upload_secure'
+                    ? 'bg-elite-navy text-white shadow-premium'
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-elite-navy'
                 }`}
               >
-                <UploadCloud className={`w-4 h-4 ${activeTab === 'upload_secure' ? 'text-emerald-100' : 'text-slate-400'}`} />
-                <span>Cofre Digital (Upload)</span>
+                <UploadCloud className={`w-4 h-4 ${activeTab === 'upload_secure' ? 'text-elite-gold' : 'text-slate-400'}`} />
+                <span className="tracking-wide">Dossiê Documental</span>
               </button>
 
               <button
                 onClick={() => setActiveTab('chat_secure')}
-                className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition ${
-                  activeTab === 'chat_secure' ? 'bg-emerald-600 text-white shadow-md' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+                  activeTab === 'chat_secure'
+                    ? 'bg-elite-navy text-white shadow-premium'
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-elite-navy'
                 }`}
               >
-                <MessageSquareLock className={`w-4 h-4 ${activeTab === 'chat_secure' ? 'text-emerald-100' : 'text-slate-400'}`} />
-                <span className="flex-1 text-left">Canais Seguros</span>
-                <span className="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">3</span>
+                <MessageSquareLock className={`w-4 h-4 ${activeTab === 'chat_secure' ? 'text-elite-gold' : 'text-slate-400'}`} />
+                <span className="flex-1 text-left tracking-wide">Canais Criptografados</span>
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${activeTab === 'chat_secure' ? 'bg-white text-elite-navy' : 'bg-elite-gold text-white'}`}>3</span>
               </button>
             </div>
           </div>
 
+          <div className="w-full h-px bg-gradient-to-r from-transparent via-elite-sand/30 to-transparent"></div>
+
           {/* Sessão: Módulos Industriais Standard */}
           <div>
-            <h3 className="px-3 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Fábrica & Qualidade</h3>
-            <div className="space-y-1">
+            <h3 className="text-[10px] font-bold text-elite-sand uppercase tracking-[0.2em] mb-4 pl-2">Operacional & ISO 9001</h3>
+            <div className="space-y-1.5">
               <button
                 onClick={() => setActiveTab('dashboard')}
-                className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition ${
-                  activeTab === 'dashboard' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+                  activeTab === 'dashboard' ? 'bg-slate-800 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-800'
                 }`}
               >
-                <Activity className={`w-4 h-4 ${activeTab === 'dashboard' ? 'text-blue-100' : 'text-slate-400'}`} />
-                <span>Painel Geral & OEE</span>
+                <Activity className={`w-4 h-4 ${activeTab === 'dashboard' ? 'text-slate-300' : 'text-slate-400'}`} />
+                <span>Analytics & OEE</span>
               </button>
               <button
                 onClick={() => setActiveTab('qms')}
-                className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition ${
-                  activeTab === 'qms' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+                  activeTab === 'qms' ? 'bg-slate-800 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-800'
                 }`}
               >
-                <CheckCircle2 className={`w-4 h-4 ${activeTab === 'qms' ? 'text-blue-100' : 'text-slate-400'}`} />
-                <span>SGQ & Ciclo CAPA</span>
-              </button>
-              <button
-                onClick={() => setActiveTab('mes')}
-                className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition ${
-                  activeTab === 'mes' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-                }`}
-              >
-                <Layers className={`w-4 h-4 ${activeTab === 'mes' ? 'text-blue-100' : 'text-slate-400'}`} />
-                <span>Terminal MES</span>
-              </button>
-              <button
-                onClick={() => setActiveTab('documents')}
-                className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition ${
-                  activeTab === 'documents' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-                }`}
-              >
-                <FileText className={`w-4 h-4 ${activeTab === 'documents' ? 'text-blue-100' : 'text-slate-400'}`} />
-                <span>Docs SGQ (Públicos)</span>
+                <CheckCircle2 className={`w-4 h-4 ${activeTab === 'qms' ? 'text-slate-300' : 'text-slate-400'}`} />
+                <span>Gestão CAPA</span>
               </button>
             </div>
           </div>
         </aside>
 
         {/* Content Area */}
-        <main className="flex-1 overflow-y-auto bg-slate-50 relative">
+        <main className="flex-1 overflow-y-auto bg-elite-paper relative">
           {/* Módulos Novos - Ambiente Secreto */}
           {activeTab === 'pipeline_secure' && (
             <div className="absolute inset-0">
@@ -151,7 +160,7 @@ export default function App() {
           )}
 
           {activeTab === 'upload_secure' && (
-            <div className="p-8">
+            <div className="p-8 md:p-12 max-w-7xl mx-auto">
                <SecureUploadPage />
             </div>
           )}
@@ -161,7 +170,6 @@ export default function App() {
                <SecureChat roomId={demoRoomId} currentUserId={demoUserId} />
             </div>
           )}
-
 
           {/* Módulos Antigos - Dashboard e SGQ */}
           {activeTab === 'dashboard' && (
@@ -216,17 +224,6 @@ export default function App() {
             </div>
           )}
 
-          {activeTab === 'mes' && (
-             <div className="p-8">
-              <IndustrialMesModule tenantId={currentTenantId} unitId={currentUnitId} />
-             </div>
-          )}
-
-          {activeTab === 'documents' && (
-            <div className="p-8">
-              <QmsDocumentModule tenantId={currentTenantId} unitId={currentUnitId} />
-            </div>
-          )}
         </main>
       </div>
     </div>
