@@ -24,15 +24,15 @@ export function SecureChat({ roomId, currentUserId }: SecureChatProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const fetchMessages = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('chat_messages')
-        .select('*')
-        .eq('room_id', roomId)
-        .order('created_at', { ascending: true });
+    // MOCK PARA DEMONSTRAÇÃO
+    setMessages([
+      { id: "1", sender_id: "system", content: "Iniciando protocolo de negociação. Cofre aberto.", created_at: new Date(Date.now() - 3600000).toISOString(), is_read: true },
+      { id: "2", sender_id: "partner", content: "A matrícula e a cadeia sucessória já foram analisadas?", created_at: new Date(Date.now() - 1800000).toISOString(), is_read: true },
+      { id: "3", sender_id: currentUserId, content: "Sim. A análise preliminar está limpa. Estou anexando o relatório da auditoria fiscal do INCRA agora.", created_at: new Date(Date.now() - 900000).toISOString(), attachment_url: "mock.pdf", is_read: true }
+    ]);
+    setLoading(false);
+    return;
 
-      if (error) throw error;
-      setMessages((data as Message[]) || []);
     } catch (err) {
       console.error('Error fetching messages:', err);
     } finally {
@@ -71,34 +71,19 @@ export function SecureChat({ roomId, currentUserId }: SecureChatProps) {
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newMessage.trim()) return;
+    const msg = newMessage;
+    setNewMessage("");
+    // MOCK PARA DEMONSTRAÇÃO
+    const newMsg: Message = {
+      id: Math.random().toString(),
+      sender_id: currentUserId,
+      content: msg,
+      created_at: new Date().toISOString(),
+      is_read: false
+    };
+    setMessages(prev => [...prev, newMsg]);
+    return;
 
-    const messageContent = newMessage;
-    setNewMessage(''); // optimistic clear
-
-    try {
-      const { data: userData } = await supabase.auth.getUser();
-      if (!userData?.user?.id) throw new Error('User not found');
-
-      const { data: tenantData } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', userData.user.id)
-        .single();
-
-      if (!tenantData) throw new Error('Tenant ID not found');
-
-      const payload = [{
-        room_id: roomId,
-        sender_id: currentUserId,
-        content: messageContent,
-        tenant_id: (tenantData as any).tenant_id
-      }];
-
-      const query = supabase.from('chat_messages');
-      const insertMethod = query.insert as SafeAny;
-      const { error } = await insertMethod(payload);
-
-      if (error) throw error;
     } catch (err) {
       console.error('Error sending message:', err);
     }
