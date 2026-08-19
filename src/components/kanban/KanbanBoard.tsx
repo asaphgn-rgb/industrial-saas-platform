@@ -32,17 +32,20 @@ export function KanbanBoard({ boardId }: KanbanBoardProps) {
   }, [boardId]);
 
   const fetchBoardData = async () => {
-    try {
-      const [colsResponse, cardsResponse] = await Promise.all([
-        supabase.from('kanban_columns').select('*').eq('board_id', boardId).order('order_index'),
-        supabase.from('kanban_cards').select('*').eq('board_id', boardId).order('order_index')
-      ]);
+    // MOCK PARA DEMONSTRAÇÃO
+    setColumns([
+      { id: "col1", name: "Novos Documentos (Triagem)", order_index: 0 },
+      { id: "col2", name: "Análise Jurídica / Ambiental", order_index: 1 },
+      { id: "col3", name: "Aprovados (Cofre)", order_index: 2 }
+    ]);
+    setCards([
+      { id: "card1", column_id: "col1", title: "Matrícula Fazenda Esperança", description: "Pendente validação de ônus e alienações. Cadeia sucessória anexada.", order_index: 0 },
+      { id: "card2", column_id: "col2", title: "CAR & Licença Ambiental (LAU)", description: "Analisando reserva legal e multas do IBAMA anteriores a 2018.", order_index: 0 },
+      { id: "card3", column_id: "col3", title: "Certidões Negativas Federais", description: "CNDs emitidas pela Receita. Livre de embargos.", order_index: 0 }
+    ]);
+    setLoading(false);
+    return;
 
-      if (colsResponse.error) throw colsResponse.error;
-      if (cardsResponse.error) throw cardsResponse.error;
-
-      setColumns((colsResponse.data as KanbanColumn[]) || []);
-      setCards((cardsResponse.data as KanbanCard[]) || []);
     } catch (err) {
       console.error('Error fetching Kanban data:', err);
     } finally {
