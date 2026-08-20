@@ -199,10 +199,11 @@ export function SecureDocumentValidation() {
                     {(blobUrl || viewingDoc.fileData) && (
                       <a
                         href={blobUrl || viewingDoc.fileData}
-                        download={viewingDoc.title || "documento_seguro.pdf"}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="px-6 py-4 bg-fbsb-cyan text-fbsb-bg-deep rounded-2xl shadow-premium font-bold text-sm uppercase tracking-widest flex items-center shadow-[0_0_30px_rgba(0,212,255,0.6)]"
                       >
-                        <Eye className="w-5 h-5 mr-2" /> Abrir Documento
+                        <Eye className="w-5 h-5 mr-2" /> Visualizar Documento
                       </a>
                     )}
                   </div>
