@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import LogoUrl from '/logo-flecha.png';
 import { ShieldCheck, Lock, Fingerprint, Eye, EyeOff, UserSquare2, CheckCircle2 } from 'lucide-react';
-import { BiometricButton } from './BiometricButton';
 
 interface SecureLoginProps {
   onLogin: (user: any) => void;
@@ -159,64 +158,30 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
                 </>
               )}
             </button>
-            
-            <div className="relative mt-6 mb-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-fbsb-border"></div>
-              </div>
-              <div className="relative flex justify-center text-xs">
-                <span className="bg-fbsb-surface-100 px-2 text-fbsb-text-secondary uppercase tracking-widest font-bold">Ou Acesso Rápido</span>
-              </div>
-            </div>
-            
-            <BiometricButton 
-              email={email} 
-              onSuccess={() => {
-                if(!email) return;
-                const match = validCredentials[email.toLowerCase()];
-                if(match) onLogin(match.user);
-                else setError('E-mail não cadastrado para biometria.');
-              }} 
-            />
 
           </form>
 
-          {/* Dicas de Teste */}
-          <div className="mt-10 pt-6 border-t border-fbsb-border max-w-sm mx-auto w-full">
-             <p className="text-[10px] font-bold uppercase tracking-widest text-fbsb-text-secondary text-center mb-3">Atalhos de Simulação B2B</p>
-             <div className="grid grid-cols-2 gap-3">
-               <button
-                 type="button"
-                 onClick={() => { setEmail('admin@flechabsb.com'); setPassword('mastervault'); }}
-                 className="p-2 border border-fbsb-border rounded-lg text-left hover:border-fbsb-cyan hover:bg-fbsb-bg-main transition-all group"
-               >
-                 <span className="text-xs font-bold text-fbsb-text-primary block">Administrador</span>
-                 <span className="text-[10px] text-fbsb-text-secondary">admin@flechabsb.com</span>
-               </button>
-               <button
-                 type="button"
-                 onClick={() => { setEmail('socio@flechabsb.com'); setPassword('auditvault'); }}
-                 className="p-2 border border-fbsb-border rounded-lg text-left hover:border-fbsb-cyan hover:bg-fbsb-bg-main transition-all group"
-               >
-                 <span className="text-xs font-bold text-fbsb-text-primary block">Auditor (Sócio)</span>
-                 <span className="text-[10px] text-fbsb-text-secondary">socio@flechabsb.com</span>
-               </button>
-               <button
-                 type="button"
-                 onClick={() => { setEmail('investidor@flechabsb.com'); setPassword('investvault'); }}
-                 className="p-2 border border-fbsb-border rounded-lg text-left hover:border-fbsb-cyan hover:bg-fbsb-bg-main transition-all group"
-               >
-                 <span className="text-xs font-bold text-fbsb-text-primary block">Investidor</span>
-                 <span className="text-[10px] text-fbsb-text-secondary">investidor@flechabsb.com</span>
-               </button>
-               <button
-                 type="button"
-                 onClick={() => { setEmail('juridico@flechabsb.com'); setPassword('legalvault'); }}
-                 className="p-2 border border-fbsb-border rounded-lg text-left hover:border-fbsb-cyan hover:bg-fbsb-bg-main transition-all group"
-               >
-                 <span className="text-xs font-bold text-fbsb-text-primary block">Jurídico</span>
-                 <span className="text-[10px] text-fbsb-text-secondary">juridico@flechabsb.com</span>
-               </button>
+          {/* Informações Importantes & Credenciais */}
+          <div className="mt-8 p-5 bg-fbsb-bg-main border border-fbsb-border rounded-2xl flex flex-col items-center text-center max-w-sm mx-auto w-full">
+             <img src={LogoUrl} alt="Brasão FLECHA BSB" className="h-16 w-auto object-contain mb-4 opacity-90 drop-shadow-md" />
+             <h3 className="text-xs font-bold text-fbsb-cyan uppercase tracking-widest mb-2 flex items-center">
+                <ShieldCheck className="w-4 h-4 mr-2" /> Protocolo E2E Ativo
+             </h3>
+             <p className="text-[11px] text-fbsb-text-primary font-medium leading-relaxed mb-1">
+               Sistema de Compartilhamento Seguro
+             </p>
+             <p className="text-[10px] text-fbsb-text-secondary leading-relaxed">
+               A FLECHA BSB utiliza criptografia ponta-a-ponta. Todas as conversas e documentos são protegidos e destruídos após o término da sessão (Zero-Trace).
+             </p>
+             <div className="mt-4 pt-4 border-t border-fbsb-border w-full">
+                <p className="text-[9px] text-fbsb-text-muted uppercase tracking-widest font-bold mb-2">Credenciais de Acesso Restrito</p>
+                <div className="bg-fbsb-surface-100 rounded-lg p-2 flex justify-between items-center text-left">
+                   <div>
+                     <p className="text-[10px] text-fbsb-text-secondary"><strong className="text-fbsb-cyan">E-mail:</strong> admin@flechabsb.com</p>
+                     <p className="text-[10px] text-fbsb-text-secondary"><strong className="text-fbsb-cyan">Senha:</strong> mastervault</p>
+                   </div>
+                   <Lock className="w-4 h-4 text-fbsb-text-muted" />
+                </div>
              </div>
           </div>
         </div>

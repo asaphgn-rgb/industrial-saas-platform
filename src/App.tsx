@@ -127,13 +127,6 @@ export default function App() {
         </div>
 
 
-        <div className="hidden md:flex items-center space-x-6 text-sm">
-           <div className="relative">
-             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-fbsb-text-primary" />
-             <input type="text" placeholder="Pesquisar no cofre..." className="pl-9 pr-4 py-2 bg-fbsb-surface-100 border border-fbsb-border rounded-full text-xs text-fbsb-text-primary focus:outline-none focus:ring-1 focus:ring-fbsb-cyan focus:bg-fbsb-surface-200 w-64 transition-all placeholder-fbsb-text-secondary" />
-           </div>
-        </div>
-
         <div className="flex items-center space-x-6 relative">
           <div className="flex flex-col items-end">
              <span className="hidden md:inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-fbsb-surface-200 text-fbsb-text-secondary border border-fbsb-border">
@@ -141,10 +134,7 @@ export default function App() {
                <span>End-to-End Encrypted</span>
              </span>
           </div>
-          <div className="flex items-center space-x-3 pl-6 border-l border-fbsb-border relative">
-             <button className="text-fbsb-text-primary hover:text-fbsb-cyan transition-colors">
-               <Settings className="w-6 h-6" />
-             </button>
+          <div className="flex items-center space-x-3 pl-0 md:pl-6 md:border-l border-fbsb-border relative">
 
              {/* Componente de Switch de Usuário (Demonstração B2B) */}
              <div className="relative">
