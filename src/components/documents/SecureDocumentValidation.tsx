@@ -205,38 +205,36 @@ export function SecureDocumentValidation() {
 
   // Minuta de Contrato Jurídico Sênior (Exibida no Painel Direito)
   const SeniorContractDraft = () => (
-    <div className="bg-fbsb-surface-200 border border-fbsb-border rounded-xl p-5 mb-6 max-h-[300px] overflow-y-auto custom-scrollbar relative">
+    <div className="bg-fbsb-surface-200 border border-fbsb-border rounded-xl p-5 mb-6 max-h-[350px] overflow-y-auto custom-scrollbar relative">
       <div className="absolute top-0 right-0 p-3 opacity-10 pointer-events-none">
          <FileBadge className="w-24 h-24" />
       </div>
 
-      <h4 className="text-sm font-bold text-fbsb-text-primary font-serif mb-4 text-center border-b border-fbsb-border pb-3">
-        INSTRUMENTO PARTICULAR DE PROMESSA DE COMPRA E VENDA DE IMÓVEL RURAL COM CLÁUSULA RESOLUTIVA
+      <h4 className="text-sm font-bold text-fbsb-text-primary font-serif mb-4 text-center border-b border-fbsb-border pb-3 uppercase tracking-wider">
+        Instrumento Particular de Promessa de Compra e Venda com Cláusula de Ciência e Sigilo
       </h4>
 
-      <div className="text-[11px] text-fbsb-text-secondary leading-relaxed text-justify space-y-3 font-serif">
+      <div className="text-[11px] text-fbsb-text-secondary leading-relaxed text-justify space-y-4 font-serif">
         <p>
-          <strong>CLÁUSULA PRIMEIRA – DO OBJETO:</strong> O presente instrumento tem por objeto a alienação da propriedade rural
-          identificada na documentação anexa, doravante denominada simplesmente "IMÓVEL", compreendendo sua posse, domínio,
-          benfeitorias, semoventes e cotas de reserva ambiental legalmente estabelecidas pelo Código Florestal (Lei 12.651/12).
+          <strong>CLÁUSULA PRIMEIRA – DO OBJETO:</strong> O presente instrumento tem por objeto formalizar o interesse irrevogável na alienação da propriedade, bem como de todos os ativos, direitos, benfeitorias e obrigações vinculados aos documentos validados eletronicamente nesta plataforma, doravante denominado "OBJETO".
         </p>
         <p>
-          <strong>CLÁUSULA SEGUNDA – DA DUE DILIGENCE (Diligência Prévia):</strong> As partes reconhecem, em caráter irrevogável
-          e irretratável, que os documentos listados e validados eletronicamente nesta plataforma compõem a matriz de risco da negociação.
-          A aprovação deste dossiê atesta a inexistência de ônus reais, hipotecas, penhoras, litígios trabalhistas, passivos ambientais ou embargos
-          lavrados pelo IBAMA/ICMBio, ressalvadas apenas as pendências expressamente admitidas e destacadas no status global do cofre.
+          <strong>CLÁUSULA SEGUNDA – DA CIÊNCIA INEQUÍVOCA:</strong> A PARTE DECLARANTE reconhece expressamente que teve acesso integral a todos os documentos, pareceres, laudos e minutas anexados ao Cofre de Validação, tendo ciência absoluta de todas as condições jurídicas, fiscais e financeiras envolvidas na operação, não podendo alegar desconhecimento futuro (art. 422 do Código Civil - Princípio da Boa-fé Objetiva).
         </p>
         <p>
-          <strong>CLÁUSULA TERCEIRA – DA ASSINATURA ELETRÔNICA B2B:</strong> Em observância ao disposto na Medida Provisória nº 2.200-2/2001
-          e no artigo 10, § 2º, as Partes elegem a tecnologia de Assinatura Criptografada ponta a ponta deste ambiente como meio comprobatório
-          válido. O clique no botão "Assinar Proposta" captura o <i>timestamp</i>, IP, hash dos documentos validados e token de sessão das partes
-          autorizadas, constituindo plena validade jurídica.
+          <strong>CLÁUSULA TERCEIRA – DA DUE DILIGENCE (Diligência Prévia):</strong> As partes declaram que a documentação validada nesta plataforma compõe a matriz de risco definitiva da negociação. A aprovação deste dossiê atesta a plena ciência de quaisquer ônus reais, litígios ou passivos existentes, ressalvadas pendências listadas no status global.
         </p>
         <p>
-          <strong>CLÁUSULA QUARTA – DA CONDIÇÃO SUSPENSIVA E RESOLUTIVA:</strong> Caso o dossiê apresente alertas classificados como "Pendente",
-          a concretização da posse e transcrição no Cartório de Registro de Imóveis competente ficará sobrestada até a respectiva
-          regularização perante o INCRA (CCIR) ou Secretaria da Receita Federal do Brasil (ITR), recaindo sobre a PARTE VENDEDORA o ônus
-          da resolução das não-conformidades técnicas apuradas.
+          <strong>CLÁUSULA QUARTA – DO SIGILO E CONFIDENCIALIDADE (NDA):</strong> A PARTE DECLARANTE compromete-se a manter sob absoluto sigilo todas as informações confidenciais acessadas por meio deste sistema <i>Zero-Trace</i>. A quebra de sigilo resultará em multa não compensatória estipulada em 20% (vinte por cento) do valor da negociação, sem prejuízo de perdas e danos.
+        </p>
+        <p>
+          <strong>CLÁUSULA QUINTA – DA ASSINATURA ELETRÔNICA E VALIDADE JURÍDICA:</strong> Em estrita observância ao disposto na MP nº 2.200-2/2001 e no art. 10, § 2º, as Partes elegem a tecnologia de Assinatura Criptografada Ponta-a-Ponta (E2E) deste ambiente como meio probatório absoluto. O aceite mediante o clique no botão inferior constitui plena validade jurídica, vinculando endereço de IP, <i>timestamp</i> de rede e token da sessão, equiparando-se à assinatura física reconhecida em cartório.
+        </p>
+        <p>
+          <strong>CLÁUSULA SEXTA – DA CONDIÇÃO SUSPENSIVA E RESOLUTIVA:</strong> A concretização final da transferência de titularidade ficará sobrestada caso o dossiê eletrônico apresente alertas classificados como "Pendente", recaindo o ônus de regularização conforme previamente acordado entre os polos da negociação.
+        </p>
+        <p className="mt-4 p-3 bg-fbsb-surface-100 border border-fbsb-border rounded-lg text-fbsb-text-primary text-center italic">
+          "Ao clicar em Assinar Proposta, declaro que li, compreendi e concordo integralmente com todas as cláusulas acima descritas."
         </p>
       </div>
     </div>

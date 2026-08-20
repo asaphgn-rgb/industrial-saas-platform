@@ -58,8 +58,8 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
 
         {/* Painel Esquerdo: Marketing e Branding */}
         <div className="hidden md:flex flex-col justify-between p-12 bg-fbsb-bg-main relative border-r border-white/5">
-           
-              <div className="flex items-center mb-8"><img src={LogoUrl} alt="FLECHA BSB Logo" className="h-32 md:h-40 w-auto object-contain" /></div>
+
+              <div className="flex items-center mb-8"><img src={LogoUrl} alt="FLECHA BSB Logo" className="h-40 md:h-56 w-auto object-contain drop-shadow-[0_0_25px_rgba(0,212,255,0.2)]" /></div>
 
               <p className="text-fbsb-text-secondary mt-4 text-sm leading-relaxed max-w-sm">
                 Plataforma B2B para compartilhamento privado e análise inteligente de documentos entre usuários autorizados.
@@ -163,7 +163,7 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
 
           {/* Informações Importantes & Credenciais */}
           <div className="mt-8 p-5 bg-fbsb-bg-main border border-fbsb-border rounded-2xl flex flex-col items-center text-center max-w-sm mx-auto w-full">
-             <img src={LogoUrl} alt="Brasão FLECHA BSB" className="h-16 w-auto object-contain mb-4 opacity-90 drop-shadow-md" />
+             <img src={LogoUrl} alt="Brasão FLECHA BSB" className="h-24 w-auto object-contain mb-4 opacity-100 drop-shadow-[0_0_15px_rgba(0,212,255,0.15)]" />
              <h3 className="text-xs font-bold text-fbsb-cyan uppercase tracking-widest mb-2 flex items-center">
                 <ShieldCheck className="w-4 h-4 mr-2" /> Protocolo E2E Ativo
              </h3>
