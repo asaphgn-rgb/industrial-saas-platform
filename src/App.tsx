@@ -26,6 +26,7 @@ import { SecureChat } from './components/secure-chat/SecureChat';
 import { SecureDocumentValidation } from './components/documents/SecureDocumentValidation';
 import { SecureLogin } from './components/auth/SecureLogin';
 import { SecureAboutPage } from './components/documents/SecureAboutPage';
+import { CeoAccessControl } from './components/admin/CeoAccessControl';
 
 type TabType = 'dashboard' | 'qms' | 'mes' | 'documents' | 'upload_secure' | 'pipeline_secure' | 'chat_secure' | 'validation_secure';
 
@@ -297,7 +298,16 @@ export default function App() {
 
           {/* Módulos Antigos - Dashboard e SGQ */}
           {activeTab === 'dashboard' && (
-            <div className="p-8 space-y-6">
+            <div className="p-4 md:p-8 space-y-6">
+              {/* Controles de Acesso (RBAC) */}
+              <CeoAccessControl currentTenantId={currentTenantId} />
+
+              <div className="pt-8 border-t border-white/10 mt-8">
+                 <h3 className="text-sm font-bold uppercase tracking-widest text-fbsb-text-secondary mb-6 flex items-center">
+                   <Activity className="w-4 h-4 mr-2" /> Painel de KPIs Globais
+                 </h3>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-fbsb-surface-100 border border-fbsb-border rounded-xl p-5 shadow-sm">
                   <span className="text-xs font-semibold text-fbsb-text-secondary uppercase tracking-wider">OEE Global Fabril</span>

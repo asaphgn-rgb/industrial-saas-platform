@@ -37,6 +37,22 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
     setTimeout(() => {
       const match = validCredentials[email.toLowerCase()];
       if (match && match.password === password) {
+         // Verifica Governança de RBAC via CEO (se existir mock no navegador)
+         try {
+           const savedAccess = localStorage.getItem('B2B_ACCESS_CONTROL');
+           if (savedAccess) {
+              const matrix = JSON.parse(savedAccess);
+              const roomAccess = matrix['REGULARIZAÇÃO'];
+              if (roomAccess && roomAccess[email.toLowerCase()] === false) {
+                 setError('Seu acesso a esta sala foi explicitamente revogado pela Direção.');
+                 setIsAuthenticating(false);
+                 return;
+              }
+           }
+         } catch (e) {
+           console.error("Erro ao validar RBAC", e);
+         }
+
          // O usuário logou com as credenciais oficiais. Colocando na pasta "REGULARIZAÇÃO"
          onLogin({ ...match.user, currentFolder: 'REGULARIZAÇÃO' });
       } else {
