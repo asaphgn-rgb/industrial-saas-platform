@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
 import { cloudRelay } from '../../lib/cloudSync';
-import { Send, Paperclip, ShieldAlert, Lock, User, FileText, CheckCheck, Mic, Video, VideoOff, Camera, Image as ImageIcon } from 'lucide-react';
+import { Send, Paperclip, ShieldAlert, Lock, User, FileText, CheckCheck, Mic, Image as ImageIcon } from 'lucide-react';
 import { SafeAny } from '../../types/supabase-override';
 import { deriveKey, encryptE2E, decryptE2E } from '../../lib/crypto';
 
@@ -34,7 +34,6 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
   const [isRecording, setIsRecording] = useState(false);
   const mediaRecorderRef = useRef<any>(null);
   const audioChunksRef = useRef<any[]>([]);
-  const [isVideoActive, setIsVideoActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [securityBlur, setSecurityBlur] = useState(false);
 
@@ -87,7 +86,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
 
   useEffect(() => {
     if (!cryptoKey) return;
-    
+
     // Motor de Sincronização em Nuvem Absoluta (Bypass Vercel/Supabase config)
     cloudRelay.connect(roomId, async (cloudMessages) => {
         try {
@@ -99,7 +98,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
               }
               return msg;
            }));
-           
+
            setMessages(prev => {
               // Se o cloud tiver mais mensagens (ou for diferente do local)
               if (decMsgs.length > prev.length) {
@@ -242,8 +241,8 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
   if (loading) return <div className="flex h-full items-center justify-center p-4"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-fbsb-primary"></div></div>;
 
   return (
-    <div className="flex flex-col h-full w-full max-w-5xl mx-auto bg-fbsb-surface-100 md:border border-fbsb-border md:rounded-2xl shadow-premium overflow-hidden font-sans absolute md:relative inset-0 md:inset-auto">
-      <div className="flex items-center justify-between px-6 py-4 bg-fbsb-primary text-white z-10">
+    <div className="flex flex-col h-full w-full max-w-5xl mx-auto bg-[#131720] md:border border-white/5 md:rounded-3xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.05)] overflow-hidden font-sans absolute md:relative inset-0 md:inset-auto">
+      <div className="flex items-center justify-between px-6 py-4 bg-[#1A1F2C] text-white z-10 border-b border-white/5">
         <div className="flex items-center space-x-4">
           <div className="p-2.5 bg-fbsb-surface-200 rounded-xl shadow-inner-gold">
             <Lock className="w-5 h-5 text-fbsb-cyan" />
@@ -254,10 +253,6 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
           </div>
         </div>
         <div className="flex items-center space-x-3">
-          <button onClick={() => setIsVideoActive(!isVideoActive)} className="flex items-center px-3 py-1.5 bg-fbsb-surface-200 hover:bg-fbsb-surface-300 rounded-lg border border-fbsb-cyan transition-colors text-fbsb-cyan">
-            <Video className="w-4 h-4 mr-2" />
-            <span className="text-[10px] uppercase font-bold tracking-wider hidden md:inline">Iniciar Reunião</span>
-          </button>
           <div className="hidden md:flex items-center px-3 py-1.5 bg-fbsb-surface-200 rounded-lg border border-fbsb-border">
              <ShieldAlert className="w-4 h-4 text-fbsb-cyan mr-2" />
              <span className="text-[10px] uppercase font-bold text-fbsb-text-secondary tracking-wider">Alto Sigilo</span>
@@ -265,29 +260,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
         </div>
       </div>
 
-      {isVideoActive && (
-        <div className="absolute top-16 left-0 right-0 h-64 bg-fbsb-surface-200 border-b border-fbsb-border z-20 flex flex-col">
-          <div className="flex-1 p-4 grid grid-cols-2 gap-4">
-             <div className="bg-slate-800 rounded-xl overflow-hidden relative border border-fbsb-border shadow-glow-cyan flex items-center justify-center">
-                <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>
-                <Camera className="w-10 h-10 text-fbsb-cyan/50 absolute" />
-                <span className="absolute bottom-3 left-3 text-[10px] font-bold bg-fbsb-surface-100/80 px-2 py-1 rounded text-white">{currentUserName} (Você)</span>
-                <span className="absolute top-3 right-3 text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 px-2 py-0.5 rounded flex items-center"><Lock className="w-3 h-3 mr-1"/> E2E</span>
-             </div>
-             <div className="bg-slate-800 rounded-xl overflow-hidden relative border border-fbsb-border flex items-center justify-center">
-                <div className="w-16 h-16 rounded-full bg-fbsb-surface-100 flex items-center justify-center text-xl text-fbsb-text-secondary border-2 border-fbsb-border font-bold">...</div>
-                <span className="absolute bottom-3 left-3 text-[10px] font-bold bg-fbsb-surface-100/80 px-2 py-1 rounded text-white tracking-widest">Aguardando...</span>
-             </div>
-          </div>
-          <div className="h-12 bg-fbsb-bg-main flex items-center justify-center space-x-4">
-             <button className="p-2 bg-fbsb-surface-100 rounded-full text-white hover:bg-fbsb-surface-200"><Mic className="w-4 h-4" /></button>
-             <button className="p-2 bg-fbsb-surface-100 rounded-full text-white hover:bg-fbsb-surface-200"><Video className="w-4 h-4" /></button>
-             <button onClick={() => setIsVideoActive(false)} className="p-2 bg-red-500/20 text-red-500 rounded-full hover:bg-red-500/30 border border-red-500/50"><VideoOff className="w-4 h-4" /></button>
-          </div>
-        </div>
-      )}
-
-      <div className="flex-1 p-4 md:p-6 overflow-y-auto space-y-4 md:space-y-6 bg-fbsb-bg-main bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-opacity-50">
+      <div className="flex-1 p-4 md:p-6 overflow-y-auto space-y-4 md:space-y-6 bg-[#0F1219] bg-opacity-50">
         <div className="text-center my-6">
           <span className="text-[10px] uppercase font-bold tracking-widest bg-fbsb-cyan text-fbsb-text-primary px-4 py-2 rounded-full shadow-sm">
             Canal monitorado por política restrita de isolamento de dados
@@ -299,10 +272,10 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
           return (
             <div key={msg.id} className={`flex ${isMine ? 'justify-end' : 'justify-start'} group`}>
               <div
-                className={`max-w-[70%] rounded-2xl px-5 py-3 shadow-md relative ${
+                className={`max-w-[85%] md:max-w-[70%] rounded-2xl px-5 py-3 shadow-md relative overflow-hidden ${
                   isMine
-                    ? 'bg-fbsb-primary text-white rounded-br-sm shadow-premium'
-                    : 'bg-fbsb-surface-100 text-fbsb-text-primary rounded-bl-sm border border-fbsb-border shadow-sm'
+                    ? 'bg-gradient-to-br from-[#3B82F6] to-[#1E40AF] text-white rounded-br-sm shadow-[0_5px_15px_rgba(59,130,246,0.3)] border border-white/10'
+                    : 'bg-[#1A1F2C] text-[#F8FAFC] rounded-bl-sm border border-white/5 shadow-md'
                 }`}
               >
                 {!isMine && (
@@ -313,7 +286,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
                      <span className="text-xs font-bold text-fbsb-text-secondary uppercase tracking-wider">{msg.sender_role || 'Parte Autorizada'}</span>
                   </div>
                 )}
-                <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+                <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">{msg.content}</p>
 
                 {msg.attachment_url && msg.attachment_type === 'image' && (
                    <div className="mt-3 relative rounded-lg overflow-hidden border border-fbsb-border/30">
@@ -353,7 +326,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
         <div ref={messagesEndRef} />
       </div>
 
-      <form onSubmit={handleSendMessage} className="p-4 bg-fbsb-surface-100 border-t border-fbsb-border flex items-end space-x-3">
+      <form onSubmit={handleSendMessage} className="p-4 bg-[#131720] border-t border-white/5 flex items-end space-x-3">
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
@@ -374,7 +347,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Comunicação segura E2E..."
-          className="flex-1 max-h-32 min-h-[52px] bg-fbsb-bg-main/50 rounded-xl border border-transparent hover:border-fbsb-border focus:bg-fbsb-surface-100 focus:border-fbsb-cyan focus:ring-1 focus:ring-fbsb-cyan p-4 text-sm resize-none transition-all outline-none text-fbsb-text-primary"
+          className="flex-1 max-h-32 min-h-[52px] bg-[#0F1219] rounded-2xl border border-white/5 hover:border-white/10 focus:bg-[#1A1F2C] focus:border-[#2DD4BF] focus:ring-1 focus:ring-[#2DD4BF] shadow-inner p-4 text-sm resize-none transition-all outline-none text-fbsb-text-primary"
           rows={1}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -398,7 +371,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
         ) : (
           <button
             type="submit"
-            className="p-4 bg-fbsb-primary text-fbsb-cyan rounded-xl hover:bg-fbsb-surface-200 transition-all flex items-center justify-center shadow-md shadow-fbsb-primary/20"
+            className="p-4 bg-gradient-to-r from-[#2DD4BF] to-[#0D9488] text-[#0F1219] rounded-2xl hover:opacity-90 transition-all flex items-center justify-center shadow-[0_0_20px_rgba(45,212,191,0.4)]"
           >
             <Send className="w-5 h-5" />
           </button>
