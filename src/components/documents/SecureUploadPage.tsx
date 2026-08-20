@@ -371,11 +371,11 @@ export function SecureUploadPage({ onUploadComplete }: SecureUploadPageProps) {
                     {parsedFiles.map(pFile => (
                       <div key={pFile.id} className="flex flex-col p-4 bg-fbsb-bg-main/30 border border-fbsb-border rounded-xl hover:border-fbsb-border transition-colors">
                         <div className="flex items-start justify-between">
-                           <div className="flex items-center space-x-4 w-full">
-                             <div className="p-3 bg-fbsb-surface-100 rounded-xl shadow-sm border border-fbsb-border">
+                           <div className="flex items-center space-x-4 w-full min-w-0">
+                             <div className="p-3 bg-fbsb-surface-100 rounded-xl shadow-sm border border-fbsb-border flex-shrink-0">
                                <CategoryIcon cat={pFile.category} />
                              </div>
-                             <div className="flex-1">
+                             <div className="flex-1 min-w-0">
                                <input
                                  value={pFile.title}
                                  onChange={(e) => updateFileTitle(pFile.id, e.target.value)}

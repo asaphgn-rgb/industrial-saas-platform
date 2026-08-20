@@ -267,25 +267,25 @@ export function SecureDocumentValidation() {
                 >
                   {/* Header do Card (Clickable) */}
                   <div
-                    className={`px-5 py-4 flex items-center justify-between cursor-pointer ${
+                    className={`px-4 md:px-5 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer ${
                       isExpanded ? 'bg-fbsb-bg-main' : 'bg-fbsb-surface-100'
                     }`}
                     onClick={() => setExpandedDocId(isExpanded ? null : doc.id)}
                   >
-                    <div className="flex items-center space-x-4">
-                      <div className="p-2.5 bg-fbsb-surface-100 rounded-xl shadow-sm border border-fbsb-border">
+                    <div className="flex items-start md:items-center space-x-3 md:space-x-4 min-w-0 flex-1">
+                      <div className="p-2.5 bg-fbsb-surface-100 rounded-xl shadow-sm border border-fbsb-border flex-shrink-0">
                         {getCategoryIcon(doc.category)}
                       </div>
-                      <div>
-                        <h3 className="font-bold text-fbsb-text-primary text-sm">{doc.title}</h3>
-                        <div className="flex items-center space-x-3 mt-1">
-                          <span className="text-[10px] bg-fbsb-surface-200 text-fbsb-text-secondary px-2 py-0.5 rounded font-bold uppercase">{doc.category}</span>
-                          <span className="text-[10px] text-fbsb-text-secondary">Inserido em {doc.uploadDate}</span>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-bold text-fbsb-text-primary text-sm break-words line-clamp-2 md:line-clamp-none pr-2">{doc.title}</h3>
+                        <div className="flex flex-wrap items-center gap-2 mt-1.5">
+                          <span className="text-[10px] bg-fbsb-surface-200 text-fbsb-text-secondary px-2 py-0.5 rounded font-bold uppercase whitespace-nowrap">{doc.category}</span>
+                          <span className="text-[10px] text-fbsb-text-secondary whitespace-nowrap">Inserido em {doc.uploadDate}</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="flex items-center space-x-6">
+                    <div className="flex items-center justify-end space-x-4 md:space-x-6 w-full md:w-auto mt-2 md:mt-0 pt-3 md:pt-0 border-t md:border-t-0 border-fbsb-border/30">
                       {isPending ? (
                         <div className="flex items-center text-red-500 bg-red-50 px-3 py-1 rounded-md text-[11px] font-bold border border-red-100">
                           <AlertTriangle className="w-3.5 h-3.5 mr-1.5" /> Pendência
@@ -301,19 +301,19 @@ export function SecureDocumentValidation() {
 
                   {/* Conteúdo Expandido (Resumo Didático e Técnico) */}
                   {isExpanded && (
-                    <div className="px-5 py-6 bg-fbsb-surface-100 border-t border-fbsb-border">
+                    <div className="px-4 md:px-5 py-6 bg-fbsb-surface-100 border-t border-fbsb-border">
 
-                      <div className="flex justify-between items-start mb-6">
-                        <div>
+                      <div className="flex flex-col md:flex-row justify-between items-start mb-6 gap-6">
+                        <div className="w-full md:w-auto">
                           <span className="text-[10px] font-bold uppercase tracking-widest text-fbsb-text-secondary block mb-2">Órgão Regulador / Autoridade Emissora</span>
-                          <div className="text-sm font-semibold text-fbsb-text-primary flex items-center">
-                            <ShieldCheck className="w-4 h-4 mr-2 text-fbsb-text-secondary" />
-                            {doc.issuingAuthority}
+                          <div className="text-sm font-semibold text-fbsb-text-primary flex items-center break-words">
+                            <ShieldCheck className="w-4 h-4 mr-2 text-fbsb-text-secondary flex-shrink-0" />
+                            <span className="flex-1">{doc.issuingAuthority}</span>
                           </div>
                         </div>
 
                         {/* Botoes de Ação */}
-                        <div className="flex items-center space-x-3">
+                        <div className="flex items-center space-x-3 w-full md:w-auto justify-end">
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
