@@ -63,3 +63,6 @@ Este repositório contém a fundação do **SaaS Industrial & SGQ ISO 9001**, um
 - **Análise Prévia**: Entenda o impacto em multi-tenancy e segurança antes de sugerir código.
 - **Testes pós-mudança**: Valide a compilação (`npm run typecheck`) e execute testes unitários.
 - **Revisão de Diff**: Garanta que nenhum arquivo temporário, secret ou dependência desnecessária seja incluído.
+
+## 7. Regras de Blindagem (Comunicação E2E)
+- **NÃO ALTERE O MOTOR DE SINCRONIZAÇÃO `ntfySync.ts`**: O sistema de chat criptografado (`SecureChat.tsx`) opera perfeitamente sobre WebSocket via Porta 443 usando `ntfy.sh`. Sob nenhuma hipótese reverta para Supabase Broadcast, KVDB, Polling ou MQTT, pois isso causará quebra de firewall no 4G e bloqueios de Rate Limit por IP. Esta arquitetura está TRAVADA e HOMOLOGADA.
