@@ -113,38 +113,33 @@ export function SecureDocumentValidation() {
 
     useEffect(() => {
       if (!viewingDoc || !viewingDoc.fileData) return;
-      
-      // Otimização de Engenharia: Transformar Base64 gigante em Blob URL levíssima e instantânea
-      try {
-        const base64Data = viewingDoc.fileData.split(',')[1];
-        if (!base64Data) {
-          setBlobUrl(viewingDoc.fileData); // Fallback caso não seja data URI
-          return;
-        }
-        
-        const contentType = viewingDoc.fileType || 'application/pdf';
-        const byteCharacters = atob(base64Data);
-        const byteArrays = [];
-        
-        for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-          const slice = byteCharacters.slice(offset, offset + 512);
-          const byteNumbers = new Array(slice.length);
-          for (let i = 0; i < slice.length; i++) {
-            byteNumbers[i] = slice.charCodeAt(i);
-          }
-          const byteArray = new Uint8Array(byteNumbers);
-          byteArrays.push(byteArray);
-        }
-        
-        const blob = new Blob(byteArrays, { type: contentType });
-        const url = URL.createObjectURL(blob);
-        setBlobUrl(url);
 
-        return () => URL.revokeObjectURL(url); // Previne vazamento de memória
+      // Otimização de Engenharia: Transformar Base64 em Blob URL nativamente (mais rápido e sem falhas)
+      try {
+        if (viewingDoc.fileData.startsWith('data:')) {
+          fetch(viewingDoc.fileData)
+            .then(res => res.blob())
+            .then(blob => {
+              const url = URL.createObjectURL(blob);
+              setBlobUrl(url);
+            })
+            .catch(err => {
+              console.error("Falha ao gerar blob via fetch:", err);
+              setBlobUrl(viewingDoc.fileData); // Fallback direto para o Base64
+            });
+        } else {
+          setBlobUrl(viewingDoc.fileData);
+        }
       } catch (err) {
-        console.error("Falha ao otimizar PDF:", err);
+        console.error("Falha ao otimizar visualização do documento:", err);
         setBlobUrl(viewingDoc.fileData); // Fallback
       }
+
+      return () => {
+        if (blobUrl && blobUrl.startsWith('blob:')) {
+          URL.revokeObjectURL(blobUrl);
+        }
+      };
     }, [viewingDoc]);
 
     if (!viewingDoc) return null;
@@ -170,15 +165,33 @@ export function SecureDocumentValidation() {
 
           {/* Corpo do Viewer - Simulação de PDF (CSS para impedir seleção e download) */}
           <div className="flex-1 bg-[#525659] overflow-hidden flex flex-col items-center select-none relative">
-            {/* Overlay transparente para bloquear o clique com botão direito e interações no iframe, reforçando a segurança */}
-            {/* Overlay removido para permitir rolagem nativa do documento */}
 
             {viewingDoc.fileData ? (
-              <iframe
-                src={blobUrl ? `${blobUrl}#toolbar=0&navpanes=0` : ''}
-                className="w-full h-full border-0 pointer-events-auto z-0"
-                title="Visualizador Seguro"
-              />
+              viewingDoc.fileType?.startsWith('image/') ? (
+                <div className="w-full h-full flex items-center justify-center bg-[#2d3032] overflow-auto p-4">
+                   <img src={blobUrl || viewingDoc.fileData} alt="Documento Visualizado" className="max-w-full max-h-full object-contain drop-shadow-2xl" />
+                </div>
+              ) : (
+                <div className="w-full h-full relative">
+                  <iframe
+                    src={blobUrl ? `${blobUrl}#toolbar=0&navpanes=0` : ''}
+                    className="w-full h-full border-0 pointer-events-auto z-0"
+                    title="Visualizador Seguro"
+                  />
+                  <div className="absolute bottom-4 right-4 z-10 md:hidden">
+                    {blobUrl && (
+                      <a
+                        href={blobUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-4 py-3 bg-fbsb-cyan text-fbsb-bg-deep rounded-xl shadow-premium font-bold text-xs uppercase tracking-wider flex items-center"
+                      >
+                        <Eye className="w-4 h-4 mr-2" /> Forçar Abertura
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )
             ) : (
               <div className="bg-fbsb-surface-100 w-full max-w-3xl min-h-[1056px] shadow-2xl p-16 flex flex-col items-center justify-center text-center z-0">
                  <AlertTriangle className="w-16 h-16 text-fbsb-text-secondary mb-4" />
