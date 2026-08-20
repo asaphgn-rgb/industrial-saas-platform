@@ -152,33 +152,39 @@ export function SecureUploadPage({ onUploadComplete, currentUser }: SecureUpload
   };
 
     const handleFilesSelection = async (files: File[]) => {
-    // Para renderizar PDFs e imagens reais na tela de Validação
-    const readFileAsBase64 = (file: File): Promise<string> => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result as string);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    };
-
-    const currentOffset = parsedFiles.length; // Usa o offset de quantos já tem pra não cair na mesma categoria
+    const currentOffset = parsedFiles.length;
 
     const newParsedFiles = await Promise.all(
       files.map(async (file, idx) => {
         const parsed = analyzeFile(file, currentOffset + idx);
-        try {
-          // Convertendo para Base64 para armazenar no localStorage e recuperar no visualizador
-          const base64 = await readFileAsBase64(file);
-          parsed.fileData = base64;
-          parsed.fileType = file.type;
-        } catch (e) {
-          console.error('Erro ao ler arquivo', e);
+
+        // Removemos o travamento de ler arquivos de 9MB para Base64 no frontend!
+        // O Supabase Client cuidará do multipart-upload ou nós armazenamos apenas os bytes essenciais
+        // para não travar a main thread do DOM (React Render).
+        const limitSize = 1000000 * 2; // 2MB máximo em Base64 para garantir performance sem storage
+        if (file.size <= limitSize) {
+           try {
+             const readFileAsBase64 = (f: File): Promise<string> => new Promise((resolve, reject) => {
+               const reader = new FileReader();
+               reader.onload = () => resolve(reader.result as string);
+               reader.onerror = reject;
+               reader.readAsDataURL(f);
+             });
+             parsed.fileData = await readFileAsBase64(file);
+             parsed.fileType = file.type;
+           } catch (e) {
+             console.error('Erro ao ler arquivo', e);
+           }
+        } else {
+           // O arquivo é muito grande (Ex: 9MB). Ignoramos o parser Base64 pro navegador não engasgar.
+           parsed.fileType = file.type;
+           parsed.fileData = undefined; // Sera interceptado como is_too_large
         }
+
         return parsed;
       })
     );
-    
+
     setParsedFiles(prev => [...prev, ...newParsedFiles]);
     setUploadStatus(null);
   };
@@ -266,19 +272,7 @@ export function SecureUploadPage({ onUploadComplete, currentUser }: SecureUpload
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 12000); // 12 Segundos Máximo
 
-      const res = await (supabase as any).from('b2b_documents').select('*').eq('id', 'tenant-industrial-demo-uuid').single();
-      const existingSettings = (res.data as any)?.settings || {};
-      const existingDocs = existingSettings.b2b_documents || [];
-
-      // Regra anti-duplicidade para re-envios acidentais e manter cofre leve:
-      const newIds = new Set(cloudDocuments.map(d => d.id));
-      const filteredExisting = existingDocs.filter((d: any) => !newIds.has(d.id));
-      const allDocs = [...cloudDocuments, ...filteredExisting];
-
-      const { error } = await (supabase as any).from('tenants').update({
-        settings: { ...existingSettings, b2b_documents: allDocs }
-      }).eq('id', 'tenant-industrial-demo-uuid').abortSignal(controller.signal);
-
+      const { error } = await (supabase as any).from('b2b_documents').insert(cloudDocuments).abortSignal(controller.signal);
       clearTimeout(timeoutId);
 
       if (error) {

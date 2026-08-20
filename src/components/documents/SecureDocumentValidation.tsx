@@ -96,15 +96,10 @@ export function SecureDocumentValidation({ currentUser }: SecureDocumentValidati
   // Buscar os documentos na nuvem
   useEffect(() => {
     const fetchDocuments = async () => {
-      const { data, error } = await (supabase as any)
-        .from('tenants')
-        .select('settings')
-        .eq('id', 'tenant-industrial-demo-uuid')
-        .single();
+      const { data, error } = await (supabase as any).from('b2b_documents').select('*').eq('tenant_id', 'tenant-industrial-demo-uuid');
 
-      if (data && !error && (data as any).settings) {
-        const settings = (data as any).settings;
-        const docs = settings.b2b_documents || [];
+      if (data && !error) {
+        const docs = data;
 
         const parsed: AnalyzedDocument[] = docs.map((d: any) => ({
           id: d.id,
@@ -143,10 +138,8 @@ export function SecureDocumentValidation({ currentUser }: SecureDocumentValidati
   };
 
   const handleDeleteDocument = async (id: string) => {
+    const { error } = await (supabase as any).from('b2b_documents').delete().eq('id', id);
     const updatedDocs = mockDocuments.filter(doc => doc.id !== id);
-    const { data: tenantData } = await (supabase as any).from('b2b_documents').select('*').eq('id', 'tenant-industrial-demo-uuid').single();
-    const existingSettings = (tenantData as any)?.settings || {};
-    const { error } = await (supabase as any).from('tenants').update({ settings: { ...existingSettings, b2b_documents: updatedDocs } }).eq('id', 'tenant-industrial-demo-uuid');
 
     if (!error) {
       setMockDocuments(updatedDocs);
@@ -158,9 +151,7 @@ export function SecureDocumentValidation({ currentUser }: SecureDocumentValidati
 
   const handleRequestDeletion = async (id: string) => {
     const updatedDocs = mockDocuments.map(doc => doc.id === id ? { ...doc, deletionRequested: true, deletion_requested: true } : doc);
-    const { data: tenantData } = await (supabase as any).from('b2b_documents').select('*').eq('id', 'tenant-industrial-demo-uuid').single();
-    const existingSettings = (tenantData as any)?.settings || {};
-    const { error } = await (supabase as any).from('tenants').update({ settings: { ...existingSettings, b2b_documents: updatedDocs } }).eq('id', 'tenant-industrial-demo-uuid');
+    const { error } = await (supabase as any).from('b2b_documents').update({ deletion_requested: true }).eq('id', id);
 
     if (!error) {
       setMockDocuments(updatedDocs as AnalyzedDocument[]);
@@ -172,9 +163,7 @@ export function SecureDocumentValidation({ currentUser }: SecureDocumentValidati
 
   const handleRejectDeletion = async (id: string) => {
     const updatedDocs = mockDocuments.map(doc => doc.id === id ? { ...doc, deletionRequested: false, deletion_requested: false } : doc);
-    const { data: tenantData } = await (supabase as any).from('b2b_documents').select('*').eq('id', 'tenant-industrial-demo-uuid').single();
-    const existingSettings = (tenantData as any)?.settings || {};
-    const { error } = await (supabase as any).from('tenants').update({ settings: { ...existingSettings, b2b_documents: updatedDocs } }).eq('id', 'tenant-industrial-demo-uuid');
+    const { error } = await (supabase as any).from('b2b_documents').update({ deletion_requested: false }).eq('id', id);
 
     if (!error) {
       setMockDocuments(updatedDocs as AnalyzedDocument[]);
@@ -335,9 +324,7 @@ export function SecureDocumentValidation({ currentUser }: SecureDocumentValidati
               <button
                 onClick={async () => {
                    if(window.confirm("Deseja apagar TODOS os documentos da Nuvem e esvaziar o cofre?")) {
-                      const { data: tenantData } = await (supabase as any).from('b2b_documents').select('*').eq('id', 'tenant-industrial-demo-uuid').single();
-                      const existingSettings = (tenantData as any)?.settings || {};
-                      await (supabase as any).from('tenants').update({ settings: { ...existingSettings, b2b_documents: [] } }).eq('id', 'tenant-industrial-demo-uuid');
+                      await (supabase as any).from('b2b_documents').delete().eq('tenant_id', 'tenant-industrial-demo-uuid');
                       setMockDocuments([]);
                       alert("Cofre esvaziado com sucesso!");
                    }
