@@ -154,7 +154,10 @@
       "Bash(git pull *)",
       "Bash(ls -la \"D:\\\\GERAL\\\\TELA\\\\flecha bsb\\\\public\")",
       "Bash(node apply-new-theme.js)",
-      "Bash(node apply-new-theme.cjs)"
+      "Bash(node apply-new-theme.cjs)",
+      "Bash(curl -s -X POST https://kvdb.io/AEyQCvAyYtJo4EW7KwWsWa/test_img -d \"data:image/png;base64,iVBOR\")",
+      "Bash(curl -s https://kvdb.io/AEyQCvAyYtJo4EW7KwWsWa/test_img)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" -X POST https://kvdb.io/AEyQCvAyYtJo4EW7KwWsWa/test_big -d @/tmp/big.txt)"
     ]
   }
 }
