@@ -119,7 +119,7 @@ export default function App() {
             </svg>
           </button>
           <div className="flex items-center">
-             <div className="bg-white px-4 py-2 rounded-xl flex items-center justify-center mr-4 shadow-sm"><img src={LogoUrl} alt="FLECHA BSB Logo" className="h-7 w-auto object-contain mix-blend-multiply" /></div>
+             <div className="flex items-center justify-center mr-4"><img src={LogoUrl} alt="FLECHA BSB Logo" className="h-9 w-auto object-contain filter invert hue-rotate-180 brightness-[1.5] contrast-[1.2]" /></div>
           </div>
           <div className="hidden sm:block">
             <p className="text-[11px] uppercase tracking-widest text-fbsb-text-muted font-bold mt-0.5">Ambiente Restrito</p>
