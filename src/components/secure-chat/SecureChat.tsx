@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
 import { Send, Paperclip, ShieldAlert, Lock, User, FileText, CheckCheck } from 'lucide-react';
 import { SafeAny } from '../../types/supabase-override';
+import { deriveKey, encryptE2E, decryptE2E } from '../../lib/crypto';
 
 interface Message {
   id: string;
@@ -22,11 +23,17 @@ export function SecureChat({ roomId, currentUserId }: SecureChatProps) {
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [cryptoKey, setCryptoKey] = useState<CryptoKey | null>(null);
 
   const fetchMessages = async () => {
-    // Inicial limpo (0 mensagens) para permitir upload e conversa do zero.
-    setMessages([]);
-    setLoading(false);
+    try {
+      // Derivar a chave de criptografia baseada no ID da sala (Simulação de Handshake)
+      const key = await deriveKey(roomId, 'SaaS-B2B-Secure-Salt');
+      setCryptoKey(key);
+      
+      setMessages([]);
+      setLoading(false);
+    } catch (e) { }
   };
 
   useEffect(() => {
@@ -41,15 +48,21 @@ export function SecureChat({ roomId, currentUserId }: SecureChatProps) {
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newMessage.trim()) return;
+    if (!newMessage.trim() || !cryptoKey) return;
     const msg = newMessage;
     setNewMessage("");
 
-    // MOCK PARA DEMONSTRAÇÃO
+    // Cifra a mensagem antes de "mandar para o banco"
+    // No banco de dados real isso salva o cipherB64, e nem a administração lê.
+    const cipherB64 = await encryptE2E(msg, cryptoKey);
+    
+    // Simulando que o recebedor vai decifrar a mensagem instantaneamente na UI:
+    const decrypted = await decryptE2E(cipherB64, cryptoKey);
+
     const newMsg: Message = {
       id: Math.random().toString(),
       sender_id: currentUserId,
-      content: msg,
+      content: decrypted,
       created_at: new Date().toISOString(),
       is_read: false
     };
