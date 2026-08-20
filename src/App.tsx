@@ -101,27 +101,15 @@ export default function App() {
                        <p className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Alternar Participante (Demo)</p>
                     </div>
                     <div className="p-2 space-y-1">
-                      {mockUsers.map(user => (
-                        <button
-                          key={user.id}
-                          onClick={() => {
-                            setCurrentUser(user);
-                            setShowUserMenu(false);
-                          }}
-                          className={`w-full flex items-center p-3 rounded-lg transition-colors text-left ${currentUser.id === user.id ? 'bg-elite-paper border border-elite-sand/40' : 'hover:bg-slate-50 border border-transparent'}`}
-                        >
-                           <div className={`h-8 w-8 rounded-full flex items-center justify-center mr-3 ${currentUser.id === user.id ? 'bg-elite-navy text-elite-gold' : 'bg-slate-200 text-slate-500'}`}>
-                              <span className="text-xs font-bold">{user.initials}</span>
-                           </div>
-                           <div>
-                             <p className={`text-xs font-bold ${currentUser.id === user.id ? 'text-elite-navy' : 'text-slate-700'}`}>{user.name}</p>
-                             <p className="text-[10px] text-slate-400">{user.role}</p>
-                           </div>
-                        </button>
-                      ))}
-                    </div>
-                 </div>
-               )}
+  <button
+    onClick={() => setCurrentUser(null)}
+    className="w-full flex items-center justify-center p-3 rounded-lg transition-colors text-center text-red-500 hover:bg-red-50 hover:text-red-700 border border-transparent font-bold text-xs"
+  >
+     Encerrar Sessão (Log out)
+  </button>
+</div>
+</div>
+)}
              </div>
 
           </div>

@@ -1,0 +1,27 @@
+--- src/components/secure-chat/SecureChat.tsx
++++ src/components/secure-chat/SecureChat.tsx
+@@ -45,15 +52,21 @@
+     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+   }, [messages]);
+ 
+   const handleSendMessage = async (e: React.FormEvent) => {
+     e.preventDefault();
+-    if (!newMessage.trim()) return;
++    if (!newMessage.trim() || !cryptoKey) return;
+     const msg = newMessage;
+     setNewMessage("");
+ 
+-    // MOCK PARA DEMONSTRAÇÃO
++    // Cifra a mensagem antes de "mandar para o banco"
++    // No banco de dados real isso salva o cipherB64, e nem a administração lê.
++    const cipherB64 = await encryptE2E(msg, cryptoKey);
++    
++    // Simulando que o recebedor vai decifrar a mensagem instantaneamente na UI:
++    const decrypted = await decryptE2E(cipherB64, cryptoKey);
++
+     const newMsg: Message = {
+       id: Math.random().toString(),
+       sender_id: currentUserId,
+-      content: msg,
++      content: decrypted, // Demonstração: mostrando o que o cliente descriptografou
+       created_at: new Date().toISOString(),

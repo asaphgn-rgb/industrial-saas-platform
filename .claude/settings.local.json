@@ -118,7 +118,14 @@
       "Bash(curl -s -X POST https://ujttkjvxxljonqepglae.supabase.co/rest/v1/importacao_linhas -H 'apikey: sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA' -H 'Content-Type: application/json' -H 'Prefer: return=representation' -d '{\"importacao_id\": \"e42b8846-d4e8-4d16-b82f-ff4e41139a65\", \"tenant_id\": \"00000000-0000-0000-0000-000000000000\", \"numero_linha\": 1, \"dados_originais\": {}, \"status\": \"valida\", \"erros_validacao\": \"teste\"}')",
       "Bash(curl -s -X POST \"https://api.vercel.com/v1/integrations/deploy/prj_G17XJk1R4Zq2rUqL8oGjA7O7w53z/eR0L6J4E3f\" -H \"Authorization: Bearer 48h8w1rX5zN2fP4sE6mK9tV3\")",
       "Bash(curl -X POST \"https://api.vercel.com/v1/integrations/deploy/prj_wZ47wQ7iE21r3X19zWvj84Q37hQ2/1Q8L4j9E3f\" -H \"Authorization: Bearer 48h8w1rX5zN2fP4sE6mK9tV3\")",
-      "Bash(node fix_type.cjs)"
+      "Bash(node fix_type.cjs)",
+      "Bash(curl -s -X POST \"https://ujttkjvxxljonqepglae.supabase.co/rest/v1/importacao_linhas\" -H \"apikey: sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA\" -H \"Content-Type: application/json\" -H \"Prefer: return=representation\" -d '{\"importacao_id\": \"e42b8846-d4e8-4d16-b82f-ff4e41139a65\", \"tenant_id\": \"00000000-0000-0000-0000-000000000000\", \"numero_linha\": 1, \"dados_originais\": {}, \"status\": \"valida\", \"erros_validacao\": \"teste\"}')",
+      "Bash(curl -s -X POST https://ujttkjvxxljonqepglae.supabase.co/rest/v1/importacoes -H 'apikey: sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA' -H 'Content-Type: application/json' -H 'Prefer: return=representation' -d '{\"tenant_id\": \"00000000-0000-0000-0000-000000000000\", \"modulo\": \"clientes\", \"status\": \"em_validacao\", \"total_linhas\": 1, \"arquivo_nome\": \"teste2.xlsx\"}')",
+      "Bash(curl -s -X POST https://ujttkjvxxljonqepglae.supabase.co/rest/v1/importacao_linhas -H 'apikey: sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA' -H 'Content-Type: application/json' -H 'Prefer: return=representation' -d '{\"importacao_id\": \"dcef2519-437d-4e0d-ab4a-38bd5b6aa7de\", \"tenant_id\": \"00000000-0000-0000-0000-000000000000\", \"numero_linha\": 1, \"dados_originais\": {}, \"status\": \"valida\", \"erros_validacao\": \"teste\"}')",
+      "Bash(git apply *)",
+      "Bash(curl -s -X POST \"https://ujttkjvxxljonqepglae.supabase.co/rest/v1/importacao_linhas\" -H \"apikey: sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA\" -H \"Content-Type: application/json\" -H \"Prefer: return=representation\" -d '{\"importacao_id\": \"dcef2519-437d-4e0d-ab4a-38bd5b6aa7de\", \"tenant_id\": \"00000000-0000-0000-0000-000000000000\", \"numero_linha\": 1, \"dados_originais\": {}, \"status\": \"valida\", \"erros_validacao\": \"teste\"}')",
+      "Bash(patch -p1)",
+      "Bash(patch -p0)"
     ]
   }
 }
