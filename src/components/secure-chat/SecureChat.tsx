@@ -108,15 +108,22 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
 
            // Tratamento de arquivo muito grande: Busca direto do Supabase via REST API
            if (finalMsg.attachment_url === 'supabase' || finalMsg.audio_data === 'supabase') {
-              try {
-                const { data } = await supabase.from('b2b_secure_chat').select('attachment_url, audio_data').eq('id', finalMsg.id).single();
-                if (data) {
-                   const d = data as any;
-                   if (d.attachment_url) finalMsg.attachment_url = d.attachment_url;
-                   if (d.audio_data) finalMsg.audio_data = d.audio_data;
+              let retries = 3;
+              while (retries > 0) {
+                try {
+                  const { data } = await supabase.from('b2b_secure_chat').select('attachment_url, attachment_type, audio_data').eq('id', finalMsg.id).single();
+                  if (data) {
+                     const d = data as any;
+                     if (d.attachment_url) finalMsg.attachment_url = d.attachment_url;
+                     if (d.attachment_type) finalMsg.attachment_type = d.attachment_type;
+                     if (d.audio_data) finalMsg.audio_data = d.audio_data;
+                     break; // Sucesso, sai do loop
+                  }
+                } catch(e) {
+                  console.error("Retentando buscar mídia no DB...", e);
                 }
-              } catch(e) {
-                console.error(e);
+                await new Promise(r => setTimeout(r, 1500)); // Espera 1.5s antes do retry
+                retries--;
               }
            }
 
@@ -219,17 +226,18 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
 
       const pushMsg = { ...newMsg, attachment_url: 'supabase' };
 
-      // Insere no banco primeiro garantindo a disponibilidade via REST
+      // Insere no banco primeiro garantindo a disponibilidade via REST ANTES de notificar
       try {
-        await supabase.from('b2b_secure_chat').insert({
+        const { error } = await supabase.from('b2b_secure_chat').insert({
           id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
           sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64, attachment_url: base64Data, attachment_type: type
         } as any);
+        if (error) throw error;
       } catch(e) {
-        console.error(e);
+        console.error("Erro ao salvar anexo no BD:", e);
       }
 
-      // Dispara sinalização em tempo real
+      // Dispara sinalização em tempo real apenas DEPOIS de tentar salvar no banco
       ntfyRelay.pushMessage({ ...pushMsg, content: cipherB64 });
     };
     reader.readAsDataURL(file);
@@ -323,31 +331,53 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
                 <p className="text-sm leading-relaxed whitespace-pre-wrap break-all">{msg.content}</p>
 
                 {msg.attachment_url && msg.attachment_type === 'image' && (
-                   <div className="mt-3 relative rounded-lg overflow-hidden border border-fbsb-border/30">
-                      <a href={msg.attachment_url} target="_blank" rel="noopener noreferrer">
-                        <img src={msg.attachment_url} alt="Anexo Seguro" className="max-w-full max-h-48 object-cover cursor-pointer hover:opacity-90 transition-opacity" />
-                      </a>
+                   <div className="mt-3 relative rounded-lg overflow-hidden border border-fbsb-border/30 bg-fbsb-bg-main min-h-[120px] flex items-center justify-center">
+                      {msg.attachment_url === 'supabase' ? (
+                        <div className="flex flex-col items-center justify-center p-4 text-fbsb-text-secondary">
+                          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-fbsb-cyan mb-2"></div>
+                          <span className="text-[10px] font-bold uppercase tracking-wider">Baixando Anexo Seguro...</span>
+                        </div>
+                      ) : (
+                        <a href={msg.attachment_url} target="_blank" rel="noopener noreferrer" className="w-full h-full block">
+                          <img
+                            src={msg.attachment_url}
+                            alt="Anexo Seguro"
+                            className="w-full max-h-48 object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                            onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                          />
+                        </a>
+                      )}
                    </div>
                 )}
                 {msg.attachment_url && msg.attachment_type === 'pdf' && (
                    <a
-                     href={msg.attachment_url}
-                     target="_blank"
+                     href={msg.attachment_url === 'supabase' ? '#' : msg.attachment_url}
+                     target={msg.attachment_url === 'supabase' ? '_self' : '_blank'}
                      rel="noopener noreferrer"
-                     className={`mt-3 flex items-center p-3 rounded-xl cursor-pointer transition-colors ${
+                     className={`mt-3 flex items-center p-3 rounded-xl transition-colors ${
                        isMine ? 'bg-fbsb-surface-200/50 hover:bg-fbsb-surface-200' : 'bg-fbsb-bg-main hover:bg-fbsb-text-secondary/20'
-                     }`}
+                     } ${msg.attachment_url === 'supabase' ? 'cursor-wait opacity-70' : 'cursor-pointer'}`}
+                     onClick={(e) => { if(msg.attachment_url === 'supabase') e.preventDefault(); }}
                    >
-                      <FileText className={`w-5 h-5 mr-3 ${isMine ? 'text-fbsb-cyan' : 'text-fbsb-text-primary'}`}/>
+                      <FileText className={`w-5 h-5 mr-3 ${isMine ? 'text-fbsb-cyan' : 'text-fbsb-text-primary'} ${msg.attachment_url === 'supabase' ? 'animate-pulse' : ''}`}/>
                       <div>
                         <span className="text-xs font-bold block">Documento Seguro.pdf</span>
-                        <span className="text-[10px] opacity-70 uppercase tracking-wider">Clique para visualizar nativamente</span>
+                        <span className="text-[10px] opacity-70 uppercase tracking-wider">
+                          {msg.attachment_url === 'supabase' ? 'Baixando arquivo criptografado...' : 'Clique para visualizar nativamente'}
+                        </span>
                       </div>
                    </a>
                 )}
                 {msg.audio_data && (
                    <div className="mt-3 w-48 md:w-64">
-                     <audio src={msg.audio_data} controls className="w-full h-8" />
+                     {msg.audio_data === 'supabase' ? (
+                       <div className="flex items-center space-x-2 p-2 bg-fbsb-surface-200/30 rounded-lg">
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-fbsb-cyan"></div>
+                          <span className="text-[10px] text-fbsb-text-secondary uppercase tracking-wider">Baixando Áudio...</span>
+                       </div>
+                     ) : (
+                       <audio src={msg.audio_data} controls className="w-full h-8" />
+                     )}
                    </div>
                 )}
 
