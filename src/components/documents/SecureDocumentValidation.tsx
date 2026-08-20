@@ -74,6 +74,7 @@ interface AnalyzedDocument {
   issuingAuthority: string;
   fileData?: string;
   fileType?: string;
+  isTooLarge?: boolean;
   uploaderName?: string;
   uploaderRole?: string;
   uploaderEmail?: string;
@@ -116,6 +117,7 @@ export function SecureDocumentValidation({ currentUser }: SecureDocumentValidati
           issuingAuthority: d.issuing_authority,
           fileData: d.file_data,
           fileType: d.file_type,
+          isTooLarge: d.is_too_large,
           uploaderName: d.uploader_name,
           uploaderRole: d.uploader_role,
           uploaderEmail: d.uploader_email,
@@ -245,8 +247,15 @@ export function SecureDocumentValidation({ currentUser }: SecureDocumentValidati
 
           {/* Corpo do Viewer - Simulação de PDF (CSS para impedir seleção e download) */}
           <div className="flex-1 bg-[#525659] overflow-hidden flex flex-col items-center select-none relative">
-
-            {viewingDoc.fileData ? (
+            {viewingDoc.isTooLarge ? (
+              <div className="w-full h-full flex flex-col items-center justify-center bg-fbsb-surface-100 p-8 text-center">
+                 <ShieldAlert className="w-20 h-20 text-orange-500 mb-6 drop-shadow-[0_0_15px_rgba(249,115,22,0.5)]" />
+                 <h2 className="text-xl font-bold text-white font-serif mb-2">Arquivo Gigante Interceptado</h2>
+                 <p className="text-sm text-fbsb-text-secondary max-w-md mb-6 leading-relaxed">
+                   Para não causar congestionamento e lentidão na rede dos auditores, este arquivo (por ser muito grande) não teve seus bytes brutos transportados. Sua **trilha de auditoria ISO 9001 e status estão preservados**.
+                 </p>
+              </div>
+            ) : viewingDoc.fileData ? (
               viewingDoc.fileType?.startsWith('image/') ? (
                 <div className="w-full h-full flex items-center justify-center bg-[#2d3032] overflow-auto p-4">
                    <img src={blobUrl || viewingDoc.fileData} alt="Documento Visualizado" className="max-w-full max-h-full object-contain drop-shadow-2xl" />

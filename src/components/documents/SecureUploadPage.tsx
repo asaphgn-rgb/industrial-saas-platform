@@ -239,6 +239,10 @@ export function SecureUploadPage({ onUploadComplete, currentUser }: SecureUpload
              resolutionAction = 'Acessar o portal do SNCR (Sistema Nacional de Cadastro Rural) via gov.br, gerar o boleto da taxa de serviço cadastral de 2026, efetuar o pagamento e emitir o CCIR atualizado. O sistema confirmará a compensação em até 48h úteis.';
          }
 
+         // Limitador de Payload: Impede travamento por limite JSON do PostgREST.
+         // Se a string base64 for maior que 1.5MB, descartamos a string e mandamos apenas um aviso para o visualizador (mantendo a metadado rastreável da ISO 9001).
+         const isTooLarge = pf.fileData && pf.fileData.length > 1500000;
+
          return {
            id: pf.id,
            tenant_id: 'tenant-industrial-demo-uuid',
@@ -249,30 +253,41 @@ export function SecureUploadPage({ onUploadComplete, currentUser }: SecureUpload
            issuing_authority: 'Autoridade Reguladora Virtual',
            regulatory_analysis: pf.consultativeNote,
            resolution_action: resolutionAction,
-           file_data: pf.fileData,
+           file_data: isTooLarge ? null : pf.fileData, // Evita travamento (Timeout ou 413 Payload Too Large)
            file_type: pf.fileType,
+           is_too_large: isTooLarge,
            uploader_name: currentUser?.name || 'Usuário Não Identificado',
            uploader_role: currentUser?.role || 'Usuário do Sistema',
            uploader_email: currentUser?.email || 'N/A'
          };
       });
 
+      // API do Supabase tem timeout padrão que trava o Client se os blobs demorarem. Adicionando AbortController:
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 12000); // 12 Segundos Máximo
+
       const res = await (supabase as any).from('tenants').select('settings').eq('id', 'tenant-industrial-demo-uuid').single();
       const existingSettings = (res.data as any)?.settings || {};
       const existingDocs = existingSettings.b2b_documents || [];
-      const allDocs = [...cloudDocuments, ...existingDocs];
+
+      // Regra anti-duplicidade para re-envios acidentais e manter cofre leve:
+      const newIds = new Set(cloudDocuments.map(d => d.id));
+      const filteredExisting = existingDocs.filter((d: any) => !newIds.has(d.id));
+      const allDocs = [...cloudDocuments, ...filteredExisting];
 
       const { error } = await (supabase as any).from('tenants').update({
         settings: { ...existingSettings, b2b_documents: allDocs }
-      }).eq('id', 'tenant-industrial-demo-uuid');
+      }).eq('id', 'tenant-industrial-demo-uuid').abortSignal(controller.signal);
+
+      clearTimeout(timeoutId);
 
       if (error) {
-        throw new Error("Falha na comunicação com o cofre em nuvem: " + error.message);
+        throw new Error(error.message);
       }
 
       setUploadStatus({
         success: true,
-        message: "Todos os documentos foram encriptados e classificados com sucesso no cofre da nuvem.",
+        message: "O lote foi encriptado e sincronizado com o cofre de nuvem.",
         uploadedCount
       });
 
@@ -282,12 +297,18 @@ export function SecureUploadPage({ onUploadComplete, currentUser }: SecureUpload
       return;
 
     } catch (err: any) {
-      console.error(err);
+      console.error("Falha no Lote:", err);
+      let errorMsg = err.message || 'Falha no armazenamento seguro.';
+
+      if (err.name === 'AbortError') {
+         errorMsg = "Tempo esgotado (Timeout). A internet ou o tamanho do arquivo impediu a conclusão em tempo hábil. Reduza o volume do lote e tente novamente.";
+      }
+
       setUploadStatus({
         success: false,
-        message: 'Falha durante a operação em lote.',
-        error: err.message || 'Falha no armazenamento seguro.',
-        uploadedCount
+        message: 'Atenção: Houve falha na sincronização na Nuvem (Processamento Interrompido).',
+        error: errorMsg,
+        uploadedCount: 0
       });
     } finally {
       setIsUploading(false);
