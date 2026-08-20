@@ -260,7 +260,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
         </div>
       </div>
 
-      <div className="flex-1 p-4 md:p-6 overflow-y-auto space-y-4 md:space-y-6 bg-[#0F1219] bg-opacity-50">
+      <div className="flex-1 p-4 md:p-6 overflow-y-auto overflow-x-hidden space-y-4 md:space-y-6 bg-[#0F1219] bg-opacity-50">
         <div className="text-center my-6">
           <span className="text-[10px] uppercase font-bold tracking-widest bg-fbsb-cyan text-fbsb-text-primary px-4 py-2 rounded-full shadow-sm">
             Canal monitorado por política restrita de isolamento de dados
@@ -286,7 +286,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
                      <span className="text-xs font-bold text-fbsb-text-secondary uppercase tracking-wider">{msg.sender_role || 'Parte Autorizada'}</span>
                   </div>
                 )}
-                <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">{msg.content}</p>
+                <p className="text-sm leading-relaxed whitespace-pre-wrap break-all">{msg.content}</p>
 
                 {msg.attachment_url && msg.attachment_type === 'image' && (
                    <div className="mt-3 relative rounded-lg overflow-hidden border border-fbsb-border/30">
