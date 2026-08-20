@@ -59,18 +59,7 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
         <div className="hidden md:flex flex-col justify-between p-12 bg-gradient-to-br from-fbsb-primary to-slate-900 relative border-r border-white/10">
            
               <div className="flex items-center space-x-3 mb-8">
-                 <div className="relative w-16 h-16">
-                    {/* Escudo + Documento (Lucide Composite) */}
-                    <svg viewBox="0 0 24 24" className="w-16 h-16" fill="none" stroke="currentColor" strokeWidth="1.5">
-                       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" className="text-[#041f4a]" />
-                       <path d="M9 12h6m-6 4h6m-4-8h4" className="text-[#006eb8]" />
-                       {/* Arrow overlay */}
-                       <path d="M4 14l8-4 8 4" className="text-[#00b0c7]" strokeWidth="2.5" />
-                    </svg>
-                 </div>
-                 <h1 className="text-4xl font-bold font-sans text-white tracking-tighter">
-                   FLECHA <span className="text-[#00b0c7]">BSB</span>
-                 </h1>
+                 <img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-16 w-auto object-contain" />
               </div>
 
               <p className="text-fbsb-text-secondary mt-4 text-sm leading-relaxed max-w-sm">

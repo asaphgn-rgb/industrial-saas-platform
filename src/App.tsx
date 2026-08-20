@@ -24,6 +24,7 @@ import { KanbanBoard } from './components/kanban/KanbanBoard';
 import { SecureChat } from './components/secure-chat/SecureChat';
 import { SecureDocumentValidation } from './components/documents/SecureDocumentValidation';
 import { SecureLogin } from './components/auth/SecureLogin';
+import { SecureAboutPage } from './components/documents/SecureAboutPage';
 
 type TabType = 'dashboard' | 'qms' | 'mes' | 'documents' | 'upload_secure' | 'pipeline_secure' | 'chat_secure' | 'validation_secure';
 
@@ -63,13 +64,9 @@ export default function App() {
             </svg>
           </button>
           <div className="flex items-center">
-       <svg viewBox="0 0 24 24" className="w-8 h-8 mr-2" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" className="text-fbsb-text-primary" />
-          <path d="M4 14l8-4 8 4" className="text-fbsb-cyan" strokeWidth="3" />
-       </svg>
-   </div>
-          <div>
-            <h1 className="text-xl font-bold tracking-tight text-fbsb-text-primary">FLECHA <span className="font-bold text-[#00b0c7]">BSB</span></h1>
+             <img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-10 w-auto object-contain mr-4" />
+          </div>
+          <div className="hidden sm:block">
             <p className="text-[11px] uppercase tracking-widest text-fbsb-text-secondary font-semibold mt-0.5">Ambiente Altamente Restrito</p>
           </div>
         </div>
@@ -169,7 +166,7 @@ export default function App() {
                 }`}
               >
                 <LayoutDashboard className={`w-4 h-4 ${activeTab === 'pipeline_secure' ? 'text-fbsb-cyan' : 'text-fbsb-text-secondary'}`} />
-                <span className="tracking-wide">Pipeline Estratégico</span>
+                <span className="tracking-wide">Sobre a FLECHA BSB</span>
               </button>
 
               <button
@@ -216,11 +213,8 @@ export default function App() {
         {/* Content Area */}
         <main className="flex-1 overflow-y-auto bg-fbsb-bg-main relative">
           {/* Módulos Novos - Ambiente Secreto */}
-          {activeTab === 'pipeline_secure' && (
-            <div className="absolute inset-0">
-               <KanbanBoard boardId={demoBoardId} />
-            </div>
-          )}
+          {activeTab === 'pipeline_secure' && (<div className="absolute inset-0 bg-fbsb-bg-main overflow-y-auto"><SecureAboutPage /></div>)}
+
 
           {activeTab === 'upload_secure' && (
             <div className="p-8 md:p-12 max-w-7xl mx-auto h-full">
