@@ -215,51 +215,51 @@ export default function App() {
             <div className="space-y-1.5">
               <button
                 onClick={() => { setActiveTab('pipeline_secure'); setIsMobileMenuOpen(false); }}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm transition-all duration-300 ${
                   activeTab === 'pipeline_secure'
-                    ? 'bg-fbsb-surface-100 text-fbsb-text-primary shadow-premium border border-white/5'
-                    : 'text-fbsb-text-secondary hover:bg-fbsb-surface-200 hover:text-fbsb-text-primary'
+                    ? 'bg-fbsb-surface-100 text-white font-bold shadow-glow-cyan border border-fbsb-cyan/30'
+                    : 'text-fbsb-text-primary font-medium hover:bg-fbsb-surface-200 hover:text-white'
                 }`}
               >
-                <LayoutDashboard className={`w-4 h-4 ${activeTab === 'pipeline_secure' ? 'text-fbsb-cyan' : 'text-fbsb-text-secondary'}`} />
+                <LayoutDashboard className={`w-5 h-5 ${activeTab === 'pipeline_secure' ? 'text-fbsb-cyan drop-shadow-[0_0_8px_rgba(0,212,255,0.8)]' : 'text-fbsb-primary-light'}`} />
                 <span className="tracking-wide">Sobre a FLECHA BSB</span>
               </button>
 
               <button
                 onClick={() => { setActiveTab('upload_secure'); setIsMobileMenuOpen(false); }}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm transition-all duration-300 ${
                   activeTab === 'upload_secure'
-                    ? 'bg-fbsb-surface-100 text-fbsb-text-primary shadow-premium border border-white/5'
-                    : 'text-fbsb-text-secondary hover:bg-fbsb-surface-200 hover:text-fbsb-text-primary'
+                    ? 'bg-fbsb-surface-100 text-white font-bold shadow-glow-cyan border border-fbsb-cyan/30'
+                    : 'text-fbsb-text-primary font-medium hover:bg-fbsb-surface-200 hover:text-white'
                 }`}
               >
-                <UploadCloud className={`w-4 h-4 ${activeTab === 'upload_secure' ? 'text-fbsb-cyan' : 'text-fbsb-text-secondary'}`} />
+                <UploadCloud className={`w-5 h-5 ${activeTab === 'upload_secure' ? 'text-fbsb-cyan drop-shadow-[0_0_8px_rgba(0,212,255,0.8)]' : 'text-fbsb-primary-light'}`} />
                 <span className="tracking-wide">Dossiê Documental</span>
               </button>
 
               <button
                 onClick={() => { setActiveTab('validation_secure'); setIsMobileMenuOpen(false); }}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm transition-all duration-300 ${
                   activeTab === 'validation_secure'
-                    ? 'bg-fbsb-surface-100 text-fbsb-text-primary shadow-premium border border-white/5'
-                    : 'text-fbsb-text-secondary hover:bg-fbsb-surface-200 hover:text-fbsb-text-primary'
+                    ? 'bg-fbsb-surface-100 text-white font-bold shadow-glow-cyan border border-fbsb-cyan/30'
+                    : 'text-fbsb-text-primary font-medium hover:bg-fbsb-surface-200 hover:text-white'
                 }`}
               >
-                <CheckCircle2 className={`w-4 h-4 ${activeTab === 'validation_secure' ? 'text-fbsb-cyan' : 'text-fbsb-text-secondary'}`} />
+                <CheckCircle2 className={`w-5 h-5 ${activeTab === 'validation_secure' ? 'text-fbsb-cyan drop-shadow-[0_0_8px_rgba(0,212,255,0.8)]' : 'text-fbsb-primary-light'}`} />
                 <span className="tracking-wide">Validação & Aceite</span>
               </button>
 
               <button
                 onClick={() => { setActiveTab('chat_secure'); setIsMobileMenuOpen(false); }}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm transition-all duration-300 ${
                   activeTab === 'chat_secure'
-                    ? 'bg-fbsb-surface-100 text-fbsb-text-primary shadow-premium border border-white/5'
-                    : 'text-fbsb-text-secondary hover:bg-fbsb-surface-200 hover:text-fbsb-text-primary'
+                    ? 'bg-fbsb-surface-100 text-white font-bold shadow-glow-cyan border border-fbsb-cyan/30'
+                    : 'text-fbsb-text-primary font-medium hover:bg-fbsb-surface-200 hover:text-white'
                 }`}
               >
-                <MessageSquareLock className={`w-4 h-4 ${activeTab === 'chat_secure' ? 'text-fbsb-cyan' : 'text-fbsb-text-secondary'}`} />
+                <MessageSquareLock className={`w-5 h-5 ${activeTab === 'chat_secure' ? 'text-fbsb-cyan drop-shadow-[0_0_8px_rgba(0,212,255,0.8)]' : 'text-fbsb-primary-light'}`} />
                 <span className="flex-1 text-left tracking-wide">Canais Criptografados</span>
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${activeTab === 'chat_secure' ? 'bg-fbsb-surface-100 text-fbsb-text-primary' : 'bg-fbsb-cyan text-fbsb-text-primary'}`}>3</span>
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${activeTab === 'chat_secure' ? 'bg-fbsb-surface-100 text-fbsb-text-primary border border-fbsb-border' : 'bg-fbsb-cyan text-[#03090F]'}`}>3</span>
               </button>
             </div>
           </div>
