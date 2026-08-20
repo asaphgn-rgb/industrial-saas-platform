@@ -18,6 +18,46 @@ import {
   FileBadge
 } from 'lucide-react';
 
+// --- Utilitário IndexedDB para suportar dezenas de MegaBytes ---
+const vaultDB = {
+  dbName: 'B2B_Vault_DB',
+  storeName: 'documents',
+  async init(): Promise<IDBDatabase> {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open(this.dbName, 1);
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => resolve(request.result);
+      request.onupgradeneeded = (e: any) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains(this.storeName)) {
+          db.createObjectStore(this.storeName);
+        }
+      };
+    });
+  },
+  async set(key: string, value: any): Promise<void> {
+    const db = await this.init();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(this.storeName, 'readwrite');
+      const store = transaction.objectStore(this.storeName);
+      const request = store.put(value, key);
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+    });
+  },
+  async get(key: string): Promise<any> {
+    const db = await this.init();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(this.storeName, 'readonly');
+      const store = transaction.objectStore(this.storeName);
+      const request = store.get(key);
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+  }
+};
+
+
 interface AnalyzedDocument {
   id: string;
   title: string;
@@ -44,14 +84,15 @@ export function SecureDocumentValidation() {
 
   // Buscar os documentos fictícios no LocalStorage quando montar
   useEffect(() => {
-    const savedMock = localStorage.getItem('B2B_MOCK_VAULT');
-    if (savedMock) {
-       try {
-         const parsed = JSON.parse(savedMock);
-         setMockDocuments(parsed);
-         if (parsed.length > 0) setExpandedDocId(parsed[0].id);
-       } catch (e) {}
-    }
+    vaultDB.get('B2B_MOCK_VAULT').then((savedMock: any) => {
+      if (savedMock) {
+        try {
+          const parsed = typeof savedMock === 'string' ? JSON.parse(savedMock) : savedMock;
+          setMockDocuments(parsed);
+          if (parsed.length > 0) setExpandedDocId(parsed[0].id);
+        } catch (e) {}
+      }
+    });
   }, []);
 
   // Lógica de ícones por categoria
