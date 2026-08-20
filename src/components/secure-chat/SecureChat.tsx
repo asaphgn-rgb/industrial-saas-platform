@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Send, Paperclip, ShieldAlert, Lock, User, FileText, CheckCheck } from 'lucide-react';
+import { Send, Paperclip, ShieldAlert, Lock, User, FileText, CheckCheck, Mic, Video, Camera, Image as ImageIcon } from 'lucide-react';
 import { SafeAny } from '../../types/supabase-override';
 import { deriveKey, encryptE2E, decryptE2E } from '../../lib/crypto';
 
@@ -10,6 +10,8 @@ interface Message {
   content: string;
   created_at: string;
   attachment_url?: string;
+  attachment_type?: 'image' | 'pdf' | 'audio';
+  audio_data?: string;
   is_read: boolean;
   sender_role?: string;
   sender_name?: string;
@@ -28,6 +30,12 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
   const [loading, setLoading] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [cryptoKey, setCryptoKey] = useState<CryptoKey | null>(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const mediaRecorderRef = useRef<any>(null);
+  const audioChunksRef = useRef<any[]>([]);
+  const [isVideoActive, setIsVideoActive] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [securityBlur, setSecurityBlur] = useState(false);
 
   const fetchMessages = async () => {
     try {
@@ -46,9 +54,28 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
     } catch (e) { }
   };
 
+  useEffect(() => { fetchMessages(); }, [roomId]);
+
   useEffect(() => {
-    fetchMessages();
-  }, [roomId]);
+    const handleBlur = () => setSecurityBlur(true);
+    const handleFocus = () => setSecurityBlur(false);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'PrintScreen' || (e.ctrlKey && e.key === 'p') || (e.metaKey && e.shiftKey && e.key === '4')) {
+        e.preventDefault();
+        setSecurityBlur(true);
+        setTimeout(() => setSecurityBlur(false), 3000);
+      }
+    };
+    window.addEventListener('blur', handleBlur);
+    window.addEventListener('focus', handleFocus);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('blur', handleBlur);
+      window.removeEventListener('focus', handleFocus);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
 
   useEffect(() => {
     // Listener para pegar mensagens de outras abas ou usuários que acabaram de logar
@@ -65,6 +92,62 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+      mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        const reader = new FileReader();
+        reader.onloadend = () => { sendAudioMessage(reader.result as string); };
+        reader.readAsDataURL(audioBlob);
+        stream.getTracks().forEach(t => t.stop());
+      };
+      mediaRecorder.start();
+      setIsRecording(true);
+    } catch (err) { alert("Microfone bloqueado pelo sistema."); }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const sendAudioMessage = async (base64Audio: string) => {
+    if (!cryptoKey) return;
+    const cipherB64 = await encryptE2E("Mensagem de Voz", cryptoKey);
+    const decrypted = await decryptE2E(cipherB64, cryptoKey);
+    const newMsg: Message = {
+      id: Math.random().toString(), sender_id: currentUserId, content: decrypted, created_at: new Date().toISOString(),
+      is_read: false, sender_role: currentUserRole, sender_name: currentUserName, audio_data: base64Audio, attachment_type: 'audio'
+    };
+    setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !cryptoKey) return;
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const base64Data = reader.result as string;
+      const type = file.type.startsWith('image/') ? 'image' : 'pdf';
+      const cipherB64 = await encryptE2E("Arquivo Anexado", cryptoKey);
+      const decrypted = await decryptE2E(cipherB64, cryptoKey);
+      const newMsg: Message = {
+        id: Math.random().toString(), sender_id: currentUserId, content: decrypted, created_at: new Date().toISOString(),
+        is_read: false, sender_role: currentUserRole, sender_name: currentUserName, attachment_url: base64Data, attachment_type: type
+      };
+      setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
