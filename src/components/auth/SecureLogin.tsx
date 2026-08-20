@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ShieldCheck, Lock, Fingerprint, Eye, EyeOff, UserSquare2, CheckCircle2 } from 'lucide-react';
+import { BiometricButton } from './BiometricButton';
 
 interface SecureLoginProps {
   onLogin: (user: any) => void;
@@ -141,6 +142,7 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
                </div>
             </div>
 
+            
             <button
               type="submit"
               disabled={isAuthenticating}
@@ -158,6 +160,26 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
                 </>
               )}
             </button>
+            
+            <div className="relative mt-6 mb-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-fbsb-border"></div>
+              </div>
+              <div className="relative flex justify-center text-xs">
+                <span className="bg-fbsb-surface-100 px-2 text-fbsb-text-secondary uppercase tracking-widest font-bold">Ou Acesso Rápido</span>
+              </div>
+            </div>
+            
+            <BiometricButton 
+              email={email} 
+              onSuccess={() => {
+                if(!email) return;
+                const match = validCredentials[email.toLowerCase()];
+                if(match) onLogin(match.user);
+                else setError('E-mail não cadastrado para biometria.');
+              }} 
+            />
+
           </form>
 
           {/* Dicas de Teste */}

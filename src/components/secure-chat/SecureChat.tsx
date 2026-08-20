@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Send, Paperclip, ShieldAlert, Lock, User, FileText, CheckCheck, Mic, Video, Camera, Image as ImageIcon } from 'lucide-react';
+import { Send, Paperclip, ShieldAlert, Lock, User, FileText, CheckCheck, Mic, Video, VideoOff, Camera, Image as ImageIcon } from 'lucide-react';
 import { SafeAny } from '../../types/supabase-override';
 import { deriveKey, encryptE2E, decryptE2E } from '../../lib/crypto';
 
@@ -209,11 +209,41 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
             <p className="text-[11px] text-fbsb-text-secondary uppercase tracking-widest mt-0.5">Comunicação Protegida por Protocolo E2E</p>
           </div>
         </div>
-        <div className="hidden md:flex items-center px-3 py-1.5 bg-fbsb-surface-200 rounded-lg border border-fbsb-border">
-           <ShieldAlert className="w-4 h-4 text-fbsb-cyan mr-2" />
-           <span className="text-[10px] uppercase font-bold text-fbsb-bg-deep tracking-wider">Nível Máximo de Sigilo</span>
+        <div className="flex items-center space-x-3">
+          <button onClick={() => setIsVideoActive(!isVideoActive)} className="flex items-center px-3 py-1.5 bg-fbsb-surface-200 hover:bg-fbsb-surface-300 rounded-lg border border-fbsb-cyan transition-colors text-fbsb-cyan">
+            <Video className="w-4 h-4 mr-2" />
+            <span className="text-[10px] uppercase font-bold tracking-wider hidden md:inline">Iniciar Reunião</span>
+          </button>
+          <div className="hidden md:flex items-center px-3 py-1.5 bg-fbsb-surface-200 rounded-lg border border-fbsb-border">
+             <ShieldAlert className="w-4 h-4 text-fbsb-cyan mr-2" />
+             <span className="text-[10px] uppercase font-bold text-fbsb-text-secondary tracking-wider">Alto Sigilo</span>
+          </div>
         </div>
       </div>
+
+      {isVideoActive && (
+        <div className="absolute top-16 left-0 right-0 h-64 bg-fbsb-surface-200 border-b border-fbsb-border z-20 flex flex-col">
+          <div className="flex-1 p-4 grid grid-cols-2 gap-4">
+             <div className="bg-slate-800 rounded-xl overflow-hidden relative border border-fbsb-border shadow-glow-cyan flex items-center justify-center">
+                {/* Simulação de feed da câmera protegida */}
+                <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>
+                <Camera className="w-10 h-10 text-fbsb-cyan/50 absolute" />
+                <span className="absolute bottom-3 left-3 text-[10px] font-bold bg-fbsb-surface-100/80 px-2 py-1 rounded text-white">{currentUserName} (Você)</span>
+                <span className="absolute top-3 right-3 text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 px-2 py-0.5 rounded flex items-center"><Lock className="w-3 h-3 mr-1"/> E2E</span>
+             </div>
+             <div className="bg-slate-800 rounded-xl overflow-hidden relative border border-fbsb-border flex items-center justify-center">
+                <div className="w-16 h-16 rounded-full bg-fbsb-surface-100 flex items-center justify-center text-xl text-fbsb-text-secondary border-2 border-fbsb-border font-bold">...</div>
+                <span className="absolute bottom-3 left-3 text-[10px] font-bold bg-fbsb-surface-100/80 px-2 py-1 rounded text-white tracking-widest">Aguardando...</span>
+             </div>
+          </div>
+          <div className="h-12 bg-fbsb-bg-main flex items-center justify-center space-x-4">
+             <button className="p-2 bg-fbsb-surface-100 rounded-full text-white hover:bg-fbsb-surface-200"><Mic className="w-4 h-4" /></button>
+             <button className="p-2 bg-fbsb-surface-100 rounded-full text-white hover:bg-fbsb-surface-200"><Video className="w-4 h-4" /></button>
+             <button onClick={() => setIsVideoActive(false)} className="p-2 bg-red-500/20 text-red-500 rounded-full hover:bg-red-500/30 border border-red-500/50"><VideoOff className="w-4 h-4" /></button>
+          </div>
+        </div>
+      )}
+
 
       {/* Área de Mensagens */}
       <div className="flex-1 p-4 md:p-6 overflow-y-auto space-y-4 md:space-y-6 bg-[#f4f2ef] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-opacity-50">
