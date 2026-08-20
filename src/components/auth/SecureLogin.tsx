@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import LogoUrl from '/logo-flecha.png';
 import { ShieldCheck, Lock, Fingerprint, Eye, EyeOff, UserSquare2, CheckCircle2 } from 'lucide-react';
+import { supabase } from '../../lib/supabase';
 
 interface SecureLoginProps {
   onLogin: (user: any) => void;
@@ -34,32 +35,35 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
 
     setIsAuthenticating(true);
 
-    setTimeout(() => {
+    setTimeout(async () => {
       const match = validCredentials[email.toLowerCase()];
       if (match && match.password === password) {
-         // Verifica Governança de RBAC via CEO (se existir mock no navegador)
+         // Verifica Governança de RBAC via CEO diretamente no banco de dados
          try {
-           const savedAccess = localStorage.getItem('B2B_ACCESS_CONTROL');
-           if (savedAccess) {
-              const matrix = JSON.parse(savedAccess);
-              const roomAccess = matrix['REGULARIZAÇÃO'];
-              if (roomAccess && roomAccess[email.toLowerCase()] === false) {
-                 setError('Seu acesso a esta sala foi explicitamente revogado pela Direção.');
-                 setIsAuthenticating(false);
-                 return;
-              }
+           const { data, error } = await supabase
+             .from('vdr_access_control')
+             .select('is_revoked')
+             .eq('tenant_id', 'tenant-industrial-demo-uuid')
+             .eq('data_room_name', 'REGULARIZAÇÃO')
+             .eq('user_email', email.toLowerCase())
+             .maybeSingle();
+
+           if (data && data.is_revoked === true) {
+              setError('Seu acesso a esta sala foi explicitamente revogado pela Direção.');
+              setIsAuthenticating(false);
+              return;
            }
          } catch (e) {
-           console.error("Erro ao validar RBAC", e);
+           console.error("Erro ao validar RBAC Cloud", e);
          }
 
-         // O usuário logou com as credenciais oficiais. Colocando na pasta "REGULARIZAÇÃO"
+         // O usuário logou com as credenciais oficiais e não está bloqueado. Colocando na pasta "REGULARIZAÇÃO"
          onLogin({ ...match.user, currentFolder: 'REGULARIZAÇÃO' });
       } else {
         setError('Credenciais inválidas ou acesso revogado.');
         setIsAuthenticating(false);
       }
-    }, 1500);
+    }, 500); // Timeout reduzido já que o banco vai levar alguns ms
   };
 
   return (

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ShieldAlert, Users, FolderLock, ToggleRight, ToggleLeft, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { supabase } from '../../lib/supabase';
 
 interface CeoAccessControlProps {
   currentTenantId: string;
@@ -18,45 +19,84 @@ export function CeoAccessControl({ currentTenantId }: CeoAccessControlProps) {
     { email: 'operacional@flechabsb.com', name: 'Operações', role: 'Campo & Técnico', canBeBlocked: true }
   ];
 
-  // Estado que gerencia quem tem acesso a qual pasta (Mock local do RBAC)
+  // Estado que gerencia quem tem acesso a qual pasta (Banco DB Real RBAC)
   const [accessMatrix, setAccessMatrix] = useState<Record<string, Record<string, boolean>>>({});
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Carrega o RBAC do localStorage ou inicia com todos liberados
-    const saved = localStorage.getItem('B2B_ACCESS_CONTROL');
-    if (saved) {
-      setAccessMatrix(JSON.parse(saved));
-    } else {
-      const initialMatrix: Record<string, Record<string, boolean>> = {};
-      dataRooms.forEach(room => {
-        initialMatrix[room] = {};
-        baseUsers.forEach(u => {
-          initialMatrix[room][u.email] = true; // Por padrão, libera para todos
-        });
-      });
-      setAccessMatrix(initialMatrix);
-      localStorage.setItem('B2B_ACCESS_CONTROL', JSON.stringify(initialMatrix));
-    }
-  }, []);
+    const fetchAccessControl = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('vdr_access_control')
+          .select('data_room_name, user_email, is_revoked')
+          .eq('tenant_id', currentTenantId);
 
-  const toggleAccess = (room: string, email: string) => {
+        const newMatrix: Record<string, Record<string, boolean>> = {};
+
+        // Inicializa com todos liberados como fallback seguro
+        dataRooms.forEach(room => {
+          newMatrix[room] = {};
+          baseUsers.forEach(u => {
+            newMatrix[room][u.email] = true;
+          });
+        });
+
+        // Aplica revogações encontradas no banco de dados real
+        if (data && !error) {
+          data.forEach((row: any) => {
+            if (newMatrix[row.data_room_name] && newMatrix[row.data_room_name][row.user_email] !== undefined) {
+               newMatrix[row.data_room_name][row.user_email] = !row.is_revoked;
+            }
+          });
+        }
+        setAccessMatrix(newMatrix);
+      } catch (err) {
+        console.error("Falha ao buscar matriz RBAC no DB:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchAccessControl();
+  }, [currentTenantId]);
+
+  const toggleAccess = async (room: string, email: string) => {
     // Evita o CEO de bloquear a si mesmo
     if (email === 'ceo@flechabsb.com') {
       alert("Aviso: A credencial primária do CEO é inalienável e não pode ser revogada.");
       return;
     }
 
-    setAccessMatrix(prev => {
-      const updated = {
-        ...prev,
-        [room]: {
-          ...prev[room],
-          [email]: !prev[room][email]
-        }
-      };
-      localStorage.setItem('B2B_ACCESS_CONTROL', JSON.stringify(updated));
-      return updated;
-    });
+    const currentAccess = accessMatrix[room][email];
+    const newRevokedState = currentAccess; // Se tinha acesso, vamos revogar (true). Se não tinha, vamos revogar=false.
+
+    // Otimista Update UI
+    setAccessMatrix(prev => ({
+      ...prev,
+      [room]: {
+        ...prev[room],
+        [email]: !currentAccess
+      }
+    }));
+
+    // Persiste no banco Supabase
+    try {
+      const { error } = await supabase
+        .from('vdr_access_control')
+        .upsert({
+          tenant_id: currentTenantId,
+          data_room_name: room,
+          user_email: email,
+          is_revoked: newRevokedState,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'tenant_id,data_room_name,user_email' });
+
+      if (error) throw error;
+    } catch (err) {
+      console.error("Falha ao salvar restrição no BD", err);
+      alert("Erro ao aplicar bloqueio persistente de RBAC na nuvem.");
+      // Reverte o optimistic update em caso de falha do DB
+      setAccessMatrix(prev => ({ ...prev, [room]: { ...prev[room], [email]: currentAccess } }));
+    }
   };
 
   return (
