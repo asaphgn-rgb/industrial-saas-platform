@@ -60,8 +60,8 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
         {/* Painel Esquerdo: Marketing e Branding */}
         <div className="hidden md:flex flex-col justify-between p-12 bg-[#0A0A0A] relative border-r border-white/5">
            
-              <div className="flex items-center mb-8 bg-white/95 px-6 py-4 rounded-2xl w-fit shadow-md">
-                 <img src={LogoUrl} alt="FLECHA BSB Logo" className="h-28 w-auto object-contain" />
+              <div className="flex items-center mb-8 bg-white px-6 py-4 rounded-3xl w-fit shadow-lg">
+                 <img src={LogoUrl} alt="FLECHA BSB Logo" className="h-28 w-auto object-contain mix-blend-multiply" />
               </div>
 
               <p className="text-[#A3A3A3] mt-4 text-sm leading-relaxed max-w-sm">
