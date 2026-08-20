@@ -13,56 +13,51 @@ export default {
       colors: {
         fbsb: {
           bg: {
-            deep: '#F1F5F9', // Slate 100 - Fundo mais profundo (Light)
-            main: '#F8FAFC', // Slate 50 - Fundo principal (Light)
+            deep: '#0F1219', // Fundo extremo
+            main: '#131720', // Fundo principal
           },
           surface: {
-            100: '#FFFFFF', // Fundo de cartões (Branco puro)
-            200: '#F1F5F9', // Fundo secundário (Slate 100)
-            300: '#E2E8F0', // Hover states (Slate 200)
+            100: '#1A1F2C', // Cartões
+            200: '#232938', // Hover e modais
+            300: '#2E364A', // Elementos destacados
           },
           border: {
-            DEFAULT: '#E2E8F0', // Slate 200
-            soft: '#F1F5F9',
+            DEFAULT: '#2D3748',
+            soft: '#1E293B',
           },
           primary: {
-            DEFAULT: '#1E40AF', // Azul corporativo forte
-            light: '#3B82F6',
+            DEFAULT: '#3B82F6', // Azul neon suave
+            light: '#60A5FA',
           },
-          cyan: '#0891B2', // Cyan ajustado para modo claro
-          success: '#10B981', // Verde esmeralda limpo
-          ai: '#8B5CF6', 
-          purple: {
-            dark: '#4C1D95',
-          },
-          warning: '#F59E0B',
-          danger: '#EF4444',
+          cyan: '#2DD4BF', // Cyan neon do print
+          success: '#34D399', // Verde luminoso
+          ai: '#A78BFA', // Roxo neon
+          warning: '#FBBF24',
+          danger: '#F87171',
           text: {
-            primary: '#0F172A', // Slate 900 (Quase preto)
-            secondary: '#475569', // Slate 600 (Cinza médio)
-            muted: '#94A3B8', // Slate 400
+            primary: '#F8FAFC',
+            secondary: '#94A3B8',
+            muted: '#475569',
           }
         },
-        // Retrocompatibilidade
         elite: {
-          gold: '#0891B2',
-          navy: '#F8FAFC',
-          sand: '#475569',
-          paper: '#F1F5F9',
-          white: '#FFFFFF',
+          gold: '#2DD4BF',
+          navy: '#131720',
+          sand: '#94A3B8',
+          paper: '#0F1219',
+          white: '#1A1F2C',
         }
       },
       boxShadow: {
-        'premium': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
-        'premium-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-        'inner-gold': 'inset 0 0 0 1px rgba(8, 145, 178, 0.15)',
-        'glow-blue': '0 0 15px rgba(30, 64, 175, 0.15)',
-        'glow-cyan': '0 0 15px rgba(8, 145, 178, 0.15)',
-        'glow-purple': '0 0 15px rgba(139, 92, 246, 0.15)',
+        'premium': '0 10px 30px -10px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
+        'premium-hover': '0 20px 40px -10px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.1)',
+        'inner-gold': 'inset 0 1px 1px rgba(255, 255, 255, 0.1)',
+        'glow-blue': '0 0 20px rgba(59, 130, 246, 0.2)',
+        'glow-cyan': '0 0 20px rgba(45, 212, 191, 0.2)',
+        'neumorph': '5px 5px 15px rgba(0,0,0,0.5), -5px -5px 15px rgba(255,255,255,0.02)',
       },
       backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'glass-gradient': 'linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(248,250,252,0.9) 100%)',
+        'glass-gradient': 'linear-gradient(135deg, rgba(30,41,59,0.7) 0%, rgba(15,23,42,0.8) 100%)',
       }
     },
   },

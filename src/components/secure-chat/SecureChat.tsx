@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
-import { mqttRelay } from '../../lib/mqttSync';
+import { cloudRelay } from '../../lib/cloudSync';
 import { Send, Paperclip, ShieldAlert, Lock, User, FileText, CheckCheck, Mic, Video, VideoOff, Camera, Image as ImageIcon } from 'lucide-react';
 import { SafeAny } from '../../types/supabase-override';
 import { deriveKey, encryptE2E, decryptE2E } from '../../lib/crypto';
@@ -86,91 +86,38 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
   }, []);
 
   useEffect(() => {
-    // Sincronização Serverless Multi-Dispositivo (Garantia Tripla)
-
-    // 0. MQTT Relay P2P (Celular vs PC via Internet independente de Banco)
-    mqttRelay.connect(roomId, async (payload) => {
-      if (payload.sender_id === currentUserId) return;
-      try {
-        let decContent = payload.content;
-        if (payload.content && cryptoKey && payload.content.length > 50) {
-           try { decContent = await decryptE2E(payload.content, cryptoKey); } catch(e){}
-        }
-        const msgCloud = { ...payload, content: decContent };
-        setMessages(prev => {
-          const exists = prev.find(m => m.id === msgCloud.id);
-          if (exists) return prev;
-          const up = [...prev, msgCloud];
-          localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up));
-          return up;
-        });
-      } catch(e) {}
+    if (!cryptoKey) return;
+    
+    // Motor de Sincronização em Nuvem Absoluta (Bypass Vercel/Supabase config)
+    cloudRelay.connect(roomId, async (cloudMessages) => {
+        try {
+           const decMsgs = await Promise.all(cloudMessages.map(async (msg: any) => {
+              if (msg.content && msg.content.length > 50 && !msg.content.startsWith('http')) {
+                 try {
+                   return { ...msg, content: await decryptE2E(msg.content, cryptoKey) };
+                 } catch(e) { return msg; }
+              }
+              return msg;
+           }));
+           
+           setMessages(prev => {
+              // Se o cloud tiver mais mensagens (ou for diferente do local)
+              if (decMsgs.length > prev.length) {
+                 localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(decMsgs));
+                 return decMsgs;
+              }
+              return prev;
+           });
+        } catch(e) {}
     });
 
-    // 1. Polling (Banco de Dados Opcional)
-    const pollTimer = setInterval(async () => {
-       if (!cryptoKey) return;
-       try {
-         const { data, error } = await supabase
-           .from('b2b_secure_chat')
-           .select('*')
-           .eq('room_id', roomId)
-           .order('created_at', { ascending: true });
-
-         if (data && !error && data.length > 0) {
-            const decMsgs = await Promise.all(data.map(async (msg: any) => ({
-              ...msg,
-              content: await decryptE2E(msg.content, cryptoKey)
-            })));
-            setMessages(prev => {
-               if (prev.length === decMsgs.length) return prev;
-               localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(decMsgs));
-               return decMsgs as Message[];
-            });
-         } else {
-             const saved = localStorage.getItem('B2B_MOCK_CHAT_' + roomId);
-             if (saved) {
-                 const parsed = JSON.parse(saved);
-                 setMessages(prev => (parsed.length > prev.length ? parsed : prev));
-             }
-         }
-       } catch (e) {
-           const saved = localStorage.getItem('B2B_MOCK_CHAT_' + roomId);
-           if (saved) {
-               const parsed = JSON.parse(saved);
-               setMessages(prev => (parsed.length > prev.length ? parsed : prev));
-           }
-       }
-    }, 1500);
-
-    // 2. Broadcast Channel (P2P Nuvem Livre para Mobile vs Desktop)
-    const channel = supabase.channel('room_' + roomId)
-      .on('broadcast', { event: 'new_message' }, async (payload) => {
-          if (!cryptoKey) return;
-          const msgCloud = payload.payload;
-          if (msgCloud.sender_id === currentUserId) return;
-          try {
-            setMessages(prev => {
-              const exists = prev.find(m => m.id === msgCloud.id);
-              if (exists) return prev;
-              const up = [...prev, msgCloud];
-              localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up));
-              return up;
-            });
-          } catch(e) {}
-      })
-      .subscribe();
-
-    // 3. Destruir Rastros
     const wipeDataOnClose = () => {
        supabase.from('b2b_secure_chat').delete().eq('room_id', roomId).then(() => {});
     };
     window.addEventListener('beforeunload', wipeDataOnClose);
 
     return () => {
-      clearInterval(pollTimer);
-      mqttRelay.disconnect();
-      supabase.removeChannel(channel);
+      cloudRelay.disconnect();
       window.removeEventListener('beforeunload', wipeDataOnClose);
     };
   }, [roomId, cryptoKey]);
@@ -217,7 +164,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
     setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
 
     await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
-    mqttRelay.sendMessage({ ...newMsg, content: cipherB64 });
+    cloudRelay.pushState([...messages, { ...newMsg, content: cipherB64 }]);
 
     try {
       await supabase.from('b2b_secure_chat').insert({
@@ -244,7 +191,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
       setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
 
       await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
-      mqttRelay.sendMessage({ ...newMsg, content: cipherB64 });
+      cloudRelay.pushState([...messages, { ...newMsg, content: cipherB64 }]);
 
       try {
         await supabase.from('b2b_secure_chat').insert({
@@ -282,7 +229,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
     });
 
     await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
-    mqttRelay.sendMessage({ ...newMsg, content: cipherB64 });
+    cloudRelay.pushState([...messages, { ...newMsg, content: cipherB64 }]);
 
     try {
       await supabase.from('b2b_secure_chat').insert({
