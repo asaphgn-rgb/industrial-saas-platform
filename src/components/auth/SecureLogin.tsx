@@ -61,7 +61,7 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
            
               <div className="flex items-center mb-8">
                  
-<img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-24 w-auto object-contain drop-shadow-[0_0_15px_rgba(92,210,241,0.3)] mix-blend-multiply filter contrast-125 brightness-110" style={{ mixBlendMode: "multiply" }} />
+<div className="bg-white/95 p-3 rounded-2xl shadow-[0_0_20px_rgba(0,180,180,0.2)] border border-white/20"><img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-20 w-auto object-contain" /></div>
 
               </div>
 

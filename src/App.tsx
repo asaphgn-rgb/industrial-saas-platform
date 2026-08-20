@@ -118,7 +118,7 @@ export default function App() {
           </button>
           <div className="flex items-center">
              
-<img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-10 w-auto object-contain mr-4 mix-blend-multiply" style={{ mixBlendMode: "multiply" }} />
+<div className="bg-white/95 px-2.5 py-1 rounded-xl shadow-[0_0_10px_rgba(0,180,180,0.1)] border border-white/10 mr-4"><img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-8 w-auto object-contain" /></div>
 
           </div>
           <div className="hidden sm:block">
