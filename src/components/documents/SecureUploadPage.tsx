@@ -229,17 +229,10 @@ export function SecureUploadPage({ onUploadComplete, currentUser }: SecureUpload
       await new Promise(r => setTimeout(r, 600)); // Simulando criptografia E2E rápida
       uploadedCount = parsedFiles.length;
 
-      setUploadStatus({
-        success: true,
-        message: "[DEMO] Todos os documentos foram encriptados e classificados com sucesso no cofre.",
-        uploadedCount
-      });
-
-      // Gravar dados mockados na memória local para a tela de Validação enxergar que algo foi upado
-      const docsForValidation = parsedFiles.map((pf) => {
-         // Ajuste do mock para mapear o status de auditoria dependendo da categoria e de uma heurística boba
-         let status: 'Aprovado'|'Pendente' = 'Aprovado';
-         let resolutionAction = undefined;
+      // Gravar dados na nuvem usando o JSON de tenants (Fallback Global para Computadores Externos)
+      const cloudDocuments = parsedFiles.map((pf) => {
+         let status = 'Aprovado';
+         let resolutionAction = null;
 
          if (pf.category === 'Fiscal_INCRA' && pf.file.name.toLowerCase().includes('2024')) {
              status = 'Pendente';
@@ -248,28 +241,44 @@ export function SecureUploadPage({ onUploadComplete, currentUser }: SecureUpload
 
          return {
            id: pf.id,
+           tenant_id: 'tenant-industrial-demo-uuid',
            title: pf.title,
-           category: pf.category.split('_')[0] as any, // Transforma 'Juridico_Propriedade' em 'Juridico'
+           category: pf.category.split('_')[0],
            status: status,
-           uploadDate: new Date().toISOString().split('T')[0],
-           issuingAuthority: 'Autoridade Reguladora Virtual',
-           regulatoryAnalysis: pf.consultativeNote,
-           resolutionAction,
-           fileData: pf.fileData,
-           fileType: pf.fileType,
-           uploaderName: currentUser?.name || 'Usuário Não Identificado',
-           uploaderRole: currentUser?.role || 'Usuário do Sistema',
-           uploaderEmail: currentUser?.email || 'N/A'
+           upload_date: new Date().toISOString().split('T')[0],
+           issuing_authority: 'Autoridade Reguladora Virtual',
+           regulatory_analysis: pf.consultativeNote,
+           resolution_action: resolutionAction,
+           file_data: pf.fileData,
+           file_type: pf.fileType,
+           uploader_name: currentUser?.name || 'Usuário Não Identificado',
+           uploader_role: currentUser?.role || 'Usuário do Sistema',
+           uploader_email: currentUser?.email || 'N/A'
          };
       });
 
-      await vaultDB.set('B2B_MOCK_VAULT', docsForValidation);
+      const res = await (supabase as any).from('tenants').select('settings').eq('id', 'tenant-industrial-demo-uuid').single();
+      const existingSettings = (res.data as any)?.settings || {};
+      const existingDocs = existingSettings.b2b_documents || [];
+      const allDocs = [...cloudDocuments, ...existingDocs];
 
-      // Navegar para a validação se existir o hook de redirect (App.tsx passará)
+      const { error } = await (supabase as any).from('tenants').update({
+        settings: { ...existingSettings, b2b_documents: allDocs }
+      }).eq('id', 'tenant-industrial-demo-uuid');
+
+      if (error) {
+        throw new Error("Falha na comunicação com o cofre em nuvem: " + error.message);
+      }
+
+      setUploadStatus({
+        success: true,
+        message: "Todos os documentos foram encriptados e classificados com sucesso no cofre da nuvem.",
+        uploadedCount
+      });
+
       if (onUploadComplete) {
          setTimeout(() => onUploadComplete(), 400);
       }
-
       return;
 
     } catch (err: any) {

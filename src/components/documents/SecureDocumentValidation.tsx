@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { supabase } from '../../lib/supabase';
 import {
   ShieldCheck,
   AlertTriangle,
@@ -91,17 +92,41 @@ export function SecureDocumentValidation({ currentUser }: SecureDocumentValidati
   // Estado para visualização do PDF (modal)
   const [viewingDoc, setViewingDoc] = useState<AnalyzedDocument | null>(null);
 
-  // Buscar os documentos fictícios no LocalStorage quando montar
+  // Buscar os documentos na nuvem
   useEffect(() => {
-    vaultDB.get('B2B_MOCK_VAULT').then((savedMock: any) => {
-      if (savedMock) {
-        try {
-          const parsed = typeof savedMock === 'string' ? JSON.parse(savedMock) : savedMock;
-          setMockDocuments(parsed);
-          if (parsed.length > 0) setExpandedDocId(parsed[0].id);
-        } catch (e) {}
+    const fetchDocuments = async () => {
+      const { data, error } = await (supabase as any)
+        .from('tenants')
+        .select('settings')
+        .eq('id', 'tenant-industrial-demo-uuid')
+        .single();
+
+      if (data && !error && (data as any).settings) {
+        const settings = (data as any).settings;
+        const docs = settings.b2b_documents || [];
+
+        const parsed: AnalyzedDocument[] = docs.map((d: any) => ({
+          id: d.id,
+          title: d.title,
+          category: d.category,
+          status: d.status,
+          uploadDate: d.upload_date,
+          regulatoryAnalysis: d.regulatory_analysis,
+          resolutionAction: d.resolution_action,
+          issuingAuthority: d.issuing_authority,
+          fileData: d.file_data,
+          fileType: d.file_type,
+          uploaderName: d.uploader_name,
+          uploaderRole: d.uploader_role,
+          uploaderEmail: d.uploader_email,
+          deletionRequested: d.deletion_requested,
+        }));
+
+        setMockDocuments(parsed);
+        if (parsed.length > 0) setExpandedDocId(parsed[0].id);
       }
-    });
+    };
+    fetchDocuments();
   }, []);
 
   // Lógica de ícones por categoria
@@ -117,22 +142,43 @@ export function SecureDocumentValidation({ currentUser }: SecureDocumentValidati
 
   const handleDeleteDocument = async (id: string) => {
     const updatedDocs = mockDocuments.filter(doc => doc.id !== id);
-    await vaultDB.set('B2B_MOCK_VAULT', updatedDocs);
-    setMockDocuments(updatedDocs);
-    if (expandedDocId === id) setExpandedDocId(null);
+    const { data: tenantData } = await (supabase as any).from('tenants').select('settings').eq('id', 'tenant-industrial-demo-uuid').single();
+    const existingSettings = (tenantData as any)?.settings || {};
+    const { error } = await (supabase as any).from('tenants').update({ settings: { ...existingSettings, b2b_documents: updatedDocs } }).eq('id', 'tenant-industrial-demo-uuid');
+
+    if (!error) {
+      setMockDocuments(updatedDocs);
+      if (expandedDocId === id) setExpandedDocId(null);
+    } else {
+      alert('Erro ao excluir documento na nuvem.');
+    }
   };
 
   const handleRequestDeletion = async (id: string) => {
-    const updatedDocs = mockDocuments.map(doc => doc.id === id ? { ...doc, deletionRequested: true } : doc);
-    await vaultDB.set('B2B_MOCK_VAULT', updatedDocs);
-    setMockDocuments(updatedDocs);
-    alert('Solicitação de exclusão enviada para a Direção Executiva.');
+    const updatedDocs = mockDocuments.map(doc => doc.id === id ? { ...doc, deletionRequested: true, deletion_requested: true } : doc);
+    const { data: tenantData } = await (supabase as any).from('tenants').select('settings').eq('id', 'tenant-industrial-demo-uuid').single();
+    const existingSettings = (tenantData as any)?.settings || {};
+    const { error } = await (supabase as any).from('tenants').update({ settings: { ...existingSettings, b2b_documents: updatedDocs } }).eq('id', 'tenant-industrial-demo-uuid');
+
+    if (!error) {
+      setMockDocuments(updatedDocs as AnalyzedDocument[]);
+      alert('Solicitação de exclusão enviada para a Direção Executiva.');
+    } else {
+      alert('Erro ao solicitar exclusão na nuvem.');
+    }
   };
 
   const handleRejectDeletion = async (id: string) => {
-    const updatedDocs = mockDocuments.map(doc => doc.id === id ? { ...doc, deletionRequested: false } : doc);
-    await vaultDB.set('B2B_MOCK_VAULT', updatedDocs);
-    setMockDocuments(updatedDocs);
+    const updatedDocs = mockDocuments.map(doc => doc.id === id ? { ...doc, deletionRequested: false, deletion_requested: false } : doc);
+    const { data: tenantData } = await (supabase as any).from('tenants').select('settings').eq('id', 'tenant-industrial-demo-uuid').single();
+    const existingSettings = (tenantData as any)?.settings || {};
+    const { error } = await (supabase as any).from('tenants').update({ settings: { ...existingSettings, b2b_documents: updatedDocs } }).eq('id', 'tenant-industrial-demo-uuid');
+
+    if (!error) {
+      setMockDocuments(updatedDocs as AnalyzedDocument[]);
+    } else {
+      alert('Erro ao rejeitar exclusão na nuvem.');
+    }
   };
 
   const isCEO = currentUser?.initials === 'CEO';
@@ -265,14 +311,33 @@ export function SecureDocumentValidation({ currentUser }: SecureDocumentValidati
               Base de Dados Segura. Pareceres consultivos emitidos com base na matriz regulatória.
             </p>
           </div>
-          <div className="px-4 py-3 bg-fbsb-surface-200 rounded-lg border border-fbsb-border w-full md:w-auto">
-            <span className="text-[10px] font-bold text-fbsb-text-secondary uppercase tracking-widest block mb-1">Status Global do Dossiê</span>
-            {mockDocuments.length === 0 ? (
-              <span className="text-sm font-bold text-fbsb-text-secondary flex items-center">Cofre Vazio</span>
-            ) : hasCriticalIssues ? (
-              <span className="text-sm font-bold text-red-600 flex items-center"><AlertTriangle className="w-4 h-4 mr-2" /> Risco de Negociação</span>
-            ) : (
-              <span className="text-sm font-bold text-emerald-600 flex items-center"><CheckCircle2 className="w-4 h-4 mr-2" /> Apto para Aquisição</span>
+          <div className="px-4 py-3 bg-fbsb-surface-200 rounded-lg border border-fbsb-border w-full md:w-auto flex items-center space-x-4">
+            <div>
+              <span className="text-[10px] font-bold text-fbsb-text-secondary uppercase tracking-widest block mb-1">Status Global do Dossiê</span>
+              {mockDocuments.length === 0 ? (
+                <span className="text-sm font-bold text-fbsb-text-secondary flex items-center">Cofre Vazio</span>
+              ) : hasCriticalIssues ? (
+                <span className="text-sm font-bold text-red-600 flex items-center"><AlertTriangle className="w-4 h-4 mr-2" /> Risco de Negociação</span>
+              ) : (
+                <span className="text-sm font-bold text-emerald-600 flex items-center"><CheckCircle2 className="w-4 h-4 mr-2" /> Apto para Aquisição</span>
+              )}
+            </div>
+            {isCEO && mockDocuments.length > 0 && (
+              <button
+                onClick={async () => {
+                   if(window.confirm("Deseja apagar TODOS os documentos da Nuvem e esvaziar o cofre?")) {
+                      const { data: tenantData } = await (supabase as any).from('tenants').select('settings').eq('id', 'tenant-industrial-demo-uuid').single();
+                      const existingSettings = (tenantData as any)?.settings || {};
+                      await (supabase as any).from('tenants').update({ settings: { ...existingSettings, b2b_documents: [] } }).eq('id', 'tenant-industrial-demo-uuid');
+                      setMockDocuments([]);
+                      alert("Cofre esvaziado com sucesso!");
+                   }
+                }}
+                className="px-3 py-1.5 bg-red-500/20 text-red-500 border border-red-500/30 rounded text-xs font-bold uppercase hover:bg-red-500 hover:text-white transition-colors"
+                title="Função Especial de Limpeza"
+              >
+                Limpar Cofre
+              </button>
             )}
           </div>
         </div>

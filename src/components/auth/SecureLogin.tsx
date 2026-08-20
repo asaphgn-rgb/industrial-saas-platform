@@ -38,23 +38,27 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
     setTimeout(async () => {
       const match = validCredentials[email.toLowerCase()];
       if (match && match.password === password) {
-         // Verifica Governança de RBAC via CEO diretamente no banco de dados
+         // Verifica Governança de RBAC via CEO diretamente no banco de dados (tabela tenants existente)
          try {
-           const { data, error } = await supabase
-             .from('vdr_access_control')
-             .select('is_revoked')
-             .eq('tenant_id', 'tenant-industrial-demo-uuid')
-             .eq('data_room_name', 'REGULARIZAÇÃO')
-             .eq('user_email', email.toLowerCase())
-             .maybeSingle();
+           const { data, error } = await (supabase as any)
+             .from('tenants')
+             .select('settings')
+             .eq('id', 'tenant-industrial-demo-uuid')
+             .single();
 
-           if (data && data.is_revoked === true) {
-              setError('Seu acesso a esta sala foi explicitamente revogado pela Direção.');
-              setIsAuthenticating(false);
-              return;
+           if (data && !error && (data as any).settings) {
+              const settings = (data as any).settings;
+              const rbac = settings.vdr_access_control || [];
+              const userRule = rbac.find((r: any) => r.data_room_name === 'REGULARIZAÇÃO' && r.user_email === email.toLowerCase());
+
+              if (userRule && userRule.is_revoked === true) {
+                 setError('Seu acesso a esta sala foi explicitamente revogado pela Direção.');
+                 setIsAuthenticating(false);
+                 return;
+              }
            }
          } catch (e) {
-           console.error("Erro ao validar RBAC Cloud (Tabela pode não existir na demo). Acesso liberado por padrão.", e);
+           console.error("Erro ao validar RBAC Cloud. Acesso liberado por padrão.", e);
          }
 
          // O usuário logou com as credenciais oficiais e não está bloqueado. Colocando na pasta "REGULARIZAÇÃO"
