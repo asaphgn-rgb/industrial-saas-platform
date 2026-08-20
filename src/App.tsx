@@ -269,7 +269,7 @@ export default function App() {
           )}
 
           {activeTab === 'validation_secure' && (
-            <div className="p-4 md:p-12 max-w-[1600px] mx-auto h-full overflow-y-auto">
+            <div className="p-4 md:p-12 max-w-[1600px] mx-auto min-h-full">
                <SecureDocumentValidation />
             </div>
           )}
