@@ -151,23 +151,23 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
               if (localMediaAudio && finalMsg.audio_data === 'supabase') finalMsg.audio_data = localMediaAudio;
               if (localMediaType) finalMsg.attachment_type = localMediaType as any;
 
-              // Se ainda não resolveu com o mock local, tenta buscar do banco
+              // Se ainda não resolveu com o mock local (não estão no mesmo navegador), tenta buscar do banco
               if (finalMsg.attachment_url === 'supabase' || finalMsg.audio_data === 'supabase') {
-                let retries = 3;
+                let retries = 8;
                 while (retries > 0) {
                   try {
                     const { data } = await supabase.from('b2b_secure_chat').select('attachment_url, attachment_type, audio_data').eq('id', finalMsg.id).single();
                     if (data) {
                        const d = data as any;
-                       if (d.attachment_url) finalMsg.attachment_url = d.attachment_url;
+                       if (d.attachment_url && d.attachment_url !== 'supabase') finalMsg.attachment_url = d.attachment_url;
                        if (d.attachment_type) finalMsg.attachment_type = d.attachment_type;
-                       if (d.audio_data) finalMsg.audio_data = d.audio_data;
+                       if (d.audio_data && d.audio_data !== 'supabase') finalMsg.audio_data = d.audio_data;
                        break; // Sucesso, sai do loop
                     }
                   } catch(e) {
                     console.error("Retentando buscar mídia no DB...", e);
                   }
-                  await new Promise(r => setTimeout(r, 1500)); // Espera 1.5s antes do retry
+                  await new Promise(r => setTimeout(r, 400)); // Mais ágil: Espera 400ms antes do retry
                   retries--;
                 }
               }
@@ -248,21 +248,23 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
 
     const pushMsg = { ...newMsg, audio_data: 'supabase' };
 
-    // Insere no banco primeiro garantindo a disponibilidade via REST
+    // Salva áudio gigantesco em mock storage
+    try { localStorage.setItem('B2B_MEDIA_AUDIO_' + newMsg.id, base64Audio); } catch(e) { console.error('Audio muito grande para localStorage'); }
+
+    // Dispara sinalização em tempo real de imediato
+    ntfyRelay.pushMessage({ ...pushMsg, content: cipherB64 });
+
+    // Insere no banco em background
     try {
-      await supabase.from('b2b_secure_chat').insert({
+      supabase.from('b2b_secure_chat').insert({
         id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
         sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64, audio_data: base64Audio, attachment_type: 'audio'
-      } as any);
+      } as any).then(({error}) => {
+         if (error) console.error(error);
+      });
     } catch(e) {
       console.error(e);
     }
-
-    // Salva áudio gigantesco em mock storage (para demonstração side-by-side no mesmo navegador) caso o Supabase estoure limite de DB
-    try { localStorage.setItem('B2B_MEDIA_AUDIO_' + newMsg.id, base64Audio); } catch(e) { console.error('Audio muito grande para localStorage'); }
-
-    // Dispara sinalização em tempo real (apenas o aviso leve)
-    ntfyRelay.pushMessage({ ...pushMsg, content: cipherB64 });
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -283,25 +285,26 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
 
       const pushMsg = { ...newMsg, attachment_url: 'supabase' };
 
-      // Insere no banco primeiro garantindo a disponibilidade via REST ANTES de notificar
-      try {
-        const { error } = await supabase.from('b2b_secure_chat').insert({
-          id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
-          sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64, attachment_url: base64Data, attachment_type: type
-        } as any);
-        if (error) throw error;
-      } catch(e) {
-        console.error("Erro ao salvar anexo no BD:", e);
-      }
-
-      // Salva anexo gigantesco em mock storage (para demonstração side-by-side no mesmo navegador) caso o Supabase estoure limite de DB
+      // Salva anexo gigantesco em mock storage (para demonstração rápida side-by-side)
       try {
          localStorage.setItem('B2B_MEDIA_URL_' + newMsg.id, base64Data);
          localStorage.setItem('B2B_MEDIA_TYPE_' + newMsg.id, type);
       } catch(e) { console.error('Anexo muito grande para localStorage'); }
 
-      // Dispara sinalização em tempo real apenas DEPOIS de tentar salvar no banco
+      // Dispara sinalização em tempo real de imediato (sem travar envio)
       ntfyRelay.pushMessage({ ...pushMsg, content: cipherB64 });
+
+      // Insere no banco em background para os casos reais
+      try {
+        supabase.from('b2b_secure_chat').insert({
+          id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
+          sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64, attachment_url: base64Data, attachment_type: type
+        } as any).then(({error}) => {
+          if (error) console.error("Erro assíncrono ao salvar anexo no BD:", error);
+        });
+      } catch(e) {
+        console.error("Exceção ao disparar insert do anexo:", e);
+      }
     };
     reader.readAsDataURL(file);
   };
@@ -334,10 +337,10 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
     ntfyRelay.pushMessage({ ...newMsg, content: cipherB64 });
 
     try {
-      await supabase.from('b2b_secure_chat').insert({
+      supabase.from('b2b_secure_chat').insert({
         id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
         sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64
-      } as any);
+      } as any).then(() => {});
     } catch(e) {
       console.error(e);
     }
