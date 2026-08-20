@@ -14,13 +14,12 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
   const [error, setError] = useState('');
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
-  // Mapeamento ficticio (senha atrelada à sala, e-mail atrelado à role)
+  // Lista oficial de usuários (E-mail e Senha exclusivos)
   const validCredentials: Record<string, any> = {
-    'admin@flechabsb.com': { id: '22222222-2222-2222-2222-222222222222', name: 'Administrador (CEO)', role: 'Acesso Global & Master', initials: 'CEO', email: 'admin@flechabsb.com' },
-    'socio@flechabsb.com': { id: '33333333-3333-3333-3333-333333333333', name: 'Sócio / Auditor', role: 'Auditoria & Due Diligence', initials: 'AUD', email: 'socio@flechabsb.com' },
-    'investidor@flechabsb.com': { id: '44444444-4444-4444-4444-444444444444', name: 'Investidor (Comprador)', role: 'Avaliação de Ativos', initials: 'INV', email: 'investidor@flechabsb.com' },
-    'juridico@flechabsb.com': { id: '55555555-5555-5555-5555-555555555555', name: 'Jurídico (Advogado)', role: 'Compliance & Contratos', initials: 'JUR', email: 'juridico@flechabsb.com' },
-    'compliance@flechabsb.com': { id: '66666666-6666-6666-6666-666666666666', name: 'Equipe de Compliance', role: 'Compliance', initials: 'CPL', email: 'compliance@flechabsb.com' }
+    'admin@flechabsb.com': { password: 'mastervault', user: { id: '22222222-2222-2222-2222-222222222222', name: 'Administrador (CEO)', role: 'Acesso Global & Master', initials: 'CEO', email: 'admin@flechabsb.com' } },
+    'socio@flechabsb.com': { password: 'auditvault', user: { id: '33333333-3333-3333-3333-333333333333', name: 'Sócio / Auditor', role: 'Auditoria & Due Diligence', initials: 'AUD', email: 'socio@flechabsb.com' } },
+    'investidor@flechabsb.com': { password: 'investvault', user: { id: '44444444-4444-4444-4444-444444444444', name: 'Investidor (Comprador)', role: 'Avaliação de Ativos', initials: 'INV', email: 'investidor@flechabsb.com' } },
+    'juridico@flechabsb.com': { password: 'legalvault', user: { id: '55555555-5555-5555-5555-555555555555', name: 'Jurídico (Advogado)', role: 'Compliance & Contratos', initials: 'JUR', email: 'juridico@flechabsb.com' } }
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -35,18 +34,12 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
     setIsAuthenticating(true);
 
     setTimeout(() => {
-      // Se a senha for "123", o usuário entra na pasta REGULARIZAÇÃO.
-      // Se tivermos senhas diferentes, ele entraria em pastas diferentes, mas hoje a senha do ambiente define a pasta.
-      if (password === '123') {
-        const matchUser = validCredentials[email.toLowerCase()];
-        if (matchUser) {
-           onLogin({ ...matchUser, currentFolder: 'REGULARIZAÇÃO' });
-        } else {
-           setError('E-mail não autorizado para esta sala.');
-           setIsAuthenticating(false);
-        }
+      const match = validCredentials[email.toLowerCase()];
+      if (match && match.password === password) {
+         // O usuário logou com as credenciais oficiais. Colocando na pasta "REGULARIZAÇÃO"
+         onLogin({ ...match.user, currentFolder: 'REGULARIZAÇÃO' });
       } else {
-        setError('Senha do ambiente incorreta.');
+        setError('Credenciais inválidas ou acesso revogado.');
         setIsAuthenticating(false);
       }
     }, 1500);
@@ -124,7 +117,7 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
             </div>
 
             <div className="space-y-1">
-               <label className="text-[10px] font-bold uppercase tracking-widest text-fbsb-text-secondary pl-1">Senha do Ambiente</label>
+               <label className="text-[10px] font-bold uppercase tracking-widest text-fbsb-text-secondary pl-1">Senha de Acesso</label>
                <div className="relative">
                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                    <Lock className="h-5 w-5 text-fbsb-text-secondary" />
@@ -134,7 +127,7 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
                    value={password}
                    onChange={(e) => setPassword(e.target.value)}
                    className="block w-full pl-10 pr-10 py-3 border border-fbsb-border rounded-xl bg-fbsb-bg-main focus:bg-fbsb-surface-200 text-fbsb-text-primary text-sm font-medium focus:ring-2 focus:ring-fbsb-cyan focus:border-fbsb-cyan transition-all outline-none"
-                   placeholder="Senha da pasta"
+                   placeholder="Sua senha corporativa"
                    required
                  />
                  <button
