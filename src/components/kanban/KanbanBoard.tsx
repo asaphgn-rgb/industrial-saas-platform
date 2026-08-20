@@ -69,30 +69,30 @@ export function KanbanBoard({ boardId }: KanbanBoardProps) {
     // Persistir no backend mockado - não chamamos db aqui para demonstração offline
   };
 
-  if (loading) return <div className="p-8 text-center text-elite-sand font-serif">Acessando Cofre Restrito...</div>;
+  if (loading) return <div className="p-8 text-center text-fbsb-text-secondary font-serif">Acessando Cofre Restrito...</div>;
 
   return (
-    <div className="h-full w-full bg-elite-paper p-6 md:p-10 overflow-x-auto custom-scrollbar">
+    <div className="h-full w-full bg-fbsb-bg-main p-6 md:p-10 overflow-x-auto custom-scrollbar">
       <div className="mb-10 flex justify-between items-end">
         <div>
-          <h2 className="text-3xl font-bold text-elite-navy flex items-center font-serif">
-             Due Diligence Pipeline <ShieldCheck className="w-6 h-6 ml-3 text-elite-gold" />
+          <h2 className="text-3xl font-bold text-fbsb-text-primary flex items-center font-serif">
+             Due Diligence Pipeline <ShieldCheck className="w-6 h-6 ml-3 text-fbsb-cyan" />
           </h2>
-          <p className="text-sm text-slate-500 mt-2 font-medium">Gestão Estratégica de Documentos (Ambiental, Fundiário, Legal) em Ambiente Criptografado E2E</p>
+          <p className="text-sm text-fbsb-text-secondary mt-2 font-medium">Gestão Estratégica de Documentos (Ambiental, Fundiário, Legal) em Ambiente Criptografado E2E</p>
         </div>
-        <button className="hidden md:flex items-center px-6 py-2.5 bg-elite-navy text-white text-sm font-bold tracking-wide rounded-lg shadow-premium hover:bg-slate-800 transition-all border border-elite-navy/10">
-           <Upload className="w-4 h-4 mr-2 text-elite-gold"/> Novo Dossiê
+        <button className="hidden md:flex items-center px-6 py-2.5 bg-fbsb-primary text-white text-sm font-bold tracking-wide rounded-lg shadow-premium hover:bg-fbsb-surface-200 transition-all border border-fbsb-primary/10">
+           <Upload className="w-4 h-4 mr-2 text-fbsb-cyan"/> Novo Dossiê
         </button>
       </div>
 
       <DragDropContext onDragEnd={onDragEnd}>
         <div className="flex space-x-6 h-[calc(100vh-220px)] min-h-[500px] pb-4">
           {columns.map((column) => (
-            <div key={column.id} className="bg-white/60 backdrop-blur-sm rounded-2xl p-5 w-[340px] flex flex-col flex-shrink-0 border border-elite-sand/30 shadow-[0_4px_20px_rgba(34,67,102,0.03)]">
+            <div key={column.id} className="bg-fbsb-surface-100/60 backdrop-blur-sm rounded-2xl p-5 w-[340px] flex flex-col flex-shrink-0 border border-fbsb-border shadow-[0_4px_20px_rgba(34,67,102,0.03)]">
 
               <div className="flex items-center justify-between mb-5 px-1">
-                <h3 className="font-bold text-elite-navy uppercase tracking-wider text-xs">{column.name}</h3>
-                <span className="text-[10px] font-bold bg-elite-sand/20 text-elite-navy px-2 py-0.5 rounded-full">
+                <h3 className="font-bold text-fbsb-text-primary uppercase tracking-wider text-xs">{column.name}</h3>
+                <span className="text-[10px] font-bold bg-fbsb-text-secondary/20 text-fbsb-text-primary px-2 py-0.5 rounded-full">
                   {cards.filter(c => c.column_id === column.id).length}
                 </span>
               </div>
@@ -102,7 +102,7 @@ export function KanbanBoard({ boardId }: KanbanBoardProps) {
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className={`flex-1 min-h-[200px] transition-all duration-300 rounded-xl ${snapshot.isDraggingOver ? 'bg-elite-sand/10 border-dashed border-2 border-elite-gold/50' : 'border-2 border-transparent'}`}
+                    className={`flex-1 min-h-[200px] transition-all duration-300 rounded-xl ${snapshot.isDraggingOver ? 'bg-fbsb-text-secondary/10 border-dashed border-2 border-fbsb-cyan/50' : 'border-2 border-transparent'}`}
                   >
                     {cards
                       .filter((card) => card.column_id === column.id)
@@ -113,29 +113,29 @@ export function KanbanBoard({ boardId }: KanbanBoardProps) {
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
-                              className={`bg-white p-5 rounded-xl shadow-sm border border-elite-sand/30 mb-4 group hover:shadow-premium transition-all duration-200 cursor-grab active:cursor-grabbing ${
-                                snapshot.isDragging ? 'shadow-premium ring-1 ring-elite-gold scale-105 z-50 rotate-1' : ''
+                              className={`bg-fbsb-surface-100 p-5 rounded-xl shadow-sm border border-fbsb-border mb-4 group hover:shadow-premium transition-all duration-200 cursor-grab active:cursor-grabbing ${
+                                snapshot.isDragging ? 'shadow-premium ring-1 ring-fbsb-cyan scale-105 z-50 rotate-1' : ''
                               }`}
                             >
                                <div className="flex justify-between items-start">
-                                 <h4 className="font-bold text-elite-navy text-sm leading-snug">{card.title}</h4>
-                                 <button className="text-slate-300 hover:text-elite-navy opacity-0 group-hover:opacity-100 transition-opacity">
+                                 <h4 className="font-bold text-fbsb-text-primary text-sm leading-snug">{card.title}</h4>
+                                 <button className="text-fbsb-text-secondary hover:text-fbsb-text-primary opacity-0 group-hover:opacity-100 transition-opacity">
                                    <MoreVertical className="w-4 h-4" />
                                  </button>
                                </div>
 
                                {card.description && (
-                                 <p className="text-[11px] text-slate-500 mt-2 line-clamp-2 leading-relaxed">{card.description}</p>
+                                 <p className="text-[11px] text-fbsb-text-secondary mt-2 line-clamp-2 leading-relaxed">{card.description}</p>
                                )}
 
-                               <div className="mt-5 flex items-center justify-between border-t border-elite-sand/20 pt-4">
+                               <div className="mt-5 flex items-center justify-between border-t border-fbsb-border pt-4">
                                  <div className="flex items-center space-x-2">
-                                    <div className="flex items-center text-[10px] text-slate-600 font-bold bg-elite-paper px-2.5 py-1 rounded-md border border-elite-sand/30" title="Documentos Anexados (Agrupamento Contextual)">
-                                      <Layers className="w-3 h-3 mr-1.5 text-elite-sand" />
+                                    <div className="flex items-center text-[10px] text-fbsb-text-secondary font-bold bg-fbsb-bg-main px-2.5 py-1 rounded-md border border-fbsb-border" title="Documentos Anexados (Agrupamento Contextual)">
+                                      <Layers className="w-3 h-3 mr-1.5 text-fbsb-text-secondary" />
                                       2 Docs
                                     </div>
-                                    <div className="flex items-center text-[10px] font-bold text-white bg-elite-navy px-2.5 py-1 rounded-md cursor-pointer hover:bg-slate-800 transition-colors shadow-inner-gold" title="Abrir Chat Restrito desta Etapa">
-                                      <MessageSquare className="w-3 h-3 mr-1.5 text-elite-gold" />
+                                    <div className="flex items-center text-[10px] font-bold text-white bg-fbsb-primary px-2.5 py-1 rounded-md cursor-pointer hover:bg-fbsb-surface-200 transition-colors shadow-inner-gold" title="Abrir Chat Restrito desta Etapa">
+                                      <MessageSquare className="w-3 h-3 mr-1.5 text-fbsb-cyan" />
                                       Chat Seguro
                                     </div>
                                  </div>

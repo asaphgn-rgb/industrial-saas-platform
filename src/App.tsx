@@ -50,12 +50,12 @@ export default function App() {
   if (!currentUser) return <SecureLogin onLogin={setCurrentUser} mockUsers={mockUsers} />;
 
   return (
-    <div className="min-h-screen bg-elite-paper text-elite-navy flex flex-col font-sans">
+    <div className="min-h-screen bg-fbsb-bg-main text-fbsb-text-primary flex flex-col font-sans">
       {/* Top Header - Estilo Premium Glassmorphism */}
-      <header className="glass-panel sticky top-0 px-4 md:px-8 py-4 md:py-5 flex items-center justify-between z-30 border-b border-elite-sand/20">
+      <header className="glass-panel sticky top-0 px-4 md:px-8 py-4 md:py-5 flex items-center justify-between z-30 border-b border-fbsb-border">
         <div className="flex items-center space-x-3 md:space-x-4">
           <button 
-            className="md:hidden p-2 text-slate-500 hover:text-elite-navy focus:outline-none"
+            className="md:hidden p-2 text-fbsb-text-secondary hover:text-fbsb-text-primary focus:outline-none"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -64,20 +64,20 @@ export default function App() {
           </button>
           <div className="flex items-center">
        <svg viewBox="0 0 24 24" className="w-8 h-8 mr-2" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" className="text-elite-navy" />
-          <path d="M4 14l8-4 8 4" className="text-elite-gold" strokeWidth="3" />
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" className="text-fbsb-text-primary" />
+          <path d="M4 14l8-4 8 4" className="text-fbsb-cyan" strokeWidth="3" />
        </svg>
    </div>
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-elite-navy">FLECHA <span className="font-bold text-[#00b0c7]">BSB</span></h1>
-            <p className="text-[11px] uppercase tracking-widest text-elite-sand font-semibold mt-0.5">Ambiente Altamente Restrito</p>
+            <h1 className="text-xl font-bold tracking-tight text-fbsb-text-primary">FLECHA <span className="font-bold text-[#00b0c7]">BSB</span></h1>
+            <p className="text-[11px] uppercase tracking-widest text-fbsb-text-secondary font-semibold mt-0.5">Ambiente Altamente Restrito</p>
           </div>
         </div>
 
         <div className="hidden md:flex items-center space-x-6 text-sm">
            <div className="relative">
-             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-             <input type="text" placeholder="Pesquisar no cofre..." className="pl-9 pr-4 py-2 bg-slate-100/50 border border-slate-200 rounded-full text-xs focus:outline-none focus:ring-1 focus:ring-elite-gold focus:bg-white w-64 transition-all" />
+             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-fbsb-text-secondary" />
+             <input type="text" placeholder="Pesquisar no cofre..." className="pl-9 pr-4 py-2 bg-fbsb-surface-200/50 border border-fbsb-border rounded-full text-xs focus:outline-none focus:ring-1 focus:ring-fbsb-cyan focus:bg-fbsb-surface-100 w-64 transition-all" />
            </div>
         </div>
 
@@ -88,8 +88,8 @@ export default function App() {
                <span>End-to-End Encrypted</span>
              </span>
           </div>
-          <div className="flex items-center space-x-3 pl-6 border-l border-slate-200 relative">
-             <button className="text-slate-400 hover:text-elite-navy transition-colors">
+          <div className="flex items-center space-x-3 pl-6 border-l border-fbsb-border relative">
+             <button className="text-fbsb-text-secondary hover:text-fbsb-text-primary transition-colors">
                <Settings className="w-5 h-5" />
              </button>
 
@@ -100,19 +100,19 @@ export default function App() {
                  onClick={() => setShowUserMenu(!showUserMenu)}
                >
                  <div className="text-right hidden md:block">
-                   <p className="text-xs font-bold text-elite-navy">{currentUser.name}</p>
-                   <p className="text-[10px] text-elite-sand font-semibold uppercase">{currentUser.role}</p>
+                   <p className="text-xs font-bold text-fbsb-text-primary">{currentUser.name}</p>
+                   <p className="text-[10px] text-fbsb-text-secondary font-semibold uppercase">{currentUser.role}</p>
                  </div>
-                 <div className="h-10 w-10 bg-gradient-to-br from-elite-navy to-slate-800 rounded-full flex items-center justify-center shadow-inner-gold transform group-hover:scale-105 transition-transform border-2 border-elite-gold">
-                   <span className="text-sm font-bold text-elite-gold">{currentUser.initials}</span>
+                 <div className="h-10 w-10 bg-gradient-to-br from-fbsb-primary to-slate-800 rounded-full flex items-center justify-center shadow-inner-gold transform group-hover:scale-105 transition-transform border-2 border-fbsb-cyan">
+                   <span className="text-sm font-bold text-fbsb-cyan">{currentUser.initials}</span>
                  </div>
                </div>
 
                {/* Dropdown de Login Swap */}
                {showUserMenu && (
-                 <div className="absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-premium border border-elite-sand/30 overflow-hidden z-50">
-                    <div className="px-4 py-3 bg-slate-50 border-b border-elite-sand/20">
-                       <p className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Alternar Participante (Demo)</p>
+                 <div className="absolute right-0 mt-3 w-56 bg-fbsb-surface-100 rounded-xl shadow-premium border border-fbsb-border overflow-hidden z-50">
+                    <div className="px-4 py-3 bg-fbsb-surface-200 border-b border-fbsb-border">
+                       <p className="text-[10px] uppercase font-bold text-fbsb-text-secondary tracking-wider">Alternar Participante (Demo)</p>
                     </div>
                     <div className="p-2 space-y-1">
   <button
@@ -144,31 +144,31 @@ export default function App() {
         {/* Mobile Menu Overlay */}
         {isMobileMenuOpen && (
           <div 
-            className="md:hidden fixed inset-0 bg-slate-900/50 z-40 backdrop-blur-sm"
+            className="md:hidden fixed inset-0 bg-fbsb-surface-200/50 z-40 backdrop-blur-sm"
             onClick={() => setIsMobileMenuOpen(false)}
           ></div>
         )}
         
         <aside className={`
           fixed md:relative top-0 left-0 h-full z-50 md:z-10
-          w-72 bg-elite-white border-r border-elite-sand/20 p-6 flex flex-col space-y-8 overflow-y-auto shadow-[4px_0_24px_rgba(0,0,0,0.02)]
+          w-72 bg-fbsb-surface-100 border-r border-fbsb-border p-6 flex flex-col space-y-8 overflow-y-auto shadow-[4px_0_24px_rgba(0,0,0,0.02)]
           transform transition-transform duration-300 ease-in-out
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
         `}>
 
           {/* Sessão: Módulos Seguros */}
           <div>
-            <h3 className="text-[10px] font-bold text-elite-sand uppercase tracking-[0.2em] mb-4 pl-2">Due Diligence</h3>
+            <h3 className="text-[10px] font-bold text-fbsb-text-secondary uppercase tracking-[0.2em] mb-4 pl-2">Due Diligence</h3>
             <div className="space-y-1.5">
               <button
                 onClick={() => { setActiveTab('pipeline_secure'); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
                   activeTab === 'pipeline_secure'
-                    ? 'bg-elite-navy text-white shadow-premium'
-                    : 'text-slate-600 hover:bg-slate-100 hover:text-elite-navy'
+                    ? 'bg-fbsb-primary text-white shadow-premium'
+                    : 'text-fbsb-text-secondary hover:bg-fbsb-surface-200 hover:text-fbsb-text-primary'
                 }`}
               >
-                <LayoutDashboard className={`w-4 h-4 ${activeTab === 'pipeline_secure' ? 'text-elite-gold' : 'text-slate-400'}`} />
+                <LayoutDashboard className={`w-4 h-4 ${activeTab === 'pipeline_secure' ? 'text-fbsb-cyan' : 'text-fbsb-text-secondary'}`} />
                 <span className="tracking-wide">Pipeline Estratégico</span>
               </button>
 
@@ -176,11 +176,11 @@ export default function App() {
                 onClick={() => { setActiveTab('upload_secure'); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
                   activeTab === 'upload_secure'
-                    ? 'bg-elite-navy text-white shadow-premium'
-                    : 'text-slate-600 hover:bg-slate-100 hover:text-elite-navy'
+                    ? 'bg-fbsb-primary text-white shadow-premium'
+                    : 'text-fbsb-text-secondary hover:bg-fbsb-surface-200 hover:text-fbsb-text-primary'
                 }`}
               >
-                <UploadCloud className={`w-4 h-4 ${activeTab === 'upload_secure' ? 'text-elite-gold' : 'text-slate-400'}`} />
+                <UploadCloud className={`w-4 h-4 ${activeTab === 'upload_secure' ? 'text-fbsb-cyan' : 'text-fbsb-text-secondary'}`} />
                 <span className="tracking-wide">Dossiê Documental</span>
               </button>
 
@@ -188,11 +188,11 @@ export default function App() {
                 onClick={() => { setActiveTab('validation_secure'); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
                   activeTab === 'validation_secure'
-                    ? 'bg-elite-navy text-white shadow-premium'
-                    : 'text-slate-600 hover:bg-slate-100 hover:text-elite-navy'
+                    ? 'bg-fbsb-primary text-white shadow-premium'
+                    : 'text-fbsb-text-secondary hover:bg-fbsb-surface-200 hover:text-fbsb-text-primary'
                 }`}
               >
-                <CheckCircle2 className={`w-4 h-4 ${activeTab === 'validation_secure' ? 'text-elite-gold' : 'text-slate-400'}`} />
+                <CheckCircle2 className={`w-4 h-4 ${activeTab === 'validation_secure' ? 'text-fbsb-cyan' : 'text-fbsb-text-secondary'}`} />
                 <span className="tracking-wide">Validação & Aceite</span>
               </button>
 
@@ -200,13 +200,13 @@ export default function App() {
                 onClick={() => { setActiveTab('chat_secure'); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
                   activeTab === 'chat_secure'
-                    ? 'bg-elite-navy text-white shadow-premium'
-                    : 'text-slate-600 hover:bg-slate-100 hover:text-elite-navy'
+                    ? 'bg-fbsb-primary text-white shadow-premium'
+                    : 'text-fbsb-text-secondary hover:bg-fbsb-surface-200 hover:text-fbsb-text-primary'
                 }`}
               >
-                <MessageSquareLock className={`w-4 h-4 ${activeTab === 'chat_secure' ? 'text-elite-gold' : 'text-slate-400'}`} />
+                <MessageSquareLock className={`w-4 h-4 ${activeTab === 'chat_secure' ? 'text-fbsb-cyan' : 'text-fbsb-text-secondary'}`} />
                 <span className="flex-1 text-left tracking-wide">Canais Criptografados</span>
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${activeTab === 'chat_secure' ? 'bg-white text-elite-navy' : 'bg-elite-gold text-white'}`}>3</span>
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${activeTab === 'chat_secure' ? 'bg-fbsb-surface-100 text-fbsb-text-primary' : 'bg-fbsb-cyan text-white'}`}>3</span>
               </button>
             </div>
           </div>
@@ -214,7 +214,7 @@ export default function App() {
           </aside>
 
         {/* Content Area */}
-        <main className="flex-1 overflow-y-auto bg-elite-paper relative">
+        <main className="flex-1 overflow-y-auto bg-fbsb-bg-main relative">
           {/* Módulos Novos - Ambiente Secreto */}
           {activeTab === 'pipeline_secure' && (
             <div className="absolute inset-0">
@@ -244,42 +244,42 @@ export default function App() {
           {activeTab === 'dashboard' && (
             <div className="p-8 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">OEE Global Fabril</span>
+                <div className="bg-fbsb-surface-100 border border-fbsb-border rounded-xl p-5 shadow-sm">
+                  <span className="text-xs font-semibold text-fbsb-text-secondary uppercase tracking-wider">OEE Global Fabril</span>
                   <div className="mt-2 flex items-baseline space-x-2">
-                    <span className="text-3xl font-bold text-slate-900">86.4%</span>
+                    <span className="text-3xl font-bold text-fbsb-text-secondary">86.4%</span>
                     <span className="text-xs text-emerald-600 font-medium">+2.1% vs meta</span>
                   </div>
-                  <div className="mt-4 w-full bg-slate-100 rounded-full h-1.5">
+                  <div className="mt-4 w-full bg-fbsb-surface-200 rounded-full h-1.5">
                     <div className="bg-emerald-500 h-1.5 rounded-full" style={{ width: '86.4%' }}></div>
                   </div>
                 </div>
 
-                <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Não Conformidades Abertas</span>
+                <div className="bg-fbsb-surface-100 border border-fbsb-border rounded-xl p-5 shadow-sm">
+                  <span className="text-xs font-semibold text-fbsb-text-secondary uppercase tracking-wider">Não Conformidades Abertas</span>
                   <div className="mt-2 flex items-baseline space-x-2">
-                    <span className="text-3xl font-bold text-slate-900">2</span>
+                    <span className="text-3xl font-bold text-fbsb-text-secondary">2</span>
                     <span className="text-xs text-amber-600 font-medium">Ciclo CAPA ativo</span>
                   </div>
-                  <div className="mt-4 text-xs text-slate-500">1 em investigação • 1 em verificação</div>
+                  <div className="mt-4 text-xs text-fbsb-text-secondary">1 em investigação • 1 em verificação</div>
                 </div>
 
-                <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Ordens em Produção</span>
+                <div className="bg-fbsb-surface-100 border border-fbsb-border rounded-xl p-5 shadow-sm">
+                  <span className="text-xs font-semibold text-fbsb-text-secondary uppercase tracking-wider">Ordens em Produção</span>
                   <div className="mt-2 flex items-baseline space-x-2">
-                    <span className="text-3xl font-bold text-slate-900">14</span>
+                    <span className="text-3xl font-bold text-fbsb-text-secondary">14</span>
                     <span className="text-xs text-blue-600 font-medium">100% no prazo</span>
                   </div>
-                  <div className="mt-4 text-xs text-slate-500">Células CNC 01, Injeção 03 e Montagem</div>
+                  <div className="mt-4 text-xs text-fbsb-text-secondary">Células CNC 01, Injeção 03 e Montagem</div>
                 </div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 text-white shadow-md">
+              <div className="bg-fbsb-surface-200 border border-fbsb-border rounded-xl p-6 text-white shadow-md">
                 <h3 className="text-base font-semibold flex items-center">
                   <ShieldCheck className="w-5 h-5 text-emerald-400 mr-2" />
                   Conexão Operacional Multi-Tenant
                 </h3>
-                <p className="text-sm text-slate-400 mt-2 leading-relaxed">
+                <p className="text-sm text-fbsb-text-secondary mt-2 leading-relaxed">
                   Ambiente conectado ao Supabase DEV, banco PostgreSQL com políticas de RLS extremo e trilha de auditoria imutável ativa.
                   Todos os módulos de segurança e gestão industrial operam isolados neste Tenant.
                 </p>

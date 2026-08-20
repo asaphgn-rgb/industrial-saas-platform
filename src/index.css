@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    color-scheme: light;
+    color-scheme: dark;
   }
 
   html {
@@ -16,20 +16,21 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
+    /* De acordo com a screenshot a fonte de título parace mais moderna/sans do que serif */
+    font-family: 'Plus Jakarta Sans', sans-serif; 
   }
 
   body {
-    @apply bg-elite-paper text-elite-navy;
+    @apply bg-fbsb-bg-main text-fbsb-text-primary;
   }
 }
 
 @layer utilities {
   .glass-panel {
-    @apply bg-white/70 backdrop-blur-md border border-white/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)];
+    @apply bg-glass-gradient backdrop-blur-xl border border-fbsb-border shadow-premium;
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-elite-navy to-elite-gold;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-fbsb-primary to-fbsb-cyan;
   }
 }

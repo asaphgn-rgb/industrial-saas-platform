@@ -98,11 +98,11 @@ export function SecureDocumentValidation() {
   // Lógica de ícones por categoria
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case 'Juridico': return <Scale className="w-5 h-5 text-elite-navy" />;
+      case 'Juridico': return <Scale className="w-5 h-5 text-fbsb-text-primary" />;
       case 'Ambiental': return <TreePine className="w-5 h-5 text-emerald-600" />;
-      case 'Fiscal': return <Building2 className="w-5 h-5 text-slate-700" />;
-      case 'Tecnico': return <MapPin className="w-5 h-5 text-elite-gold" />;
-      default: return <FileText className="w-5 h-5 text-slate-500" />;
+      case 'Fiscal': return <Building2 className="w-5 h-5 text-fbsb-text-secondary" />;
+      case 'Tecnico': return <MapPin className="w-5 h-5 text-fbsb-cyan" />;
+      default: return <FileText className="w-5 h-5 text-fbsb-text-secondary" />;
     }
   };
 
@@ -160,20 +160,20 @@ export function SecureDocumentValidation() {
     if (!viewingDoc) return null;
 
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4">
-        <div className="bg-white rounded-2xl shadow-premium w-full md:max-w-5xl h-[95vh] md:h-[85vh] flex flex-col overflow-hidden relative" onContextMenu={(e) => e.preventDefault()}>
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-fbsb-surface-200/80 backdrop-blur-sm p-4">
+        <div className="bg-fbsb-surface-100 rounded-2xl shadow-premium w-full md:max-w-5xl h-[95vh] md:h-[85vh] flex flex-col overflow-hidden relative" onContextMenu={(e) => e.preventDefault()}>
           {/* Header do Viewer */}
-          <div className="px-6 py-4 bg-elite-navy text-white flex items-center justify-between z-10 shadow-md">
+          <div className="px-6 py-4 bg-fbsb-primary text-white flex items-center justify-between z-10 shadow-md">
             <div className="flex items-center space-x-4">
-               <div className="p-2 bg-slate-800 rounded-lg shadow-inner-gold">
-                  <Lock className="w-5 h-5 text-elite-gold" />
+               <div className="p-2 bg-fbsb-surface-200 rounded-lg shadow-inner-gold">
+                  <Lock className="w-5 h-5 text-fbsb-cyan" />
                </div>
                <div>
                   <h3 className="font-bold font-serif text-sm md:text-base truncate max-w-[200px] md:max-w-md">{viewingDoc.title}</h3>
-                  <p className="text-[10px] text-elite-sand uppercase tracking-widest mt-1 font-semibold">Visualização Restrita • Proibido Download</p>
+                  <p className="text-[10px] text-fbsb-text-secondary uppercase tracking-widest mt-1 font-semibold">Visualização Restrita • Proibido Download</p>
                </div>
             </div>
-            <button onClick={() => setViewingDoc(null)} className="text-slate-400 hover:text-white transition-colors bg-slate-800 p-2 rounded-xl">
+            <button onClick={() => setViewingDoc(null)} className="text-fbsb-text-secondary hover:text-white transition-colors bg-fbsb-surface-200 p-2 rounded-xl">
                <X className="w-6 h-6" />
             </button>
           </div>
@@ -190,10 +190,10 @@ export function SecureDocumentValidation() {
                 title="Visualizador Seguro"
               />
             ) : (
-              <div className="bg-white w-full max-w-3xl min-h-[1056px] shadow-2xl p-16 flex flex-col items-center justify-center text-center z-0">
-                 <AlertTriangle className="w-16 h-16 text-slate-300 mb-4" />
-                 <h2 className="text-xl font-bold text-slate-600 font-serif">Documento Original Indisponível</h2>
-                 <p className="text-slate-500 mt-2">O arquivo base não foi processado ou está indisponível na sessão de visualização segura.</p>
+              <div className="bg-fbsb-surface-100 w-full max-w-3xl min-h-[1056px] shadow-2xl p-16 flex flex-col items-center justify-center text-center z-0">
+                 <AlertTriangle className="w-16 h-16 text-fbsb-text-secondary mb-4" />
+                 <h2 className="text-xl font-bold text-fbsb-text-secondary font-serif">Documento Original Indisponível</h2>
+                 <p className="text-fbsb-text-secondary mt-2">O arquivo base não foi processado ou está indisponível na sessão de visualização segura.</p>
               </div>
             )}
           </div>
@@ -205,16 +205,16 @@ export function SecureDocumentValidation() {
 
   // Minuta de Contrato Jurídico Sênior (Exibida no Painel Direito)
   const SeniorContractDraft = () => (
-    <div className="bg-slate-50 border border-elite-sand/40 rounded-xl p-5 mb-6 max-h-[300px] overflow-y-auto custom-scrollbar relative">
+    <div className="bg-fbsb-surface-200 border border-fbsb-border rounded-xl p-5 mb-6 max-h-[300px] overflow-y-auto custom-scrollbar relative">
       <div className="absolute top-0 right-0 p-3 opacity-10 pointer-events-none">
          <FileBadge className="w-24 h-24" />
       </div>
 
-      <h4 className="text-sm font-bold text-elite-navy font-serif mb-4 text-center border-b border-elite-sand/30 pb-3">
+      <h4 className="text-sm font-bold text-fbsb-text-primary font-serif mb-4 text-center border-b border-fbsb-border pb-3">
         INSTRUMENTO PARTICULAR DE PROMESSA DE COMPRA E VENDA DE IMÓVEL RURAL COM CLÁUSULA RESOLUTIVA
       </h4>
 
-      <div className="text-[11px] text-slate-700 leading-relaxed text-justify space-y-3 font-serif">
+      <div className="text-[11px] text-fbsb-text-secondary leading-relaxed text-justify space-y-3 font-serif">
         <p>
           <strong>CLÁUSULA PRIMEIRA – DO OBJETO:</strong> O presente instrumento tem por objeto a alienação da propriedade rural
           identificada na documentação anexa, doravante denominada simplesmente "IMÓVEL", compreendendo sua posse, domínio,
@@ -247,21 +247,21 @@ export function SecureDocumentValidation() {
       <DocumentViewerModal />
 
       {/* Esquerda: Lista de Documentos Analisados */}
-      <div className="flex-1 bg-white border border-elite-sand/20 rounded-2xl shadow-premium p-8 overflow-y-auto">
+      <div className="flex-1 bg-fbsb-surface-100 border border-fbsb-border rounded-2xl shadow-premium p-8 overflow-y-auto">
 
-        <div className="flex items-center justify-between mb-8 pb-4 border-b border-elite-sand/30">
+        <div className="flex items-center justify-between mb-8 pb-4 border-b border-fbsb-border">
           <div>
-            <h1 className="text-2xl font-bold text-elite-navy font-serif flex items-center">
-              Auditoria de Conformidade <ShieldCheck className="ml-3 w-6 h-6 text-elite-gold" />
+            <h1 className="text-2xl font-bold text-fbsb-text-primary font-serif flex items-center">
+              Auditoria de Conformidade <ShieldCheck className="ml-3 w-6 h-6 text-fbsb-cyan" />
             </h1>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-fbsb-text-secondary mt-1">
               Base de Dados Segura. Pareceres consultivos emitidos com base na matriz regulatória.
             </p>
           </div>
-          <div className="px-4 py-2 bg-slate-100 rounded-lg border border-slate-200">
-            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-1">Status Global do Dossiê</span>
+          <div className="px-4 py-2 bg-fbsb-surface-200 rounded-lg border border-fbsb-border">
+            <span className="text-[10px] font-bold text-fbsb-text-secondary uppercase tracking-widest block mb-1">Status Global do Dossiê</span>
             {mockDocuments.length === 0 ? (
-              <span className="text-sm font-bold text-slate-500 flex items-center">Cofre Vazio</span>
+              <span className="text-sm font-bold text-fbsb-text-secondary flex items-center">Cofre Vazio</span>
             ) : hasCriticalIssues ? (
               <span className="text-sm font-bold text-red-600 flex items-center"><AlertTriangle className="w-4 h-4 mr-2" /> Risco de Negociação</span>
             ) : (
@@ -271,12 +271,12 @@ export function SecureDocumentValidation() {
         </div>
 
         {mockDocuments.length === 0 ? (
-          <div className="h-[400px] flex flex-col items-center justify-center border-2 border-dashed border-elite-sand/40 rounded-2xl bg-slate-50 text-center p-8">
-            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-4">
-               <Lock className="w-8 h-8 text-elite-sand" />
+          <div className="h-[400px] flex flex-col items-center justify-center border-2 border-dashed border-fbsb-border rounded-2xl bg-fbsb-surface-200 text-center p-8">
+            <div className="w-16 h-16 bg-fbsb-surface-100 rounded-full flex items-center justify-center shadow-sm mb-4">
+               <Lock className="w-8 h-8 text-fbsb-text-secondary" />
             </div>
-            <h3 className="text-lg font-bold text-elite-navy font-serif mb-2">Base de Dados Limpa</h3>
-            <p className="text-sm text-slate-500 max-w-md">
+            <h3 className="text-lg font-bold text-fbsb-text-primary font-serif mb-2">Base de Dados Limpa</h3>
+            <p className="text-sm text-fbsb-text-secondary max-w-md">
               Não há documentos processados. Utilize o painel de upload seguro (Dossiê Documental) para enviar matrizes rurais, laudos e certidões.
             </p>
           </div>
@@ -290,25 +290,25 @@ export function SecureDocumentValidation() {
                 <div
                   key={doc.id}
                   className={`border rounded-xl transition-all duration-300 overflow-hidden ${
-                    isExpanded ? 'border-elite-gold shadow-md' : 'border-elite-sand/30 hover:border-elite-sand'
+                    isExpanded ? 'border-fbsb-cyan shadow-md' : 'border-fbsb-border hover:border-fbsb-border'
                   }`}
                 >
                   {/* Header do Card (Clickable) */}
                   <div
                     className={`px-5 py-4 flex items-center justify-between cursor-pointer ${
-                      isExpanded ? 'bg-elite-paper' : 'bg-white'
+                      isExpanded ? 'bg-fbsb-bg-main' : 'bg-fbsb-surface-100'
                     }`}
                     onClick={() => setExpandedDocId(isExpanded ? null : doc.id)}
                   >
                     <div className="flex items-center space-x-4">
-                      <div className="p-2.5 bg-white rounded-xl shadow-sm border border-slate-100">
+                      <div className="p-2.5 bg-fbsb-surface-100 rounded-xl shadow-sm border border-fbsb-border">
                         {getCategoryIcon(doc.category)}
                       </div>
                       <div>
-                        <h3 className="font-bold text-elite-navy text-sm">{doc.title}</h3>
+                        <h3 className="font-bold text-fbsb-text-primary text-sm">{doc.title}</h3>
                         <div className="flex items-center space-x-3 mt-1">
-                          <span className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded font-bold uppercase">{doc.category}</span>
-                          <span className="text-[10px] text-slate-400">Inserido em {doc.uploadDate}</span>
+                          <span className="text-[10px] bg-fbsb-surface-200 text-fbsb-text-secondary px-2 py-0.5 rounded font-bold uppercase">{doc.category}</span>
+                          <span className="text-[10px] text-fbsb-text-secondary">Inserido em {doc.uploadDate}</span>
                         </div>
                       </div>
                     </div>
@@ -323,19 +323,19 @@ export function SecureDocumentValidation() {
                           <CheckCircle2 className="w-3.5 h-3.5 mr-1.5" /> Conforme
                         </div>
                       )}
-                      {isExpanded ? <ChevronUp className="w-5 h-5 text-slate-400" /> : <ChevronDown className="w-5 h-5 text-slate-400" />}
+                      {isExpanded ? <ChevronUp className="w-5 h-5 text-fbsb-text-secondary" /> : <ChevronDown className="w-5 h-5 text-fbsb-text-secondary" />}
                     </div>
                   </div>
 
                   {/* Conteúdo Expandido (Resumo Didático e Técnico) */}
                   {isExpanded && (
-                    <div className="px-5 py-6 bg-white border-t border-elite-sand/20">
+                    <div className="px-5 py-6 bg-fbsb-surface-100 border-t border-fbsb-border">
 
                       <div className="flex justify-between items-start mb-6">
                         <div>
-                          <span className="text-[10px] font-bold uppercase tracking-widest text-elite-sand block mb-2">Órgão Regulador / Autoridade Emissora</span>
-                          <div className="text-sm font-semibold text-elite-navy flex items-center">
-                            <ShieldCheck className="w-4 h-4 mr-2 text-slate-400" />
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-fbsb-text-secondary block mb-2">Órgão Regulador / Autoridade Emissora</span>
+                          <div className="text-sm font-semibold text-fbsb-text-primary flex items-center">
+                            <ShieldCheck className="w-4 h-4 mr-2 text-fbsb-text-secondary" />
                             {doc.issuingAuthority}
                           </div>
                         </div>
@@ -346,19 +346,19 @@ export function SecureDocumentValidation() {
                             e.stopPropagation();
                             setViewingDoc(doc);
                           }}
-                          className="flex items-center px-4 py-2 bg-elite-navy text-white text-xs font-bold uppercase tracking-wider rounded-lg shadow-premium hover:bg-slate-800 transition-colors"
+                          className="flex items-center px-4 py-2 bg-fbsb-primary text-white text-xs font-bold uppercase tracking-wider rounded-lg shadow-premium hover:bg-fbsb-surface-200 transition-colors"
                         >
-                          <Eye className="w-4 h-4 mr-2 text-elite-gold" />
+                          <Eye className="w-4 h-4 mr-2 text-fbsb-cyan" />
                           Ler Documento
                         </button>
                       </div>
 
-                      <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                        <h4 className="text-xs font-bold text-elite-navy uppercase tracking-widest mb-3 flex items-center">
-                          <FileText className="w-4 h-4 mr-2 text-elite-gold" />
+                      <div className="p-4 bg-fbsb-surface-200 rounded-xl border border-fbsb-border">
+                        <h4 className="text-xs font-bold text-fbsb-text-primary uppercase tracking-widest mb-3 flex items-center">
+                          <FileText className="w-4 h-4 mr-2 text-fbsb-cyan" />
                           Parecer Consultivo Técnico
                         </h4>
-                        <p className="text-sm text-slate-700 leading-relaxed text-justify">
+                        <p className="text-sm text-fbsb-text-secondary leading-relaxed text-justify">
                           {doc.regulatoryAnalysis}
                         </p>
                       </div>
@@ -387,25 +387,25 @@ export function SecureDocumentValidation() {
       <div className="w-full lg:w-[450px] flex-shrink-0 flex flex-col gap-6">
 
         {/* Sumário Executivo */}
-        <div className="bg-elite-navy rounded-2xl p-8 shadow-premium relative overflow-hidden">
-          <div className="absolute -top-10 -right-10 w-32 h-32 bg-elite-gold opacity-10 rounded-full blur-2xl"></div>
+        <div className="bg-fbsb-primary rounded-2xl p-8 shadow-premium relative overflow-hidden">
+          <div className="absolute -top-10 -right-10 w-32 h-32 bg-fbsb-cyan opacity-10 rounded-full blur-2xl"></div>
 
           <h2 className="text-white font-serif text-xl font-bold mb-4">Mesa de Fechamento</h2>
-          <p className="text-slate-300 text-sm leading-relaxed mb-6">
+          <p className="text-fbsb-text-secondary text-sm leading-relaxed mb-6">
             O ambiente criptografado da Vault consolida os ativos e emite a minuta final de negociação B2B com amparo de <i>Smart Contracts</i>.
           </p>
 
           <div className="space-y-4">
             <div className="flex justify-between items-center text-sm border-b border-white/10 pb-2">
-              <span className="text-slate-400">Total Auditado</span>
+              <span className="text-fbsb-text-secondary">Total Auditado</span>
               <span className="text-white font-bold">{mockDocuments.length} Documentos</span>
             </div>
             <div className="flex justify-between items-center text-sm border-b border-white/10 pb-2">
-              <span className="text-slate-400">Certificações</span>
+              <span className="text-fbsb-text-secondary">Certificações</span>
               <span className="text-emerald-400 font-bold">{mockDocuments.filter(d => d.status === 'Aprovado').length} Válidas</span>
             </div>
             <div className="flex justify-between items-center text-sm pb-2">
-              <span className="text-slate-400">Pendências Críticas</span>
+              <span className="text-fbsb-text-secondary">Pendências Críticas</span>
               <span className={hasCriticalIssues ? "text-red-400 font-bold" : "text-white font-bold"}>
                 {mockDocuments.filter(d => d.status === 'Pendente').length} Encontradas
               </span>
@@ -414,16 +414,16 @@ export function SecureDocumentValidation() {
         </div>
 
         {/* Módulo de Aceite Criptografado com Contrato Jurídico Sênior */}
-        <div className="bg-white border border-elite-sand/30 rounded-2xl p-8 shadow-sm flex-1 flex flex-col">
+        <div className="bg-fbsb-surface-100 border border-fbsb-border rounded-2xl p-8 shadow-sm flex-1 flex flex-col">
 
           <div className="flex items-center justify-between mb-6">
              <div className="flex items-center space-x-3">
-               <div className="p-2 bg-elite-paper rounded-lg border border-elite-sand/40">
-                 <Scale className="w-6 h-6 text-elite-navy" />
+               <div className="p-2 bg-fbsb-bg-main rounded-lg border border-fbsb-border">
+                 <Scale className="w-6 h-6 text-fbsb-text-primary" />
                </div>
                <div>
-                 <h3 className="font-bold text-elite-navy text-base">Contrato Principal</h3>
-                 <p className="text-[10px] uppercase text-elite-sand font-bold tracking-widest mt-0.5">Minuta Sênior • Compra e Venda</p>
+                 <h3 className="font-bold text-fbsb-text-primary text-base">Contrato Principal</h3>
+                 <p className="text-[10px] uppercase text-fbsb-text-secondary font-bold tracking-widest mt-0.5">Minuta Sênior • Compra e Venda</p>
                </div>
              </div>
           </div>
@@ -459,24 +459,24 @@ export function SecureDocumentValidation() {
             disabled={signatureStep !== 'idle' || mockDocuments.length === 0}
             className={`w-full py-4 px-6 rounded-xl font-bold uppercase tracking-wider text-sm flex justify-center items-center transition-all duration-300
               ${signatureStep === 'idle' && mockDocuments.length > 0
-                ? 'bg-elite-navy text-white hover:bg-slate-800 shadow-[0_4px_20px_rgba(34,67,102,0.2)]'
+                ? 'bg-fbsb-primary text-white hover:bg-fbsb-surface-200 shadow-[0_4px_20px_rgba(34,67,102,0.2)]'
                 : signatureStep === 'validating'
-                ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
+                ? 'bg-fbsb-surface-200 text-fbsb-text-secondary cursor-not-allowed'
                 : signatureStep === 'signed'
                 ? 'bg-emerald-500 text-white cursor-not-allowed shadow-[0_4px_20px_rgba(16,185,129,0.3)]'
-                : 'bg-slate-100 text-slate-400 cursor-not-allowed' // empty state
+                : 'bg-fbsb-surface-200 text-fbsb-text-secondary cursor-not-allowed' // empty state
               }
             `}
           >
             {signatureStep === 'idle' && (
               <>
-                <Fingerprint className="w-5 h-5 mr-3 text-elite-gold" />
+                <Fingerprint className="w-5 h-5 mr-3 text-fbsb-cyan" />
                 Assinar Proposta (Digital)
               </>
             )}
             {signatureStep === 'validating' && (
               <>
-                <Lock className="w-5 h-5 mr-3 animate-pulse text-slate-400" />
+                <Lock className="w-5 h-5 mr-3 animate-pulse text-fbsb-text-secondary" />
                 Processando Criptografia...
               </>
             )}
