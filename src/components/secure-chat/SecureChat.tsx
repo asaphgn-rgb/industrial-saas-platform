@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
+import { mqttRelay } from '../../lib/mqttSync';
 import { Send, Paperclip, ShieldAlert, Lock, User, FileText, CheckCheck, Mic, Video, VideoOff, Camera, Image as ImageIcon } from 'lucide-react';
 import { SafeAny } from '../../types/supabase-override';
 import { deriveKey, encryptE2E, decryptE2E } from '../../lib/crypto';
@@ -41,7 +42,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
     try {
       const key = await deriveKey(roomId, 'SaaS-B2B-Secure-Salt');
       setCryptoKey(key);
-      
+
       const { data, error } = await supabase
         .from('b2b_secure_chat')
         .select('*')
@@ -84,14 +85,29 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
     };
   }, []);
 
-
-
-
-
   useEffect(() => {
     // Sincronização Serverless Multi-Dispositivo (Garantia Tripla)
-    
-    // 1. Polling de Alta Performance (Banco de Dados Opcional)
+
+    // 0. MQTT Relay P2P (Celular vs PC via Internet independente de Banco)
+    mqttRelay.connect(roomId, async (payload) => {
+      if (payload.sender_id === currentUserId) return;
+      try {
+        let decContent = payload.content;
+        if (payload.content && cryptoKey && payload.content.length > 50) {
+           try { decContent = await decryptE2E(payload.content, cryptoKey); } catch(e){}
+        }
+        const msgCloud = { ...payload, content: decContent };
+        setMessages(prev => {
+          const exists = prev.find(m => m.id === msgCloud.id);
+          if (exists) return prev;
+          const up = [...prev, msgCloud];
+          localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up));
+          return up;
+        });
+      } catch(e) {}
+    });
+
+    // 1. Polling (Banco de Dados Opcional)
     const pollTimer = setInterval(async () => {
        if (!cryptoKey) return;
        try {
@@ -100,29 +116,39 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
            .select('*')
            .eq('room_id', roomId)
            .order('created_at', { ascending: true });
-           
+
          if (data && !error && data.length > 0) {
             const decMsgs = await Promise.all(data.map(async (msg: any) => ({
               ...msg,
               content: await decryptE2E(msg.content, cryptoKey)
             })));
-            
             setMessages(prev => {
                if (prev.length === decMsgs.length) return prev;
                localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(decMsgs));
                return decMsgs as Message[];
             });
+         } else {
+             const saved = localStorage.getItem('B2B_MOCK_CHAT_' + roomId);
+             if (saved) {
+                 const parsed = JSON.parse(saved);
+                 setMessages(prev => (parsed.length > prev.length ? parsed : prev));
+             }
          }
-       } catch (e) {}
+       } catch (e) {
+           const saved = localStorage.getItem('B2B_MOCK_CHAT_' + roomId);
+           if (saved) {
+               const parsed = JSON.parse(saved);
+               setMessages(prev => (parsed.length > prev.length ? parsed : prev));
+           }
+       }
     }, 1500);
-    
+
     // 2. Broadcast Channel (P2P Nuvem Livre para Mobile vs Desktop)
     const channel = supabase.channel('room_' + roomId)
       .on('broadcast', { event: 'new_message' }, async (payload) => {
           if (!cryptoKey) return;
           const msgCloud = payload.payload;
           if (msgCloud.sender_id === currentUserId) return;
-          
           try {
             setMessages(prev => {
               const exists = prev.find(m => m.id === msgCloud.id);
@@ -134,26 +160,25 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
           } catch(e) {}
       })
       .subscribe();
-      
+
     // 3. Destruir Rastros
     const wipeDataOnClose = () => {
        supabase.from('b2b_secure_chat').delete().eq('room_id', roomId).then(() => {});
     };
     window.addEventListener('beforeunload', wipeDataOnClose);
-      
-    return () => { 
+
+    return () => {
       clearInterval(pollTimer);
-      supabase.removeChannel(channel); 
+      mqttRelay.disconnect();
+      supabase.removeChannel(channel);
       window.removeEventListener('beforeunload', wipeDataOnClose);
     };
   }, [roomId, cryptoKey]);
-
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -180,7 +205,6 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
     }
   };
 
-
   const sendAudioMessage = async (base64Audio: string) => {
     if (!cryptoKey) return;
     const cipherB64 = await encryptE2E("Mensagem de Voz", cryptoKey);
@@ -189,26 +213,19 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
       id: crypto.randomUUID(), sender_id: currentUserId, content: decrypted, created_at: new Date().toISOString(),
       is_read: false, sender_role: currentUserRole, sender_name: currentUserName, audio_data: base64Audio, attachment_type: 'audio'
     };
-    setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
-    
-    await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
-    try {
-      await supabase.from('b2b_secure_chat').insert({
-      id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
-      sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64, audio_data: base64Audio, attachment_type: 'audio'
-    } as any);
-    } catch(e) {}
-  };
-    setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
-    
-    try {
-      await supabase.from('b2b_secure_chat').insert({
-      id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
-      sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64, audio_data: base64Audio, attachment_type: 'audio'
-    } as any);
-    } catch(e) {}
-  };
 
+    setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
+
+    await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
+    mqttRelay.sendMessage({ ...newMsg, content: cipherB64 });
+
+    try {
+      await supabase.from('b2b_secure_chat').insert({
+        id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
+        sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64, audio_data: base64Audio, attachment_type: 'audio'
+      } as any);
+    } catch(e) {}
+  };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -223,30 +240,21 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
         id: crypto.randomUUID(), sender_id: currentUserId, content: decrypted, created_at: new Date().toISOString(),
         is_read: false, sender_role: currentUserRole, sender_name: currentUserName, attachment_url: base64Data, attachment_type: type
       };
-      setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
-      
-      await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
-      try {
-      await supabase.from('b2b_secure_chat').insert({
-        id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
-        sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64, attachment_url: base64Data, attachment_type: type
-      } as any);
-    } catch(e) {}
-    };
-    reader.readAsDataURL(file);
-  };
-      setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
-      
-      try {
-      await supabase.from('b2b_secure_chat').insert({
-        id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
-        sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64, attachment_url: base64Data, attachment_type: type
-      } as any);
-    } catch(e) {}
-    };
-    reader.readAsDataURL(file);
-  };
 
+      setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
+
+      await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
+      mqttRelay.sendMessage({ ...newMsg, content: cipherB64 });
+
+      try {
+        await supabase.from('b2b_secure_chat').insert({
+          id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
+          sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64, attachment_url: base64Data, attachment_type: type
+        } as any);
+      } catch(e) {}
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -266,17 +274,16 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
       created_at: new Date().toISOString(),
       is_read: false
     };
-    
+
     setMessages(prev => {
       const updated = [...prev, newMsg];
       localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(updated));
       return updated;
     });
-    
-    // TRUQUE: Disparar pelo Broadcast (Instantaneo PC <-> Celular)
+
     await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
-    
-    // Em paralelo, tentar gravar no banco (caso o usuario tenha DB)
+    mqttRelay.sendMessage({ ...newMsg, content: cipherB64 });
+
     try {
       await supabase.from('b2b_secure_chat').insert({
         id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
@@ -284,26 +291,11 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
       } as any);
     } catch(e) {}
   };
-    
-    setMessages(prev => {
-      const updated = [...prev, newMsg];
-      localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(updated));
-      return updated;
-    });
-    
-    try {
-      await supabase.from('b2b_secure_chat').insert({
-      id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
-      sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64
-    } as any);
-    } catch(e) {}
-  };
 
   if (loading) return <div className="flex h-full items-center justify-center p-4"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-fbsb-primary"></div></div>;
 
   return (
     <div className="flex flex-col h-full w-full max-w-5xl mx-auto bg-fbsb-surface-100 md:border border-fbsb-border md:rounded-2xl shadow-premium overflow-hidden font-sans absolute md:relative inset-0 md:inset-auto">
-      {/* Header Blindado Premium */}
       <div className="flex items-center justify-between px-6 py-4 bg-fbsb-primary text-white z-10">
         <div className="flex items-center space-x-4">
           <div className="p-2.5 bg-fbsb-surface-200 rounded-xl shadow-inner-gold">
@@ -330,7 +322,6 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
         <div className="absolute top-16 left-0 right-0 h-64 bg-fbsb-surface-200 border-b border-fbsb-border z-20 flex flex-col">
           <div className="flex-1 p-4 grid grid-cols-2 gap-4">
              <div className="bg-slate-800 rounded-xl overflow-hidden relative border border-fbsb-border shadow-glow-cyan flex items-center justify-center">
-                {/* Simulação de feed da câmera protegida */}
                 <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>
                 <Camera className="w-10 h-10 text-fbsb-cyan/50 absolute" />
                 <span className="absolute bottom-3 left-3 text-[10px] font-bold bg-fbsb-surface-100/80 px-2 py-1 rounded text-white">{currentUserName} (Você)</span>
@@ -349,8 +340,6 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
         </div>
       )}
 
-
-      {/* Área de Mensagens */}
       <div className="flex-1 p-4 md:p-6 overflow-y-auto space-y-4 md:space-y-6 bg-[#f4f2ef] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-opacity-50">
         <div className="text-center my-6">
           <span className="text-[10px] uppercase font-bold tracking-widest bg-fbsb-cyan text-fbsb-text-primary px-4 py-2 rounded-full shadow-sm">
@@ -417,7 +406,6 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input de Mensagem */}
       <form onSubmit={handleSendMessage} className="p-4 bg-fbsb-surface-100 border-t border-fbsb-border flex items-end space-x-3">
         <button
           type="button"
@@ -427,12 +415,12 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
         >
           <Paperclip className="w-5 h-5" />
         </button>
-        <input 
-          type="file" 
-          ref={fileInputRef} 
-          onChange={handleFileUpload} 
-          className="hidden" 
-          accept="image/*,application/pdf" 
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleFileUpload}
+          className="hidden"
+          accept="image/*,application/pdf"
         />
 
         <textarea
