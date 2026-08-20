@@ -16,7 +16,9 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
   // Mapeamento ficticio para credenciais de teste baseado nos mockUsers
   const validCredentials: Record<string, any> = {
     'admin@flechabsb.com': { password: 'mastervault', user: mockUsers[0] }, // CEO / Master
-    'socio@flechabsb.com': { password: 'auditvault', user: mockUsers[1] } // Sócio / Auditor
+    'socio@flechabsb.com': { password: 'auditvault', user: mockUsers[1] }, // Sócio / Auditor
+    'investidor@flechabsb.com': { password: 'investvault', user: mockUsers[2] }, // Investidor
+    'juridico@flechabsb.com': { password: 'legalvault', user: mockUsers[3] } // Jurídico
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -179,9 +181,24 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
                  <span className="text-xs font-bold text-elite-navy block">Auditor (Sócio)</span>
                  <span className="text-[10px] text-slate-500">socio@flechabsb.com</span>
                </button>
+               <button
+                 type="button"
+                 onClick={() => { setEmail('investidor@flechabsb.com'); setPassword('investvault'); }}
+                 className="p-2 border border-slate-200 rounded-lg text-left hover:border-elite-gold hover:bg-elite-paper transition-all group"
+               >
+                 <span className="text-xs font-bold text-elite-navy block">Investidor</span>
+                 <span className="text-[10px] text-slate-500">investidor@flechabsb.com</span>
+               </button>
+               <button
+                 type="button"
+                 onClick={() => { setEmail('juridico@flechabsb.com'); setPassword('legalvault'); }}
+                 className="p-2 border border-slate-200 rounded-lg text-left hover:border-elite-gold hover:bg-elite-paper transition-all group"
+               >
+                 <span className="text-xs font-bold text-elite-navy block">Jurídico</span>
+                 <span className="text-[10px] text-slate-500">juridico@flechabsb.com</span>
+               </button>
              </div>
           </div>
-
         </div>
       </div>
 
