@@ -263,19 +263,19 @@ export default function App() {
 
 
           {activeTab === 'upload_secure' && (
-            <div className="p-8 md:p-12 max-w-7xl mx-auto h-full">
+            <div className="p-4 md:p-12 max-w-7xl mx-auto h-full overflow-y-auto">
                <SecureUploadPage onUploadComplete={() => setActiveTab('validation_secure')} />
             </div>
           )}
 
           {activeTab === 'validation_secure' && (
-            <div className="p-8 md:p-12 max-w-[1600px] mx-auto h-full">
+            <div className="p-4 md:p-12 max-w-[1600px] mx-auto h-full overflow-y-auto">
                <SecureDocumentValidation />
             </div>
           )}
 
           {activeTab === 'chat_secure' && (
-            <div className="p-8 h-full">
+            <div className="p-4 md:p-8 h-full">
                <SecureChat roomId={demoRoomId} currentUserId={currentUser.id} currentUserRole={currentUser.role} currentUserName={currentUser.name} />
             </div>
           )}

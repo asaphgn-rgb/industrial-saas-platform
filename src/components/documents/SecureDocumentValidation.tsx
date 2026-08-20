@@ -198,18 +198,18 @@ export function SecureDocumentValidation() {
       <DocumentViewerModal />
 
       {/* Esquerda: Lista de Documentos Analisados */}
-      <div className="flex-1 bg-fbsb-surface-100 border border-fbsb-border rounded-2xl shadow-premium p-8 overflow-y-auto">
+      <div className="flex-1 bg-fbsb-surface-100 border border-fbsb-border rounded-2xl shadow-premium p-4 md:p-8 overflow-y-auto">
 
-        <div className="flex items-center justify-between mb-8 pb-4 border-b border-fbsb-border">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 md:mb-8 pb-4 border-b border-fbsb-border gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-fbsb-text-primary font-serif flex items-center">
-              Auditoria de Conformidade <ShieldCheck className="ml-3 w-6 h-6 text-fbsb-cyan" />
+            <h1 className="text-xl md:text-2xl font-bold text-fbsb-text-primary font-serif flex items-center">
+              Auditoria de Conformidade <ShieldCheck className="ml-3 w-5 h-5 md:w-6 md:h-6 text-fbsb-cyan" />
             </h1>
-            <p className="text-sm text-fbsb-text-secondary mt-1">
+            <p className="text-xs md:text-sm text-fbsb-text-secondary mt-1">
               Base de Dados Segura. Pareceres consultivos emitidos com base na matriz regulatória.
             </p>
           </div>
-          <div className="px-4 py-2 bg-fbsb-surface-200 rounded-lg border border-fbsb-border">
+          <div className="px-4 py-3 bg-fbsb-surface-200 rounded-lg border border-fbsb-border w-full md:w-auto">
             <span className="text-[10px] font-bold text-fbsb-text-secondary uppercase tracking-widest block mb-1">Status Global do Dossiê</span>
             {mockDocuments.length === 0 ? (
               <span className="text-sm font-bold text-fbsb-text-secondary flex items-center">Cofre Vazio</span>
@@ -222,12 +222,12 @@ export function SecureDocumentValidation() {
         </div>
 
         {mockDocuments.length === 0 ? (
-          <div className="h-[400px] flex flex-col items-center justify-center border-2 border-dashed border-fbsb-border rounded-2xl bg-fbsb-surface-200 text-center p-8">
-            <div className="w-16 h-16 bg-fbsb-surface-100 rounded-full flex items-center justify-center shadow-sm mb-4">
-               <Lock className="w-8 h-8 text-fbsb-text-secondary" />
+          <div className="min-h-[250px] md:min-h-[400px] flex flex-col items-center justify-center border-2 border-dashed border-fbsb-border rounded-2xl bg-fbsb-surface-200 text-center p-4 md:p-8">
+            <div className="w-12 h-12 md:w-16 md:h-16 bg-fbsb-surface-100 rounded-full flex items-center justify-center shadow-sm mb-4">
+               <Lock className="w-6 h-6 md:w-8 md:h-8 text-fbsb-text-secondary" />
             </div>
-            <h3 className="text-lg font-bold text-fbsb-text-primary font-serif mb-2">Base de Dados Limpa</h3>
-            <p className="text-sm text-fbsb-text-secondary max-w-md">
+            <h3 className="text-base md:text-lg font-bold text-fbsb-text-primary font-serif mb-2">Base de Dados Limpa</h3>
+            <p className="text-xs md:text-sm text-fbsb-text-secondary max-w-md">
               Não há documentos processados. Utilize o painel de upload seguro (Dossiê Documental) para enviar matrizes rurais, laudos e certidões.
             </p>
           </div>

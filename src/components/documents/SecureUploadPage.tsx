@@ -288,17 +288,17 @@ export function SecureUploadPage({ onUploadComplete }: SecureUploadPageProps) {
   return (
     <div className="w-full h-full bg-fbsb-surface-100 rounded-2xl shadow-premium border border-fbsb-border overflow-hidden flex flex-col">
       {/* HEADER ELITIZADO */}
-      <div className="px-8 py-6 border-b border-fbsb-border bg-fbsb-surface-100">
-        <h1 className="text-3xl font-bold text-fbsb-text-primary flex items-center font-serif">
+      <div className="px-4 md:px-8 py-4 md:py-6 border-b border-fbsb-border bg-fbsb-surface-100">
+        <h1 className="text-2xl md:text-3xl font-bold text-fbsb-text-primary flex items-center font-serif">
           Cofre de Due Diligence
-          <Layers className="w-7 h-7 ml-3 text-fbsb-cyan" />
+          <Layers className="w-6 h-6 md:w-7 md:h-7 ml-3 text-fbsb-cyan" />
         </h1>
-        <p className="text-sm text-fbsb-text-secondary mt-2 font-medium">
+        <p className="text-xs md:text-sm text-fbsb-text-secondary mt-2 font-medium">
           Os documentos enviados são analisados automaticamente para identificar erros, inconsistências, pendências e não conformidades.
         </p>
       </div>
 
-      <div className="p-8 flex-1 overflow-y-auto">
+      <div className="p-4 md:p-8 flex-1 overflow-y-auto">
         {/* FEEDBACK DE STATUS DE UPLOAD */}
         {uploadStatus && uploadStatus.success && (
           <div className="mb-8 p-5 bg-fbsb-surface-100 border-l-4 border-emerald-500 shadow-sm rounded-r-xl flex items-start">
@@ -328,9 +328,9 @@ export function SecureUploadPage({ onUploadComplete }: SecureUploadPageProps) {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-10">
 
             {/* ZONA DE ARRASTAR ARQUIVOS E LISTAGEM */}
-            <div className="lg:col-span-2 space-y-8">
+            <div className="lg:col-span-2 space-y-6 md:space-y-8">
               <div
-                className={`relative border border-dashed rounded-2xl p-10 flex flex-col items-center justify-center text-center transition-all duration-300 min-h-[240px]
+                className={`relative border border-dashed rounded-2xl p-6 md:p-10 flex flex-col items-center justify-center text-center transition-all duration-300 min-h-[200px] md:min-h-[240px]
                   ${dragActive
                     ? 'border-fbsb-cyan bg-fbsb-cyan/5 shadow-[0_0_30px_rgba(225,174,71,0.15)] scale-[1.02]'
                     : 'border-fbsb-border hover:border-fbsb-cyan hover:bg-fbsb-bg-main/50 bg-fbsb-surface-100'}
