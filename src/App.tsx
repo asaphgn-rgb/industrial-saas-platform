@@ -122,7 +122,7 @@ export default function App() {
              <div className="flex items-center justify-center mr-6"><img src={LogoUrl} alt="FLECHA BSB Logo" className="h-16 md:h-24 w-auto object-contain scale-125 origin-left" /></div>
           </div>
           <div className="hidden sm:block">
-            <p className="text-[11px] uppercase tracking-widest text-fbsb-text-muted font-bold mt-0.5 ml-4">Ambiente Restrito</p>
+            <p className="text-[11px] uppercase tracking-widest text-fbsb-text-muted font-bold mt-0.5 ml-4">Ambiente Restrito: <span className="text-fbsb-cyan">{currentUser.currentFolder || 'COFRE GERAL'}</span></p>
           </div>
         </div>
 
