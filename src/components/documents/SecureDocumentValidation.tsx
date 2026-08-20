@@ -180,21 +180,29 @@ export function SecureDocumentValidation() {
                    <img src={blobUrl || viewingDoc.fileData} alt="Documento Visualizado" className="max-w-full max-h-full object-contain drop-shadow-2xl" />
                 </div>
               ) : (
-                <div className="w-full h-full relative">
+                <div className="w-full h-full relative flex items-center justify-center bg-[#525659]">
+                  <div className="md:hidden absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-fbsb-surface-100 z-0">
+                    <FileText className="w-16 h-16 text-fbsb-text-secondary mb-4 opacity-50" />
+                    <h2 className="text-lg font-bold text-fbsb-text-primary font-serif mb-2">Visualizador Mobile</h2>
+                    <p className="text-sm text-fbsb-text-secondary mb-6 max-w-xs">
+                      Para melhor leitura em dispositivos móveis, abra o documento nativamente usando o botão abaixo.
+                    </p>
+                  </div>
+
                   <iframe
                     src={blobUrl ? `${blobUrl}#toolbar=0&navpanes=0` : ''}
-                    className="w-full h-full border-0 pointer-events-auto z-0"
+                    className="w-full h-full border-0 pointer-events-auto z-10 hidden md:block bg-white"
                     title="Visualizador Seguro"
                   />
-                  <div className="absolute bottom-4 right-4 z-10 md:hidden">
-                    {blobUrl && (
+
+                  <div className="absolute bottom-8 right-0 left-0 flex justify-center z-20 md:hidden">
+                    {(blobUrl || viewingDoc.fileData) && (
                       <a
-                        href={blobUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-4 py-3 bg-fbsb-cyan text-fbsb-bg-deep rounded-xl shadow-premium font-bold text-xs uppercase tracking-wider flex items-center"
+                        href={blobUrl || viewingDoc.fileData}
+                        download={viewingDoc.title || "documento_seguro.pdf"}
+                        className="px-6 py-4 bg-fbsb-cyan text-fbsb-bg-deep rounded-2xl shadow-premium font-bold text-sm uppercase tracking-widest flex items-center shadow-[0_0_30px_rgba(0,212,255,0.6)]"
                       >
-                        <Eye className="w-4 h-4 mr-2" /> Forçar Abertura
+                        <Eye className="w-5 h-5 mr-2" /> Abrir Documento
                       </a>
                     )}
                   </div>
