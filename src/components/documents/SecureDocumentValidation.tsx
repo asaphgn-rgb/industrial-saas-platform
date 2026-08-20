@@ -181,11 +181,11 @@ export function SecureDocumentValidation() {
           {/* Corpo do Viewer - Simulação de PDF (CSS para impedir seleção e download) */}
           <div className="flex-1 bg-[#525659] overflow-hidden flex flex-col items-center select-none relative">
             {/* Overlay transparente para bloquear o clique com botão direito e interações no iframe, reforçando a segurança */}
-            <div className="absolute inset-0 z-10 pointer-events-auto" style={{ cursor: 'crosshair', opacity: 0.01 }} onContextMenu={(e) => e.preventDefault()} />
+            {/* Overlay removido para permitir rolagem nativa do documento */}
 
             {viewingDoc.fileData ? (
               <iframe
-                src={blobUrl ? `${blobUrl}#toolbar=0&navpanes=0&scrollbar=0` : ''}
+                src={blobUrl ? `${blobUrl}#toolbar=0&navpanes=0` : ''}
                 className="w-full h-full border-0 pointer-events-auto z-0"
                 title="Visualizador Seguro"
               />
