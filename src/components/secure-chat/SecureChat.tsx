@@ -87,27 +87,45 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
 
 
   useEffect(() => {
-    // Inscreve no canal de comunicação p2p global do supabase (Broadcast Realtime sem persistir no banco)
-    // Essa é a abordagem 100% cloud mas efêmera exigida pela FLECHA BSB. NADA FICA NO BANCO.
-    const channel = supabase.channel('room_' + roomId)
-      .on('broadcast', { event: 'new_message' }, payload => {
-        setMessages(prev => {
-          const exists = prev.find(m => m.id === payload.payload.id);
-          if (exists) return prev;
+    // Escuta mutações no banco de dados para comunicação cross-device
+    const channel = supabase.channel('realtime_chat')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'b2b_secure_chat', filter: `room_id=eq.${roomId}` },
+        async (payload) => {
+          if (!cryptoKey) return;
+          const newMsgCloud = payload.new;
+          if (newMsgCloud.sender_id === currentUserId) return;
           
-          const updated = [...prev, payload.payload];
-          localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(updated));
-          return updated;
-        });
-      })
+          try {
+            const dec = await decryptE2E(newMsgCloud.content, cryptoKey);
+            const msgObj = { ...newMsgCloud, content: dec } as Message;
+            setMessages(prev => {
+              const exists = prev.find(m => m.id === msgObj.id);
+              if (exists) return prev;
+              const up = [...prev, msgObj];
+              localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up));
+              return up;
+            });
+          } catch(e) {}
+        }
+      )
       .subscribe((status) => {
         if (status === 'SUBSCRIBED') {
-            console.log("Conectado ao canal E2E cross-device");
+            console.log("Conectado ao canal E2E cross-device via Postgres");
         }
       });
       
-    return () => { supabase.removeChannel(channel); };
-  }, [roomId]);
+    const wipeDataOnClose = () => {
+       supabase.from('b2b_secure_chat').delete().eq('room_id', roomId).then(() => {});
+    };
+    window.addEventListener('beforeunload', wipeDataOnClose);
+      
+    return () => { 
+      supabase.removeChannel(channel); 
+      window.removeEventListener('beforeunload', wipeDataOnClose);
+    };
+  }, [roomId, cryptoKey]);
 
 
   useEffect(() => {
