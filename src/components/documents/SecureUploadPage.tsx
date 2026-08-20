@@ -6,6 +6,46 @@ import {
 } from 'lucide-react';
 import { SafeAny } from '../../types/supabase-override';
 
+// --- Utilitário IndexedDB para suportar dezenas de MegaBytes (Bypass de cota do LocalStorage) ---
+const vaultDB = {
+  dbName: 'B2B_Vault_DB',
+  storeName: 'documents',
+  async init(): Promise<IDBDatabase> {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open(this.dbName, 1);
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => resolve(request.result);
+      request.onupgradeneeded = (e: any) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains(this.storeName)) {
+          db.createObjectStore(this.storeName);
+        }
+      };
+    });
+  },
+  async set(key: string, value: any): Promise<void> {
+    const db = await this.init();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(this.storeName, 'readwrite');
+      const store = transaction.objectStore(this.storeName);
+      const request = store.put(value, key);
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+    });
+  },
+  async get(key: string): Promise<any> {
+    const db = await this.init();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(this.storeName, 'readonly');
+      const store = transaction.objectStore(this.storeName);
+      const request = store.get(key);
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+  }
+};
+
+
 // Categorias Profissionais para Due Diligence de Imóveis Rurais
 type DueDiligenceCategory =
   | 'Juridico_Propriedade'
@@ -212,7 +252,7 @@ export function SecureUploadPage({ onUploadComplete }: SecureUploadPageProps) {
          };
       });
 
-      localStorage.setItem('B2B_MOCK_VAULT', JSON.stringify(docsForValidation));
+      await vaultDB.set('B2B_MOCK_VAULT', docsForValidation);
 
       // Navegar para a validação se existir o hook de redirect (App.tsx passará)
       if (onUploadComplete) {
