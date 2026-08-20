@@ -108,7 +108,7 @@ export default function App() {
     <div className="min-h-screen bg-fbsb-bg-main text-fbsb-text-primary flex flex-col font-sans">
 
       {/* Top Header - Estilo Premium Light para acomodar a Logo Naturalmente */}
-      <header className="sticky top-0 px-4 md:px-8 py-4 md:py-5 flex items-center justify-between z-30 border-b border-fbsb-border/50 bg-fbsb-surface-100/80 backdrop-blur-md shadow-premium">
+      <header className="sticky top-0 px-4 md:px-8 py-4 flex items-center justify-between z-30 border-b border-white/5 bg-[#000000]/95 backdrop-blur-2xl shadow-premium">
         <div className="flex items-center space-x-3 md:space-x-4">
           <button 
             className="md:hidden p-2 text-fbsb-bg-main hover:text-fbsb-primary focus:outline-none"
@@ -119,7 +119,7 @@ export default function App() {
             </svg>
           </button>
           <div className="flex items-center">
-             <div className="bg-white/90 p-1.5 rounded-lg shadow-[0_0_15px_rgba(45,212,191,0.2)] mr-4 flex items-center justify-center"><img src={LogoUrl} alt="FLECHA BSB Logo" className="h-8 w-auto object-contain mix-blend-multiply" /></div>
+             <div className="bg-white px-4 py-2 rounded flex items-center justify-center mr-4"><img src={LogoUrl} alt="FLECHA BSB Logo" className="h-7 w-auto object-contain mix-blend-multiply opacity-90" /></div>
           </div>
           <div className="hidden sm:block">
             <p className="text-[11px] uppercase tracking-widest text-fbsb-text-muted font-bold mt-0.5">Ambiente Restrito</p>
@@ -204,7 +204,7 @@ export default function App() {
         
         <aside className={`
           fixed md:relative top-0 left-0 h-full z-50 md:z-10
-          w-72 bg-fbsb-surface-100 border-r border-fbsb-border p-6 flex flex-col space-y-8 overflow-y-auto shadow-[4px_0_24px_rgba(0,0,0,0.02)]
+          w-72 bg-[#0A0A0A] border-r border-white/5 p-6 flex flex-col space-y-8 overflow-y-auto shadow-[4px_0_24px_rgba(0,0,0,0.02)]
           transform transition-transform duration-300 ease-in-out
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
         `}>
@@ -217,7 +217,7 @@ export default function App() {
                 onClick={() => { setActiveTab('pipeline_secure'); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
                   activeTab === 'pipeline_secure'
-                    ? 'bg-fbsb-primary text-white shadow-premium'
+                    ? 'bg-[#141414] text-white shadow-premium border border-white/5'
                     : 'text-fbsb-text-secondary hover:bg-fbsb-surface-200 hover:text-fbsb-text-primary'
                 }`}
               >
@@ -229,7 +229,7 @@ export default function App() {
                 onClick={() => { setActiveTab('upload_secure'); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
                   activeTab === 'upload_secure'
-                    ? 'bg-fbsb-primary text-white shadow-premium'
+                    ? 'bg-[#141414] text-white shadow-premium border border-white/5'
                     : 'text-fbsb-text-secondary hover:bg-fbsb-surface-200 hover:text-fbsb-text-primary'
                 }`}
               >
@@ -241,7 +241,7 @@ export default function App() {
                 onClick={() => { setActiveTab('validation_secure'); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
                   activeTab === 'validation_secure'
-                    ? 'bg-fbsb-primary text-white shadow-premium'
+                    ? 'bg-[#141414] text-white shadow-premium border border-white/5'
                     : 'text-fbsb-text-secondary hover:bg-fbsb-surface-200 hover:text-fbsb-text-primary'
                 }`}
               >
@@ -253,7 +253,7 @@ export default function App() {
                 onClick={() => { setActiveTab('chat_secure'); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
                   activeTab === 'chat_secure'
-                    ? 'bg-fbsb-primary text-white shadow-premium'
+                    ? 'bg-[#141414] text-white shadow-premium border border-white/5'
                     : 'text-fbsb-text-secondary hover:bg-fbsb-surface-200 hover:text-fbsb-text-primary'
                 }`}
               >
@@ -267,7 +267,7 @@ export default function App() {
           </aside>
 
         {/* Content Area */}
-        <main className="flex-1 overflow-y-auto bg-fbsb-bg-main relative">
+        <main className="flex-1 overflow-y-auto bg-[#000000] relative">
           {/* Módulos Novos - Ambiente Secreto */}
           {activeTab === 'pipeline_secure' && (<div className="absolute inset-0 bg-fbsb-bg-main overflow-y-auto"><SecureAboutPage /></div>)}
 
