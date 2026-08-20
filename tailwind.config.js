@@ -7,64 +7,62 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        sans: ['"Inter"', '"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
         serif: ['"Playfair Display"', 'Georgia', 'serif'],
       },
       colors: {
         fbsb: {
           bg: {
-            deep: '#060C18',
-            main: '#0B1325',
+            deep: '#F1F5F9', // Slate 100 - Fundo mais profundo (Light)
+            main: '#F8FAFC', // Slate 50 - Fundo principal (Light)
           },
           surface: {
-            100: '#101A33',
-            200: '#19223E',
-            300: '#192D51',
+            100: '#FFFFFF', // Fundo de cartões (Branco puro)
+            200: '#F1F5F9', // Fundo secundário (Slate 100)
+            300: '#E2E8F0', // Hover states (Slate 200)
           },
           border: {
-            DEFAULT: '#27455D',
-            soft: '#305D80',
+            DEFAULT: '#E2E8F0', // Slate 200
+            soft: '#F1F5F9',
           },
           primary: {
-            DEFAULT: '#5181EA',
-            light: '#56AAE7',
+            DEFAULT: '#1E40AF', // Azul corporativo forte
+            light: '#3B82F6',
           },
-          cyan: '#5CD2F1',
-          success: '#61D3B2',
-          ai: '#B572E6',
+          cyan: '#0891B2', // Cyan ajustado para modo claro
+          success: '#10B981', // Verde esmeralda limpo
+          ai: '#8B5CF6', 
           purple: {
-            dark: '#543D80',
+            dark: '#4C1D95',
           },
-          warning: '#F2B84B',
-          danger: '#EF5C68',
+          warning: '#F59E0B',
+          danger: '#EF4444',
           text: {
-            primary: '#F4F7FF',
-            secondary: '#BCC2CC',
-            muted: '#828995',
+            primary: '#0F172A', // Slate 900 (Quase preto)
+            secondary: '#475569', // Slate 600 (Cinza médio)
+            muted: '#94A3B8', // Slate 400
           }
         },
-        // Mapeamento retro-compatível das cores antigas `elite` para as novas `fbsb`
-        // para não quebrar a aplicação onde essas classes já existem, 
-        // mas direcionando visualmente para o novo Dark Mode / Neon theme.
+        // Retrocompatibilidade
         elite: {
-          gold: '#5CD2F1',       /* Era Cyan Flecha BSB, agora Cyan Neon */
-          navy: '#0B1325',       /* Era Azul Marinho Escuro, agora Background Main */
-          sand: '#BCC2CC',       /* Era Azul Claro, agora Texto Secundário (pra não ficar estranho em bg escuro) */
-          paper: '#060C18',      /* Era fundo branco, agora Background Deep */
-          white: '#101A33',      /* Era Branco puro, agora Surface 100 */
+          gold: '#0891B2',
+          navy: '#F8FAFC',
+          sand: '#475569',
+          paper: '#F1F5F9',
+          white: '#FFFFFF',
         }
       },
       boxShadow: {
-        'premium': '0 10px 40px -10px rgba(0, 0, 0, 0.5)',
-        'premium-hover': '0 20px 40px -10px rgba(0, 0, 0, 0.7)',
-        'inner-gold': 'inset 0 0 0 1px rgba(92, 210, 241, 0.3)', /* Adaptado para cyan */
-        'glow-blue': '0 0 20px rgba(81, 129, 234, 0.35)',
-        'glow-cyan': '0 0 20px rgba(92, 210, 241, 0.30)',
-        'glow-purple': '0 0 20px rgba(181, 114, 230, 0.25)',
+        'premium': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+        'premium-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+        'inner-gold': 'inset 0 0 0 1px rgba(8, 145, 178, 0.15)',
+        'glow-blue': '0 0 15px rgba(30, 64, 175, 0.15)',
+        'glow-cyan': '0 0 15px rgba(8, 145, 178, 0.15)',
+        'glow-purple': '0 0 15px rgba(139, 92, 246, 0.15)',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'glass-gradient': 'linear-gradient(135deg, rgba(25,34,62,0.8) 0%, rgba(16,26,51,0.9) 100%)',
+        'glass-gradient': 'linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(248,250,252,0.9) 100%)',
       }
     },
   },

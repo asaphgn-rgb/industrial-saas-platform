@@ -340,7 +340,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
         </div>
       )}
 
-      <div className="flex-1 p-4 md:p-6 overflow-y-auto space-y-4 md:space-y-6 bg-[#f4f2ef] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-opacity-50">
+      <div className="flex-1 p-4 md:p-6 overflow-y-auto space-y-4 md:space-y-6 bg-fbsb-bg-main bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-opacity-50">
         <div className="text-center my-6">
           <span className="text-[10px] uppercase font-bold tracking-widest bg-fbsb-cyan text-fbsb-text-primary px-4 py-2 rounded-full shadow-sm">
             Canal monitorado por política restrita de isolamento de dados

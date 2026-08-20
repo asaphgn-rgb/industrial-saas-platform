@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import LogoUrl from '/logo-flecha.png';
 import { ShieldCheck, Lock, Fingerprint, Eye, EyeOff, UserSquare2, CheckCircle2 } from 'lucide-react';
 import { BiometricButton } from './BiometricButton';
 
@@ -60,7 +61,7 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
         <div className="hidden md:flex flex-col justify-between p-12 bg-white relative border-r border-white/10">
            
               <div className="flex items-center mb-8">
-                 <img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-28 w-auto object-contain" />
+                 <img src={LogoUrl} alt="FLECHA BSB Logo" className="h-28 w-auto object-contain" />
               </div>
 
               <p className="text-slate-600 mt-4 text-sm leading-relaxed max-w-sm">

@@ -17,6 +17,7 @@ import {
 import { QmsNonConformanceModule } from './components/QmsNonConformanceModule';
 import { IndustrialMesModule } from './components/IndustrialMesModule';
 import { QmsDocumentModule } from './components/QmsDocumentModule';
+import LogoUrl from '/logo-flecha.png';
 
 // Novos módulos secretos
 import { SecureUploadPage } from './components/documents/SecureUploadPage';
@@ -107,7 +108,7 @@ export default function App() {
     <div className="min-h-screen bg-fbsb-bg-main text-fbsb-text-primary flex flex-col font-sans">
 
       {/* Top Header - Estilo Premium Light para acomodar a Logo Naturalmente */}
-      <header className="sticky top-0 px-4 md:px-8 py-4 md:py-5 flex items-center justify-between z-30 border-b border-fbsb-border bg-white text-fbsb-bg-deep shadow-sm">
+      <header className="sticky top-0 px-4 md:px-8 py-4 md:py-5 flex items-center justify-between z-30 border-b border-fbsb-border bg-fbsb-surface-100 shadow-sm">
         <div className="flex items-center space-x-3 md:space-x-4">
           <button 
             className="md:hidden p-2 text-fbsb-bg-main hover:text-fbsb-primary focus:outline-none"
@@ -118,7 +119,7 @@ export default function App() {
             </svg>
           </button>
           <div className="flex items-center">
-             <img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-10 w-auto object-contain mr-4" />
+             <img src={LogoUrl} alt="FLECHA BSB Logo" className="h-10 w-auto object-contain mr-4" />
           </div>
           <div className="hidden sm:block">
             <p className="text-[11px] uppercase tracking-widest text-fbsb-text-muted font-bold mt-0.5">Ambiente Restrito</p>
