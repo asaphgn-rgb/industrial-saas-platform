@@ -110,11 +110,11 @@ export default function App() {
       {/* Top Header - Estilo Premium Light para acomodar a Logo Naturalmente */}
       <header className="sticky top-0 px-4 md:px-8 py-4 flex items-center justify-between z-30 border-b border-white/5 bg-fbsb-bg-deep/95 backdrop-blur-2xl shadow-premium">
         <div className="flex items-center space-x-3 md:space-x-4">
-          <button 
-            className="md:hidden p-2 text-fbsb-bg-main hover:text-fbsb-primary focus:outline-none"
+          <button
+            className="md:hidden p-2 text-fbsb-text-primary hover:text-fbsb-cyan focus:outline-none transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-7 h-7 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
             </svg>
           </button>
@@ -129,8 +129,8 @@ export default function App() {
 
         <div className="hidden md:flex items-center space-x-6 text-sm">
            <div className="relative">
-             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-fbsb-text-secondary" />
-             <input type="text" placeholder="Pesquisar no cofre..." className="pl-9 pr-4 py-2 bg-fbsb-surface-100 border border-fbsb-border rounded-full text-xs text-fbsb-text-secondary focus:outline-none focus:ring-1 focus:ring-fbsb-cyan focus:bg-fbsb-primary-light w-64 transition-all" />
+             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-fbsb-text-primary" />
+             <input type="text" placeholder="Pesquisar no cofre..." className="pl-9 pr-4 py-2 bg-fbsb-surface-100 border border-fbsb-border rounded-full text-xs text-fbsb-text-primary focus:outline-none focus:ring-1 focus:ring-fbsb-cyan focus:bg-fbsb-surface-200 w-64 transition-all placeholder-fbsb-text-secondary" />
            </div>
         </div>
 
@@ -142,8 +142,8 @@ export default function App() {
              </span>
           </div>
           <div className="flex items-center space-x-3 pl-6 border-l border-fbsb-border relative">
-             <button className="text-fbsb-text-secondary hover:text-fbsb-text-primary transition-colors">
-               <Settings className="w-5 h-5 text-fbsb-text-secondary" />
+             <button className="text-fbsb-text-primary hover:text-fbsb-cyan transition-colors">
+               <Settings className="w-6 h-6" />
              </button>
 
              {/* Componente de Switch de Usuário (Demonstração B2B) */}
