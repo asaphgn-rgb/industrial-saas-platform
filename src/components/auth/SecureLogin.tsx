@@ -60,7 +60,7 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
         {/* Painel Esquerdo: Marketing e Branding */}
         <div className="hidden md:flex flex-col justify-between p-12 bg-[#11212D] relative border-r border-white/5">
            
-              <div className="flex items-center mb-8"><img src={LogoUrl} alt="FLECHA BSB Logo" className="h-28 w-auto object-contain filter invert hue-rotate-180 brightness-[1.5] contrast-[1.2]" /></div>
+              <div className="flex items-center mb-8"><img src={LogoUrl} alt="FLECHA BSB Logo" className="h-28 w-auto object-contain" /></div>
 
               <p className="text-[#9BA8AB] mt-4 text-sm leading-relaxed max-w-sm">
                 Plataforma B2B para compartilhamento privado e análise inteligente de documentos entre usuários autorizados.
