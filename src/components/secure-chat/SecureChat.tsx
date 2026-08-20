@@ -240,8 +240,8 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
   if (loading) return <div className="flex h-full items-center justify-center p-4"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-fbsb-primary"></div></div>;
 
   return (
-    <div className="flex flex-col h-full w-full max-w-5xl mx-auto bg-[#131720] md:border border-white/5 md:rounded-3xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.05)] overflow-hidden font-sans absolute md:relative inset-0 md:inset-auto">
-      <div className="flex items-center justify-between px-6 py-4 bg-[#1A1F2C] text-white z-10 border-b border-white/5">
+    <div className="flex flex-col h-full w-full max-w-5xl mx-auto bg-[#11212D] md:border border-white/5 md:rounded-3xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.05)] overflow-hidden font-sans absolute md:relative inset-0 md:inset-auto">
+      <div className="flex items-center justify-between px-6 py-4 bg-[#253745] text-[#CCD0CF] z-10 border-b border-white/5">
         <div className="flex items-center space-x-4">
           <div className="p-2.5 bg-fbsb-surface-200 rounded-xl shadow-inner-gold">
             <Lock className="w-5 h-5 text-fbsb-cyan" />
@@ -259,7 +259,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
         </div>
       </div>
 
-      <div className="flex-1 p-4 md:p-6 overflow-y-auto overflow-x-hidden space-y-4 md:space-y-6 bg-[#0F1219] bg-opacity-50">
+      <div className="flex-1 p-4 md:p-6 overflow-y-auto overflow-x-hidden space-y-4 md:space-y-6 bg-[#06141B] bg-opacity-50">
         <div className="text-center my-6">
           <span className="text-[10px] uppercase font-bold tracking-widest bg-fbsb-cyan text-fbsb-text-primary px-4 py-2 rounded-full shadow-sm">
             Canal monitorado por política restrita de isolamento de dados
@@ -273,8 +273,8 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
               <div
                 className={`max-w-[85%] md:max-w-[70%] rounded-2xl px-5 py-3 shadow-md relative overflow-hidden ${
                   isMine
-                    ? 'bg-gradient-to-br from-[#3B82F6] to-[#1E40AF] text-white rounded-br-sm shadow-[0_5px_15px_rgba(59,130,246,0.3)] border border-white/10'
-                    : 'bg-[#1A1F2C] text-[#F8FAFC] rounded-bl-sm border border-white/5 shadow-md'
+                    ? 'bg-gradient-to-br from-[#253745] to-[#11212D] text-[#CCD0CF] rounded-br-sm shadow-[0_5px_15px_rgba(59,130,246,0.3)] border border-white/10'
+                    : 'bg-[#253745] text-[#F8FAFC] rounded-bl-sm border border-white/5 shadow-md'
                 }`}
               >
                 {!isMine && (
@@ -325,7 +325,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
         <div ref={messagesEndRef} />
       </div>
 
-      <form onSubmit={handleSendMessage} className="p-4 bg-[#131720] border-t border-white/5 flex items-end space-x-3">
+      <form onSubmit={handleSendMessage} className="p-4 bg-[#11212D] border-t border-white/5 flex items-end space-x-3">
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
@@ -346,7 +346,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Comunicação segura E2E..."
-          className="flex-1 max-h-32 min-h-[52px] bg-[#0F1219] rounded-2xl border border-white/5 hover:border-white/10 focus:bg-[#1A1F2C] focus:border-[#2DD4BF] focus:ring-1 focus:ring-[#2DD4BF] shadow-inner p-4 text-sm resize-none transition-all outline-none text-fbsb-text-primary"
+          className="flex-1 max-h-32 min-h-[52px] bg-[#06141B] rounded-2xl border border-white/5 hover:border-white/10 focus:bg-[#253745] focus:border-[#9BA8AB] focus:ring-1 focus:ring-[#9BA8AB] shadow-inner p-4 text-sm resize-none transition-all outline-none text-fbsb-text-primary"
           rows={1}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -363,14 +363,14 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
             onMouseUp={stopRecording}
             onTouchStart={startRecording}
             onTouchEnd={stopRecording}
-            className={`p-4 rounded-xl transition-all flex items-center justify-center shadow-md ${isRecording ? 'bg-red-500 text-white animate-pulse' : 'bg-fbsb-primary text-fbsb-cyan hover:bg-fbsb-surface-200'}`}
+            className={`p-4 rounded-xl transition-all flex items-center justify-center shadow-md ${isRecording ? 'bg-[#4A5C6A] text-[#CCD0CF] animate-pulse' : 'bg-fbsb-primary text-fbsb-cyan hover:bg-fbsb-surface-200'}`}
           >
             <Mic className="w-5 h-5" />
           </button>
         ) : (
           <button
             type="submit"
-            className="p-4 bg-gradient-to-r from-[#2DD4BF] to-[#0D9488] text-[#0F1219] rounded-2xl hover:opacity-90 transition-all flex items-center justify-center shadow-[0_0_20px_rgba(45,212,191,0.4)]"
+            className="p-4 bg-gradient-to-r from-[#253745] to-[#11212D] text-[#06141B] rounded-2xl hover:opacity-90 transition-all flex items-center justify-center shadow-[0_0_20px_rgba(45,212,191,0.4)]"
           >
             <Send className="w-5 h-5" />
           </button>
