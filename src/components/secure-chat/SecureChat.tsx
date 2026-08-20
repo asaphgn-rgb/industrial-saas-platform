@@ -86,8 +86,37 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
 
 
 
+
   useEffect(() => {
-    // Escuta mutações no banco de dados para comunicação cross-device
+    // FALLBACK DE ENGENHARIA DE COMUNICAÇÃO:
+    // Se o Supabase Realtime falhar por bloqueios de rede 4G ou falta de WebSockets na Vercel,
+    // garantimos a sincronização Celular <-> Computador via Short-Polling de alta performance.
+    const pollTimer = setInterval(async () => {
+       if (!cryptoKey) return;
+       try {
+         const { data, error } = await supabase
+           .from('b2b_secure_chat')
+           .select('*')
+           .eq('room_id', roomId)
+           .order('created_at', { ascending: true });
+           
+         if (data && !error) {
+            const decMsgs = await Promise.all(data.map(async (msg: any) => ({
+              ...msg,
+              content: await decryptE2E(msg.content, cryptoKey)
+            })));
+            
+            // Só atualiza a tela se tiver novas mensagens para não piscar
+            setMessages(prev => {
+               if (prev.length === decMsgs.length) return prev;
+               localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(decMsgs));
+               return decMsgs as Message[];
+            });
+         }
+       } catch (e) {}
+    }, 2000); // 2 segundos (Long Polling Simulator)
+    
+    // Mantemos o listener Realtime como via principal rápida (Postgres Changes)
     const channel = supabase.channel('realtime_chat')
       .on(
         'postgres_changes',
@@ -110,11 +139,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
           } catch(e) {}
         }
       )
-      .subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-            console.log("Conectado ao canal E2E cross-device via Postgres");
-        }
-      });
+      .subscribe();
       
     const wipeDataOnClose = () => {
        supabase.from('b2b_secure_chat').delete().eq('room_id', roomId).then(() => {});
@@ -122,6 +147,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
     window.addEventListener('beforeunload', wipeDataOnClose);
       
     return () => { 
+      clearInterval(pollTimer);
       supabase.removeChannel(channel); 
       window.removeEventListener('beforeunload', wipeDataOnClose);
     };
