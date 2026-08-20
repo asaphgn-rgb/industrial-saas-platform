@@ -58,24 +58,15 @@ export default function App() {
     const resetTimer = () => {
       clearTimeout(inactivityTimer);
       inactivityTimer = setTimeout(() => {
-        // Limpeza Zero-Trace e Logout
-        Object.keys(localStorage).forEach(key => {
-          if (key.startsWith('B2B_MOCK_CHAT_') || key.startsWith('B2B_MOCK_VAULT')) {
-            localStorage.removeItem(key);
-          }
-        });
         setCurrentUser(null);
-        alert("Sessão expirada por inatividade (5 minutos) por motivo de segurança.");
+        alert("Sessão expirada por inatividade (5 minutos) por motivo de segurança. O cofre está trancado, faça o login novamente para reaver seus arquivos.");
       }, 5 * 60 * 1000);
     };
 
     // Limpa chat e dados quando a página for fechada ou recarregada (Zero Trace)
     const handleBeforeUnload = () => {
-       Object.keys(localStorage).forEach(key => {
-         if (key.startsWith('B2B_MOCK_CHAT_') || key.startsWith('B2B_MOCK_VAULT')) {
-           localStorage.removeItem(key);
-         }
-       });
+       // Zero-Trace amenizado: Mantemos o cofre e o histórico da sala para demonstração colaborativa.
+       // Não destrói B2B_MOCK_VAULT e nem B2B_MOCK_CHAT no refresh
     };
 
     window.addEventListener('mousemove', resetTimer);
