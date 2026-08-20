@@ -23,6 +23,7 @@ import { SecureUploadPage } from './components/documents/SecureUploadPage';
 import { KanbanBoard } from './components/kanban/KanbanBoard';
 import { SecureChat } from './components/secure-chat/SecureChat';
 import { SecureDocumentValidation } from './components/documents/SecureDocumentValidation';
+import { SecureLogin } from './components/auth/SecureLogin';
 
 type TabType = 'dashboard' | 'qms' | 'mes' | 'documents' | 'upload_secure' | 'pipeline_secure' | 'chat_secure' | 'validation_secure';
 
@@ -34,7 +35,7 @@ export default function App() {
     { id: '22222222-2222-2222-2222-222222222222', name: 'M. Oliveira', role: 'Comprador (Investidor)', initials: 'MO' },
     { id: '33333333-3333-3333-3333-333333333333', name: 'F. Silva', role: 'Vendedor (Proprietário)', initials: 'FS' }
   ];
-  const [currentUser, setCurrentUser] = useState(mockUsers[0]);
+  const [currentUser, setCurrentUser] = useState<any>(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   const currentTenantId = 'tenant-industrial-demo-uuid';
@@ -42,6 +43,8 @@ export default function App() {
 
   const demoBoardId = '00000000-0000-0000-0000-000000000001';
   const demoRoomId = '11111111-1111-1111-1111-111111111111';
+
+  if (!currentUser) return <SecureLogin onLogin={setCurrentUser} mockUsers={mockUsers} />;
 
   return (
     <div className="min-h-screen bg-elite-paper text-elite-navy flex flex-col font-sans">
