@@ -78,8 +78,8 @@ export class IndustrialMesService {
       throw new Error(`Ordem de produção não encontrada: ${fetchError?.message}`);
     }
 
-    const newProducedQuantity = ((order as never).produced_quantity || 0) + entry.quantityProduced;
-    const isCompleted = newProducedQuantity >= (order as never).planned_quantity;
+    const newProducedQuantity = (((order as unknown) as any).produced_quantity || 0) + entry.quantityProduced;
+    const isCompleted = newProducedQuantity >= ((order as unknown) as any).planned_quantity;
 
     const { data: updatedOrder, error: updateError } = await supabase
       .from('production_orders')
@@ -128,7 +128,7 @@ produced_quantity: newProducedQuantity,
       throw new Error(`Ordem de produção não encontrada: ${fetchError?.message}`);
     }
 
-    const newScrapQuantity = ((order as never).scrap_quantity || 0) + entry.quantityScrap;
+    const newScrapQuantity = (((order as unknown) as any).scrap_quantity || 0) + entry.quantityScrap;
 
     const { data: updatedOrder, error: updateError } = await supabase
       .from('production_orders')
