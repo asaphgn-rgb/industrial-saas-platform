@@ -15,7 +15,8 @@ import {
   ChevronUp,
   Eye,
   X,
-  FileBadge
+  FileBadge,
+  Trash2
 } from 'lucide-react';
 
 // --- Utilitário IndexedDB para suportar dezenas de MegaBytes ---
@@ -103,6 +104,13 @@ export function SecureDocumentValidation() {
     }
   };
 
+  const handleDeleteDocument = async (id: string) => {
+    const updatedDocs = mockDocuments.filter(doc => doc.id !== id);
+    await vaultDB.set('B2B_MOCK_VAULT', updatedDocs);
+    setMockDocuments(updatedDocs);
+    if (expandedDocId === id) setExpandedDocId(null);
+  };
+
   const hasCriticalIssues = mockDocuments.some(doc => doc.status === 'Pendente');
 
   // --- COMPONENTES INTERNOS ---
@@ -125,14 +133,14 @@ export function SecureDocumentValidation() {
             })
             .catch(err => {
               console.error("Falha ao gerar blob via fetch:", err);
-              setBlobUrl(viewingDoc.fileData); // Fallback direto para o Base64
+              setBlobUrl(viewingDoc.fileData || null); // Fallback direto para o Base64
             });
         } else {
-          setBlobUrl(viewingDoc.fileData);
+          setBlobUrl(viewingDoc.fileData || null);
         }
       } catch (err) {
         console.error("Falha ao otimizar visualização do documento:", err);
-        setBlobUrl(viewingDoc.fileData); // Fallback
+        setBlobUrl(viewingDoc.fileData || null); // Fallback
       }
 
       return () => {
@@ -304,17 +312,31 @@ export function SecureDocumentValidation() {
                           </div>
                         </div>
 
-                        {/* Botão de Visualização Restrita */}
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setViewingDoc(doc);
-                          }}
-                          className="flex items-center px-4 py-2 bg-fbsb-primary text-white text-xs font-bold uppercase tracking-wider rounded-lg shadow-premium hover:bg-fbsb-surface-200 transition-colors"
-                        >
-                          <Eye className="w-4 h-4 mr-2 text-fbsb-cyan" />
-                          Ler Documento
-                        </button>
+                        {/* Botoes de Ação */}
+                        <div className="flex items-center space-x-3">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if(window.confirm('Tem certeza que deseja excluir este documento?')) {
+                                handleDeleteDocument(doc.id);
+                              }
+                            }}
+                            className="flex items-center px-4 py-2 bg-fbsb-surface-200 text-fbsb-danger text-xs font-bold uppercase tracking-wider rounded-lg hover:bg-fbsb-danger/10 transition-colors border border-fbsb-border"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setViewingDoc(doc);
+                            }}
+                            className="flex items-center px-4 py-2 bg-fbsb-primary text-white text-xs font-bold uppercase tracking-wider rounded-lg shadow-premium hover:bg-fbsb-surface-200 transition-colors"
+                          >
+                            <Eye className="w-4 h-4 mr-2 text-fbsb-cyan" />
+                            Ler Documento
+                          </button>
+                        </div>
                       </div>
 
                       <div className="p-4 bg-fbsb-surface-200 rounded-xl border border-fbsb-border">
