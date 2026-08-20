@@ -79,9 +79,6 @@ export function SecureDocumentValidation() {
   // Estado para visualização do PDF (modal)
   const [viewingDoc, setViewingDoc] = useState<AnalyzedDocument | null>(null);
 
-  // Fluxo de assinatura do contrato Sênior
-  const [signatureStep, setSignatureStep] = useState<'idle' | 'reading' | 'validating' | 'signed'>('idle');
-
   // Buscar os documentos fictícios no LocalStorage quando montar
   useEffect(() => {
     vaultDB.get('B2B_MOCK_VAULT').then((savedMock: any) => {
@@ -104,13 +101,6 @@ export function SecureDocumentValidation() {
       case 'Tecnico': return <MapPin className="w-5 h-5 text-fbsb-cyan" />;
       default: return <FileText className="w-5 h-5 text-fbsb-text-secondary" />;
     }
-  };
-
-  const handleSignature = () => {
-    setSignatureStep('validating');
-    setTimeout(() => {
-      setSignatureStep('signed');
-    }, 800); // Handshake ultrarrápido
   };
 
   const hasCriticalIssues = mockDocuments.some(doc => doc.status === 'Pendente');
@@ -203,44 +193,7 @@ export function SecureDocumentValidation() {
   };
 
 
-  // Minuta de Contrato Jurídico Sênior (Exibida no Painel Direito)
-  const SeniorContractDraft = () => (
-    <div className="bg-fbsb-surface-200 border border-fbsb-border rounded-xl p-5 mb-6 max-h-[350px] overflow-y-auto custom-scrollbar relative">
-      <div className="absolute top-0 right-0 p-3 opacity-10 pointer-events-none">
-         <FileBadge className="w-24 h-24" />
-      </div>
-
-      <h4 className="text-sm font-bold text-fbsb-text-primary font-serif mb-4 text-center border-b border-fbsb-border pb-3 uppercase tracking-wider">
-        Instrumento Particular de Promessa de Compra e Venda com Cláusula de Ciência e Sigilo
-      </h4>
-
-      <div className="text-[11px] text-fbsb-text-secondary leading-relaxed text-justify space-y-4 font-serif">
-        <p>
-          <strong>CLÁUSULA PRIMEIRA – DO OBJETO:</strong> O presente instrumento tem por objeto formalizar o interesse irrevogável na alienação da propriedade, bem como de todos os ativos, direitos, benfeitorias e obrigações vinculados aos documentos validados eletronicamente nesta plataforma, doravante denominado "OBJETO".
-        </p>
-        <p>
-          <strong>CLÁUSULA SEGUNDA – DA CIÊNCIA INEQUÍVOCA:</strong> A PARTE DECLARANTE reconhece expressamente que teve acesso integral a todos os documentos, pareceres, laudos e minutas anexados ao Cofre de Validação, tendo ciência absoluta de todas as condições jurídicas, fiscais e financeiras envolvidas na operação, não podendo alegar desconhecimento futuro (art. 422 do Código Civil - Princípio da Boa-fé Objetiva).
-        </p>
-        <p>
-          <strong>CLÁUSULA TERCEIRA – DA DUE DILIGENCE (Diligência Prévia):</strong> As partes declaram que a documentação validada nesta plataforma compõe a matriz de risco definitiva da negociação. A aprovação deste dossiê atesta a plena ciência de quaisquer ônus reais, litígios ou passivos existentes, ressalvadas pendências listadas no status global.
-        </p>
-        <p>
-          <strong>CLÁUSULA QUARTA – DO SIGILO E CONFIDENCIALIDADE (NDA):</strong> A PARTE DECLARANTE compromete-se a manter sob absoluto sigilo todas as informações confidenciais acessadas por meio deste sistema <i>Zero-Trace</i>. A quebra de sigilo resultará em multa não compensatória estipulada em 20% (vinte por cento) do valor da negociação, sem prejuízo de perdas e danos.
-        </p>
-        <p>
-          <strong>CLÁUSULA QUINTA – DA ASSINATURA ELETRÔNICA E VALIDADE JURÍDICA:</strong> Em estrita observância ao disposto na MP nº 2.200-2/2001 e no art. 10, § 2º, as Partes elegem a tecnologia de Assinatura Criptografada Ponta-a-Ponta (E2E) deste ambiente como meio probatório absoluto. O aceite mediante o clique no botão inferior constitui plena validade jurídica, vinculando endereço de IP, <i>timestamp</i> de rede e token da sessão, equiparando-se à assinatura física reconhecida em cartório.
-        </p>
-        <p>
-          <strong>CLÁUSULA SEXTA – DA CONDIÇÃO SUSPENSIVA E RESOLUTIVA:</strong> A concretização final da transferência de titularidade ficará sobrestada caso o dossiê eletrônico apresente alertas classificados como "Pendente", recaindo o ônus de regularização conforme previamente acordado entre os polos da negociação.
-        </p>
-        <p className="mt-4 p-3 bg-fbsb-surface-100 border border-fbsb-border rounded-lg text-fbsb-text-primary text-center italic">
-          "Ao clicar em Assinar Proposta, declaro que li, compreendi e concordo integralmente com todas as cláusulas acima descritas."
-        </p>
-      </div>
-    </div>
-  );
-
-  return (
+    return (
     <div className="flex flex-col lg:flex-row gap-8 w-full h-full font-sans">
       <DocumentViewerModal />
 
@@ -411,81 +364,6 @@ export function SecureDocumentValidation() {
           </div>
         </div>
 
-        {/* Módulo de Aceite Criptografado com Contrato Jurídico Sênior */}
-        <div className="bg-fbsb-surface-100 border border-fbsb-border rounded-2xl p-8 shadow-sm flex-1 flex flex-col">
-
-          <div className="flex items-center justify-between mb-6">
-             <div className="flex items-center space-x-3">
-               <div className="p-2 bg-fbsb-bg-main rounded-lg border border-fbsb-border">
-                 <Scale className="w-6 h-6 text-fbsb-text-primary" />
-               </div>
-               <div>
-                 <h3 className="font-bold text-fbsb-text-primary text-base">Contrato Principal</h3>
-                 <p className="text-[10px] uppercase text-fbsb-text-secondary font-bold tracking-widest mt-0.5">Minuta Sênior • Compra e Venda</p>
-               </div>
-             </div>
-          </div>
-
-          <div className="flex-1">
-            <SeniorContractDraft />
-
-            {hasCriticalIssues && signatureStep === 'idle' && mockDocuments.length > 0 && (
-              <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl mb-6 text-amber-800 text-xs leading-relaxed flex items-start">
-                <AlertTriangle className="w-4 h-4 mr-2 flex-shrink-0 mt-0.5 text-amber-600" />
-                <span>
-                  <strong>RISCO FUNDIÁRIO IDENTIFICADO:</strong> Há pendências fiscais/ambientais. Assinar este termo incorre em confissão de dívida ou aceite do passivo rural segundo a <i>Cláusula Quarta</i>.
-                </span>
-              </div>
-            )}
-
-            {signatureStep === 'signed' && (
-              <div className="flex flex-col items-center justify-center p-6 bg-emerald-50 border border-emerald-100 rounded-2xl text-center mb-6">
-                <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.3)] mb-4">
-                  <CheckCircle2 className="w-6 h-6 text-white" />
-                </div>
-                <h4 className="font-bold text-emerald-800 mb-2 font-serif">Negócio Jurídico Perfeito</h4>
-                <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider mb-2">Hash E2E: 0x8F9B2...A14C</p>
-                <p className="text-xs text-emerald-700 leading-relaxed">
-                  Contrato selado criptograficamente com sucesso. Trilha de auditoria gerada e partes notificadas.
-                </p>
-              </div>
-            )}
-          </div>
-
-          <button
-            onClick={handleSignature}
-            disabled={signatureStep !== 'idle' || mockDocuments.length === 0}
-            className={`w-full py-4 px-6 rounded-xl font-bold uppercase tracking-wider text-sm flex justify-center items-center transition-all duration-300
-              ${signatureStep === 'idle' && mockDocuments.length > 0
-                ? 'bg-fbsb-primary text-white hover:bg-fbsb-surface-200 shadow-[0_4px_20px_rgba(34,67,102,0.2)]'
-                : signatureStep === 'validating'
-                ? 'bg-fbsb-surface-200 text-fbsb-text-secondary cursor-not-allowed'
-                : signatureStep === 'signed'
-                ? 'bg-emerald-500 text-white cursor-not-allowed shadow-[0_4px_20px_rgba(16,185,129,0.3)]'
-                : 'bg-fbsb-surface-200 text-fbsb-text-secondary cursor-not-allowed' // empty state
-              }
-            `}
-          >
-            {signatureStep === 'idle' && (
-              <>
-                <Fingerprint className="w-5 h-5 mr-3 text-fbsb-cyan" />
-                Assinar Proposta (Digital)
-              </>
-            )}
-            {signatureStep === 'validating' && (
-              <>
-                <Lock className="w-5 h-5 mr-3 animate-pulse text-fbsb-text-secondary" />
-                Processando Criptografia...
-              </>
-            )}
-            {signatureStep === 'signed' && (
-              <>
-                <ShieldCheck className="w-5 h-5 mr-3 text-white" />
-                Aprovado e Firmado
-              </>
-            )}
-          </button>
-        </div>
       </div>
 
     </div>

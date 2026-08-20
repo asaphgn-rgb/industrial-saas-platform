@@ -173,16 +173,6 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
              <p className="text-[10px] text-fbsb-text-secondary leading-relaxed">
                A FLECHA BSB utiliza criptografia ponta-a-ponta. Todas as conversas e documentos são protegidos e destruídos após o término da sessão (Zero-Trace).
              </p>
-             <div className="mt-4 pt-4 border-t border-fbsb-border w-full">
-                <p className="text-[9px] text-fbsb-text-muted uppercase tracking-widest font-bold mb-2">Credenciais de Acesso Restrito</p>
-                <div className="bg-fbsb-surface-100 rounded-lg p-2 flex justify-between items-center text-left">
-                   <div>
-                     <p className="text-[10px] text-fbsb-text-secondary"><strong className="text-fbsb-cyan">E-mail:</strong> admin@flechabsb.com</p>
-                     <p className="text-[10px] text-fbsb-text-secondary"><strong className="text-fbsb-cyan">Senha:</strong> mastervault</p>
-                   </div>
-                   <Lock className="w-4 h-4 text-fbsb-text-muted" />
-                </div>
-             </div>
           </div>
         </div>
       </div>

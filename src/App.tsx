@@ -155,7 +155,7 @@ export default function App() {
                {showUserMenu && (
                  <div className="absolute right-0 mt-3 w-56 bg-fbsb-surface-100 rounded-xl shadow-premium border border-fbsb-border overflow-hidden z-50">
                     <div className="px-4 py-3 bg-fbsb-surface-200 border-b border-fbsb-border">
-                       <p className="text-[10px] uppercase font-bold text-fbsb-text-secondary tracking-wider">Alternar Participante (Demo)</p>
+                       <p className="text-[10px] uppercase font-bold text-fbsb-text-secondary tracking-wider">Conta do Usuário</p>
                     </div>
                     <div className="p-2 space-y-1">
   <button
