@@ -36,6 +36,40 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
   const audioChunksRef = useRef<any[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [securityBlur, setSecurityBlur] = useState(false);
+  const [expandedImage, setExpandedImage] = useState<string | null>(null);
+
+  const handleOpenSecureMedia = (base64Data: string, type: 'pdf' | 'image') => {
+    if (base64Data === 'supabase') return;
+
+    if (type === 'image') {
+      setExpandedImage(base64Data);
+      return;
+    }
+
+    // Tratamento para PDF: Converter Base64 gigante para Blob URL segura (Bypass about:blank#blocked)
+    try {
+      if (base64Data.startsWith('data:application/pdf;base64,')) {
+         const byteCharacters = atob(base64Data.split(',')[1]);
+         const byteNumbers = new Array(byteCharacters.length);
+         for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+         }
+         const byteArray = new Uint8Array(byteNumbers);
+         const blob = new Blob([byteArray], { type: 'application/pdf' });
+         const blobUrl = URL.createObjectURL(blob);
+         window.open(blobUrl, '_blank');
+
+         // Limpa a memória após alguns segundos
+         setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+      } else {
+         // Fallback se já for URL normal (improvável na demo)
+         window.open(base64Data, '_blank');
+      }
+    } catch (e) {
+      console.error("Erro ao gerar visualização segura de PDF:", e);
+      alert("O documento seguro não pôde ser aberto pelo seu navegador (Restrição de Segurança).");
+    }
+  };
 
   const fetchMessages = async () => {
     try {
@@ -367,35 +401,32 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
                           <span className="text-[10px] font-bold uppercase tracking-wider">Baixando Anexo Seguro...</span>
                         </div>
                       ) : (
-                        <a href={msg.attachment_url} target="_blank" rel="noopener noreferrer" className="w-full h-full block">
+                        <div onClick={() => handleOpenSecureMedia(msg.attachment_url!, 'image')} className="w-full h-full block">
                           <img
                             src={msg.attachment_url}
                             alt="Anexo Seguro"
                             className="w-full max-h-48 object-cover cursor-pointer hover:opacity-90 transition-opacity"
                             onError={(e) => { e.currentTarget.style.display = 'none'; }}
                           />
-                        </a>
+                        </div>
                       )}
                    </div>
                 )}
                 {msg.attachment_url && msg.attachment_type === 'pdf' && (
-                   <a
-                     href={msg.attachment_url === 'supabase' ? '#' : msg.attachment_url}
-                     target={msg.attachment_url === 'supabase' ? '_self' : '_blank'}
-                     rel="noopener noreferrer"
-                     className={`mt-3 flex items-center p-3 rounded-xl transition-colors ${
+                   <button
+                     onClick={() => handleOpenSecureMedia(msg.attachment_url!, 'pdf')}
+                     className={`mt-3 w-full text-left flex items-center p-3 rounded-xl transition-colors ${
                        isMine ? 'bg-fbsb-surface-200/50 hover:bg-fbsb-surface-200' : 'bg-fbsb-bg-main hover:bg-fbsb-text-secondary/20'
                      } ${msg.attachment_url === 'supabase' ? 'cursor-wait opacity-70' : 'cursor-pointer'}`}
-                     onClick={(e) => { if(msg.attachment_url === 'supabase') e.preventDefault(); }}
                    >
-                      <FileText className={`w-5 h-5 mr-3 ${isMine ? 'text-fbsb-cyan' : 'text-fbsb-text-primary'} ${msg.attachment_url === 'supabase' ? 'animate-pulse' : ''}`}/>
-                      <div>
-                        <span className="text-xs font-bold block">Documento Seguro.pdf</span>
-                        <span className="text-[10px] opacity-70 uppercase tracking-wider">
+                      <FileText className={`w-5 h-5 mr-3 flex-shrink-0 ${isMine ? 'text-fbsb-cyan' : 'text-fbsb-text-primary'} ${msg.attachment_url === 'supabase' ? 'animate-pulse' : ''}`}/>
+                      <div className="overflow-hidden">
+                        <span className="text-xs font-bold block truncate">Documento Seguro.pdf</span>
+                        <span className="text-[10px] opacity-70 uppercase tracking-wider block truncate">
                           {msg.attachment_url === 'supabase' ? 'Baixando arquivo criptografado...' : 'Clique para visualizar nativamente'}
                         </span>
                       </div>
-                   </a>
+                   </button>
                 )}
                 {msg.audio_data && (
                    <div className="mt-3 w-48 md:w-64">
@@ -474,6 +505,27 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
           </button>
         )}
       </form>
+
+      {expandedImage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4" onClick={() => setExpandedImage(null)}>
+           <div className="relative max-w-5xl w-full max-h-screen flex items-center justify-center">
+              <button
+                onClick={(e) => { e.stopPropagation(); setExpandedImage(null); }}
+                className="absolute top-4 right-4 bg-fbsb-surface-200/50 hover:bg-fbsb-surface-200 text-white p-2 rounded-full backdrop-blur-md transition-colors shadow-lg z-50"
+              >
+                 <ShieldAlert className="w-6 h-6" />
+                 {/* Fechar */}
+              </button>
+              <img
+                src={expandedImage}
+                alt="Visualização Expandida"
+                className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+                onContextMenu={(e) => e.preventDefault()}
+              />
+           </div>
+        </div>
+      )}
     </div>
   );
 }
