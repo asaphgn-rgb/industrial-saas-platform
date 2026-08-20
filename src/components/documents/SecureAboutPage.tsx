@@ -122,7 +122,7 @@ export function SecureAboutPage() {
         </section>
 
         <section className="bg-[#253745] p-10 rounded-2xl shadow-premium border border-white/5 text-center relative overflow-hidden">
-          <img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-20 w-auto object-contain filter invert hue-rotate-180 brightness-[1.5] contrast-[1.2]" className="mx-auto mb-4 relative z-10" />
+          <img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-20 w-auto object-contain filter invert hue-rotate-180 brightness-[1.5] contrast-[1.2] mx-auto mb-4 relative z-10" />
           <p className="text-sm text-fbsb-cyan font-bold tracking-[0.2em] uppercase mb-8 relative z-10">
             Privacidade para compartilhar. Inteligência para validar. Segurança para negociar.
           </p>
