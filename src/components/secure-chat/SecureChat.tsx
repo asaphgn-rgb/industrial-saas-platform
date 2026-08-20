@@ -101,7 +101,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
 
            setMessages(prev => {
               // Se o cloud tiver mais mensagens (ou for diferente do local)
-              if (decMsgs.length > prev.length) {
+              if (JSON.stringify(decMsgs) !== JSON.stringify(prev)) {
                  localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(decMsgs));
                  return decMsgs;
               }

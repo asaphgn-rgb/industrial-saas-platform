@@ -13,6 +13,7 @@ export class CloudSync {
   }
 
   connect(roomId: string, callback: (msgs: any[]) => void) {
+    if (this.timer) clearInterval(this.timer);
     this.roomId = roomId;
     this.onMessage = callback;
 
