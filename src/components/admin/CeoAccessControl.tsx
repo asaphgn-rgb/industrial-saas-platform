@@ -27,10 +27,9 @@ export function CeoAccessControl({ currentTenantId }: CeoAccessControlProps) {
     const fetchAccessControl = async () => {
       try {
         const { data, error } = await (supabase as any)
-          .from('tenants')
-          .select('settings')
-          .eq('id', currentTenantId)
-          .single();
+          .from('vdr_access_control')
+          .select('*')
+          .eq('tenant_id', currentTenantId);
 
         const newMatrix: Record<string, Record<string, boolean>> = {};
 
@@ -43,9 +42,8 @@ export function CeoAccessControl({ currentTenantId }: CeoAccessControlProps) {
         });
 
         // Aplica revogações encontradas no banco de dados real
-        if (data && !error && (data as any).settings) {
-          const settings = (data as any).settings;
-          const rbac = settings.vdr_access_control || [];
+        if (data && !error) {
+          const rbac = data;
 
           rbac.forEach((row: any) => {
             if (newMatrix[row.data_room_name] && newMatrix[row.data_room_name][row.user_email] !== undefined) {
@@ -84,18 +82,27 @@ export function CeoAccessControl({ currentTenantId }: CeoAccessControlProps) {
 
     // Persiste no banco Supabase
     try {
-      const { data: tenantData } = await (supabase as any).from('tenants').select('settings').eq('id', currentTenantId).single();
-      const existingSettings = (tenantData as any)?.settings || {};
-      const rbac = existingSettings.vdr_access_control || [];
+      const { data: existingRule } = await (supabase as any)
+        .from('vdr_access_control')
+        .select('*')
+        .eq('tenant_id', currentTenantId)
+        .eq('data_room_name', room)
+        .eq('user_email', email)
+        .single();
 
-      const existingIndex = rbac.findIndex((r: any) => r.data_room_name === room && r.user_email === email);
-      if (existingIndex >= 0) {
-          rbac[existingIndex].is_revoked = newRevokedState;
+      let error;
+      if (existingRule) {
+        const result = await (supabase as any).from('vdr_access_control').update({ is_revoked: newRevokedState }).eq('id', existingRule.id);
+        error = result.error;
       } else {
-          rbac.push({ tenant_id: currentTenantId, data_room_name: room, user_email: email, is_revoked: newRevokedState });
+        const result = await (supabase as any).from('vdr_access_control').insert({
+           tenant_id: currentTenantId,
+           data_room_name: room,
+           user_email: email,
+           is_revoked: newRevokedState
+        });
+        error = result.error;
       }
-
-      const { error } = await (supabase as any).from('tenants').update({ settings: { ...existingSettings, vdr_access_control: rbac } }).eq('id', currentTenantId);
 
       if (error) throw error;
     } catch (err) {

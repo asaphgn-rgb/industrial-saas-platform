@@ -41,15 +41,15 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
          // Verifica Governança de RBAC via CEO diretamente no banco de dados (tabela tenants existente)
          try {
            const { data, error } = await (supabase as any)
-             .from('tenants')
-             .select('settings')
-             .eq('id', 'tenant-industrial-demo-uuid')
+             .from('vdr_access_control')
+             .select('*')
+             .eq('tenant_id', 'tenant-industrial-demo-uuid')
+             .eq('data_room_name', 'REGULARIZAÇÃO')
+             .eq('user_email', email.toLowerCase())
              .single();
 
-           if (data && !error && (data as any).settings) {
-              const settings = (data as any).settings;
-              const rbac = settings.vdr_access_control || [];
-              const userRule = rbac.find((r: any) => r.data_room_name === 'REGULARIZAÇÃO' && r.user_email === email.toLowerCase());
+           if (data && !error) {
+              const userRule = data;
 
               if (userRule && userRule.is_revoked === true) {
                  setError('Seu acesso a esta sala foi explicitamente revogado pela Direção.');
