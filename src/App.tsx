@@ -225,7 +225,7 @@ export default function App() {
 
           {activeTab === 'chat_secure' && (
             <div className="p-8 h-full">
-               <SecureChat roomId={demoRoomId} currentUserId={currentUser.id} />
+               <SecureChat roomId={demoRoomId} currentUserId={currentUser.id} currentUserRole={currentUser.role} currentUserName={currentUser.name} />
             </div>
           )}
 

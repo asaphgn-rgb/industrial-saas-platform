@@ -11,14 +11,18 @@ interface Message {
   created_at: string;
   attachment_url?: string;
   is_read: boolean;
+  sender_role?: string;
+  sender_name?: string;
 }
 
 interface SecureChatProps {
   roomId: string;
   currentUserId: string;
+  currentUserRole?: string;
+  currentUserName?: string;
 }
 
-export function SecureChat({ roomId, currentUserId }: SecureChatProps) {
+export function SecureChat({ roomId, currentUserId, currentUserRole, currentUserName }: SecureChatProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
@@ -76,6 +80,8 @@ export function SecureChat({ roomId, currentUserId }: SecureChatProps) {
     const decrypted = await decryptE2E(cipherB64, cryptoKey);
 
     const newMsg: Message = {
+      sender_role: currentUserRole,
+      sender_name: currentUserName,
       id: Math.random().toString(),
       sender_id: currentUserId,
       content: decrypted,
@@ -134,7 +140,7 @@ export function SecureChat({ roomId, currentUserId }: SecureChatProps) {
                      <div className="w-6 h-6 rounded-full bg-elite-paper flex items-center justify-center">
                         <User className="w-3 h-3 text-elite-navy"/>
                      </div>
-                     <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">Parte Autorizada</span>
+                     <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">{msg.sender_role || 'Parte Autorizada'}</span>
                   </div>
                 )}
                 <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
