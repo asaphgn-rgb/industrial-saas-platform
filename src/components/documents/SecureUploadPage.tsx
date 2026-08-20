@@ -294,7 +294,7 @@ export function SecureUploadPage({ onUploadComplete }: SecureUploadPageProps) {
           <Layers className="w-7 h-7 ml-3 text-elite-gold" />
         </h1>
         <p className="text-sm text-slate-500 mt-2 font-medium">
-          Módulo de recepção avançada. Anexe a documentação para estruturar automaticamente o dossiê da negociação.
+          Os documentos enviados são analisados automaticamente para identificar erros, inconsistências, pendências e não conformidades.
         </p>
       </div>
 
@@ -388,6 +388,7 @@ export function SecureUploadPage({ onUploadComplete }: SecureUploadPageProps) {
                                </div>
                              </div>
                            </div>
+                           {/* Só mostra botão de excluir no upload se não for regra restrita, mas a regra BSB diz "somente Administrador pode excluir documentos definitivamente" no cofre. Na tela de upload é a triagem, então ok. */}
                            <button onClick={() => removeFile(pFile.id)} disabled={isUploading} className="text-slate-400 hover:text-red-500 p-2 ml-2 transition-colors">
                              <X className="w-5 h-5" />
                            </button>

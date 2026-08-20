@@ -62,11 +62,14 @@ export default function App() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
             </svg>
           </button>
-          <div className="bg-gradient-to-br from-elite-navy to-slate-800 p-2.5 rounded-xl text-elite-gold shadow-premium">
-            <ShieldCheck className="w-6 h-6" />
-          </div>
+          <div className="flex items-center">
+       <svg viewBox="0 0 24 24" className="w-8 h-8 mr-2" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" className="text-elite-navy" />
+          <path d="M4 14l8-4 8 4" className="text-elite-gold" strokeWidth="3" />
+       </svg>
+   </div>
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-elite-navy">Vault <span className="font-light text-slate-500">| B2B Intelligence</span></h1>
+            <h1 className="text-xl font-bold tracking-tight text-elite-navy">FLECHA <span className="font-bold text-[#00b0c7]">BSB</span></h1>
             <p className="text-[11px] uppercase tracking-widest text-elite-sand font-semibold mt-0.5">Ambiente Altamente Restrito</p>
           </div>
         </div>
@@ -113,7 +116,15 @@ export default function App() {
                     </div>
                     <div className="p-2 space-y-1">
   <button
-    onClick={() => setCurrentUser(null)}
+    onClick={() => {
+      // Limpeza de Chat Temporário exigida na regra de negócios da FLECHA BSB
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('B2B_MOCK_CHAT_')) {
+          localStorage.removeItem(key);
+        }
+      });
+      setCurrentUser(null);
+    }}
     className="w-full flex items-center justify-center p-3 rounded-lg transition-colors text-center text-red-500 hover:bg-red-50 hover:text-red-700 border border-transparent font-bold text-xs"
   >
      Encerrar Sessão (Log out)

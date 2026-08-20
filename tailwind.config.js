@@ -12,11 +12,11 @@ export default {
       },
       colors: {
         elite: {
-          gold: '#E1AE47',       /* Dourado para call-to-actions, ícones e destaques sutis */
-          navy: '#224366',       /* Azul Marinho Profundo (Brand principal, fundos nobres, textos fortes) */
-          sand: '#C6AE96',       /* Areia / Bege Escuro para bordas, badges premium e tipografia secundária */
-          paper: '#E5E5E3',      /* Cinza Quente / Fundo off-white para um aspecto de papelaria sofisticada */
-          white: '#F9F9F8',      /* Branco levemente aquecido para os modais e painéis */
+          gold: '#00b0c7',       /* Cyan da Flecha BSB para CTA, Botões e Destaques (Substituiu o Gold) */
+          navy: '#041f4a',       /* Azul Marinho Escuro da Fonte BSB */
+          sand: '#006eb8',       /* Azul Claro intermediário da flecha */
+          paper: '#F0F4F8',      /* Fundo branco-azulado claro */
+          white: '#FFFFFF',      /* Branco puro para modais */
         }
       },
       boxShadow: {

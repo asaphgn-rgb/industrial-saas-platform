@@ -57,17 +57,27 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
 
         {/* Painel Esquerdo: Marketing e Branding */}
         <div className="hidden md:flex flex-col justify-between p-12 bg-gradient-to-br from-elite-navy to-slate-900 relative border-r border-white/10">
-           <div>
-              <div className="bg-elite-gold/20 p-3 rounded-2xl inline-block mb-6 border border-elite-gold/30">
-                <ShieldCheck className="w-10 h-10 text-elite-gold" />
+           
+              <div className="flex items-center space-x-3 mb-8">
+                 <div className="relative w-16 h-16">
+                    {/* Escudo + Documento (Lucide Composite) */}
+                    <svg viewBox="0 0 24 24" className="w-16 h-16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" className="text-[#041f4a]" />
+                       <path d="M9 12h6m-6 4h6m-4-8h4" className="text-[#006eb8]" />
+                       {/* Arrow overlay */}
+                       <path d="M4 14l8-4 8 4" className="text-[#00b0c7]" strokeWidth="2.5" />
+                    </svg>
+                 </div>
+                 <h1 className="text-4xl font-bold font-sans text-white tracking-tighter">
+                   FLECHA <span className="text-[#00b0c7]">BSB</span>
+                 </h1>
               </div>
-              <h1 className="text-3xl font-bold font-serif text-white leading-tight">
-                Vault B2B Intelligence
-              </h1>
+
               <p className="text-elite-sand mt-4 text-sm leading-relaxed max-w-sm">
-                Plataforma de alta seguranca (Due Diligence e Smart Contracts). Comunicacao blindada E2E para transacoes corporativas confidenciais.
+                Plataforma B2B para compartilhamento privado e análise inteligente de documentos entre usuários autorizados.
+
+<br/><br/><strong className="text-white">FLECHA BSB</strong> — Privacidade para compartilhar. Inteligência para validar. Segurança para negociar.
               </p>
-           </div>
 
            <div className="space-y-4">
               <div className="flex items-center space-x-3 text-slate-300 text-sm">
