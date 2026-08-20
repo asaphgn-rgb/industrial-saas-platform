@@ -105,11 +105,12 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-fbsb-bg-main text-fbsb-text-primary flex flex-col font-sans">
-      {/* Top Header - Estilo Premium Glassmorphism */}
-      <header className="glass-panel sticky top-0 px-4 md:px-8 py-4 md:py-5 flex items-center justify-between z-30 border-b border-fbsb-border">
+
+      {/* Top Header - Estilo Premium Light para acomodar a Logo Naturalmente */}
+      <header className="sticky top-0 px-4 md:px-8 py-4 md:py-5 flex items-center justify-between z-30 border-b border-fbsb-border bg-white text-fbsb-bg-deep shadow-sm">
         <div className="flex items-center space-x-3 md:space-x-4">
           <button 
-            className="md:hidden p-2 text-fbsb-text-secondary hover:text-fbsb-text-primary focus:outline-none"
+            className="md:hidden p-2 text-fbsb-bg-main hover:text-fbsb-primary focus:outline-none"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -117,19 +118,18 @@ export default function App() {
             </svg>
           </button>
           <div className="flex items-center">
-             
-<div className="bg-white/95 px-2.5 py-1 rounded-xl shadow-[0_0_10px_rgba(0,180,180,0.1)] border border-white/10 mr-4"><img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-8 w-auto object-contain" /></div>
-
+             <img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-10 w-auto object-contain mr-4" />
           </div>
           <div className="hidden sm:block">
-            <p className="text-[11px] uppercase tracking-widest text-fbsb-text-secondary font-semibold mt-0.5">Ambiente Altamente Restrito</p>
+            <p className="text-[11px] uppercase tracking-widest text-fbsb-text-muted font-bold mt-0.5">Ambiente Restrito</p>
           </div>
         </div>
 
+
         <div className="hidden md:flex items-center space-x-6 text-sm">
            <div className="relative">
-             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-fbsb-text-secondary" />
-             <input type="text" placeholder="Pesquisar no cofre..." className="pl-9 pr-4 py-2 bg-fbsb-surface-200/50 border border-fbsb-border rounded-full text-xs focus:outline-none focus:ring-1 focus:ring-fbsb-cyan focus:bg-fbsb-surface-100 w-64 transition-all" />
+             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+             <input type="text" placeholder="Pesquisar no cofre..." className="pl-9 pr-4 py-2 bg-slate-100 border border-slate-200 rounded-full text-xs text-slate-800 focus:outline-none focus:ring-1 focus:ring-fbsb-cyan focus:bg-white w-64 transition-all" />
            </div>
         </div>
 
@@ -142,7 +142,7 @@ export default function App() {
           </div>
           <div className="flex items-center space-x-3 pl-6 border-l border-fbsb-border relative">
              <button className="text-fbsb-text-secondary hover:text-fbsb-text-primary transition-colors">
-               <Settings className="w-5 h-5" />
+               <Settings className="w-5 h-5 text-slate-600" />
              </button>
 
              {/* Componente de Switch de Usuário (Demonstração B2B) */}
@@ -152,8 +152,8 @@ export default function App() {
                  onClick={() => setShowUserMenu(!showUserMenu)}
                >
                  <div className="text-right hidden md:block">
-                   <p className="text-xs font-bold text-fbsb-text-primary">{currentUser.name}</p>
-                   <p className="text-[10px] text-fbsb-text-secondary font-semibold uppercase">{currentUser.role}</p>
+                   <p className="text-xs font-bold text-slate-800">{currentUser.name}</p>
+                   <p className="text-[10px] text-slate-500 font-semibold uppercase">{currentUser.role}</p>
                  </div>
                  <div className="h-10 w-10 bg-gradient-to-br from-fbsb-primary to-slate-800 rounded-full flex items-center justify-center shadow-inner-gold transform group-hover:scale-105 transition-transform border-2 border-fbsb-cyan">
                    <span className="text-sm font-bold text-fbsb-cyan">{currentUser.initials}</span>

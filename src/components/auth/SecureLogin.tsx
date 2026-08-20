@@ -57,31 +57,29 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
       <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-0 bg-fbsb-surface-100/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden relative z-10">
 
         {/* Painel Esquerdo: Marketing e Branding */}
-        <div className="hidden md:flex flex-col justify-between p-12 bg-gradient-to-br from-fbsb-primary to-slate-900 relative border-r border-white/10">
+        <div className="hidden md:flex flex-col justify-between p-12 bg-white relative border-r border-white/10">
            
               <div className="flex items-center mb-8">
-                 
-<div className="bg-white/95 p-3 rounded-2xl shadow-[0_0_20px_rgba(0,180,180,0.2)] border border-white/20"><img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-20 w-auto object-contain" /></div>
-
+                 <img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-28 w-auto object-contain" />
               </div>
 
-              <p className="text-fbsb-text-secondary mt-4 text-sm leading-relaxed max-w-sm">
+              <p className="text-slate-600 mt-4 text-sm leading-relaxed max-w-sm">
                 Plataforma B2B para compartilhamento privado e análise inteligente de documentos entre usuários autorizados.
 
-<br/><br/><strong className="text-white">FLECHA BSB</strong> — Privacidade para compartilhar. Inteligência para validar. Segurança para negociar.
+<br/><br/><strong className="text-slate-900">FLECHA BSB</strong> — Privacidade para compartilhar. Inteligência para validar. Segurança para negociar.
               </p>
 
            <div className="space-y-4">
-              <div className="flex items-center space-x-3 text-fbsb-text-secondary text-sm">
-                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <div className="flex items-center space-x-3 text-slate-600 text-sm">
+                 <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                  <span>Criptografia de Padrao Militar (AES-GCM)</span>
               </div>
-              <div className="flex items-center space-x-3 text-fbsb-text-secondary text-sm">
-                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <div className="flex items-center space-x-3 text-slate-600 text-sm">
+                 <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                  <span>Gestao Documental Sigilosa com Trilha de Auditoria</span>
               </div>
-              <div className="flex items-center space-x-3 text-fbsb-text-secondary text-sm">
-                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <div className="flex items-center space-x-3 text-slate-600 text-sm">
+                 <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                  <span>Canais de Negociacao Anti-Espionagem Corporativa</span>
               </div>
            </div>
