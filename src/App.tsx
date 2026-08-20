@@ -203,6 +203,21 @@ export default function App() {
           <div>
             <h3 className="text-[10px] font-bold text-fbsb-text-secondary uppercase tracking-[0.2em] mb-4 pl-2">Due Diligence</h3>
             <div className="space-y-1.5">
+
+              {currentUser?.initials === 'CEO' && (
+                <button
+                  onClick={() => { setActiveTab('dashboard'); setIsMobileMenuOpen(false); }}
+                  className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm transition-all duration-300 ${
+                    activeTab === 'dashboard'
+                      ? 'bg-fbsb-surface-100 text-white font-bold shadow-glow-cyan border border-fbsb-cyan/30'
+                      : 'text-fbsb-text-primary font-medium hover:bg-fbsb-surface-200 hover:text-white'
+                  }`}
+                >
+                  <Activity className={`w-5 h-5 ${activeTab === 'dashboard' ? 'text-fbsb-cyan drop-shadow-[0_0_8px_rgba(0,212,255,0.8)]' : 'text-fbsb-text-secondary'}`} />
+                  <span className="tracking-wide text-fbsb-cyan font-bold">Painel Diretivo (CEO)</span>
+                </button>
+              )}
+
               <button
                 onClick={() => { setActiveTab('pipeline_secure'); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm transition-all duration-300 ${
@@ -264,13 +279,13 @@ export default function App() {
 
           {activeTab === 'upload_secure' && (
             <div className="p-4 md:p-12 max-w-7xl mx-auto h-full overflow-y-auto">
-               <SecureUploadPage onUploadComplete={() => setActiveTab('validation_secure')} />
+               <SecureUploadPage onUploadComplete={() => setActiveTab('validation_secure')} currentUser={currentUser} />
             </div>
           )}
 
           {activeTab === 'validation_secure' && (
             <div className="p-4 md:p-12 max-w-[1600px] mx-auto min-h-full">
-               <SecureDocumentValidation />
+               <SecureDocumentValidation currentUser={currentUser} />
             </div>
           )}
 

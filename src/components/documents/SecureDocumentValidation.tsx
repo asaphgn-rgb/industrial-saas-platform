@@ -17,7 +17,9 @@ import {
   X,
   FileBadge,
   Trash2,
-  User
+  User,
+  ShieldAlert,
+  Check
 } from 'lucide-react';
 
 // --- Utilitário IndexedDB para suportar dezenas de MegaBytes ---
@@ -74,6 +76,7 @@ interface AnalyzedDocument {
   uploaderName?: string;
   uploaderRole?: string;
   uploaderEmail?: string;
+  deletionRequested?: boolean;
 }
 
 interface SecureDocumentValidationProps {
@@ -118,6 +121,21 @@ export function SecureDocumentValidation({ currentUser }: SecureDocumentValidati
     setMockDocuments(updatedDocs);
     if (expandedDocId === id) setExpandedDocId(null);
   };
+
+  const handleRequestDeletion = async (id: string) => {
+    const updatedDocs = mockDocuments.map(doc => doc.id === id ? { ...doc, deletionRequested: true } : doc);
+    await vaultDB.set('B2B_MOCK_VAULT', updatedDocs);
+    setMockDocuments(updatedDocs);
+    alert('Solicitação de exclusão enviada para a Direção Executiva.');
+  };
+
+  const handleRejectDeletion = async (id: string) => {
+    const updatedDocs = mockDocuments.map(doc => doc.id === id ? { ...doc, deletionRequested: false } : doc);
+    await vaultDB.set('B2B_MOCK_VAULT', updatedDocs);
+    setMockDocuments(updatedDocs);
+  };
+
+  const isCEO = currentUser?.initials === 'CEO';
 
   const hasCriticalIssues = mockDocuments.some(doc => doc.status === 'Pendente');
 
@@ -343,18 +361,55 @@ export function SecureDocumentValidation({ currentUser }: SecureDocumentValidati
                         </div>
 
                         {/* Botoes de Ação */}
-                        <div className="flex items-center space-x-3 w-full md:w-auto justify-end">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              if(window.confirm('Tem certeza que deseja excluir este documento?')) {
-                                handleDeleteDocument(doc.id);
-                              }
-                            }}
-                            className="flex items-center px-4 py-2 bg-fbsb-surface-200 text-fbsb-danger text-xs font-bold uppercase tracking-wider rounded-lg hover:bg-fbsb-danger/10 transition-colors border border-fbsb-border"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                        <div className="flex items-center space-x-3 w-full md:w-auto justify-end flex-wrap gap-y-2">
+
+                          {/* Lógica de Exclusão por Permissão */}
+                          {isCEO ? (
+                            <>
+                              {doc.deletionRequested && (
+                                <div className="flex items-center space-x-2 mr-2 bg-red-500/10 px-3 py-1 rounded-lg border border-red-500/30">
+                                  <ShieldAlert className="w-4 h-4 text-red-500" />
+                                  <span className="text-[10px] text-red-500 font-bold uppercase">Solicitação Pendente</span>
+                                  <button onClick={(e) => { e.stopPropagation(); handleDeleteDocument(doc.id); }} className="p-1 bg-red-500 text-white rounded hover:bg-red-600 transition" title="Aprovar Exclusão">
+                                    <Check className="w-3 h-3" />
+                                  </button>
+                                  <button onClick={(e) => { e.stopPropagation(); handleRejectDeletion(doc.id); }} className="p-1 bg-fbsb-surface-300 text-fbsb-text-secondary rounded hover:text-white transition" title="Rejeitar Exclusão">
+                                    <X className="w-3 h-3" />
+                                  </button>
+                                </div>
+                              )}
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  if(window.confirm('Tem certeza que deseja excluir este documento PERMANENTEMENTE?')) {
+                                    handleDeleteDocument(doc.id);
+                                  }
+                                }}
+                                className="flex items-center px-4 py-2 bg-fbsb-surface-200 text-fbsb-danger text-xs font-bold uppercase tracking-wider rounded-lg hover:bg-fbsb-danger/10 transition-colors border border-fbsb-border"
+                                title="Exclusão Direta (CEO)"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </>
+                          ) : (
+                            <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  if (doc.deletionRequested) {
+                                    alert('Você já solicitou a exclusão deste arquivo. Aguardando aprovação da Direção.');
+                                    return;
+                                  }
+                                  if(window.confirm('Você não tem permissão para exclusão direta. Deseja solicitar que a Direção Executiva exclua este documento?')) {
+                                    handleRequestDeletion(doc.id);
+                                  }
+                                }}
+                                className={`flex items-center px-4 py-2 ${doc.deletionRequested ? 'bg-orange-500/20 text-orange-400 border-orange-500/30' : 'bg-fbsb-surface-200 text-fbsb-text-secondary border-fbsb-border hover:bg-fbsb-surface-300'} text-xs font-bold uppercase tracking-wider rounded-lg transition-colors border`}
+                                title="Solicitar Exclusão"
+                            >
+                                {doc.deletionRequested ? <ShieldAlert className="w-4 h-4 mr-2" /> : <Trash2 className="w-4 h-4 mr-2" />}
+                                {doc.deletionRequested ? 'Exclusão Solicitada' : 'Solicitar Exclusão'}
+                            </button>
+                          )}
 
                           <button
                             onClick={(e) => {
