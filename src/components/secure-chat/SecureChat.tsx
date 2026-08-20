@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
-import { cloudRelay } from '../../lib/cloudSync';
+import { ntfyRelay } from '../../lib/ntfySync';
 import { Send, Paperclip, ShieldAlert, Lock, User, FileText, CheckCheck, Mic, Image as ImageIcon } from 'lucide-react';
 import { SafeAny } from '../../types/supabase-override';
 import { deriveKey, encryptE2E, decryptE2E } from '../../lib/crypto';
@@ -87,25 +87,24 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
   useEffect(() => {
     if (!cryptoKey) return;
 
-    // Motor de Sincronização em Nuvem Absoluta (Bypass Vercel/Supabase config)
-    cloudRelay.connect(roomId, async (cloudMessages) => {
+    // Motor de Sincronização Absoluto via Ntfy (Bypass Total Vercel/Supabase, Porta 443)
+    ntfyRelay.connect(roomId, async (payload) => {
+        if (!cryptoKey || payload.sender_id === currentUserId) return;
+        
         try {
-           const decMsgs = await Promise.all(cloudMessages.map(async (msg: any) => {
-              if (msg.content && msg.content.length > 20 && !msg.content.startsWith('http')) {
-                 try {
-                   return { ...msg, content: await decryptE2E(msg.content, cryptoKey) };
-                 } catch(e) { return msg; }
-              }
-              return msg;
-           }));
-
+           let decContent = payload.content;
+           if (payload.content && payload.content.length > 20 && !payload.content.startsWith('http')) {
+               try { decContent = await decryptE2E(payload.content, cryptoKey); } catch(e) {}
+           }
+           const finalMsg = { ...payload, content: decContent };
+           
            setMessages(prev => {
-              // Se o cloud tiver mais mensagens (ou for diferente do local)
-              if (JSON.stringify(decMsgs) !== JSON.stringify(prev)) {
-                 localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(decMsgs));
-                 return decMsgs;
-              }
-              return prev;
+              const exists = prev.find(m => m.id === finalMsg.id);
+              if (exists) return prev;
+              
+              const updated = [...prev, finalMsg];
+              localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(updated));
+              return updated;
            });
         } catch(e) {}
     });
@@ -116,10 +115,10 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
     window.addEventListener('beforeunload', wipeDataOnClose);
 
     return () => {
-      cloudRelay.disconnect();
+      ntfyRelay.disconnect();
       window.removeEventListener('beforeunload', wipeDataOnClose);
     };
-  }, [roomId, cryptoKey]);
+  }, [roomId, cryptoKey, currentUserId]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -163,7 +162,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
     setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
 
     await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
-    cloudRelay.pushState([...messages, { ...newMsg, content: cipherB64 }]);
+    ntfyRelay.pushMessage({ ...newMsg, content: cipherB64 });
 
     try {
       await supabase.from('b2b_secure_chat').insert({
@@ -190,7 +189,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
       setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
 
       await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
-      cloudRelay.pushState([...messages, { ...newMsg, content: cipherB64 }]);
+      ntfyRelay.pushMessage({ ...newMsg, content: cipherB64 });
 
       try {
         await supabase.from('b2b_secure_chat').insert({
@@ -228,7 +227,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
     });
 
     await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
-    cloudRelay.pushState([...messages, { ...newMsg, content: cipherB64 }]);
+    ntfyRelay.pushMessage({ ...newMsg, content: cipherB64 });
 
     try {
       await supabase.from('b2b_secure_chat').insert({
