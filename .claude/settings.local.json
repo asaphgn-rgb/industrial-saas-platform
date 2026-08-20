@@ -134,7 +134,9 @@
       "Bash(echo 'const newAttachUI = `                {msg.attachment_url && msg.attachment_type === '\\\\''image'\\\\'' && \\( *)",
       "Bash(echo \"content = content.replace\\(/                \\\\\\\\{msg\\\\\\\\.attachment_url && \\\\\\\\\\(\\\\\\\\[\\\\\\\\s\\\\\\\\S\\\\\\\\]\\\\\\\\*?\\\\\\\\\\)\\\\\\\\}/, newAttachUI\\);\")",
       "Bash(echo 'const newForm = `      {/* Input de Mensagem */} *)",
-      "Bash(echo \"content = content.replace\\(/      \\\\\\\\{\\\\\\\\/\\\\\\\\* Input de Mensagem \\\\\\\\*\\\\\\\\/\\\\\\\\}\\\\\\\\[\\\\\\\\s\\\\\\\\S\\\\\\\\]\\\\\\\\*?    <\\\\\\\\/div>\\\\\\\\n  \\\\\\\\\\);\\\\\\\\n\\\\\\\\}\\\\\\\\n\\\\\\\\$/, newForm + '\\\\\\\\n    </div>\\\\\\\\n  \\);\\\\\\\\n}\\\\\\\\n'\\);\")"
+      "Bash(echo \"content = content.replace\\(/      \\\\\\\\{\\\\\\\\/\\\\\\\\* Input de Mensagem \\\\\\\\*\\\\\\\\/\\\\\\\\}\\\\\\\\[\\\\\\\\s\\\\\\\\S\\\\\\\\]\\\\\\\\*?    <\\\\\\\\/div>\\\\\\\\n  \\\\\\\\\\);\\\\\\\\n\\\\\\\\}\\\\\\\\n\\\\\\\\$/, newForm + '\\\\\\\\n    </div>\\\\\\\\n  \\);\\\\\\\\n}\\\\\\\\n'\\);\")",
+      "Bash(cp \"D:\\\\GERAL\\\\TELA\\\\flecha bsb\\\\public\\\\logo-flecha.png.png\" public/logo-flecha.png)",
+      "Bash(cp \"D:/GERAL/TELA/flecha bsb/public/logo-flecha.png.png\" public/logo-flecha.png)"
     ]
   }
 }

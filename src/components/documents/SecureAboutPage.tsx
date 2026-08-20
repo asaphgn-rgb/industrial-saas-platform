@@ -7,7 +7,7 @@ export function SecureAboutPage() {
       <div className="flex items-center space-x-4 mb-10 pb-6 border-b border-fbsb-border">
          <div className="w-16 h-16 flex items-center justify-center">
             
-<img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="w-full h-full object-contain" />
+<img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="w-full h-full object-contain mix-blend-multiply" style={{ mixBlendMode: "multiply" }} />
 
          </div>
          <div>
@@ -125,7 +125,7 @@ export function SecureAboutPage() {
 
         <section className="bg-gradient-to-br from-fbsb-surface-200 to-fbsb-surface-100 p-10 rounded-2xl border border-fbsb-cyan/30 shadow-glow-cyan text-center relative overflow-hidden">
           
-<img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-16 mx-auto mb-4 relative z-10 object-contain" />
+<img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-16 mx-auto mb-4 relative z-10 object-contain mix-blend-multiply" style={{ mixBlendMode: "multiply" }} />
 
           <p className="text-sm text-fbsb-cyan font-bold tracking-[0.2em] uppercase mb-8 relative z-10">
             Privacidade para compartilhar. Inteligência para validar. Segurança para negociar.
