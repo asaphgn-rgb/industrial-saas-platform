@@ -91,7 +91,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
     cloudRelay.connect(roomId, async (cloudMessages) => {
         try {
            const decMsgs = await Promise.all(cloudMessages.map(async (msg: any) => {
-              if (msg.content && msg.content.length > 50 && !msg.content.startsWith('http')) {
+              if (msg.content && msg.content.length > 20 && !msg.content.startsWith('http')) {
                  try {
                    return { ...msg, content: await decryptE2E(msg.content, cryptoKey) };
                  } catch(e) { return msg; }
