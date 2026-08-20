@@ -8,53 +8,45 @@ interface SecureLoginProps {
 }
 
 export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
-  const [folderCode, setFolderCode] = useState('REGULARIZACAO');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
-  // Mapeamento ficticio para credenciais de teste baseado nos mockUsers e pastas
+  // Mapeamento ficticio (senha atrelada à sala, e-mail atrelado à role)
   const validCredentials: Record<string, any> = {
-    'REGULARIZACAO': {
-        password: '123',
-        users: {
-          'admin@flechabsb.com': { id: '22222222-2222-2222-2222-222222222222', name: 'Administrador (CEO)', role: 'Acesso Global & Master', initials: 'CEO' },
-          'socio@flechabsb.com': { id: '33333333-3333-3333-3333-333333333333', name: 'Sócio / Auditor', role: 'Auditoria & Due Diligence', initials: 'AUD' },
-          'investidor@flechabsb.com': { id: '44444444-4444-4444-4444-444444444444', name: 'Investidor (Comprador)', role: 'Avaliação de Ativos', initials: 'INV' },
-          'juridico@flechabsb.com': { id: '55555555-5555-5555-5555-555555555555', name: 'Jurídico (Advogado)', role: 'Compliance & Contratos', initials: 'JUR' }
-        }
-    }
+    'admin@flechabsb.com': { id: '22222222-2222-2222-2222-222222222222', name: 'Administrador (CEO)', role: 'Acesso Global & Master', initials: 'CEO', email: 'admin@flechabsb.com' },
+    'socio@flechabsb.com': { id: '33333333-3333-3333-3333-333333333333', name: 'Sócio / Auditor', role: 'Auditoria & Due Diligence', initials: 'AUD', email: 'socio@flechabsb.com' },
+    'investidor@flechabsb.com': { id: '44444444-4444-4444-4444-444444444444', name: 'Investidor (Comprador)', role: 'Avaliação de Ativos', initials: 'INV', email: 'investidor@flechabsb.com' },
+    'juridico@flechabsb.com': { id: '55555555-5555-5555-5555-555555555555', name: 'Jurídico (Advogado)', role: 'Compliance & Contratos', initials: 'JUR', email: 'juridico@flechabsb.com' },
+    'compliance@flechabsb.com': { id: '66666666-6666-6666-6666-666666666666', name: 'Equipe de Compliance', role: 'Compliance', initials: 'CPL', email: 'compliance@flechabsb.com' }
   };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    const folder = folderCode.toUpperCase().trim().normalize("NFD").replace(/[̀-ͯ]/g, "");
-
-    if (!email || !password || !folder) {
-      setError('Credenciais e código da pasta são obrigatórios para ingresso no cofre.');
+    if (!email || !password) {
+      setError('Credenciais obrigatórias para ingresso no cofre.');
       return;
     }
 
     setIsAuthenticating(true);
 
-    // Simular handshake e verificacao E2E
     setTimeout(() => {
-      const matchFolder = validCredentials[folder];
-      if (matchFolder && matchFolder.password === password) {
-        const matchUser = matchFolder.users[email.toLowerCase()];
+      // Se a senha for "123", o usuário entra na pasta REGULARIZAÇÃO.
+      // Se tivermos senhas diferentes, ele entraria em pastas diferentes, mas hoje a senha do ambiente define a pasta.
+      if (password === '123') {
+        const matchUser = validCredentials[email.toLowerCase()];
         if (matchUser) {
-           // O usuário logou com sucesso numa pasta. Vamos passar a role e também nome da pasta para ser usado futuramente, se necessário.
-           onLogin({ ...matchUser, currentFolder: folder });
+           onLogin({ ...matchUser, currentFolder: 'REGULARIZAÇÃO' });
         } else {
-           setError('E-mail não autorizado para esta pasta.');
+           setError('E-mail não autorizado para esta sala.');
            setIsAuthenticating(false);
         }
       } else {
-        setError('Pasta não encontrada ou senha do ambiente incorreta.');
+        setError('Senha do ambiente incorreta.');
         setIsAuthenticating(false);
       }
     }, 1500);
@@ -126,23 +118,6 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
                    onChange={(e) => setEmail(e.target.value)}
                    className="block w-full pl-10 pr-3 py-3 border border-fbsb-border rounded-xl bg-fbsb-bg-main focus:bg-fbsb-surface-200 text-fbsb-text-primary text-sm font-medium focus:ring-2 focus:ring-fbsb-cyan focus:border-fbsb-cyan transition-all outline-none"
                    placeholder="seu.nome@empresa.com"
-                   required
-                 />
-               </div>
-            </div>
-
-            <div className="space-y-1">
-               <label className="text-[10px] font-bold uppercase tracking-widest text-fbsb-text-secondary pl-1">Código da Pasta (Data Room)</label>
-               <div className="relative">
-                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                   <ShieldCheck className="h-5 w-5 text-fbsb-text-secondary" />
-                 </div>
-                 <input
-                   type="text"
-                   value={folderCode}
-                   onChange={(e) => setFolderCode(e.target.value)}
-                   className="block w-full pl-10 pr-3 py-3 border border-fbsb-border rounded-xl bg-fbsb-bg-main focus:bg-fbsb-surface-200 text-fbsb-text-primary text-sm font-medium focus:ring-2 focus:ring-fbsb-cyan focus:border-fbsb-cyan transition-all outline-none uppercase"
-                   placeholder="NOME-DA-PASTA"
                    required
                  />
                </div>

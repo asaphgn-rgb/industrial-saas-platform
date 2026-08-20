@@ -73,9 +73,10 @@ interface UploadResponse {
 
 interface SecureUploadPageProps {
   onUploadComplete?: () => void;
+  currentUser?: any;
 }
 
-export function SecureUploadPage({ onUploadComplete }: SecureUploadPageProps) {
+export function SecureUploadPage({ onUploadComplete, currentUser }: SecureUploadPageProps) {
   const [dragActive, setDragActive] = useState(false);
   const [parsedFiles, setParsedFiles] = useState<ParsedFile[]>([]);
 
@@ -255,7 +256,10 @@ export function SecureUploadPage({ onUploadComplete }: SecureUploadPageProps) {
            regulatoryAnalysis: pf.consultativeNote,
            resolutionAction,
            fileData: pf.fileData,
-           fileType: pf.fileType
+           fileType: pf.fileType,
+           uploaderName: currentUser?.name || 'Usuário Não Identificado',
+           uploaderRole: currentUser?.role || 'Usuário do Sistema',
+           uploaderEmail: currentUser?.email || 'N/A'
          };
       });
 

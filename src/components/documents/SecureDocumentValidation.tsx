@@ -16,7 +16,8 @@ import {
   Eye,
   X,
   FileBadge,
-  Trash2
+  Trash2,
+  User
 } from 'lucide-react';
 
 // --- Utilitário IndexedDB para suportar dezenas de MegaBytes ---
@@ -70,9 +71,16 @@ interface AnalyzedDocument {
   issuingAuthority: string;
   fileData?: string;
   fileType?: string;
+  uploaderName?: string;
+  uploaderRole?: string;
+  uploaderEmail?: string;
 }
 
-export function SecureDocumentValidation() {
+interface SecureDocumentValidationProps {
+  currentUser?: any;
+}
+
+export function SecureDocumentValidation({ currentUser }: SecureDocumentValidationProps = {}) {
   // Inicial limpo (0 documentos) para a sensação de estar começando do zero
   const [mockDocuments, setMockDocuments] = useState<AnalyzedDocument[]>([]);
   const [expandedDocId, setExpandedDocId] = useState<string | null>(null);
@@ -313,11 +321,24 @@ export function SecureDocumentValidation() {
                     <div className="px-4 md:px-5 py-6 bg-fbsb-surface-100 border-t border-fbsb-border">
 
                       <div className="flex flex-col md:flex-row justify-between items-start mb-6 gap-6">
-                        <div className="w-full md:w-auto">
-                          <span className="text-[10px] font-bold uppercase tracking-widest text-fbsb-text-secondary block mb-2">Órgão Regulador / Autoridade Emissora</span>
-                          <div className="text-sm font-semibold text-fbsb-text-primary flex items-center break-words">
-                            <ShieldCheck className="w-4 h-4 mr-2 text-fbsb-text-secondary flex-shrink-0" />
-                            <span className="flex-1">{doc.issuingAuthority}</span>
+                        <div className="w-full md:w-auto flex flex-col space-y-4">
+                          <div>
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-fbsb-text-secondary block mb-2">Órgão Regulador / Autoridade Emissora</span>
+                            <div className="text-sm font-semibold text-fbsb-text-primary flex items-center break-words">
+                              <ShieldCheck className="w-4 h-4 mr-2 text-fbsb-text-secondary flex-shrink-0" />
+                              <span className="flex-1">{doc.issuingAuthority}</span>
+                            </div>
+                          </div>
+
+                          <div>
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-fbsb-text-secondary block mb-2">Trilha de Auditoria (Upload via)</span>
+                            <div className="text-sm font-semibold text-fbsb-text-primary flex items-center break-words bg-fbsb-surface-200 px-3 py-2 rounded-lg border border-fbsb-border">
+                              <User className="w-4 h-4 mr-2 text-fbsb-cyan flex-shrink-0" />
+                              <div className="flex flex-col">
+                                <span className="flex-1 text-xs text-white">{doc.uploaderRole || 'Usuário Sistema'}</span>
+                                <span className="flex-1 text-[10px] text-fbsb-text-secondary font-normal">{doc.uploaderName || 'Não Identificado'} • <span className="text-fbsb-cyan">{doc.uploaderEmail || 'N/A'}</span></span>
+                              </div>
+                            </div>
                           </div>
                         </div>
 
