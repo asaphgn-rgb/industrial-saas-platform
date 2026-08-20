@@ -15,10 +15,10 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
 
   // Mapeamento ficticio para credenciais de teste baseado nos mockUsers
   const validCredentials: Record<string, any> = {
-    'admin@flechabsb.com': { password: 'mastervault', user: mockUsers[0] }, // CEO / Master
-    'socio@flechabsb.com': { password: 'auditvault', user: mockUsers[1] }, // Sócio / Auditor
-    'investidor@flechabsb.com': { password: 'investvault', user: mockUsers[2] }, // Investidor
-    'juridico@flechabsb.com': { password: 'legalvault', user: mockUsers[3] } // Jurídico
+    'admin@flechabsb.com': { password: 'mastervault', user: { id: '22222222-2222-2222-2222-222222222222', name: 'Administrador (CEO)', role: 'Acesso Global & Master', initials: 'CEO' } },
+    'socio@flechabsb.com': { password: 'auditvault', user: { id: '33333333-3333-3333-3333-333333333333', name: 'Sócio / Auditor', role: 'Auditoria & Due Diligence', initials: 'AUD' } },
+    'investidor@flechabsb.com': { password: 'investvault', user: { id: '44444444-4444-4444-4444-444444444444', name: 'Investidor (Comprador)', role: 'Avaliação de Ativos', initials: 'INV' } },
+    'juridico@flechabsb.com': { password: 'legalvault', user: { id: '55555555-5555-5555-5555-555555555555', name: 'Jurídico (Advogado)', role: 'Compliance & Contratos', initials: 'JUR' } }
   };
 
   const handleLogin = async (e: React.FormEvent) => {
