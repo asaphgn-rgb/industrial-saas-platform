@@ -54,7 +54,7 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
               return;
            }
          } catch (e) {
-           console.error("Erro ao validar RBAC Cloud", e);
+           console.error("Erro ao validar RBAC Cloud (Tabela pode não existir na demo). Acesso liberado por padrão.", e);
          }
 
          // O usuário logou com as credenciais oficiais e não está bloqueado. Colocando na pasta "REGULARIZAÇÃO"
