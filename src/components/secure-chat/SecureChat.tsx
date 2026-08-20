@@ -39,19 +39,27 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
 
   const fetchMessages = async () => {
     try {
-      // Derivar a chave de criptografia baseada no ID da sala (Simulação de Handshake)
       const key = await deriveKey(roomId, 'SaaS-B2B-Secure-Salt');
       setCryptoKey(key);
       
-      // Carrega histórico E2E da memória B2B MOCK
-      const savedMessages = localStorage.getItem('B2B_MOCK_CHAT_' + roomId);
-      if (savedMessages) {
-         setMessages(JSON.parse(savedMessages));
+      const { data, error } = await supabase
+        .from('b2b_secure_chat')
+        .select('*')
+        .eq('room_id', roomId)
+        .order('created_at', { ascending: true });
+
+      if (data && !error && data.length > 0) {
+        const decryptedMessages = await Promise.all(data.map(async (msg: any) => ({
+          ...msg,
+          content: await decryptE2E(msg.content, key),
+        })));
+        setMessages(decryptedMessages as Message[]);
       } else {
-         setMessages([]);
+        const savedMessages = localStorage.getItem('B2B_MOCK_CHAT_' + roomId);
+        if (savedMessages) setMessages(JSON.parse(savedMessages));
       }
       setLoading(false);
-    } catch (e) { }
+    } catch (e) { setLoading(false); }
   };
 
   useEffect(() => { fetchMessages(); }, [roomId]);
@@ -138,11 +146,17 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
     const cipherB64 = await encryptE2E("Mensagem de Voz", cryptoKey);
     const decrypted = await decryptE2E(cipherB64, cryptoKey);
     const newMsg: Message = {
-      id: Math.random().toString(), sender_id: currentUserId, content: decrypted, created_at: new Date().toISOString(),
+      id: crypto.randomUUID(), sender_id: currentUserId, content: decrypted, created_at: new Date().toISOString(),
       is_read: false, sender_role: currentUserRole, sender_name: currentUserName, audio_data: base64Audio, attachment_type: 'audio'
     };
     setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
-    await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
+    
+    try {
+      await supabase.from('b2b_secure_chat').insert({
+      id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
+      sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64, audio_data: base64Audio, attachment_type: 'audio'
+    } as any);
+    } catch(e) {}
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -155,11 +169,17 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
       const cipherB64 = await encryptE2E("Arquivo Anexado", cryptoKey);
       const decrypted = await decryptE2E(cipherB64, cryptoKey);
       const newMsg: Message = {
-        id: Math.random().toString(), sender_id: currentUserId, content: decrypted, created_at: new Date().toISOString(),
+        id: crypto.randomUUID(), sender_id: currentUserId, content: decrypted, created_at: new Date().toISOString(),
         is_read: false, sender_role: currentUserRole, sender_name: currentUserName, attachment_url: base64Data, attachment_type: type
       };
       setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
-      await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
+      
+      try {
+      await supabase.from('b2b_secure_chat').insert({
+        id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
+        sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64, attachment_url: base64Data, attachment_type: type
+      } as any);
+    } catch(e) {}
     };
     reader.readAsDataURL(file);
   };
@@ -170,28 +190,31 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
     const msg = newMessage;
     setNewMessage("");
 
-    // Cifra a mensagem antes de "mandar para o banco"
-    // No banco de dados real isso salva o cipherB64, e nem a administração lê.
     const cipherB64 = await encryptE2E(msg, cryptoKey);
-    
-    // Simulando que o recebedor vai decifrar a mensagem instantaneamente na UI:
     const decrypted = await decryptE2E(cipherB64, cryptoKey);
 
     const newMsg: Message = {
       sender_role: currentUserRole,
       sender_name: currentUserName,
-      id: Math.random().toString(),
+      id: crypto.randomUUID(),
       sender_id: currentUserId,
       content: decrypted,
       created_at: new Date().toISOString(),
       is_read: false
     };
+    
     setMessages(prev => {
       const updated = [...prev, newMsg];
       localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(updated));
       return updated;
     });
-    await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
+    
+    try {
+      await supabase.from('b2b_secure_chat').insert({
+      id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
+      sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64
+    } as any);
+    } catch(e) {}
   };
 
   if (loading) return <div className="flex h-full items-center justify-center p-4"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-fbsb-primary"></div></div>;
@@ -274,15 +297,28 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
                 )}
                 <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
 
-                {msg.attachment_url && (
+                {msg.attachment_url && msg.attachment_type === 'image' && (
+                   <div className="mt-3 relative rounded-lg overflow-hidden border border-fbsb-border/30">
+                      <img src={msg.attachment_url} alt="Anexo Seguro" className="max-w-full max-h-48 object-cover" />
+                   </div>
+                )}
+                {msg.attachment_url && msg.attachment_type === 'pdf' && (
                    <div className={`mt-3 flex items-center p-3 rounded-xl cursor-pointer transition-colors ${
                      isMine ? 'bg-fbsb-surface-200/50 hover:bg-fbsb-surface-200' : 'bg-fbsb-bg-main hover:bg-fbsb-text-secondary/20'
-                   }`}>
+                   }`} onClick={() => {
+                      const w = window.open("");
+                      w?.document.write("<iframe width='100%' height='100%' src='" + msg.attachment_url + "'></iframe>");
+                   }}>
                       <FileText className={`w-5 h-5 mr-3 ${isMine ? 'text-fbsb-cyan' : 'text-fbsb-text-primary'}`}/>
                       <div>
-                        <span className="text-xs font-bold block">Documento Anexado</span>
-                        <span className="text-[10px] opacity-70 uppercase tracking-wider">Auditado pelo RLS</span>
+                        <span className="text-xs font-bold block">Documento Seguro.pdf</span>
+                        <span className="text-[10px] opacity-70 uppercase tracking-wider">Clique para visualizar</span>
                       </div>
+                   </div>
+                )}
+                {msg.audio_data && (
+                   <div className="mt-3 w-48 md:w-64">
+                     <audio src={msg.audio_data} controls className="w-full h-8" />
                    </div>
                 )}
 
@@ -303,11 +339,19 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
       <form onSubmit={handleSendMessage} className="p-4 bg-fbsb-surface-100 border-t border-fbsb-border flex items-end space-x-3">
         <button
           type="button"
+          onClick={() => fileInputRef.current?.click()}
           className="p-3 text-fbsb-text-secondary hover:text-fbsb-text-primary hover:bg-fbsb-bg-main rounded-xl transition-colors"
-          title="Anexar Documento Sigiloso"
+          title="Anexar Arquivo ou Foto"
         >
           <Paperclip className="w-5 h-5" />
         </button>
+        <input 
+          type="file" 
+          ref={fileInputRef} 
+          onChange={handleFileUpload} 
+          className="hidden" 
+          accept="image/*,application/pdf" 
+        />
 
         <textarea
           value={newMessage}
@@ -323,13 +367,25 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
           }}
         />
 
-        <button
-          type="submit"
-          disabled={!newMessage.trim()}
-          className="p-4 bg-fbsb-primary text-fbsb-cyan rounded-xl hover:bg-fbsb-surface-200 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center justify-center shadow-md shadow-fbsb-primary/20"
-        >
-          <Send className="w-5 h-5" />
-        </button>
+        {newMessage.trim() === '' ? (
+          <button
+            type="button"
+            onMouseDown={startRecording}
+            onMouseUp={stopRecording}
+            onTouchStart={startRecording}
+            onTouchEnd={stopRecording}
+            className={`p-4 rounded-xl transition-all flex items-center justify-center shadow-md ${isRecording ? 'bg-red-500 text-white animate-pulse' : 'bg-fbsb-primary text-fbsb-cyan hover:bg-fbsb-surface-200'}`}
+          >
+            <Mic className="w-5 h-5" />
+          </button>
+        ) : (
+          <button
+            type="submit"
+            className="p-4 bg-fbsb-primary text-fbsb-cyan rounded-xl hover:bg-fbsb-surface-200 transition-all flex items-center justify-center shadow-md shadow-fbsb-primary/20"
+          >
+            <Send className="w-5 h-5" />
+          </button>
+        )}
       </form>
     </div>
   );

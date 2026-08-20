@@ -125,7 +125,16 @@
       "Bash(git apply *)",
       "Bash(curl -s -X POST \"https://ujttkjvxxljonqepglae.supabase.co/rest/v1/importacao_linhas\" -H \"apikey: sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA\" -H \"Content-Type: application/json\" -H \"Prefer: return=representation\" -d '{\"importacao_id\": \"dcef2519-437d-4e0d-ab4a-38bd5b6aa7de\", \"tenant_id\": \"00000000-0000-0000-0000-000000000000\", \"numero_linha\": 1, \"dados_originais\": {}, \"status\": \"valida\", \"erros_validacao\": \"teste\"}')",
       "Bash(patch -p1)",
-      "Bash(patch -p0)"
+      "Bash(patch -p0)",
+      "Bash(curl -s https://flechabsb.com/logo-flecha.png -I)",
+      "Bash(curl -s https://www.flechabsb.com/logo-flecha.png -I)",
+      "Bash(echo 'content = content.replace\\(/  useEffect\\\\\\\\\\(\\\\\\\\\\(\\\\\\\\\\) => \\\\\\\\{\\\\\\\\n    \\\\\\\\/\\\\\\\\/ Inscreve no canal de comunicação p2p global\\\\\\\\[\\\\\\\\s\\\\\\\\S\\\\\\\\]\\\\\\\\*?\\\\\\\\}, \\\\\\\\[roomId\\\\\\\\]\\\\\\\\\\);\\\\\\\\n/, \"  /* Realtime effect replaced */\\\\\\\\n\"\\);')",
+      "Bash(node fix.js)",
+      "Bash(echo 'const oldAttachUI = `                {msg.attachment_url && \\( *)",
+      "Bash(echo 'const newAttachUI = `                {msg.attachment_url && msg.attachment_type === '\\\\''image'\\\\'' && \\( *)",
+      "Bash(echo \"content = content.replace\\(/                \\\\\\\\{msg\\\\\\\\.attachment_url && \\\\\\\\\\(\\\\\\\\[\\\\\\\\s\\\\\\\\S\\\\\\\\]\\\\\\\\*?\\\\\\\\\\)\\\\\\\\}/, newAttachUI\\);\")",
+      "Bash(echo 'const newForm = `      {/* Input de Mensagem */} *)",
+      "Bash(echo \"content = content.replace\\(/      \\\\\\\\{\\\\\\\\/\\\\\\\\* Input de Mensagem \\\\\\\\*\\\\\\\\/\\\\\\\\}\\\\\\\\[\\\\\\\\s\\\\\\\\S\\\\\\\\]\\\\\\\\*?    <\\\\\\\\/div>\\\\\\\\n  \\\\\\\\\\);\\\\\\\\n\\\\\\\\}\\\\\\\\n\\\\\\\\$/, newForm + '\\\\\\\\n    </div>\\\\\\\\n  \\);\\\\\\\\n}\\\\\\\\n'\\);\")"
     ]
   }
 }
