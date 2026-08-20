@@ -1,0 +1,29 @@
+--- src/services/qms-capa.service.ts
++++ src/services/qms-capa.service.ts
+@@ -87,7 +87,7 @@
+     
+     if (actionType === 'Correção') {
+       // Se for correção imediata, já fecha a NC e vai para verificação
+-      const updatePayload = {
++      const updatePayload: SafeAny = {
+         status: 'Verificação'
+       };
+       await supabase
+@@ -131,7 +131,7 @@
+       throw new Error('Falha ao registrar ação CAPA. ' + error.message);
+     }
+ 
+-    const updatePayload = {
++    const updatePayload: SafeAny = {
+       status: isLastAction ? 'Verificação' : 'Em Andamento'
+     };
+ 
+@@ -189,7 +189,7 @@
+     }
+ 
+     // Atualiza a NC para fechada
+-    const updatePayload = {
++    const updatePayload: SafeAny = {
+       status: 'Fechada',
+       closed_at: new Date().toISOString()
+     };

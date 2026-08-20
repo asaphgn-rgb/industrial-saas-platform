@@ -1,0 +1,14 @@
+[
+  {
+    "conta_numero": "NF-001001/1",
+    "data_baixa": "2026-08-08",
+    "valor": 25000,
+    "forma": "Boleto"
+  },
+  {
+    "conta_numero": "NF-001002/1",
+    "data_baixa": "2026-08-23",
+    "valor": 15800,
+    "forma": "Boleto"
+  }
+]

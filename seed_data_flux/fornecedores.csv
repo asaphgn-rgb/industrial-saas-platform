@@ -1,0 +1,4 @@
+codigo,tipo_pessoa,razao_social,nome_fantasia,cnpj_cpf,email,telefone,estado,cidade,endereco
+FOR-0001,PJ,Petroquímica Delta S/A,Delta Resinas,44.555.666/0001-77,vendas@delta.com,(11) 6666-7777,SP,Cubatão,"Polo Ind, S/N"
+FOR-0002,PJ,Cores & Pigmentos Epsilon,Epsilon Master,55.666.777/0001-88,contato@epsilon.com,(19) 7777-8888,SP,Campinas,"Distrito Ind, Lote 5"
+FOR-0003,PJ,Embalagens Zeta,Zeta Insumos,66.777.888/0001-99,comercial@zeta.com,(47) 8888-9999,SC,Joinville,"Rua D, 400"

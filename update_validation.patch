@@ -1,0 +1,82 @@
+--- src/components/documents/SecureDocumentValidation.tsx
++++ src/components/documents/SecureDocumentValidation.tsx
+@@ -23,6 +23,8 @@
+   regulatoryAnalysis: string;
+   resolutionAction?: string;
+   issuingAuthority: string;
++  fileData?: string;
++  fileType?: string;
+ }
+ 
+ export function SecureDocumentValidation() {
+@@ -79,7 +81,7 @@
+             <button onClick={() => setViewingDoc(null)} className="text-slate-400 hover:text-white transition-colors bg-slate-800 p-2 rounded-xl">
+                <X className="w-6 h-6" />
+             </button>
+           </div>
+ 
+           {/* Corpo do Viewer - Simulação de PDF (CSS para impedir seleção e download) */}
+-          <div className="flex-1 bg-[#525659] p-8 overflow-y-auto custom-scrollbar flex flex-col items-center select-none" style={{ WebkitUserSelect: 'none' }}>
+-             {/* Simulação visual de uma página A4 do documento */}
+-             <div className="bg-white w-full max-w-3xl min-h-[1056px] shadow-2xl p-16 flex flex-col pointer-events-none relative">
+-                 {/* Marca d'água */}
+-                 <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] rotate-[-45deg] pointer-events-none">
+-                     <span className="text-8xl font-bold font-serif text-slate-900">CONFIDENCIAL B2B</span>
+-                 </div>
+-
+-                 <div className="border-b-2 border-slate-200 pb-8 mb-8 text-center">
+-                    <h1 className="text-2xl font-bold font-serif text-slate-800">{viewingDoc.issuingAuthority}</h1>
+-                    <p className="text-slate-500 uppercase tracking-widest text-xs mt-2">{viewingDoc.category} - DOC REF: {viewingDoc.id.toUpperCase()}</p>
+-                 </div>
+-
+-                 <div className="space-y-6 text-sm text-slate-700 leading-loose text-justify font-serif">
+-                    <p>
+-                      Certificamos para os devidos fins de direito que este documento constitui prova material extraída sob rigor da lei.
+-                      Os presentes dados refletem a realidade factual da entidade ou propriedade consultada na data de emissão.
+-                    </p>
+-                    <p>
+-                      Para preservar o sigilo no fluxo B2B desta plataforma, os detalhes sensíveis deste arquivo estão sendo
+-                      renderizados unicamente em camada visual no seu navegador, sem armazenamento temporário em disco.
+-                    </p>
+-                    {/* Linhas simulando texto denso */}
+-                    <div className="space-y-4">
+-                       <div className="h-4 bg-slate-100 rounded w-full"></div>
+-                       <div className="h-4 bg-slate-100 rounded w-full"></div>
+-                       <div className="h-4 bg-slate-100 rounded w-11/12"></div>
+-                       <div className="h-4 bg-slate-100 rounded w-full"></div>
+-                       <div className="h-4 bg-slate-100 rounded w-9/12"></div>
+-                    </div>
+-                    <div className="space-y-4 mt-8">
+-                       <div className="h-4 bg-slate-100 rounded w-full"></div>
+-                       <div className="h-4 bg-slate-100 rounded w-10/12"></div>
+-                       <div className="h-4 bg-slate-100 rounded w-full"></div>
+-                       <div className="h-4 bg-slate-100 rounded w-8/12"></div>
+-                    </div>
+-                 </div>
+-
+-                 <div className="mt-auto pt-16 text-center">
+-                    <div className="inline-block border-t border-slate-300 pt-4 px-12">
+-                       <p className="text-xs font-bold text-slate-500 uppercase">Assinatura Digital / Validação Blockchain</p>
+-                    </div>
+-                 </div>
+-             </div>
++          <div className="flex-1 bg-[#525659] overflow-hidden flex flex-col items-center select-none relative">
++            {/* Overlay transparente para bloquear o clique com botão direito e interações no iframe, reforçando a segurança */}
++            <div className="absolute inset-0 z-10" style={{ cursor: 'not-allowed' }} onContextMenu={(e) => e.preventDefault()} />
++            
++            {viewingDoc.fileData ? (
++              <iframe
++                src={`${viewingDoc.fileData}#toolbar=0&navpanes=0&scrollbar=0`}
++                className="w-full h-full border-0 pointer-events-none"
++                title="Visualizador Seguro"
++              />
++            ) : (
++              <div className="bg-white w-full max-w-3xl min-h-[1056px] shadow-2xl p-16 flex flex-col items-center justify-center text-center">
++                 <AlertTriangle className="w-16 h-16 text-slate-300 mb-4" />
++                 <h2 className="text-xl font-bold text-slate-600 font-serif">Documento Original Indisponível</h2>
++                 <p className="text-slate-500 mt-2">O arquivo base não foi processado ou está indisponível na sessão de visualização segura.</p>
++              </div>
++            )}
+           </div>
+         </div>
+       </div>

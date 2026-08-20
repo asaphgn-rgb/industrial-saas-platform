@@ -1,0 +1,41 @@
+[
+  {
+    "codigo": "CLI-0001",
+    "tipo_pessoa": "PJ",
+    "razao_social": "Supermercados Alfa Ltda",
+    "nome_fantasia": "Super Alfa",
+    "cnpj_cpf": "11.222.333/0001-44",
+    "email": "compras@superalfa.com",
+    "telefone": "(11) 3333-4444",
+    "estado": "SP",
+    "cidade": "São Paulo",
+    "bairro": "Centro",
+    "endereco": "Rua A, 100"
+  },
+  {
+    "codigo": "CLI-0002",
+    "tipo_pessoa": "PJ",
+    "razao_social": "Rede Farmácias Beta S/A",
+    "nome_fantasia": "Farma Beta",
+    "cnpj_cpf": "22.333.444/0001-55",
+    "email": "suprimentos@farmabeta.com.br",
+    "telefone": "(21) 4444-5555",
+    "estado": "RJ",
+    "cidade": "Rio de Janeiro",
+    "bairro": "Botafogo",
+    "endereco": "Av B, 200"
+  },
+  {
+    "codigo": "CLI-0003",
+    "tipo_pessoa": "PJ",
+    "razao_social": "Distribuidora Gamma",
+    "nome_fantasia": "Gamma Dist",
+    "cnpj_cpf": "33.444.555/0001-66",
+    "email": "contato@gamma.com",
+    "telefone": "(41) 5555-6666",
+    "estado": "PR",
+    "cidade": "Curitiba",
+    "bairro": "Batel",
+    "endereco": "Rua C, 300"
+  }
+]

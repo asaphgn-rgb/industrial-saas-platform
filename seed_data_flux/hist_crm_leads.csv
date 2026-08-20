@@ -1,0 +1,4 @@
+nome,empresa,email,telefone,origem,estagio,valor_estimado,probabilidade,proxima_acao,proxima_acao_data
+Roberto Almeida,Indústria Ômega,compras@omega.com,(11) 98888-7777,Site,proposta,150000,60,Follow-up,2026-08-25
+Fernanda Lima,Atacadão Sigma,flima@sigma.com,(21) 97777-6666,Feira,negociacao,300000,80,Reunião de fechamento,2026-08-20
+Marcos Torres,Varejo Theta,,,Indicação,perdido,50000,0,,

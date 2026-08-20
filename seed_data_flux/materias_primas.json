@@ -1,0 +1,55 @@
+[
+  {
+    "codigo": "MP-0001",
+    "descricao": "Resina PEBD 0.923 (Alta Transparência)",
+    "categoria": "Resina",
+    "ncm": "3901.10.10",
+    "cor": "Natural",
+    "densidade": 0.923,
+    "indice_fluidez": 2.5,
+    "estoque_minimo": 1000,
+    "custo_medio": 8.5
+  },
+  {
+    "codigo": "MP-0002",
+    "descricao": "Resina PEAD 0.960 (Sacos Lixo)",
+    "categoria": "Resina",
+    "ncm": "3901.20.29",
+    "cor": "Natural",
+    "densidade": 0.96,
+    "indice_fluidez": 0.8,
+    "estoque_minimo": 2000,
+    "custo_medio": 7.2
+  },
+  {
+    "codigo": "MP-0003",
+    "descricao": "Masterbatch Preto (Alta Concentração)",
+    "categoria": "Pigmento",
+    "ncm": "3206.49.90",
+    "cor": "Preto",
+    "densidade": 1.1,
+    "indice_fluidez": 15,
+    "estoque_minimo": 200,
+    "custo_medio": 12
+  },
+  {
+    "codigo": "MP-0004",
+    "descricao": "Masterbatch Branco (Dióxido de Titânio)",
+    "categoria": "Pigmento",
+    "ncm": "3206.11.10",
+    "cor": "Branco",
+    "densidade": 1.2,
+    "indice_fluidez": 12,
+    "estoque_minimo": 150,
+    "custo_medio": 15.5
+  },
+  {
+    "codigo": "MP-0005",
+    "descricao": "Aditivo Deslizante (Slip)",
+    "categoria": "Aditivo",
+    "ncm": "3824.99.89",
+    "cor": "Incolor",
+    "estoque_minimo": 50,
+    "custo_medio": 25
+  }
+]

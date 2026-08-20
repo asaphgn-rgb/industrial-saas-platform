@@ -1,0 +1,6 @@
+codigo,descricao,tipo,responsavel
+CC-EXT,Extrusão,operacional,João Silva
+CC-IMP,Impressão,operacional,Maria Costa
+CC-COR,Corte e Solda,operacional,Pedro Santos
+CC-ADM,Administrativo,administrativo,Ana Lima
+CC-COM,Comercial,comercial,Carlos Mendes

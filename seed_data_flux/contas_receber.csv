@@ -1,0 +1,4 @@
+numero,descricao,categoria,data_emissao,data_vencimento,valor_original,valor_pago,forma_recebimento
+NF-001001/1,Venda de Sacos de Lixo,Vendas,2026-07-10,2026-08-10,25000,0,Boleto
+NF-001002/1,Venda de Sacolas Tipo Camiseta,Vendas,2026-07-25,2026-08-25,15800,0,Boleto
+NF-001003/1,Venda de Bobinas Tubulares,Vendas,2026-08-05,2026-09-05,42000,0,Boleto

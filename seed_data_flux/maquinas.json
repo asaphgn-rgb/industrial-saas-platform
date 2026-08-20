@@ -1,0 +1,56 @@
+[
+  {
+    "codigo": "EXT-01",
+    "nome": "Extrusora Mono 65mm",
+    "tipo": "EXTRUSAO",
+    "fabricante": "Carnevalli",
+    "modelo": "Polaris",
+    "ano_fabricacao": 2015,
+    "capacidade_kg_h": 120,
+    "potencia_kw": 90,
+    "custo_hora": 150
+  },
+  {
+    "codigo": "EXT-02",
+    "nome": "Extrusora Coex 3 Camadas",
+    "tipo": "EXTRUSAO",
+    "fabricante": "Macchi",
+    "modelo": "Coex 3",
+    "ano_fabricacao": 2018,
+    "capacidade_kg_h": 250,
+    "potencia_kw": 180,
+    "custo_hora": 280
+  },
+  {
+    "codigo": "IMP-01",
+    "nome": "Impressora Flexo 6 Cores",
+    "tipo": "IMPRESSAO",
+    "fabricante": "Feva",
+    "modelo": "Flexo 6",
+    "ano_fabricacao": 2012,
+    "capacidade_kg_h": 300,
+    "potencia_kw": 120,
+    "custo_hora": 200
+  },
+  {
+    "codigo": "COR-01",
+    "nome": "Corte e Solda Fundo Estrela",
+    "tipo": "CORTE_SOLDA",
+    "fabricante": "Hece",
+    "modelo": "Roll-bag",
+    "ano_fabricacao": 2019,
+    "capacidade_kg_h": 80,
+    "potencia_kw": 30,
+    "custo_hora": 90
+  },
+  {
+    "codigo": "REC-01",
+    "nome": "Recuperadora / Aglutinador",
+    "tipo": "RECICLAGEM",
+    "fabricante": "Wortex",
+    "ano_fabricacao": 2010,
+    "capacidade_kg_h": 150,
+    "potencia_kw": 110,
+    "custo_hora": 120
+  }
+]

@@ -1,0 +1,155 @@
+[
+  {
+    "numero": "REC-2025-0000",
+    "fornecedor_codigo": "FOR-0002",
+    "pedido_compra_numero": "PC-2025-0001",
+    "data_recebimento": "2025-01-22",
+    "nota_fiscal": "NF-F100",
+    "chave_nfe": "3525F000000000000000000000000000000000000000",
+    "status": "aprovado"
+  },
+  {
+    "numero": "REC-2025-0001",
+    "fornecedor_codigo": "FOR-0003",
+    "pedido_compra_numero": "PC-2025-0002",
+    "data_recebimento": "2025-01-29",
+    "nota_fiscal": "NF-F101",
+    "chave_nfe": "3525F000000000000000000000000000000000000001",
+    "status": "aprovado"
+  },
+  {
+    "numero": "REC-2025-0002",
+    "fornecedor_codigo": "FOR-0001",
+    "pedido_compra_numero": "PC-2025-0003",
+    "data_recebimento": "2025-02-05",
+    "nota_fiscal": "NF-F102",
+    "chave_nfe": "3525F000000000000000000000000000000000000002",
+    "status": "aprovado"
+  },
+  {
+    "numero": "REC-2025-0003",
+    "fornecedor_codigo": "FOR-0002",
+    "pedido_compra_numero": "PC-2025-0004",
+    "data_recebimento": "2025-02-12",
+    "nota_fiscal": "NF-F103",
+    "chave_nfe": "3525F000000000000000000000000000000000000003",
+    "status": "aprovado"
+  },
+  {
+    "numero": "REC-2025-0004",
+    "fornecedor_codigo": "FOR-0003",
+    "pedido_compra_numero": "PC-2025-0005",
+    "data_recebimento": "2025-02-19",
+    "nota_fiscal": "NF-F104",
+    "chave_nfe": "3525F000000000000000000000000000000000000004",
+    "status": "aprovado"
+  },
+  {
+    "numero": "REC-2025-0005",
+    "fornecedor_codigo": "FOR-0001",
+    "pedido_compra_numero": "PC-2025-0006",
+    "data_recebimento": "2025-02-26",
+    "nota_fiscal": "NF-F105",
+    "chave_nfe": "3525F000000000000000000000000000000000000005",
+    "status": "aprovado"
+  },
+  {
+    "numero": "REC-2025-0006",
+    "fornecedor_codigo": "FOR-0002",
+    "pedido_compra_numero": "PC-2025-0007",
+    "data_recebimento": "2025-03-05",
+    "nota_fiscal": "NF-F106",
+    "chave_nfe": "3525F000000000000000000000000000000000000006",
+    "status": "aprovado"
+  },
+  {
+    "numero": "REC-2025-0007",
+    "fornecedor_codigo": "FOR-0003",
+    "pedido_compra_numero": "PC-2025-0008",
+    "data_recebimento": "2025-03-12",
+    "nota_fiscal": "NF-F107",
+    "chave_nfe": "3525F000000000000000000000000000000000000007",
+    "status": "aprovado"
+  },
+  {
+    "numero": "REC-2025-0008",
+    "fornecedor_codigo": "FOR-0001",
+    "pedido_compra_numero": "PC-2025-0009",
+    "data_recebimento": "2025-03-19",
+    "nota_fiscal": "NF-F108",
+    "chave_nfe": "3525F000000000000000000000000000000000000008",
+    "status": "aprovado"
+  },
+  {
+    "numero": "REC-2025-0009",
+    "fornecedor_codigo": "FOR-0002",
+    "pedido_compra_numero": "PC-2025-0010",
+    "data_recebimento": "2025-03-26",
+    "nota_fiscal": "NF-F109",
+    "chave_nfe": "3525F000000000000000000000000000000000000009",
+    "status": "aprovado"
+  },
+  {
+    "numero": "REC-2025-0010",
+    "fornecedor_codigo": "FOR-0003",
+    "pedido_compra_numero": "PC-2025-0011",
+    "data_recebimento": "2025-04-02",
+    "nota_fiscal": "NF-F110",
+    "chave_nfe": "3525F000000000000000000000000000000000000010",
+    "status": "aprovado"
+  },
+  {
+    "numero": "REC-2025-0011",
+    "fornecedor_codigo": "FOR-0001",
+    "pedido_compra_numero": "PC-2025-0012",
+    "data_recebimento": "2025-04-09",
+    "nota_fiscal": "NF-F111",
+    "chave_nfe": "3525F000000000000000000000000000000000000011",
+    "status": "aprovado"
+  },
+  {
+    "numero": "REC-2025-0012",
+    "fornecedor_codigo": "FOR-0002",
+    "pedido_compra_numero": "PC-2025-0013",
+    "data_recebimento": "2025-04-16",
+    "nota_fiscal": "NF-F112",
+    "chave_nfe": "3525F000000000000000000000000000000000000012",
+    "status": "aprovado"
+  },
+  {
+    "numero": "REC-2025-0013",
+    "fornecedor_codigo": "FOR-0003",
+    "pedido_compra_numero": "PC-2025-0014",
+    "data_recebimento": "2025-04-23",
+    "nota_fiscal": "NF-F113",
+    "chave_nfe": "3525F000000000000000000000000000000000000013",
+    "status": "aprovado"
+  },
+  {
+    "numero": "REC-2025-0014",
+    "fornecedor_codigo": "FOR-0001",
+    "pedido_compra_numero": "PC-2025-0015",
+    "data_recebimento": "2025-04-30",
+    "nota_fiscal": "NF-F114",
+    "chave_nfe": "3525F000000000000000000000000000000000000014",
+    "status": "aprovado"
+  },
+  {
+    "numero": "REC-2025-0015",
+    "fornecedor_codigo": "FOR-0002",
+    "pedido_compra_numero": "PC-2025-0016",
+    "data_recebimento": "2025-05-07",
+    "nota_fiscal": "NF-F115",
+    "chave_nfe": "3525F000000000000000000000000000000000000015",
+    "status": "aprovado"
+  },
+  {
+    "numero": "REC-2025-0016",
+    "fornecedor_codigo": "FOR-0003",
+    "pedido_compra_numero": "PC-2025-0017",
+    "data_recebimento": "2025-05-14",
+    "nota_fiscal": "NF-F116",
+    "chave_nfe": "3525F000000000000000000000000000000000000016",
+    "status": "aprovado"
+  }
+]

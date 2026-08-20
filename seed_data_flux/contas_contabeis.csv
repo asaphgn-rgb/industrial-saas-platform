@@ -1,0 +1,11 @@
+codigo,nome,tipo,natureza,nivel
+1.0,Ativo,ativo,devedora,1
+1.1,Ativo Circulante,ativo,devedora,2
+1.1.01,Caixa e Equivalentes,ativo,devedora,3
+2.0,Passivo,passivo,credora,1
+2.1,Passivo Circulante,passivo,credora,2
+2.1.01,Fornecedores,passivo,credora,3
+3.0,Receitas,receita,credora,1
+3.1,Receita Operacional Bruta,receita,credora,2
+4.0,Custos e Despesas,despesa,devedora,1
+4.1,Custo dos Produtos Vendidos (CPV),custo,devedora,2

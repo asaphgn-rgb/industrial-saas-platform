@@ -1,0 +1,74 @@
+--- src/components/documents/SecureUploadPage.tsx
++++ src/components/documents/SecureUploadPage.tsx
+@@ -19,6 +19,8 @@
+   title: string;
+   category: DueDiligenceCategory;
+   consultativeNote: string;
++  fileData?: string;
++  fileType?: string;
+ }
+ 
+ interface UploadResponse {
+@@ -74,7 +76,7 @@
+   };
+ 
+   // --- Motor Analítico (Heurística Profissional para Imóvel Rural) ---
+-  const analyzeFile = (file: File): ParsedFile => {
++  const analyzeFile = async (file: File): Promise<ParsedFile> => {
+     const name = file.name.toLowerCase();
+     let category: DueDiligenceCategory = 'Nao_Classificado';
+     let consultativeNote = '';
+@@ -98,21 +100,32 @@
+       consultativeNote = "Documento genérico. Será mantido no cofre geral aguardando classificação manual.";
+     }
+ 
+-    return {
+-      id: Math.random().toString(36).substring(7),
+-      file,
+-      title: file.name,
+-      category,
+-      consultativeNote
+-    };
++    return new Promise((resolve) => {
++      const reader = new FileReader();
++      reader.onload = (e) => {
++        resolve({
++          id: Math.random().toString(36).substring(7),
++          file,
++          title: file.name,
++          category,
++          consultativeNote,
++          fileData: e.target?.result as string,
++          fileType: file.type
++        });
++      };
++      reader.onerror = () => {
++        // Fallback em caso de erro no FileReader
++        resolve({ id: Math.random().toString(36).substring(7), file, title: file.name, category, consultativeNote });
++      };
++      reader.readAsDataURL(file);
++    });
+   };
+ 
+-  const handleFilesSelection = (files: File[]) => {
+-    const newParsedFiles = files.map(analyzeFile);
+-    setParsedFiles(prev => [...prev, ...newParsedFiles]);
+-    setUploadStatus(null);
++  const handleFilesSelection = async (files: File[]) => {
++    const newParsedFiles = await Promise.all(files.map(analyzeFile));
++    setParsedFiles((prev) => [...prev, ...newParsedFiles]);
++    setUploadStatus(null);
+   };
+ 
+   const removeFile = (id: string) => {
+@@ -183,7 +196,9 @@
+            uploadDate: new Date().toISOString().split('T')[0],
+            issuingAuthority: 'Autoridade Reguladora Virtual',
+            regulatoryAnalysis: pf.consultativeNote,
+-           resolutionAction
++           resolutionAction,
++           fileData: pf.fileData,
++           fileType: pf.fileType
+          };
+       });
+ 

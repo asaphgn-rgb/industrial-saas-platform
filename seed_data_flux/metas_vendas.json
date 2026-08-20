@@ -1,0 +1,62 @@
+[
+  {
+    "ano": 2026,
+    "mes": 1,
+    "valor_meta": 800000
+  },
+  {
+    "ano": 2026,
+    "mes": 2,
+    "valor_meta": 820000
+  },
+  {
+    "ano": 2026,
+    "mes": 3,
+    "valor_meta": 850000
+  },
+  {
+    "ano": 2026,
+    "mes": 4,
+    "valor_meta": 850000
+  },
+  {
+    "ano": 2026,
+    "mes": 5,
+    "valor_meta": 880000
+  },
+  {
+    "ano": 2026,
+    "mes": 6,
+    "valor_meta": 900000
+  },
+  {
+    "ano": 2026,
+    "mes": 7,
+    "valor_meta": 950000
+  },
+  {
+    "ano": 2026,
+    "mes": 8,
+    "valor_meta": 950000
+  },
+  {
+    "ano": 2026,
+    "mes": 9,
+    "valor_meta": 1000000
+  },
+  {
+    "ano": 2026,
+    "mes": 10,
+    "valor_meta": 1100000
+  },
+  {
+    "ano": 2026,
+    "mes": 11,
+    "valor_meta": 1200000
+  },
+  {
+    "ano": 2026,
+    "mes": 12,
+    "valor_meta": 1000000
+  }
+]

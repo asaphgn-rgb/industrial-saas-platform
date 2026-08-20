@@ -1,0 +1,47 @@
+[
+  {
+    "codigo": "CAR-001",
+    "titulo": "Operador de Extrusora",
+    "familia": "Produção",
+    "nivel": "Pleno",
+    "salario_minimo": 2500,
+    "salario_medio": 3200,
+    "salario_maximo": 4000
+  },
+  {
+    "codigo": "CAR-002",
+    "titulo": "Operador de Corte e Solda",
+    "familia": "Produção",
+    "nivel": "Júnior",
+    "salario_minimo": 2000,
+    "salario_medio": 2500,
+    "salario_maximo": 3000
+  },
+  {
+    "codigo": "CAR-003",
+    "titulo": "Líder de Produção",
+    "familia": "Produção",
+    "nivel": "Sênior",
+    "salario_minimo": 4500,
+    "salario_medio": 5500,
+    "salario_maximo": 7000
+  },
+  {
+    "codigo": "CAR-004",
+    "titulo": "Inspetor da Qualidade",
+    "familia": "Qualidade",
+    "nivel": "Pleno",
+    "salario_minimo": 2800,
+    "salario_medio": 3500,
+    "salario_maximo": 4200
+  },
+  {
+    "codigo": "CAR-005",
+    "titulo": "Mecânico de Manutenção",
+    "familia": "Manutenção",
+    "nivel": "Pleno",
+    "salario_minimo": 3500,
+    "salario_medio": 4500,
+    "salario_maximo": 5500
+  }
+]

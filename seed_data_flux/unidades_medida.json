@@ -1,0 +1,27 @@
+[
+  {
+    "sigla": "KG",
+    "descricao": "Quilograma",
+    "tipo": "PESO"
+  },
+  {
+    "sigla": "MIL",
+    "descricao": "Milheiro",
+    "tipo": "QUANTIDADE"
+  },
+  {
+    "sigla": "UN",
+    "descricao": "Unidade",
+    "tipo": "QUANTIDADE"
+  },
+  {
+    "sigla": "M",
+    "descricao": "Metro",
+    "tipo": "COMPRIMENTO"
+  },
+  {
+    "sigla": "BOB",
+    "descricao": "Bobina",
+    "tipo": "QUANTIDADE"
+  }
+]

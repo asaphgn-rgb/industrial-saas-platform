@@ -1,0 +1,6 @@
+matricula,nome,cargo,setor,turno,data_admissao,cpf
+0001,João Silva,Operador de Extrusora,Extrusão,A,2020-03-10,111.111.111-11
+0002,Maria Costa,Operador de Corte e Solda,Acabamento,B,2021-05-15,222.222.222-22
+0003,Pedro Santos,Líder de Produção,Produção Geral,A,2018-01-20,333.333.333-33
+0004,Ana Lima,Inspetor da Qualidade,Qualidade,A,2022-08-05,444.444.444-44
+0005,Carlos Mendes,Mecânico de Manutenção,Manutenção,ADM,2019-11-12,555.555.555-55

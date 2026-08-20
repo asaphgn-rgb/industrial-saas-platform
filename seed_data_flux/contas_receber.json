@@ -1,0 +1,32 @@
+[
+  {
+    "numero": "NF-001001/1",
+    "descricao": "Venda de Sacos de Lixo",
+    "categoria": "Vendas",
+    "data_emissao": "2026-07-10",
+    "data_vencimento": "2026-08-10",
+    "valor_original": 25000,
+    "valor_pago": 0,
+    "forma_recebimento": "Boleto"
+  },
+  {
+    "numero": "NF-001002/1",
+    "descricao": "Venda de Sacolas Tipo Camiseta",
+    "categoria": "Vendas",
+    "data_emissao": "2026-07-25",
+    "data_vencimento": "2026-08-25",
+    "valor_original": 15800,
+    "valor_pago": 0,
+    "forma_recebimento": "Boleto"
+  },
+  {
+    "numero": "NF-001003/1",
+    "descricao": "Venda de Bobinas Tubulares",
+    "categoria": "Vendas",
+    "data_emissao": "2026-08-05",
+    "data_vencimento": "2026-09-05",
+    "valor_original": 42000,
+    "valor_pago": 0,
+    "forma_recebimento": "Boleto"
+  }
+]

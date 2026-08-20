@@ -1,0 +1,13 @@
+--- src/components/documents/SecureUploadPage.tsx
++++ src/components/documents/SecureUploadPage.tsx
+@@ -176,7 +176,9 @@
+            uploadDate: new Date().toISOString().split('T')[0],
+            issuingAuthority: 'Autoridade Reguladora Virtual',
+            regulatoryAnalysis: pf.consultativeNote,
+-           resolutionAction
++           resolutionAction,
++           fileData: pf.fileData,
++           fileType: pf.fileType
+          };
+       });
+ 

@@ -1,0 +1,86 @@
+[
+  {
+    "numero": "RNC-2025-0000",
+    "data_ocorrencia": "2025-01-22",
+    "origem": "fornecedor",
+    "severidade": "media",
+    "descricao": "Material fora da especificação",
+    "responsavel_nome": "Ana Lima",
+    "acao_imediata": "Segregação do lote",
+    "acao_corretiva": "Treinamento / Notificação ao fornecedor",
+    "status": "encerrada",
+    "data_encerramento": "2025-01-29"
+  },
+  {
+    "numero": "RNC-2025-0001",
+    "data_ocorrencia": "2025-01-03",
+    "origem": "interna",
+    "severidade": "media",
+    "descricao": "Falha na selagem",
+    "responsavel_nome": "Ana Lima",
+    "acao_imediata": "Retrabalho/Descarte",
+    "acao_corretiva": "Treinamento / Notificação ao fornecedor",
+    "status": "encerrada",
+    "data_encerramento": "2025-01-10"
+  },
+  {
+    "numero": "RNC-2025-0002",
+    "data_ocorrencia": "2025-01-18",
+    "origem": "interna",
+    "severidade": "media",
+    "descricao": "Falha na selagem",
+    "responsavel_nome": "Ana Lima",
+    "acao_imediata": "Retrabalho/Descarte",
+    "acao_corretiva": "Treinamento / Notificação ao fornecedor",
+    "status": "encerrada",
+    "data_encerramento": "2025-01-25"
+  },
+  {
+    "numero": "RNC-2025-0003",
+    "data_ocorrencia": "2025-02-02",
+    "origem": "interna",
+    "severidade": "media",
+    "descricao": "Falha na selagem",
+    "responsavel_nome": "Ana Lima",
+    "acao_imediata": "Retrabalho/Descarte",
+    "acao_corretiva": "Treinamento / Notificação ao fornecedor",
+    "status": "encerrada",
+    "data_encerramento": "2025-02-09"
+  },
+  {
+    "numero": "RNC-2025-0004",
+    "data_ocorrencia": "2025-02-17",
+    "origem": "interna",
+    "severidade": "media",
+    "descricao": "Falha na selagem",
+    "responsavel_nome": "Ana Lima",
+    "acao_imediata": "Retrabalho/Descarte",
+    "acao_corretiva": "Treinamento / Notificação ao fornecedor",
+    "status": "encerrada",
+    "data_encerramento": "2025-02-24"
+  },
+  {
+    "numero": "RNC-2025-0005",
+    "data_ocorrencia": "2025-03-04",
+    "origem": "interna",
+    "severidade": "media",
+    "descricao": "Falha na selagem",
+    "responsavel_nome": "Ana Lima",
+    "acao_imediata": "Retrabalho/Descarte",
+    "acao_corretiva": "Treinamento / Notificação ao fornecedor",
+    "status": "encerrada",
+    "data_encerramento": "2025-03-11"
+  },
+  {
+    "numero": "RNC-2025-0006",
+    "data_ocorrencia": "2025-03-19",
+    "origem": "interna",
+    "severidade": "media",
+    "descricao": "Falha na selagem",
+    "responsavel_nome": "Ana Lima",
+    "acao_imediata": "Retrabalho/Descarte",
+    "acao_corretiva": "Treinamento / Notificação ao fornecedor",
+    "status": "encerrada",
+    "data_encerramento": "2025-03-26"
+  }
+]

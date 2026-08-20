@@ -1,0 +1,30 @@
+[
+  {
+    "codigo": "DEP-MP",
+    "descricao": "Almoxarifado de Matérias-Primas",
+    "tipo": "materia_prima",
+    "endereco": "Galpão A",
+    "responsavel": "José Silva"
+  },
+  {
+    "codigo": "DEP-PA",
+    "descricao": "Estoque de Produto Acabado",
+    "tipo": "produto_acabado",
+    "endereco": "Galpão B",
+    "responsavel": "Marcos Lima"
+  },
+  {
+    "codigo": "DEP-EXP",
+    "descricao": "Expedição",
+    "tipo": "expedicao",
+    "endereco": "Galpão C",
+    "responsavel": "Roberto Alves"
+  },
+  {
+    "codigo": "DEP-QUA",
+    "descricao": "Quarentena / Qualidade",
+    "tipo": "quarentena",
+    "endereco": "Laboratório",
+    "responsavel": "Carla Nunes"
+  }
+]

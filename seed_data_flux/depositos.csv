@@ -1,0 +1,5 @@
+codigo,descricao,tipo,endereco,responsavel
+DEP-MP,Almoxarifado de Matérias-Primas,materia_prima,Galpão A,José Silva
+DEP-PA,Estoque de Produto Acabado,produto_acabado,Galpão B,Marcos Lima
+DEP-EXP,Expedição,expedicao,Galpão C,Roberto Alves
+DEP-QUA,Quarentena / Qualidade,quarentena,Laboratório,Carla Nunes

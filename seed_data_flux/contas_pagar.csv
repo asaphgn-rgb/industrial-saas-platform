@@ -1,0 +1,5 @@
+numero,descricao,categoria,data_emissao,data_vencimento,valor_original,valor_pago,forma_pagamento
+FAT-FOR1-01,Compra de Resina PEBD,Matéria-prima,2026-07-15,2026-08-15,45000,0,Boleto
+FAT-FOR1-02,Compra de Resina PEBD (Parc 2),Matéria-prima,2026-07-15,2026-09-15,45000,0,Boleto
+FAT-FOR2-01,Compra de Masterbatch,Insumos,2026-08-01,2026-08-30,12500,0,Transferência Bancária
+FAT-ENERGIA,Conta de Energia Elétrica,Custos Fixos,2026-08-05,2026-08-20,18450,0,Débito em Conta

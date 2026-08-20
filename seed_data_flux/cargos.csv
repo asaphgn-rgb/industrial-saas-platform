@@ -1,0 +1,6 @@
+codigo,titulo,familia,nivel,salario_minimo,salario_medio,salario_maximo
+CAR-001,Operador de Extrusora,Produção,Pleno,2500,3200,4000
+CAR-002,Operador de Corte e Solda,Produção,Júnior,2000,2500,3000
+CAR-003,Líder de Produção,Produção,Sênior,4500,5500,7000
+CAR-004,Inspetor da Qualidade,Qualidade,Pleno,2800,3500,4200
+CAR-005,Mecânico de Manutenção,Manutenção,Pleno,3500,4500,5500

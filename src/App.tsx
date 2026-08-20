@@ -22,18 +22,26 @@ import { QmsDocumentModule } from './components/QmsDocumentModule';
 import { SecureUploadPage } from './components/documents/SecureUploadPage';
 import { KanbanBoard } from './components/kanban/KanbanBoard';
 import { SecureChat } from './components/secure-chat/SecureChat';
+import { SecureDocumentValidation } from './components/documents/SecureDocumentValidation';
 
-type TabType = 'dashboard' | 'qms' | 'mes' | 'documents' | 'upload_secure' | 'pipeline_secure' | 'chat_secure';
+type TabType = 'dashboard' | 'qms' | 'mes' | 'documents' | 'upload_secure' | 'pipeline_secure' | 'chat_secure' | 'validation_secure';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<TabType>('pipeline_secure');
+
+  // Mocks dos usuários para teste B2B
+  const mockUsers = [
+    { id: '22222222-2222-2222-2222-222222222222', name: 'M. Oliveira', role: 'Comprador (Investidor)', initials: 'MO' },
+    { id: '33333333-3333-3333-3333-333333333333', name: 'F. Silva', role: 'Vendedor (Proprietário)', initials: 'FS' }
+  ];
+  const [currentUser, setCurrentUser] = useState(mockUsers[0]);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   const currentTenantId = 'tenant-industrial-demo-uuid';
   const currentUnitId = 'unit-sp-planta-01-uuid';
 
   const demoBoardId = '00000000-0000-0000-0000-000000000001';
   const demoRoomId = '11111111-1111-1111-1111-111111111111';
-  const demoUserId = '22222222-2222-2222-2222-222222222222';
 
   return (
     <div className="min-h-screen bg-elite-paper text-elite-navy flex flex-col font-sans">
@@ -56,20 +64,63 @@ export default function App() {
            </div>
         </div>
 
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-6 relative">
           <div className="flex flex-col items-end">
              <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200">
                <Lock className="w-3 h-3" />
                <span>End-to-End Encrypted</span>
              </span>
           </div>
-          <div className="flex items-center space-x-3 pl-6 border-l border-slate-200">
+          <div className="flex items-center space-x-3 pl-6 border-l border-slate-200 relative">
              <button className="text-slate-400 hover:text-elite-navy transition-colors">
                <Settings className="w-5 h-5" />
              </button>
-             <div className="h-10 w-10 bg-gradient-to-br from-elite-navy to-slate-800 rounded-full flex items-center justify-center shadow-inner-gold cursor-pointer transform hover:scale-105 transition-transform">
-               <span className="text-sm font-bold text-elite-gold">FA</span>
+
+             {/* Componente de Switch de Usuário (Demonstração B2B) */}
+             <div className="relative">
+               <div
+                 className="flex items-center space-x-3 cursor-pointer group"
+                 onClick={() => setShowUserMenu(!showUserMenu)}
+               >
+                 <div className="text-right hidden md:block">
+                   <p className="text-xs font-bold text-elite-navy">{currentUser.name}</p>
+                   <p className="text-[10px] text-elite-sand font-semibold uppercase">{currentUser.role}</p>
+                 </div>
+                 <div className="h-10 w-10 bg-gradient-to-br from-elite-navy to-slate-800 rounded-full flex items-center justify-center shadow-inner-gold transform group-hover:scale-105 transition-transform border-2 border-elite-gold">
+                   <span className="text-sm font-bold text-elite-gold">{currentUser.initials}</span>
+                 </div>
+               </div>
+
+               {/* Dropdown de Login Swap */}
+               {showUserMenu && (
+                 <div className="absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-premium border border-elite-sand/30 overflow-hidden z-50">
+                    <div className="px-4 py-3 bg-slate-50 border-b border-elite-sand/20">
+                       <p className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Alternar Participante (Demo)</p>
+                    </div>
+                    <div className="p-2 space-y-1">
+                      {mockUsers.map(user => (
+                        <button
+                          key={user.id}
+                          onClick={() => {
+                            setCurrentUser(user);
+                            setShowUserMenu(false);
+                          }}
+                          className={`w-full flex items-center p-3 rounded-lg transition-colors text-left ${currentUser.id === user.id ? 'bg-elite-paper border border-elite-sand/40' : 'hover:bg-slate-50 border border-transparent'}`}
+                        >
+                           <div className={`h-8 w-8 rounded-full flex items-center justify-center mr-3 ${currentUser.id === user.id ? 'bg-elite-navy text-elite-gold' : 'bg-slate-200 text-slate-500'}`}>
+                              <span className="text-xs font-bold">{user.initials}</span>
+                           </div>
+                           <div>
+                             <p className={`text-xs font-bold ${currentUser.id === user.id ? 'text-elite-navy' : 'text-slate-700'}`}>{user.name}</p>
+                             <p className="text-[10px] text-slate-400">{user.role}</p>
+                           </div>
+                        </button>
+                      ))}
+                    </div>
+                 </div>
+               )}
              </div>
+
           </div>
         </div>
       </header>
@@ -105,6 +156,18 @@ export default function App() {
               >
                 <UploadCloud className={`w-4 h-4 ${activeTab === 'upload_secure' ? 'text-elite-gold' : 'text-slate-400'}`} />
                 <span className="tracking-wide">Dossiê Documental</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('validation_secure')}
+                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+                  activeTab === 'validation_secure'
+                    ? 'bg-elite-navy text-white shadow-premium'
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-elite-navy'
+                }`}
+              >
+                <CheckCircle2 className={`w-4 h-4 ${activeTab === 'validation_secure' ? 'text-elite-gold' : 'text-slate-400'}`} />
+                <span className="tracking-wide">Validação & Aceite</span>
               </button>
 
               <button
@@ -160,14 +223,20 @@ export default function App() {
           )}
 
           {activeTab === 'upload_secure' && (
-            <div className="p-8 md:p-12 max-w-7xl mx-auto">
-               <SecureUploadPage />
+            <div className="p-8 md:p-12 max-w-7xl mx-auto h-full">
+               <SecureUploadPage onUploadComplete={() => setActiveTab('validation_secure')} />
+            </div>
+          )}
+
+          {activeTab === 'validation_secure' && (
+            <div className="p-8 md:p-12 max-w-[1600px] mx-auto h-full">
+               <SecureDocumentValidation />
             </div>
           )}
 
           {activeTab === 'chat_secure' && (
             <div className="p-8 h-full">
-               <SecureChat roomId={demoRoomId} currentUserId={demoUserId} />
+               <SecureChat roomId={demoRoomId} currentUserId={currentUser.id} />
             </div>
           )}
 

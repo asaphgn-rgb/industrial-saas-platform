@@ -1,0 +1,8 @@
+numero,data_ocorrencia,origem,severidade,descricao,responsavel_nome,acao_imediata,acao_corretiva,status,data_encerramento
+RNC-2025-0000,2025-01-22,fornecedor,media,Material fora da especificação,Ana Lima,Segregação do lote,Treinamento / Notificação ao fornecedor,encerrada,2025-01-29
+RNC-2025-0001,2025-01-03,interna,media,Falha na selagem,Ana Lima,Retrabalho/Descarte,Treinamento / Notificação ao fornecedor,encerrada,2025-01-10
+RNC-2025-0002,2025-01-18,interna,media,Falha na selagem,Ana Lima,Retrabalho/Descarte,Treinamento / Notificação ao fornecedor,encerrada,2025-01-25
+RNC-2025-0003,2025-02-02,interna,media,Falha na selagem,Ana Lima,Retrabalho/Descarte,Treinamento / Notificação ao fornecedor,encerrada,2025-02-09
+RNC-2025-0004,2025-02-17,interna,media,Falha na selagem,Ana Lima,Retrabalho/Descarte,Treinamento / Notificação ao fornecedor,encerrada,2025-02-24
+RNC-2025-0005,2025-03-04,interna,media,Falha na selagem,Ana Lima,Retrabalho/Descarte,Treinamento / Notificação ao fornecedor,encerrada,2025-03-11
+RNC-2025-0006,2025-03-19,interna,media,Falha na selagem,Ana Lima,Retrabalho/Descarte,Treinamento / Notificação ao fornecedor,encerrada,2025-03-26

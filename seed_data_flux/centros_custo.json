@@ -1,0 +1,32 @@
+[
+  {
+    "codigo": "CC-EXT",
+    "descricao": "Extrusão",
+    "tipo": "operacional",
+    "responsavel": "João Silva"
+  },
+  {
+    "codigo": "CC-IMP",
+    "descricao": "Impressão",
+    "tipo": "operacional",
+    "responsavel": "Maria Costa"
+  },
+  {
+    "codigo": "CC-COR",
+    "descricao": "Corte e Solda",
+    "tipo": "operacional",
+    "responsavel": "Pedro Santos"
+  },
+  {
+    "codigo": "CC-ADM",
+    "descricao": "Administrativo",
+    "tipo": "administrativo",
+    "responsavel": "Ana Lima"
+  },
+  {
+    "codigo": "CC-COM",
+    "descricao": "Comercial",
+    "tipo": "comercial",
+    "responsavel": "Carlos Mendes"
+  }
+]

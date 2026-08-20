@@ -1,0 +1,1964 @@
+[
+  {
+    "data": "2025-01-06T10:00:00Z",
+    "tipo": "entrada",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0002",
+    "deposito_destino_codigo": "DEP-MP",
+    "quantidade": 6000,
+    "documento": "NF-F1"
+  },
+  {
+    "data": "2025-01-11T14:00:00Z",
+    "tipo": "consumo",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0002",
+    "deposito_origem_codigo": "DEP-MP",
+    "quantidade": 5400,
+    "documento": "REQ-0"
+  },
+  {
+    "data": "2025-01-11T10:00:00Z",
+    "tipo": "entrada",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0003",
+    "deposito_destino_codigo": "DEP-MP",
+    "quantidade": 7000,
+    "documento": "NF-F2"
+  },
+  {
+    "data": "2025-01-16T14:00:00Z",
+    "tipo": "consumo",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0003",
+    "deposito_origem_codigo": "DEP-MP",
+    "quantidade": 6300,
+    "documento": "REQ-1"
+  },
+  {
+    "data": "2025-01-16T10:00:00Z",
+    "tipo": "entrada",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0004",
+    "deposito_destino_codigo": "DEP-MP",
+    "quantidade": 8000,
+    "documento": "NF-F3"
+  },
+  {
+    "data": "2025-01-21T14:00:00Z",
+    "tipo": "consumo",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0004",
+    "deposito_origem_codigo": "DEP-MP",
+    "quantidade": 7200,
+    "documento": "REQ-2"
+  },
+  {
+    "data": "2025-01-21T10:00:00Z",
+    "tipo": "entrada",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0005",
+    "deposito_destino_codigo": "DEP-MP",
+    "quantidade": 9000,
+    "documento": "NF-F4"
+  },
+  {
+    "data": "2025-01-26T14:00:00Z",
+    "tipo": "consumo",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0005",
+    "deposito_origem_codigo": "DEP-MP",
+    "quantidade": 8100,
+    "documento": "REQ-3"
+  },
+  {
+    "data": "2025-01-26T10:00:00Z",
+    "tipo": "entrada",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0001",
+    "deposito_destino_codigo": "DEP-MP",
+    "quantidade": 5000,
+    "documento": "NF-F5"
+  },
+  {
+    "data": "2025-01-31T14:00:00Z",
+    "tipo": "consumo",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0001",
+    "deposito_origem_codigo": "DEP-MP",
+    "quantidade": 4500,
+    "documento": "REQ-4"
+  },
+  {
+    "data": "2025-01-31T10:00:00Z",
+    "tipo": "entrada",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0002",
+    "deposito_destino_codigo": "DEP-MP",
+    "quantidade": 6000,
+    "documento": "NF-F6"
+  },
+  {
+    "data": "2025-02-05T14:00:00Z",
+    "tipo": "consumo",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0002",
+    "deposito_origem_codigo": "DEP-MP",
+    "quantidade": 5400,
+    "documento": "REQ-5"
+  },
+  {
+    "data": "2025-02-05T10:00:00Z",
+    "tipo": "entrada",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0003",
+    "deposito_destino_codigo": "DEP-MP",
+    "quantidade": 7000,
+    "documento": "NF-F7"
+  },
+  {
+    "data": "2025-02-10T14:00:00Z",
+    "tipo": "consumo",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0003",
+    "deposito_origem_codigo": "DEP-MP",
+    "quantidade": 6300,
+    "documento": "REQ-6"
+  },
+  {
+    "data": "2025-02-10T10:00:00Z",
+    "tipo": "entrada",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0004",
+    "deposito_destino_codigo": "DEP-MP",
+    "quantidade": 8000,
+    "documento": "NF-F8"
+  },
+  {
+    "data": "2025-02-15T14:00:00Z",
+    "tipo": "consumo",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0004",
+    "deposito_origem_codigo": "DEP-MP",
+    "quantidade": 7200,
+    "documento": "REQ-7"
+  },
+  {
+    "data": "2025-02-15T10:00:00Z",
+    "tipo": "entrada",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0005",
+    "deposito_destino_codigo": "DEP-MP",
+    "quantidade": 9000,
+    "documento": "NF-F9"
+  },
+  {
+    "data": "2025-02-20T14:00:00Z",
+    "tipo": "consumo",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0005",
+    "deposito_origem_codigo": "DEP-MP",
+    "quantidade": 8100,
+    "documento": "REQ-8"
+  },
+  {
+    "data": "2025-02-20T10:00:00Z",
+    "tipo": "entrada",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0001",
+    "deposito_destino_codigo": "DEP-MP",
+    "quantidade": 5000,
+    "documento": "NF-F10"
+  },
+  {
+    "data": "2025-02-25T14:00:00Z",
+    "tipo": "consumo",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0001",
+    "deposito_origem_codigo": "DEP-MP",
+    "quantidade": 4500,
+    "documento": "REQ-9"
+  },
+  {
+    "data": "2025-02-25T10:00:00Z",
+    "tipo": "entrada",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0002",
+    "deposito_destino_codigo": "DEP-MP",
+    "quantidade": 6000,
+    "documento": "NF-F11"
+  },
+  {
+    "data": "2025-03-02T14:00:00Z",
+    "tipo": "consumo",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0002",
+    "deposito_origem_codigo": "DEP-MP",
+    "quantidade": 5400,
+    "documento": "REQ-10"
+  },
+  {
+    "data": "2025-03-02T10:00:00Z",
+    "tipo": "entrada",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0003",
+    "deposito_destino_codigo": "DEP-MP",
+    "quantidade": 7000,
+    "documento": "NF-F12"
+  },
+  {
+    "data": "2025-03-07T14:00:00Z",
+    "tipo": "consumo",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0003",
+    "deposito_origem_codigo": "DEP-MP",
+    "quantidade": 6300,
+    "documento": "REQ-11"
+  },
+  {
+    "data": "2025-03-07T10:00:00Z",
+    "tipo": "entrada",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0004",
+    "deposito_destino_codigo": "DEP-MP",
+    "quantidade": 8000,
+    "documento": "NF-F13"
+  },
+  {
+    "data": "2025-03-12T14:00:00Z",
+    "tipo": "consumo",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0004",
+    "deposito_origem_codigo": "DEP-MP",
+    "quantidade": 7200,
+    "documento": "REQ-12"
+  },
+  {
+    "data": "2025-03-12T10:00:00Z",
+    "tipo": "entrada",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0005",
+    "deposito_destino_codigo": "DEP-MP",
+    "quantidade": 9000,
+    "documento": "NF-F14"
+  },
+  {
+    "data": "2025-03-17T14:00:00Z",
+    "tipo": "consumo",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0005",
+    "deposito_origem_codigo": "DEP-MP",
+    "quantidade": 8100,
+    "documento": "REQ-13"
+  },
+  {
+    "data": "2025-03-17T10:00:00Z",
+    "tipo": "entrada",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0001",
+    "deposito_destino_codigo": "DEP-MP",
+    "quantidade": 5000,
+    "documento": "NF-F15"
+  },
+  {
+    "data": "2025-03-22T14:00:00Z",
+    "tipo": "consumo",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0001",
+    "deposito_origem_codigo": "DEP-MP",
+    "quantidade": 4500,
+    "documento": "REQ-14"
+  },
+  {
+    "data": "2025-03-22T10:00:00Z",
+    "tipo": "entrada",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0002",
+    "deposito_destino_codigo": "DEP-MP",
+    "quantidade": 6000,
+    "documento": "NF-F16"
+  },
+  {
+    "data": "2025-03-27T14:00:00Z",
+    "tipo": "consumo",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0002",
+    "deposito_origem_codigo": "DEP-MP",
+    "quantidade": 5400,
+    "documento": "REQ-15"
+  },
+  {
+    "data": "2025-03-27T10:00:00Z",
+    "tipo": "entrada",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0003",
+    "deposito_destino_codigo": "DEP-MP",
+    "quantidade": 7000,
+    "documento": "NF-F17"
+  },
+  {
+    "data": "2025-04-01T14:00:00Z",
+    "tipo": "consumo",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0003",
+    "deposito_origem_codigo": "DEP-MP",
+    "quantidade": 6300,
+    "documento": "REQ-16"
+  },
+  {
+    "data": "2025-04-01T10:00:00Z",
+    "tipo": "entrada",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0004",
+    "deposito_destino_codigo": "DEP-MP",
+    "quantidade": 8000,
+    "documento": "NF-F18"
+  },
+  {
+    "data": "2025-04-06T14:00:00Z",
+    "tipo": "consumo",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0004",
+    "deposito_origem_codigo": "DEP-MP",
+    "quantidade": 7200,
+    "documento": "REQ-17"
+  },
+  {
+    "data": "2025-04-06T10:00:00Z",
+    "tipo": "entrada",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0005",
+    "deposito_destino_codigo": "DEP-MP",
+    "quantidade": 9000,
+    "documento": "NF-F19"
+  },
+  {
+    "data": "2025-04-11T14:00:00Z",
+    "tipo": "consumo",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0005",
+    "deposito_origem_codigo": "DEP-MP",
+    "quantidade": 8100,
+    "documento": "REQ-18"
+  },
+  {
+    "data": "2025-04-11T10:00:00Z",
+    "tipo": "entrada",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0001",
+    "deposito_destino_codigo": "DEP-MP",
+    "quantidade": 5000,
+    "documento": "NF-F20"
+  },
+  {
+    "data": "2025-04-16T14:00:00Z",
+    "tipo": "consumo",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0001",
+    "deposito_origem_codigo": "DEP-MP",
+    "quantidade": 4500,
+    "documento": "REQ-19"
+  },
+  {
+    "data": "2025-01-03T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 1470,
+    "documento": "LPA-0001"
+  },
+  {
+    "data": "2025-01-05T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 1470,
+    "documento": "PV-SIMULADO-20"
+  },
+  {
+    "data": "2025-01-04T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 1960,
+    "documento": "LPA-0002"
+  },
+  {
+    "data": "2025-01-06T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 1960,
+    "documento": "PV-SIMULADO-21"
+  },
+  {
+    "data": "2025-01-05T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 2450,
+    "documento": "LPA-0003"
+  },
+  {
+    "data": "2025-01-07T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 2450,
+    "documento": "PV-SIMULADO-22"
+  },
+  {
+    "data": "2025-01-06T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 2940,
+    "documento": "LPA-0004"
+  },
+  {
+    "data": "2025-01-08T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 2940,
+    "documento": "PV-SIMULADO-23"
+  },
+  {
+    "data": "2025-01-07T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 3430,
+    "documento": "LPA-0005"
+  },
+  {
+    "data": "2025-01-09T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 3430,
+    "documento": "PV-SIMULADO-24"
+  },
+  {
+    "data": "2025-01-08T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 3920,
+    "documento": "LPA-0006"
+  },
+  {
+    "data": "2025-01-10T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 3920,
+    "documento": "PV-SIMULADO-25"
+  },
+  {
+    "data": "2025-01-09T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 4410,
+    "documento": "LPA-0007"
+  },
+  {
+    "data": "2025-01-11T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 4410,
+    "documento": "PV-SIMULADO-26"
+  },
+  {
+    "data": "2025-01-10T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 4900,
+    "documento": "LPA-0008"
+  },
+  {
+    "data": "2025-01-12T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 4900,
+    "documento": "PV-SIMULADO-27"
+  },
+  {
+    "data": "2025-01-11T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 5390,
+    "documento": "LPA-0009"
+  },
+  {
+    "data": "2025-01-13T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 5390,
+    "documento": "PV-SIMULADO-28"
+  },
+  {
+    "data": "2025-01-12T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 980,
+    "documento": "LPA-0010"
+  },
+  {
+    "data": "2025-01-14T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 980,
+    "documento": "PV-SIMULADO-29"
+  },
+  {
+    "data": "2025-01-13T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 1470,
+    "documento": "LPA-0011"
+  },
+  {
+    "data": "2025-01-15T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 1470,
+    "documento": "PV-SIMULADO-30"
+  },
+  {
+    "data": "2025-01-14T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 1960,
+    "documento": "LPA-0012"
+  },
+  {
+    "data": "2025-01-16T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 1960,
+    "documento": "PV-SIMULADO-31"
+  },
+  {
+    "data": "2025-01-15T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 2450,
+    "documento": "LPA-0013"
+  },
+  {
+    "data": "2025-01-17T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 2450,
+    "documento": "PV-SIMULADO-32"
+  },
+  {
+    "data": "2025-01-16T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 2940,
+    "documento": "LPA-0014"
+  },
+  {
+    "data": "2025-01-18T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 2940,
+    "documento": "PV-SIMULADO-33"
+  },
+  {
+    "data": "2025-01-17T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 3430,
+    "documento": "LPA-0015"
+  },
+  {
+    "data": "2025-01-19T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 3430,
+    "documento": "PV-SIMULADO-34"
+  },
+  {
+    "data": "2025-01-18T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 3920,
+    "documento": "LPA-0016"
+  },
+  {
+    "data": "2025-01-20T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 3920,
+    "documento": "PV-SIMULADO-35"
+  },
+  {
+    "data": "2025-01-19T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 4410,
+    "documento": "LPA-0017"
+  },
+  {
+    "data": "2025-01-21T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 4410,
+    "documento": "PV-SIMULADO-36"
+  },
+  {
+    "data": "2025-01-20T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 4900,
+    "documento": "LPA-0018"
+  },
+  {
+    "data": "2025-01-22T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 4900,
+    "documento": "PV-SIMULADO-37"
+  },
+  {
+    "data": "2025-01-21T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 5390,
+    "documento": "LPA-0019"
+  },
+  {
+    "data": "2025-01-23T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 5390,
+    "documento": "PV-SIMULADO-38"
+  },
+  {
+    "data": "2025-01-22T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 980,
+    "documento": "LPA-0020"
+  },
+  {
+    "data": "2025-01-24T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 980,
+    "documento": "PV-SIMULADO-39"
+  },
+  {
+    "data": "2025-01-23T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 1470,
+    "documento": "LPA-0021"
+  },
+  {
+    "data": "2025-01-25T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 1470,
+    "documento": "PV-SIMULADO-40"
+  },
+  {
+    "data": "2025-01-24T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 1960,
+    "documento": "LPA-0022"
+  },
+  {
+    "data": "2025-01-26T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 1960,
+    "documento": "PV-SIMULADO-41"
+  },
+  {
+    "data": "2025-01-25T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 2450,
+    "documento": "LPA-0023"
+  },
+  {
+    "data": "2025-01-27T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 2450,
+    "documento": "PV-SIMULADO-42"
+  },
+  {
+    "data": "2025-01-26T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 2940,
+    "documento": "LPA-0024"
+  },
+  {
+    "data": "2025-01-28T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 2940,
+    "documento": "PV-SIMULADO-43"
+  },
+  {
+    "data": "2025-01-27T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 3430,
+    "documento": "LPA-0025"
+  },
+  {
+    "data": "2025-01-29T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 3430,
+    "documento": "PV-SIMULADO-44"
+  },
+  {
+    "data": "2025-01-28T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 3920,
+    "documento": "LPA-0026"
+  },
+  {
+    "data": "2025-01-30T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 3920,
+    "documento": "PV-SIMULADO-45"
+  },
+  {
+    "data": "2025-01-29T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 4410,
+    "documento": "LPA-0027"
+  },
+  {
+    "data": "2025-01-31T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 4410,
+    "documento": "PV-SIMULADO-46"
+  },
+  {
+    "data": "2025-01-30T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 4900,
+    "documento": "LPA-0028"
+  },
+  {
+    "data": "2025-02-01T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 4900,
+    "documento": "PV-SIMULADO-47"
+  },
+  {
+    "data": "2025-01-31T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 5390,
+    "documento": "LPA-0029"
+  },
+  {
+    "data": "2025-02-02T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 5390,
+    "documento": "PV-SIMULADO-48"
+  },
+  {
+    "data": "2025-02-01T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 980,
+    "documento": "LPA-0030"
+  },
+  {
+    "data": "2025-02-03T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 980,
+    "documento": "PV-SIMULADO-49"
+  },
+  {
+    "data": "2025-02-02T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 1470,
+    "documento": "LPA-0031"
+  },
+  {
+    "data": "2025-02-04T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 1470,
+    "documento": "PV-SIMULADO-50"
+  },
+  {
+    "data": "2025-02-03T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 1960,
+    "documento": "LPA-0032"
+  },
+  {
+    "data": "2025-02-05T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 1960,
+    "documento": "PV-SIMULADO-51"
+  },
+  {
+    "data": "2025-02-04T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 2450,
+    "documento": "LPA-0033"
+  },
+  {
+    "data": "2025-02-06T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 2450,
+    "documento": "PV-SIMULADO-52"
+  },
+  {
+    "data": "2025-02-05T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 2940,
+    "documento": "LPA-0034"
+  },
+  {
+    "data": "2025-02-07T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 2940,
+    "documento": "PV-SIMULADO-53"
+  },
+  {
+    "data": "2025-02-06T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 3430,
+    "documento": "LPA-0035"
+  },
+  {
+    "data": "2025-02-08T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 3430,
+    "documento": "PV-SIMULADO-54"
+  },
+  {
+    "data": "2025-02-07T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 3920,
+    "documento": "LPA-0036"
+  },
+  {
+    "data": "2025-02-09T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 3920,
+    "documento": "PV-SIMULADO-55"
+  },
+  {
+    "data": "2025-02-08T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 4410,
+    "documento": "LPA-0037"
+  },
+  {
+    "data": "2025-02-10T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 4410,
+    "documento": "PV-SIMULADO-56"
+  },
+  {
+    "data": "2025-02-09T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 4900,
+    "documento": "LPA-0038"
+  },
+  {
+    "data": "2025-02-11T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 4900,
+    "documento": "PV-SIMULADO-57"
+  },
+  {
+    "data": "2025-02-10T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 5390,
+    "documento": "LPA-0039"
+  },
+  {
+    "data": "2025-02-12T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 5390,
+    "documento": "PV-SIMULADO-58"
+  },
+  {
+    "data": "2025-02-11T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 980,
+    "documento": "LPA-0040"
+  },
+  {
+    "data": "2025-02-13T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 980,
+    "documento": "PV-SIMULADO-59"
+  },
+  {
+    "data": "2025-02-12T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 1470,
+    "documento": "LPA-0041"
+  },
+  {
+    "data": "2025-02-14T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 1470,
+    "documento": "PV-SIMULADO-60"
+  },
+  {
+    "data": "2025-02-13T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 1960,
+    "documento": "LPA-0042"
+  },
+  {
+    "data": "2025-02-15T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 1960,
+    "documento": "PV-SIMULADO-61"
+  },
+  {
+    "data": "2025-02-14T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 2450,
+    "documento": "LPA-0043"
+  },
+  {
+    "data": "2025-02-16T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 2450,
+    "documento": "PV-SIMULADO-62"
+  },
+  {
+    "data": "2025-02-15T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 2940,
+    "documento": "LPA-0044"
+  },
+  {
+    "data": "2025-02-17T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 2940,
+    "documento": "PV-SIMULADO-63"
+  },
+  {
+    "data": "2025-02-16T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 3430,
+    "documento": "LPA-0045"
+  },
+  {
+    "data": "2025-02-18T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 3430,
+    "documento": "PV-SIMULADO-64"
+  },
+  {
+    "data": "2025-02-17T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 3920,
+    "documento": "LPA-0046"
+  },
+  {
+    "data": "2025-02-19T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 3920,
+    "documento": "PV-SIMULADO-65"
+  },
+  {
+    "data": "2025-02-18T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 4410,
+    "documento": "LPA-0047"
+  },
+  {
+    "data": "2025-02-20T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 4410,
+    "documento": "PV-SIMULADO-66"
+  },
+  {
+    "data": "2025-02-19T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 4900,
+    "documento": "LPA-0048"
+  },
+  {
+    "data": "2025-02-21T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 4900,
+    "documento": "PV-SIMULADO-67"
+  },
+  {
+    "data": "2025-02-20T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 5390,
+    "documento": "LPA-0049"
+  },
+  {
+    "data": "2025-02-22T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 5390,
+    "documento": "PV-SIMULADO-68"
+  },
+  {
+    "data": "2025-02-21T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 980,
+    "documento": "LPA-0050"
+  },
+  {
+    "data": "2025-02-23T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 980,
+    "documento": "PV-SIMULADO-69"
+  },
+  {
+    "data": "2025-02-22T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 1470,
+    "documento": "LPA-0051"
+  },
+  {
+    "data": "2025-02-24T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 1470,
+    "documento": "PV-SIMULADO-70"
+  },
+  {
+    "data": "2025-02-23T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 1960,
+    "documento": "LPA-0052"
+  },
+  {
+    "data": "2025-02-25T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 1960,
+    "documento": "PV-SIMULADO-71"
+  },
+  {
+    "data": "2025-02-24T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 2450,
+    "documento": "LPA-0053"
+  },
+  {
+    "data": "2025-02-26T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 2450,
+    "documento": "PV-SIMULADO-72"
+  },
+  {
+    "data": "2025-02-25T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 2940,
+    "documento": "LPA-0054"
+  },
+  {
+    "data": "2025-02-27T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 2940,
+    "documento": "PV-SIMULADO-73"
+  },
+  {
+    "data": "2025-02-26T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 3430,
+    "documento": "LPA-0055"
+  },
+  {
+    "data": "2025-02-28T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 3430,
+    "documento": "PV-SIMULADO-74"
+  },
+  {
+    "data": "2025-02-27T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 3920,
+    "documento": "LPA-0056"
+  },
+  {
+    "data": "2025-03-01T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 3920,
+    "documento": "PV-SIMULADO-75"
+  },
+  {
+    "data": "2025-02-28T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 4410,
+    "documento": "LPA-0057"
+  },
+  {
+    "data": "2025-03-02T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 4410,
+    "documento": "PV-SIMULADO-76"
+  },
+  {
+    "data": "2025-03-01T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 4900,
+    "documento": "LPA-0058"
+  },
+  {
+    "data": "2025-03-03T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 4900,
+    "documento": "PV-SIMULADO-77"
+  },
+  {
+    "data": "2025-03-02T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 5390,
+    "documento": "LPA-0059"
+  },
+  {
+    "data": "2025-03-04T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 5390,
+    "documento": "PV-SIMULADO-78"
+  },
+  {
+    "data": "2025-03-03T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 980,
+    "documento": "LPA-0060"
+  },
+  {
+    "data": "2025-03-05T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 980,
+    "documento": "PV-SIMULADO-79"
+  },
+  {
+    "data": "2025-03-04T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 1470,
+    "documento": "LPA-0061"
+  },
+  {
+    "data": "2025-03-06T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 1470,
+    "documento": "PV-SIMULADO-80"
+  },
+  {
+    "data": "2025-03-05T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 1960,
+    "documento": "LPA-0062"
+  },
+  {
+    "data": "2025-03-07T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 1960,
+    "documento": "PV-SIMULADO-81"
+  },
+  {
+    "data": "2025-03-06T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 2450,
+    "documento": "LPA-0063"
+  },
+  {
+    "data": "2025-03-08T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 2450,
+    "documento": "PV-SIMULADO-82"
+  },
+  {
+    "data": "2025-03-07T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 2940,
+    "documento": "LPA-0064"
+  },
+  {
+    "data": "2025-03-09T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 2940,
+    "documento": "PV-SIMULADO-83"
+  },
+  {
+    "data": "2025-03-08T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 3430,
+    "documento": "LPA-0065"
+  },
+  {
+    "data": "2025-03-10T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 3430,
+    "documento": "PV-SIMULADO-84"
+  },
+  {
+    "data": "2025-03-09T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 3920,
+    "documento": "LPA-0066"
+  },
+  {
+    "data": "2025-03-11T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 3920,
+    "documento": "PV-SIMULADO-85"
+  },
+  {
+    "data": "2025-03-10T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 4410,
+    "documento": "LPA-0067"
+  },
+  {
+    "data": "2025-03-12T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 4410,
+    "documento": "PV-SIMULADO-86"
+  },
+  {
+    "data": "2025-03-11T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 4900,
+    "documento": "LPA-0068"
+  },
+  {
+    "data": "2025-03-13T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 4900,
+    "documento": "PV-SIMULADO-87"
+  },
+  {
+    "data": "2025-03-12T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 5390,
+    "documento": "LPA-0069"
+  },
+  {
+    "data": "2025-03-14T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 5390,
+    "documento": "PV-SIMULADO-88"
+  },
+  {
+    "data": "2025-03-13T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 980,
+    "documento": "LPA-0070"
+  },
+  {
+    "data": "2025-03-15T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 980,
+    "documento": "PV-SIMULADO-89"
+  },
+  {
+    "data": "2025-03-14T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 1470,
+    "documento": "LPA-0071"
+  },
+  {
+    "data": "2025-03-16T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 1470,
+    "documento": "PV-SIMULADO-90"
+  },
+  {
+    "data": "2025-03-15T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 1960,
+    "documento": "LPA-0072"
+  },
+  {
+    "data": "2025-03-17T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 1960,
+    "documento": "PV-SIMULADO-91"
+  },
+  {
+    "data": "2025-03-16T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 2450,
+    "documento": "LPA-0073"
+  },
+  {
+    "data": "2025-03-18T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 2450,
+    "documento": "PV-SIMULADO-92"
+  },
+  {
+    "data": "2025-03-17T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 2940,
+    "documento": "LPA-0074"
+  },
+  {
+    "data": "2025-03-19T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 2940,
+    "documento": "PV-SIMULADO-93"
+  },
+  {
+    "data": "2025-03-18T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 3430,
+    "documento": "LPA-0075"
+  },
+  {
+    "data": "2025-03-20T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 3430,
+    "documento": "PV-SIMULADO-94"
+  },
+  {
+    "data": "2025-03-19T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 3920,
+    "documento": "LPA-0076"
+  },
+  {
+    "data": "2025-03-21T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 3920,
+    "documento": "PV-SIMULADO-95"
+  },
+  {
+    "data": "2025-03-20T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 4410,
+    "documento": "LPA-0077"
+  },
+  {
+    "data": "2025-03-22T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 4410,
+    "documento": "PV-SIMULADO-96"
+  },
+  {
+    "data": "2025-03-21T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 4900,
+    "documento": "LPA-0078"
+  },
+  {
+    "data": "2025-03-23T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 4900,
+    "documento": "PV-SIMULADO-97"
+  },
+  {
+    "data": "2025-03-22T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 5390,
+    "documento": "LPA-0079"
+  },
+  {
+    "data": "2025-03-24T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 5390,
+    "documento": "PV-SIMULADO-98"
+  },
+  {
+    "data": "2025-03-23T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 980,
+    "documento": "LPA-0080"
+  },
+  {
+    "data": "2025-03-25T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 980,
+    "documento": "PV-SIMULADO-99"
+  },
+  {
+    "data": "2025-03-24T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 1470,
+    "documento": "LPA-0081"
+  },
+  {
+    "data": "2025-03-26T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 1470,
+    "documento": "PV-SIMULADO-100"
+  },
+  {
+    "data": "2025-03-25T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 1960,
+    "documento": "LPA-0082"
+  },
+  {
+    "data": "2025-03-27T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 1960,
+    "documento": "PV-SIMULADO-101"
+  },
+  {
+    "data": "2025-03-26T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 2450,
+    "documento": "LPA-0083"
+  },
+  {
+    "data": "2025-03-28T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 2450,
+    "documento": "PV-SIMULADO-102"
+  },
+  {
+    "data": "2025-03-27T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 2940,
+    "documento": "LPA-0084"
+  },
+  {
+    "data": "2025-03-29T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 2940,
+    "documento": "PV-SIMULADO-103"
+  },
+  {
+    "data": "2025-03-28T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 3430,
+    "documento": "LPA-0085"
+  },
+  {
+    "data": "2025-03-30T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 3430,
+    "documento": "PV-SIMULADO-104"
+  },
+  {
+    "data": "2025-03-29T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 3920,
+    "documento": "LPA-0086"
+  },
+  {
+    "data": "2025-03-31T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 3920,
+    "documento": "PV-SIMULADO-105"
+  },
+  {
+    "data": "2025-03-30T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 4410,
+    "documento": "LPA-0087"
+  },
+  {
+    "data": "2025-04-01T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 4410,
+    "documento": "PV-SIMULADO-106"
+  },
+  {
+    "data": "2025-03-31T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 4900,
+    "documento": "LPA-0088"
+  },
+  {
+    "data": "2025-04-02T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 4900,
+    "documento": "PV-SIMULADO-107"
+  },
+  {
+    "data": "2025-04-01T18:30:00Z",
+    "tipo": "producao",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_destino_codigo": "DEP-PA",
+    "quantidade": 5390,
+    "documento": "LPA-0089"
+  },
+  {
+    "data": "2025-04-03T09:00:00Z",
+    "tipo": "saida",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "deposito_origem_codigo": "DEP-PA",
+    "quantidade": 5390,
+    "documento": "PV-SIMULADO-108"
+  }
+]

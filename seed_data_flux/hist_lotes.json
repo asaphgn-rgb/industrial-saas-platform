@@ -1,0 +1,1023 @@
+[
+  {
+    "codigo_lote": "LMP-25-001",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0002",
+    "quantidade_inicial": 6000,
+    "origem": "compra",
+    "fornecedor_codigo": "FOR-0002",
+    "data_producao": "2025-01-06",
+    "data_validade": "2026-01-06",
+    "numero_nf": "NF-F1"
+  },
+  {
+    "codigo_lote": "LMP-25-002",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0003",
+    "quantidade_inicial": 7000,
+    "origem": "compra",
+    "fornecedor_codigo": "FOR-0003",
+    "data_producao": "2025-01-11",
+    "data_validade": "2026-01-11",
+    "numero_nf": "NF-F2"
+  },
+  {
+    "codigo_lote": "LMP-25-003",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0004",
+    "quantidade_inicial": 8000,
+    "origem": "compra",
+    "fornecedor_codigo": "FOR-0001",
+    "data_producao": "2025-01-16",
+    "data_validade": "2026-01-16",
+    "numero_nf": "NF-F3"
+  },
+  {
+    "codigo_lote": "LMP-25-004",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0005",
+    "quantidade_inicial": 9000,
+    "origem": "compra",
+    "fornecedor_codigo": "FOR-0002",
+    "data_producao": "2025-01-21",
+    "data_validade": "2026-01-21",
+    "numero_nf": "NF-F4"
+  },
+  {
+    "codigo_lote": "LMP-25-005",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0001",
+    "quantidade_inicial": 5000,
+    "origem": "compra",
+    "fornecedor_codigo": "FOR-0003",
+    "data_producao": "2025-01-26",
+    "data_validade": "2026-01-26",
+    "numero_nf": "NF-F5"
+  },
+  {
+    "codigo_lote": "LMP-25-006",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0002",
+    "quantidade_inicial": 6000,
+    "origem": "compra",
+    "fornecedor_codigo": "FOR-0001",
+    "data_producao": "2025-01-31",
+    "data_validade": "2026-01-31",
+    "numero_nf": "NF-F6"
+  },
+  {
+    "codigo_lote": "LMP-25-007",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0003",
+    "quantidade_inicial": 7000,
+    "origem": "compra",
+    "fornecedor_codigo": "FOR-0002",
+    "data_producao": "2025-02-05",
+    "data_validade": "2026-02-05",
+    "numero_nf": "NF-F7"
+  },
+  {
+    "codigo_lote": "LMP-25-008",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0004",
+    "quantidade_inicial": 8000,
+    "origem": "compra",
+    "fornecedor_codigo": "FOR-0003",
+    "data_producao": "2025-02-10",
+    "data_validade": "2026-02-10",
+    "numero_nf": "NF-F8"
+  },
+  {
+    "codigo_lote": "LMP-25-009",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0005",
+    "quantidade_inicial": 9000,
+    "origem": "compra",
+    "fornecedor_codigo": "FOR-0001",
+    "data_producao": "2025-02-15",
+    "data_validade": "2026-02-15",
+    "numero_nf": "NF-F9"
+  },
+  {
+    "codigo_lote": "LMP-25-010",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0001",
+    "quantidade_inicial": 5000,
+    "origem": "compra",
+    "fornecedor_codigo": "FOR-0002",
+    "data_producao": "2025-02-20",
+    "data_validade": "2026-02-20",
+    "numero_nf": "NF-F10"
+  },
+  {
+    "codigo_lote": "LMP-25-011",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0002",
+    "quantidade_inicial": 6000,
+    "origem": "compra",
+    "fornecedor_codigo": "FOR-0003",
+    "data_producao": "2025-02-25",
+    "data_validade": "2026-02-25",
+    "numero_nf": "NF-F11"
+  },
+  {
+    "codigo_lote": "LMP-25-012",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0003",
+    "quantidade_inicial": 7000,
+    "origem": "compra",
+    "fornecedor_codigo": "FOR-0001",
+    "data_producao": "2025-03-02",
+    "data_validade": "2026-03-02",
+    "numero_nf": "NF-F12"
+  },
+  {
+    "codigo_lote": "LMP-25-013",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0004",
+    "quantidade_inicial": 8000,
+    "origem": "compra",
+    "fornecedor_codigo": "FOR-0002",
+    "data_producao": "2025-03-07",
+    "data_validade": "2026-03-07",
+    "numero_nf": "NF-F13"
+  },
+  {
+    "codigo_lote": "LMP-25-014",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0005",
+    "quantidade_inicial": 9000,
+    "origem": "compra",
+    "fornecedor_codigo": "FOR-0003",
+    "data_producao": "2025-03-12",
+    "data_validade": "2026-03-12",
+    "numero_nf": "NF-F14"
+  },
+  {
+    "codigo_lote": "LMP-25-015",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0001",
+    "quantidade_inicial": 5000,
+    "origem": "compra",
+    "fornecedor_codigo": "FOR-0001",
+    "data_producao": "2025-03-17",
+    "data_validade": "2026-03-17",
+    "numero_nf": "NF-F15"
+  },
+  {
+    "codigo_lote": "LMP-25-016",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0002",
+    "quantidade_inicial": 6000,
+    "origem": "compra",
+    "fornecedor_codigo": "FOR-0002",
+    "data_producao": "2025-03-22",
+    "data_validade": "2026-03-22",
+    "numero_nf": "NF-F16"
+  },
+  {
+    "codigo_lote": "LMP-25-017",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0003",
+    "quantidade_inicial": 7000,
+    "origem": "compra",
+    "fornecedor_codigo": "FOR-0003",
+    "data_producao": "2025-03-27",
+    "data_validade": "2026-03-27",
+    "numero_nf": "NF-F17"
+  },
+  {
+    "codigo_lote": "LMP-25-018",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0004",
+    "quantidade_inicial": 8000,
+    "origem": "compra",
+    "fornecedor_codigo": "FOR-0001",
+    "data_producao": "2025-04-01",
+    "data_validade": "2026-04-01",
+    "numero_nf": "NF-F18"
+  },
+  {
+    "codigo_lote": "LMP-25-019",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0005",
+    "quantidade_inicial": 9000,
+    "origem": "compra",
+    "fornecedor_codigo": "FOR-0002",
+    "data_producao": "2025-04-06",
+    "data_validade": "2026-04-06",
+    "numero_nf": "NF-F19"
+  },
+  {
+    "codigo_lote": "LMP-25-020",
+    "item_tipo": "materia_prima",
+    "materia_prima_codigo": "MP-0001",
+    "quantidade_inicial": 5000,
+    "origem": "compra",
+    "fornecedor_codigo": "FOR-0003",
+    "data_producao": "2025-04-11",
+    "data_validade": "2026-04-11",
+    "numero_nf": "NF-F20"
+  },
+  {
+    "codigo_lote": "LPA-0001",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "quantidade_inicial": 1470,
+    "origem": "producao",
+    "data_producao": "2025-01-03",
+    "data_validade": "2026-01-03"
+  },
+  {
+    "codigo_lote": "LPA-0002",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "quantidade_inicial": 1960,
+    "origem": "producao",
+    "data_producao": "2025-01-04",
+    "data_validade": "2026-01-04"
+  },
+  {
+    "codigo_lote": "LPA-0003",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "quantidade_inicial": 2450,
+    "origem": "producao",
+    "data_producao": "2025-01-05",
+    "data_validade": "2026-01-05"
+  },
+  {
+    "codigo_lote": "LPA-0004",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "quantidade_inicial": 2940,
+    "origem": "producao",
+    "data_producao": "2025-01-06",
+    "data_validade": "2026-01-06"
+  },
+  {
+    "codigo_lote": "LPA-0005",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "quantidade_inicial": 3430,
+    "origem": "producao",
+    "data_producao": "2025-01-07",
+    "data_validade": "2026-01-07"
+  },
+  {
+    "codigo_lote": "LPA-0006",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "quantidade_inicial": 3920,
+    "origem": "producao",
+    "data_producao": "2025-01-08",
+    "data_validade": "2026-01-08"
+  },
+  {
+    "codigo_lote": "LPA-0007",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "quantidade_inicial": 4410,
+    "origem": "producao",
+    "data_producao": "2025-01-09",
+    "data_validade": "2026-01-09"
+  },
+  {
+    "codigo_lote": "LPA-0008",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "quantidade_inicial": 4900,
+    "origem": "producao",
+    "data_producao": "2025-01-10",
+    "data_validade": "2026-01-10"
+  },
+  {
+    "codigo_lote": "LPA-0009",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "quantidade_inicial": 5390,
+    "origem": "producao",
+    "data_producao": "2025-01-11",
+    "data_validade": "2026-01-11"
+  },
+  {
+    "codigo_lote": "LPA-0010",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "quantidade_inicial": 980,
+    "origem": "producao",
+    "data_producao": "2025-01-12",
+    "data_validade": "2026-01-12"
+  },
+  {
+    "codigo_lote": "LPA-0011",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "quantidade_inicial": 1470,
+    "origem": "producao",
+    "data_producao": "2025-01-13",
+    "data_validade": "2026-01-13"
+  },
+  {
+    "codigo_lote": "LPA-0012",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "quantidade_inicial": 1960,
+    "origem": "producao",
+    "data_producao": "2025-01-14",
+    "data_validade": "2026-01-14"
+  },
+  {
+    "codigo_lote": "LPA-0013",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "quantidade_inicial": 2450,
+    "origem": "producao",
+    "data_producao": "2025-01-15",
+    "data_validade": "2026-01-15"
+  },
+  {
+    "codigo_lote": "LPA-0014",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "quantidade_inicial": 2940,
+    "origem": "producao",
+    "data_producao": "2025-01-16",
+    "data_validade": "2026-01-16"
+  },
+  {
+    "codigo_lote": "LPA-0015",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "quantidade_inicial": 3430,
+    "origem": "producao",
+    "data_producao": "2025-01-17",
+    "data_validade": "2026-01-17"
+  },
+  {
+    "codigo_lote": "LPA-0016",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "quantidade_inicial": 3920,
+    "origem": "producao",
+    "data_producao": "2025-01-18",
+    "data_validade": "2026-01-18"
+  },
+  {
+    "codigo_lote": "LPA-0017",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "quantidade_inicial": 4410,
+    "origem": "producao",
+    "data_producao": "2025-01-19",
+    "data_validade": "2026-01-19"
+  },
+  {
+    "codigo_lote": "LPA-0018",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "quantidade_inicial": 4900,
+    "origem": "producao",
+    "data_producao": "2025-01-20",
+    "data_validade": "2026-01-20"
+  },
+  {
+    "codigo_lote": "LPA-0019",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "quantidade_inicial": 5390,
+    "origem": "producao",
+    "data_producao": "2025-01-21",
+    "data_validade": "2026-01-21"
+  },
+  {
+    "codigo_lote": "LPA-0020",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "quantidade_inicial": 980,
+    "origem": "producao",
+    "data_producao": "2025-01-22",
+    "data_validade": "2026-01-22"
+  },
+  {
+    "codigo_lote": "LPA-0021",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "quantidade_inicial": 1470,
+    "origem": "producao",
+    "data_producao": "2025-01-23",
+    "data_validade": "2026-01-23"
+  },
+  {
+    "codigo_lote": "LPA-0022",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "quantidade_inicial": 1960,
+    "origem": "producao",
+    "data_producao": "2025-01-24",
+    "data_validade": "2026-01-24"
+  },
+  {
+    "codigo_lote": "LPA-0023",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "quantidade_inicial": 2450,
+    "origem": "producao",
+    "data_producao": "2025-01-25",
+    "data_validade": "2026-01-25"
+  },
+  {
+    "codigo_lote": "LPA-0024",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "quantidade_inicial": 2940,
+    "origem": "producao",
+    "data_producao": "2025-01-26",
+    "data_validade": "2026-01-26"
+  },
+  {
+    "codigo_lote": "LPA-0025",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "quantidade_inicial": 3430,
+    "origem": "producao",
+    "data_producao": "2025-01-27",
+    "data_validade": "2026-01-27"
+  },
+  {
+    "codigo_lote": "LPA-0026",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "quantidade_inicial": 3920,
+    "origem": "producao",
+    "data_producao": "2025-01-28",
+    "data_validade": "2026-01-28"
+  },
+  {
+    "codigo_lote": "LPA-0027",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "quantidade_inicial": 4410,
+    "origem": "producao",
+    "data_producao": "2025-01-29",
+    "data_validade": "2026-01-29"
+  },
+  {
+    "codigo_lote": "LPA-0028",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "quantidade_inicial": 4900,
+    "origem": "producao",
+    "data_producao": "2025-01-30",
+    "data_validade": "2026-01-30"
+  },
+  {
+    "codigo_lote": "LPA-0029",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "quantidade_inicial": 5390,
+    "origem": "producao",
+    "data_producao": "2025-01-31",
+    "data_validade": "2026-01-31"
+  },
+  {
+    "codigo_lote": "LPA-0030",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "quantidade_inicial": 980,
+    "origem": "producao",
+    "data_producao": "2025-02-01",
+    "data_validade": "2026-02-01"
+  },
+  {
+    "codigo_lote": "LPA-0031",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "quantidade_inicial": 1470,
+    "origem": "producao",
+    "data_producao": "2025-02-02",
+    "data_validade": "2026-02-02"
+  },
+  {
+    "codigo_lote": "LPA-0032",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "quantidade_inicial": 1960,
+    "origem": "producao",
+    "data_producao": "2025-02-03",
+    "data_validade": "2026-02-03"
+  },
+  {
+    "codigo_lote": "LPA-0033",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "quantidade_inicial": 2450,
+    "origem": "producao",
+    "data_producao": "2025-02-04",
+    "data_validade": "2026-02-04"
+  },
+  {
+    "codigo_lote": "LPA-0034",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "quantidade_inicial": 2940,
+    "origem": "producao",
+    "data_producao": "2025-02-05",
+    "data_validade": "2026-02-05"
+  },
+  {
+    "codigo_lote": "LPA-0035",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "quantidade_inicial": 3430,
+    "origem": "producao",
+    "data_producao": "2025-02-06",
+    "data_validade": "2026-02-06"
+  },
+  {
+    "codigo_lote": "LPA-0036",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "quantidade_inicial": 3920,
+    "origem": "producao",
+    "data_producao": "2025-02-07",
+    "data_validade": "2026-02-07"
+  },
+  {
+    "codigo_lote": "LPA-0037",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "quantidade_inicial": 4410,
+    "origem": "producao",
+    "data_producao": "2025-02-08",
+    "data_validade": "2026-02-08"
+  },
+  {
+    "codigo_lote": "LPA-0038",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "quantidade_inicial": 4900,
+    "origem": "producao",
+    "data_producao": "2025-02-09",
+    "data_validade": "2026-02-09"
+  },
+  {
+    "codigo_lote": "LPA-0039",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "quantidade_inicial": 5390,
+    "origem": "producao",
+    "data_producao": "2025-02-10",
+    "data_validade": "2026-02-10"
+  },
+  {
+    "codigo_lote": "LPA-0040",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "quantidade_inicial": 980,
+    "origem": "producao",
+    "data_producao": "2025-02-11",
+    "data_validade": "2026-02-11"
+  },
+  {
+    "codigo_lote": "LPA-0041",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "quantidade_inicial": 1470,
+    "origem": "producao",
+    "data_producao": "2025-02-12",
+    "data_validade": "2026-02-12"
+  },
+  {
+    "codigo_lote": "LPA-0042",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "quantidade_inicial": 1960,
+    "origem": "producao",
+    "data_producao": "2025-02-13",
+    "data_validade": "2026-02-13"
+  },
+  {
+    "codigo_lote": "LPA-0043",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "quantidade_inicial": 2450,
+    "origem": "producao",
+    "data_producao": "2025-02-14",
+    "data_validade": "2026-02-14"
+  },
+  {
+    "codigo_lote": "LPA-0044",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "quantidade_inicial": 2940,
+    "origem": "producao",
+    "data_producao": "2025-02-15",
+    "data_validade": "2026-02-15"
+  },
+  {
+    "codigo_lote": "LPA-0045",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "quantidade_inicial": 3430,
+    "origem": "producao",
+    "data_producao": "2025-02-16",
+    "data_validade": "2026-02-16"
+  },
+  {
+    "codigo_lote": "LPA-0046",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "quantidade_inicial": 3920,
+    "origem": "producao",
+    "data_producao": "2025-02-17",
+    "data_validade": "2026-02-17"
+  },
+  {
+    "codigo_lote": "LPA-0047",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "quantidade_inicial": 4410,
+    "origem": "producao",
+    "data_producao": "2025-02-18",
+    "data_validade": "2026-02-18"
+  },
+  {
+    "codigo_lote": "LPA-0048",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "quantidade_inicial": 4900,
+    "origem": "producao",
+    "data_producao": "2025-02-19",
+    "data_validade": "2026-02-19"
+  },
+  {
+    "codigo_lote": "LPA-0049",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "quantidade_inicial": 5390,
+    "origem": "producao",
+    "data_producao": "2025-02-20",
+    "data_validade": "2026-02-20"
+  },
+  {
+    "codigo_lote": "LPA-0050",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "quantidade_inicial": 980,
+    "origem": "producao",
+    "data_producao": "2025-02-21",
+    "data_validade": "2026-02-21"
+  },
+  {
+    "codigo_lote": "LPA-0051",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "quantidade_inicial": 1470,
+    "origem": "producao",
+    "data_producao": "2025-02-22",
+    "data_validade": "2026-02-22"
+  },
+  {
+    "codigo_lote": "LPA-0052",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "quantidade_inicial": 1960,
+    "origem": "producao",
+    "data_producao": "2025-02-23",
+    "data_validade": "2026-02-23"
+  },
+  {
+    "codigo_lote": "LPA-0053",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "quantidade_inicial": 2450,
+    "origem": "producao",
+    "data_producao": "2025-02-24",
+    "data_validade": "2026-02-24"
+  },
+  {
+    "codigo_lote": "LPA-0054",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "quantidade_inicial": 2940,
+    "origem": "producao",
+    "data_producao": "2025-02-25",
+    "data_validade": "2026-02-25"
+  },
+  {
+    "codigo_lote": "LPA-0055",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "quantidade_inicial": 3430,
+    "origem": "producao",
+    "data_producao": "2025-02-26",
+    "data_validade": "2026-02-26"
+  },
+  {
+    "codigo_lote": "LPA-0056",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "quantidade_inicial": 3920,
+    "origem": "producao",
+    "data_producao": "2025-02-27",
+    "data_validade": "2026-02-27"
+  },
+  {
+    "codigo_lote": "LPA-0057",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "quantidade_inicial": 4410,
+    "origem": "producao",
+    "data_producao": "2025-02-28",
+    "data_validade": "2026-02-28"
+  },
+  {
+    "codigo_lote": "LPA-0058",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "quantidade_inicial": 4900,
+    "origem": "producao",
+    "data_producao": "2025-03-01",
+    "data_validade": "2026-03-01"
+  },
+  {
+    "codigo_lote": "LPA-0059",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "quantidade_inicial": 5390,
+    "origem": "producao",
+    "data_producao": "2025-03-02",
+    "data_validade": "2026-03-02"
+  },
+  {
+    "codigo_lote": "LPA-0060",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "quantidade_inicial": 980,
+    "origem": "producao",
+    "data_producao": "2025-03-03",
+    "data_validade": "2026-03-03"
+  },
+  {
+    "codigo_lote": "LPA-0061",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "quantidade_inicial": 1470,
+    "origem": "producao",
+    "data_producao": "2025-03-04",
+    "data_validade": "2026-03-04"
+  },
+  {
+    "codigo_lote": "LPA-0062",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "quantidade_inicial": 1960,
+    "origem": "producao",
+    "data_producao": "2025-03-05",
+    "data_validade": "2026-03-05"
+  },
+  {
+    "codigo_lote": "LPA-0063",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "quantidade_inicial": 2450,
+    "origem": "producao",
+    "data_producao": "2025-03-06",
+    "data_validade": "2026-03-06"
+  },
+  {
+    "codigo_lote": "LPA-0064",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "quantidade_inicial": 2940,
+    "origem": "producao",
+    "data_producao": "2025-03-07",
+    "data_validade": "2026-03-07"
+  },
+  {
+    "codigo_lote": "LPA-0065",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "quantidade_inicial": 3430,
+    "origem": "producao",
+    "data_producao": "2025-03-08",
+    "data_validade": "2026-03-08"
+  },
+  {
+    "codigo_lote": "LPA-0066",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "quantidade_inicial": 3920,
+    "origem": "producao",
+    "data_producao": "2025-03-09",
+    "data_validade": "2026-03-09"
+  },
+  {
+    "codigo_lote": "LPA-0067",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "quantidade_inicial": 4410,
+    "origem": "producao",
+    "data_producao": "2025-03-10",
+    "data_validade": "2026-03-10"
+  },
+  {
+    "codigo_lote": "LPA-0068",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "quantidade_inicial": 4900,
+    "origem": "producao",
+    "data_producao": "2025-03-11",
+    "data_validade": "2026-03-11"
+  },
+  {
+    "codigo_lote": "LPA-0069",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "quantidade_inicial": 5390,
+    "origem": "producao",
+    "data_producao": "2025-03-12",
+    "data_validade": "2026-03-12"
+  },
+  {
+    "codigo_lote": "LPA-0070",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "quantidade_inicial": 980,
+    "origem": "producao",
+    "data_producao": "2025-03-13",
+    "data_validade": "2026-03-13"
+  },
+  {
+    "codigo_lote": "LPA-0071",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "quantidade_inicial": 1470,
+    "origem": "producao",
+    "data_producao": "2025-03-14",
+    "data_validade": "2026-03-14"
+  },
+  {
+    "codigo_lote": "LPA-0072",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "quantidade_inicial": 1960,
+    "origem": "producao",
+    "data_producao": "2025-03-15",
+    "data_validade": "2026-03-15"
+  },
+  {
+    "codigo_lote": "LPA-0073",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "quantidade_inicial": 2450,
+    "origem": "producao",
+    "data_producao": "2025-03-16",
+    "data_validade": "2026-03-16"
+  },
+  {
+    "codigo_lote": "LPA-0074",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "quantidade_inicial": 2940,
+    "origem": "producao",
+    "data_producao": "2025-03-17",
+    "data_validade": "2026-03-17"
+  },
+  {
+    "codigo_lote": "LPA-0075",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "quantidade_inicial": 3430,
+    "origem": "producao",
+    "data_producao": "2025-03-18",
+    "data_validade": "2026-03-18"
+  },
+  {
+    "codigo_lote": "LPA-0076",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "quantidade_inicial": 3920,
+    "origem": "producao",
+    "data_producao": "2025-03-19",
+    "data_validade": "2026-03-19"
+  },
+  {
+    "codigo_lote": "LPA-0077",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "quantidade_inicial": 4410,
+    "origem": "producao",
+    "data_producao": "2025-03-20",
+    "data_validade": "2026-03-20"
+  },
+  {
+    "codigo_lote": "LPA-0078",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "quantidade_inicial": 4900,
+    "origem": "producao",
+    "data_producao": "2025-03-21",
+    "data_validade": "2026-03-21"
+  },
+  {
+    "codigo_lote": "LPA-0079",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "quantidade_inicial": 5390,
+    "origem": "producao",
+    "data_producao": "2025-03-22",
+    "data_validade": "2026-03-22"
+  },
+  {
+    "codigo_lote": "LPA-0080",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "quantidade_inicial": 980,
+    "origem": "producao",
+    "data_producao": "2025-03-23",
+    "data_validade": "2026-03-23"
+  },
+  {
+    "codigo_lote": "LPA-0081",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "quantidade_inicial": 1470,
+    "origem": "producao",
+    "data_producao": "2025-03-24",
+    "data_validade": "2026-03-24"
+  },
+  {
+    "codigo_lote": "LPA-0082",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "quantidade_inicial": 1960,
+    "origem": "producao",
+    "data_producao": "2025-03-25",
+    "data_validade": "2026-03-25"
+  },
+  {
+    "codigo_lote": "LPA-0083",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "quantidade_inicial": 2450,
+    "origem": "producao",
+    "data_producao": "2025-03-26",
+    "data_validade": "2026-03-26"
+  },
+  {
+    "codigo_lote": "LPA-0084",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "quantidade_inicial": 2940,
+    "origem": "producao",
+    "data_producao": "2025-03-27",
+    "data_validade": "2026-03-27"
+  },
+  {
+    "codigo_lote": "LPA-0085",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0001",
+    "quantidade_inicial": 3430,
+    "origem": "producao",
+    "data_producao": "2025-03-28",
+    "data_validade": "2026-03-28"
+  },
+  {
+    "codigo_lote": "LPA-0086",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0002",
+    "quantidade_inicial": 3920,
+    "origem": "producao",
+    "data_producao": "2025-03-29",
+    "data_validade": "2026-03-29"
+  },
+  {
+    "codigo_lote": "LPA-0087",
+    "item_tipo": "produto",
+    "produto_codigo": "PA-0003",
+    "quantidade_inicial": 4410,
+    "origem": "producao",
+    "data_producao": "2025-03-30",
+    "data_validade": "2026-03-30"
+  },
+  {
+    "codigo_lote": "LPA-0088",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0001",
+    "quantidade_inicial": 4900,
+    "origem": "producao",
+    "data_producao": "2025-03-31",
+    "data_validade": "2026-03-31"
+  },
+  {
+    "codigo_lote": "LPA-0089",
+    "item_tipo": "produto",
+    "produto_codigo": "SA-0002",
+    "quantidade_inicial": 5390,
+    "origem": "producao",
+    "data_producao": "2025-04-01",
+    "data_validade": "2026-04-01"
+  }
+]

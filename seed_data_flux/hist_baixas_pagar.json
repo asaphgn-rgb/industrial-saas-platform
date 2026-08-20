@@ -1,0 +1,14 @@
+[
+  {
+    "conta_numero": "FAT-FOR1-01",
+    "data_baixa": "2026-08-15",
+    "valor": 45000,
+    "forma": "Boleto"
+  },
+  {
+    "conta_numero": "FAT-FOR1-02",
+    "data_baixa": "2026-09-15",
+    "valor": 45000,
+    "forma": "Boleto"
+  }
+]

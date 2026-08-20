@@ -1,0 +1,47 @@
+[
+  {
+    "matricula": "0001",
+    "nome": "João Silva",
+    "cargo": "Operador de Extrusora",
+    "setor": "Extrusão",
+    "turno": "A",
+    "data_admissao": "2020-03-10",
+    "cpf": "111.111.111-11"
+  },
+  {
+    "matricula": "0002",
+    "nome": "Maria Costa",
+    "cargo": "Operador de Corte e Solda",
+    "setor": "Acabamento",
+    "turno": "B",
+    "data_admissao": "2021-05-15",
+    "cpf": "222.222.222-22"
+  },
+  {
+    "matricula": "0003",
+    "nome": "Pedro Santos",
+    "cargo": "Líder de Produção",
+    "setor": "Produção Geral",
+    "turno": "A",
+    "data_admissao": "2018-01-20",
+    "cpf": "333.333.333-33"
+  },
+  {
+    "matricula": "0004",
+    "nome": "Ana Lima",
+    "cargo": "Inspetor da Qualidade",
+    "setor": "Qualidade",
+    "turno": "A",
+    "data_admissao": "2022-08-05",
+    "cpf": "444.444.444-44"
+  },
+  {
+    "matricula": "0005",
+    "nome": "Carlos Mendes",
+    "cargo": "Mecânico de Manutenção",
+    "setor": "Manutenção",
+    "turno": "ADM",
+    "data_admissao": "2019-11-12",
+    "cpf": "555.555.555-55"
+  }
+]

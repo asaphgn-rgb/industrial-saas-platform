@@ -1,0 +1,4 @@
+codigo,tipo_pessoa,razao_social,nome_fantasia,cnpj_cpf,email,telefone,estado,cidade,bairro,endereco
+CLI-0001,PJ,Supermercados Alfa Ltda,Super Alfa,11.222.333/0001-44,compras@superalfa.com,(11) 3333-4444,SP,São Paulo,Centro,"Rua A, 100"
+CLI-0002,PJ,Rede Farmácias Beta S/A,Farma Beta,22.333.444/0001-55,suprimentos@farmabeta.com.br,(21) 4444-5555,RJ,Rio de Janeiro,Botafogo,"Av B, 200"
+CLI-0003,PJ,Distribuidora Gamma,Gamma Dist,33.444.555/0001-66,contato@gamma.com,(41) 5555-6666,PR,Curitiba,Batel,"Rua C, 300"

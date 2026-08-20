@@ -1,0 +1,6 @@
+codigo,descricao,tipo,ncm,largura_mm,comprimento_mm,espessura_um,cor,peso_milheiro_kg,preco_venda,custo_padrao
+PA-0001,Saco de Lixo Preto 100L,ACABADO,3923.21.90,750,900,40,Preto,50,450,380
+PA-0002,Sacola Branca Tipo Camiseta 40x50,ACABADO,3923.21.10,400,500,20,Branca,8.5,95,75
+PA-0003,Bobina Tubular Transparente 60cm,ACABADO,3920.10.99,600,,50,Transparente,,15,11.5
+SA-0001,Filme PEBD Tubular 750x40 Preto,SEMI_ACABADO,,750,,40,Preto,,,7.5
+SA-0002,Filme PEAD Tubular 400x20 Branco Tratado,SEMI_ACABADO,,400,,20,Branco,,,8.2

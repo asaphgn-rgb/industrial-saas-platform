@@ -1,0 +1,38 @@
+[
+  {
+    "codigo": "FOR-0001",
+    "tipo_pessoa": "PJ",
+    "razao_social": "Petroquímica Delta S/A",
+    "nome_fantasia": "Delta Resinas",
+    "cnpj_cpf": "44.555.666/0001-77",
+    "email": "vendas@delta.com",
+    "telefone": "(11) 6666-7777",
+    "estado": "SP",
+    "cidade": "Cubatão",
+    "endereco": "Polo Ind, S/N"
+  },
+  {
+    "codigo": "FOR-0002",
+    "tipo_pessoa": "PJ",
+    "razao_social": "Cores & Pigmentos Epsilon",
+    "nome_fantasia": "Epsilon Master",
+    "cnpj_cpf": "55.666.777/0001-88",
+    "email": "contato@epsilon.com",
+    "telefone": "(19) 7777-8888",
+    "estado": "SP",
+    "cidade": "Campinas",
+    "endereco": "Distrito Ind, Lote 5"
+  },
+  {
+    "codigo": "FOR-0003",
+    "tipo_pessoa": "PJ",
+    "razao_social": "Embalagens Zeta",
+    "nome_fantasia": "Zeta Insumos",
+    "cnpj_cpf": "66.777.888/0001-99",
+    "email": "comercial@zeta.com",
+    "telefone": "(47) 8888-9999",
+    "estado": "SC",
+    "cidade": "Joinville",
+    "endereco": "Rua D, 400"
+  }
+]

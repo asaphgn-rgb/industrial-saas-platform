@@ -1,0 +1,20 @@
+--- src/services/industrial-mes.service.ts
++++ src/services/industrial-mes.service.ts
+@@ -82,7 +82,7 @@
+       });
+ 
+       // Atualiza a ordem de produção real com tipagem forçada (SafeAny)
+-      const updatePayload = {
++      const updatePayload: SafeAny = {
+         status: newStatus,
+         quantity_produced: data.quantity_produced + quantity,
+       };
+@@ -131,7 +131,7 @@
+       });
+ 
+       // Atualiza quantidade de refugo e data final com tipagem forçada
+-      const updatePayload = {
++      const updatePayload: SafeAny = {
+         status: 'Completed',
+         quantity_scrap: data.quantity_scrap + scrapQuantity,
+         end_time: new Date().toISOString()

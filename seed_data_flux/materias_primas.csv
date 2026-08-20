@@ -1,0 +1,6 @@
+codigo,descricao,categoria,ncm,cor,densidade,indice_fluidez,estoque_minimo,custo_medio
+MP-0001,Resina PEBD 0.923 (Alta Transparência),Resina,3901.10.10,Natural,0.923,2.5,1000,8.5
+MP-0002,Resina PEAD 0.960 (Sacos Lixo),Resina,3901.20.29,Natural,0.96,0.8,2000,7.2
+MP-0003,Masterbatch Preto (Alta Concentração),Pigmento,3206.49.90,Preto,1.1,15,200,12
+MP-0004,Masterbatch Branco (Dióxido de Titânio),Pigmento,3206.11.10,Branco,1.2,12,150,15.5
+MP-0005,Aditivo Deslizante (Slip),Aditivo,3824.99.89,Incolor,,,50,25

@@ -1,0 +1,72 @@
+[
+  {
+    "codigo": "1.0",
+    "nome": "Ativo",
+    "tipo": "ativo",
+    "natureza": "devedora",
+    "nivel": 1
+  },
+  {
+    "codigo": "1.1",
+    "nome": "Ativo Circulante",
+    "tipo": "ativo",
+    "natureza": "devedora",
+    "nivel": 2
+  },
+  {
+    "codigo": "1.1.01",
+    "nome": "Caixa e Equivalentes",
+    "tipo": "ativo",
+    "natureza": "devedora",
+    "nivel": 3
+  },
+  {
+    "codigo": "2.0",
+    "nome": "Passivo",
+    "tipo": "passivo",
+    "natureza": "credora",
+    "nivel": 1
+  },
+  {
+    "codigo": "2.1",
+    "nome": "Passivo Circulante",
+    "tipo": "passivo",
+    "natureza": "credora",
+    "nivel": 2
+  },
+  {
+    "codigo": "2.1.01",
+    "nome": "Fornecedores",
+    "tipo": "passivo",
+    "natureza": "credora",
+    "nivel": 3
+  },
+  {
+    "codigo": "3.0",
+    "nome": "Receitas",
+    "tipo": "receita",
+    "natureza": "credora",
+    "nivel": 1
+  },
+  {
+    "codigo": "3.1",
+    "nome": "Receita Operacional Bruta",
+    "tipo": "receita",
+    "natureza": "credora",
+    "nivel": 2
+  },
+  {
+    "codigo": "4.0",
+    "nome": "Custos e Despesas",
+    "tipo": "despesa",
+    "natureza": "devedora",
+    "nivel": 1
+  },
+  {
+    "codigo": "4.1",
+    "nome": "Custo dos Produtos Vendidos (CPV)",
+    "tipo": "custo",
+    "natureza": "devedora",
+    "nivel": 2
+  }
+]

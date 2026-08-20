@@ -1,0 +1,54 @@
+[
+  {
+    "tag": "MIC-001",
+    "descricao": "Micrômetro Digital 0-25mm",
+    "fabricante": "Mitutoyo",
+    "faixa_min": 0,
+    "faixa_max": 25,
+    "resolucao": 0.001,
+    "unidade": "mm",
+    "localizacao": "Lab Qualidade",
+    "criticidade": "alta",
+    "periodicidade_meses": 12,
+    "proxima_calibracao": "2026-10-15"
+  },
+  {
+    "tag": "BAL-001",
+    "descricao": "Balança Analítica",
+    "fabricante": "Toledo",
+    "faixa_min": 0,
+    "faixa_max": 5,
+    "resolucao": 0.001,
+    "unidade": "kg",
+    "localizacao": "Lab Qualidade",
+    "criticidade": "alta",
+    "periodicidade_meses": 6,
+    "proxima_calibracao": "2026-11-20"
+  },
+  {
+    "tag": "BAL-002",
+    "descricao": "Balança de Piso 1000kg",
+    "fabricante": "Toledo",
+    "faixa_min": 0,
+    "faixa_max": 1000,
+    "resolucao": 0.5,
+    "unidade": "kg",
+    "localizacao": "Expedição",
+    "criticidade": "media",
+    "periodicidade_meses": 12,
+    "proxima_calibracao": "2027-01-10"
+  },
+  {
+    "tag": "TRE-001",
+    "descricao": "Trena Metálica 5m",
+    "fabricante": "Starrett",
+    "faixa_min": 0,
+    "faixa_max": 5,
+    "resolucao": 1,
+    "unidade": "mm",
+    "localizacao": "Produção",
+    "criticidade": "baixa",
+    "periodicidade_meses": 24,
+    "proxima_calibracao": "2027-05-05"
+  }
+]

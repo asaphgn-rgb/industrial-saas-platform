@@ -1,0 +1,58 @@
+[
+  {
+    "codigo": "PA-0001",
+    "descricao": "Saco de Lixo Preto 100L",
+    "tipo": "ACABADO",
+    "ncm": "3923.21.90",
+    "largura_mm": 750,
+    "comprimento_mm": 900,
+    "espessura_um": 40,
+    "cor": "Preto",
+    "peso_milheiro_kg": 50,
+    "preco_venda": 450,
+    "custo_padrao": 380
+  },
+  {
+    "codigo": "PA-0002",
+    "descricao": "Sacola Branca Tipo Camiseta 40x50",
+    "tipo": "ACABADO",
+    "ncm": "3923.21.10",
+    "largura_mm": 400,
+    "comprimento_mm": 500,
+    "espessura_um": 20,
+    "sanfona_mm": 50,
+    "cor": "Branca",
+    "peso_milheiro_kg": 8.5,
+    "preco_venda": 95,
+    "custo_padrao": 75
+  },
+  {
+    "codigo": "PA-0003",
+    "descricao": "Bobina Tubular Transparente 60cm",
+    "tipo": "ACABADO",
+    "ncm": "3920.10.99",
+    "largura_mm": 600,
+    "espessura_um": 50,
+    "cor": "Transparente",
+    "preco_venda": 15,
+    "custo_padrao": 11.5
+  },
+  {
+    "codigo": "SA-0001",
+    "descricao": "Filme PEBD Tubular 750x40 Preto",
+    "tipo": "SEMI_ACABADO",
+    "largura_mm": 750,
+    "espessura_um": 40,
+    "cor": "Preto",
+    "custo_padrao": 7.5
+  },
+  {
+    "codigo": "SA-0002",
+    "descricao": "Filme PEAD Tubular 400x20 Branco Tratado",
+    "tipo": "SEMI_ACABADO",
+    "largura_mm": 400,
+    "espessura_um": 20,
+    "cor": "Branco",
+    "custo_padrao": 8.2
+  }
+]

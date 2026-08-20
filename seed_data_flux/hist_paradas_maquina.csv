@@ -1,0 +1,51 @@
+recurso_nome,motivo,inicio,fim,duracao_min,responsavel_nome
+EXT-02,Setup / Troca de Bobina,2025-01-10T10:00:00Z,2025-01-10T11:30:00Z,90,João Silva
+IMP-01,Setup / Troca de Bobina,2025-01-15T10:00:00Z,2025-01-15T11:30:00Z,90,João Silva
+COR-01,Setup / Troca de Bobina,2025-01-20T10:00:00Z,2025-01-20T11:30:00Z,90,João Silva
+REC-01,Quebra de equipamento,2025-01-25T10:00:00Z,2025-01-25T11:30:00Z,90,João Silva
+EXT-01,Setup / Troca de Bobina,2025-01-30T10:00:00Z,2025-01-30T11:30:00Z,90,João Silva
+EXT-02,Setup / Troca de Bobina,2025-02-04T10:00:00Z,2025-02-04T11:30:00Z,90,João Silva
+IMP-01,Setup / Troca de Bobina,2025-02-09T10:00:00Z,2025-02-09T11:30:00Z,90,João Silva
+COR-01,Quebra de equipamento,2025-02-14T10:00:00Z,2025-02-14T11:30:00Z,90,João Silva
+REC-01,Setup / Troca de Bobina,2025-02-19T10:00:00Z,2025-02-19T11:30:00Z,90,João Silva
+EXT-01,Setup / Troca de Bobina,2025-02-24T10:00:00Z,2025-02-24T11:30:00Z,90,João Silva
+EXT-02,Setup / Troca de Bobina,2025-03-01T10:00:00Z,2025-03-01T11:30:00Z,90,João Silva
+IMP-01,Quebra de equipamento,2025-03-06T10:00:00Z,2025-03-06T11:30:00Z,90,João Silva
+COR-01,Setup / Troca de Bobina,2025-03-11T10:00:00Z,2025-03-11T11:30:00Z,90,João Silva
+REC-01,Setup / Troca de Bobina,2025-03-16T10:00:00Z,2025-03-16T11:30:00Z,90,João Silva
+EXT-01,Setup / Troca de Bobina,2025-03-21T10:00:00Z,2025-03-21T11:30:00Z,90,João Silva
+EXT-02,Quebra de equipamento,2025-03-26T10:00:00Z,2025-03-26T11:30:00Z,90,João Silva
+IMP-01,Setup / Troca de Bobina,2025-03-31T10:00:00Z,2025-03-31T11:30:00Z,90,João Silva
+COR-01,Setup / Troca de Bobina,2025-04-05T10:00:00Z,2025-04-05T11:30:00Z,90,João Silva
+REC-01,Setup / Troca de Bobina,2025-04-10T10:00:00Z,2025-04-10T11:30:00Z,90,João Silva
+EXT-01,Quebra de equipamento,2025-04-15T10:00:00Z,2025-04-15T11:30:00Z,90,João Silva
+EXT-02,Setup / Troca de Bobina,2025-04-20T10:00:00Z,2025-04-20T11:30:00Z,90,João Silva
+IMP-01,Setup / Troca de Bobina,2025-04-25T10:00:00Z,2025-04-25T11:30:00Z,90,João Silva
+COR-01,Setup / Troca de Bobina,2025-04-30T10:00:00Z,2025-04-30T11:30:00Z,90,João Silva
+REC-01,Quebra de equipamento,2025-05-05T10:00:00Z,2025-05-05T11:30:00Z,90,João Silva
+EXT-01,Setup / Troca de Bobina,2025-05-10T10:00:00Z,2025-05-10T11:30:00Z,90,João Silva
+EXT-02,Setup / Troca de Bobina,2025-05-15T10:00:00Z,2025-05-15T11:30:00Z,90,João Silva
+IMP-01,Setup / Troca de Bobina,2025-05-20T10:00:00Z,2025-05-20T11:30:00Z,90,João Silva
+COR-01,Quebra de equipamento,2025-05-25T10:00:00Z,2025-05-25T11:30:00Z,90,João Silva
+REC-01,Setup / Troca de Bobina,2025-05-30T10:00:00Z,2025-05-30T11:30:00Z,90,João Silva
+EXT-01,Setup / Troca de Bobina,2025-06-04T10:00:00Z,2025-06-04T11:30:00Z,90,João Silva
+EXT-02,Setup / Troca de Bobina,2025-06-09T10:00:00Z,2025-06-09T11:30:00Z,90,João Silva
+IMP-01,Quebra de equipamento,2025-06-14T10:00:00Z,2025-06-14T11:30:00Z,90,João Silva
+COR-01,Setup / Troca de Bobina,2025-06-19T10:00:00Z,2025-06-19T11:30:00Z,90,João Silva
+REC-01,Setup / Troca de Bobina,2025-06-24T10:00:00Z,2025-06-24T11:30:00Z,90,João Silva
+EXT-01,Setup / Troca de Bobina,2025-06-29T10:00:00Z,2025-06-29T11:30:00Z,90,João Silva
+EXT-02,Quebra de equipamento,2025-07-04T10:00:00Z,2025-07-04T11:30:00Z,90,João Silva
+IMP-01,Setup / Troca de Bobina,2025-07-09T10:00:00Z,2025-07-09T11:30:00Z,90,João Silva
+COR-01,Setup / Troca de Bobina,2025-07-14T10:00:00Z,2025-07-14T11:30:00Z,90,João Silva
+REC-01,Setup / Troca de Bobina,2025-07-19T10:00:00Z,2025-07-19T11:30:00Z,90,João Silva
+EXT-01,Quebra de equipamento,2025-07-24T10:00:00Z,2025-07-24T11:30:00Z,90,João Silva
+EXT-02,Setup / Troca de Bobina,2025-07-29T10:00:00Z,2025-07-29T11:30:00Z,90,João Silva
+IMP-01,Setup / Troca de Bobina,2025-08-03T10:00:00Z,2025-08-03T11:30:00Z,90,João Silva
+COR-01,Setup / Troca de Bobina,2025-08-08T10:00:00Z,2025-08-08T11:30:00Z,90,João Silva
+REC-01,Quebra de equipamento,2025-08-13T10:00:00Z,2025-08-13T11:30:00Z,90,João Silva
+EXT-01,Setup / Troca de Bobina,2025-08-18T10:00:00Z,2025-08-18T11:30:00Z,90,João Silva
+EXT-02,Setup / Troca de Bobina,2025-08-23T10:00:00Z,2025-08-23T11:30:00Z,90,João Silva
+IMP-01,Setup / Troca de Bobina,2025-08-28T10:00:00Z,2025-08-28T11:30:00Z,90,João Silva
+COR-01,Quebra de equipamento,2025-09-02T10:00:00Z,2025-09-02T11:30:00Z,90,João Silva
+REC-01,Setup / Troca de Bobina,2025-09-07T10:00:00Z,2025-09-07T11:30:00Z,90,João Silva
+EXT-01,Setup / Troca de Bobina,2025-09-12T10:00:00Z,2025-09-12T11:30:00Z,90,João Silva

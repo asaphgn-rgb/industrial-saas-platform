@@ -1,0 +1,22 @@
+--- src/components/documents/SecureDocumentValidation.tsx
++++ src/components/documents/SecureDocumentValidation.tsx
+@@ -10,6 +10,8 @@
+   regulatoryAnalysis: string;
+   resolutionAction?: string;
+   issuingAuthority: string;
++  fileData?: string;
++  fileType?: string;
+ }
+ 
+ export function SecureDocumentValidation() {
+--- src/components/documents/SecureUploadPage.tsx
++++ src/components/documents/SecureUploadPage.tsx
+@@ -19,6 +19,8 @@
+   title: string;
+   category: DueDiligenceCategory;
+   consultativeNote: string;
++  fileData?: string;
++  fileType?: string;
+ }
+ 
+ interface UploadResponse {

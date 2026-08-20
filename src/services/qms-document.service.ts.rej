@@ -1,0 +1,20 @@
+--- src/services/qms-document.service.ts
++++ src/services/qms-document.service.ts
+@@ -89,7 +89,7 @@
+       throw new Error('Falha ao criar o documento. ' + error.message);
+     }
+ 
+-    const auditPayload = {
++    const auditPayload: SafeAny = {
+       tenant_id: tenantId,
+       table_name: 'documents',
+       record_id: data.id,
+@@ -133,7 +133,7 @@
+       throw new Error('Falha ao revisar o documento. ' + error.message);
+     }
+ 
+-    const auditPayload = {
++    const auditPayload: SafeAny = {
+       tenant_id: tenantId,
+       table_name: 'documents',
+       record_id: documentId,

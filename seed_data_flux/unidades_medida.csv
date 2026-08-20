@@ -1,0 +1,6 @@
+sigla,descricao,tipo
+KG,Quilograma,PESO
+MIL,Milheiro,QUANTIDADE
+UN,Unidade,QUANTIDADE
+M,Metro,COMPRIMENTO
+BOB,Bobina,QUANTIDADE

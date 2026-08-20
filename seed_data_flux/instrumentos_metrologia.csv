@@ -1,0 +1,5 @@
+tag,descricao,fabricante,faixa_min,faixa_max,resolucao,unidade,localizacao,criticidade,periodicidade_meses,proxima_calibracao
+MIC-001,Micrômetro Digital 0-25mm,Mitutoyo,0,25,0.001,mm,Lab Qualidade,alta,12,2026-10-15
+BAL-001,Balança Analítica,Toledo,0,5,0.001,kg,Lab Qualidade,alta,6,2026-11-20
+BAL-002,Balança de Piso 1000kg,Toledo,0,1000,0.5,kg,Expedição,media,12,2027-01-10
+TRE-001,Trena Metálica 5m,Starrett,0,5,1,mm,Produção,baixa,24,2027-05-05

@@ -1,0 +1,42 @@
+[
+  {
+    "numero": "FAT-FOR1-01",
+    "descricao": "Compra de Resina PEBD",
+    "categoria": "Matéria-prima",
+    "data_emissao": "2026-07-15",
+    "data_vencimento": "2026-08-15",
+    "valor_original": 45000,
+    "valor_pago": 0,
+    "forma_pagamento": "Boleto"
+  },
+  {
+    "numero": "FAT-FOR1-02",
+    "descricao": "Compra de Resina PEBD (Parc 2)",
+    "categoria": "Matéria-prima",
+    "data_emissao": "2026-07-15",
+    "data_vencimento": "2026-09-15",
+    "valor_original": 45000,
+    "valor_pago": 0,
+    "forma_pagamento": "Boleto"
+  },
+  {
+    "numero": "FAT-FOR2-01",
+    "descricao": "Compra de Masterbatch",
+    "categoria": "Insumos",
+    "data_emissao": "2026-08-01",
+    "data_vencimento": "2026-08-30",
+    "valor_original": 12500,
+    "valor_pago": 0,
+    "forma_pagamento": "Transferência Bancária"
+  },
+  {
+    "numero": "FAT-ENERGIA",
+    "descricao": "Conta de Energia Elétrica",
+    "categoria": "Custos Fixos",
+    "data_emissao": "2026-08-05",
+    "data_vencimento": "2026-08-20",
+    "valor_original": 18450,
+    "valor_pago": 0,
+    "forma_pagamento": "Débito em Conta"
+  }
+]

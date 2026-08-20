@@ -1,0 +1,35 @@
+[
+  {
+    "nome": "Roberto Almeida",
+    "empresa": "Indústria Ômega",
+    "email": "compras@omega.com",
+    "telefone": "(11) 98888-7777",
+    "origem": "Site",
+    "estagio": "proposta",
+    "valor_estimado": 150000,
+    "probabilidade": 60,
+    "proxima_acao": "Follow-up",
+    "proxima_acao_data": "2026-08-25"
+  },
+  {
+    "nome": "Fernanda Lima",
+    "empresa": "Atacadão Sigma",
+    "email": "flima@sigma.com",
+    "telefone": "(21) 97777-6666",
+    "origem": "Feira",
+    "estagio": "negociacao",
+    "valor_estimado": 300000,
+    "probabilidade": 80,
+    "proxima_acao": "Reunião de fechamento",
+    "proxima_acao_data": "2026-08-20"
+  },
+  {
+    "nome": "Marcos Torres",
+    "empresa": "Varejo Theta",
+    "origem": "Indicação",
+    "estagio": "perdido",
+    "valor_estimado": 50000,
+    "probabilidade": 0,
+    "observacoes": "Preço muito alto"
+  }
+]

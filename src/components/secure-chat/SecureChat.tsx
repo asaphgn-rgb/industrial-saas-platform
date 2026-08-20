@@ -24,12 +24,8 @@ export function SecureChat({ roomId, currentUserId }: SecureChatProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const fetchMessages = async () => {
-    // MOCK PARA DEMONSTRAÇÃO
-    setMessages([
-      { id: "1", sender_id: "system", content: "Iniciando protocolo de negociação. Cofre aberto.", created_at: new Date(Date.now() - 3600000).toISOString(), is_read: true },
-      { id: "2", sender_id: "partner", content: "A matrícula e a cadeia sucessória já foram analisadas?", created_at: new Date(Date.now() - 1800000).toISOString(), is_read: true },
-      { id: "3", sender_id: currentUserId, content: "Sim. A análise preliminar está limpa. Estou anexando o relatório da auditoria fiscal do INCRA agora.", created_at: new Date(Date.now() - 900000).toISOString(), attachment_url: "mock.pdf", is_read: true }
-    ]);
+    // Inicial limpo (0 mensagens) para permitir upload e conversa do zero.
+    setMessages([]);
     setLoading(false);
   };
 

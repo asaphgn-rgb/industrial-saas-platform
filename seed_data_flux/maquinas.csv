@@ -1,0 +1,6 @@
+codigo,nome,tipo,fabricante,modelo,ano_fabricacao,capacidade_kg_h,potencia_kw,custo_hora
+EXT-01,Extrusora Mono 65mm,EXTRUSAO,Carnevalli,Polaris,2015,120,90,150
+EXT-02,Extrusora Coex 3 Camadas,EXTRUSAO,Macchi,Coex 3,2018,250,180,280
+IMP-01,Impressora Flexo 6 Cores,IMPRESSAO,Feva,Flexo 6,2012,300,120,200
+COR-01,Corte e Solda Fundo Estrela,CORTE_SOLDA,Hece,Roll-bag,2019,80,30,90
+REC-01,Recuperadora / Aglutinador,RECICLAGEM,Wortex,,2010,150,110,120
