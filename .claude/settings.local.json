@@ -162,7 +162,12 @@
       "Bash(curl -s -F \"file=@/tmp/test.txt\" https://tmpfiles.org/api/v1/upload)",
       "Bash(curl -s -L https://tmpfiles.org/dl/wLwjrRTM2Luq/test.txt)",
       "Bash(curl -s -F \"file=@/tmp/test.txt\" https://file.io)",
-      "Bash(curl -s -L -F \"file=@/tmp/test.txt\" https://file.io)"
+      "Bash(curl -s -L -F \"file=@/tmp/test.txt\" https://file.io)",
+      "Bash(curl -s https://flechabsb.com)",
+      "Bash(curl -s https://www.flechabsb.com)",
+      "Bash(npx vite *)",
+      "Bash(git rm *)",
+      "Bash(rm .claude/plans/gentle-jingling-feigenbaum.md)"
     ]
   }
 }

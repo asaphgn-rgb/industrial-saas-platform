@@ -144,7 +144,7 @@ export function SecureDocumentValidation({ currentUser }: SecureDocumentValidati
 
   const handleDeleteDocument = async (id: string) => {
     const updatedDocs = mockDocuments.filter(doc => doc.id !== id);
-    const { data: tenantData } = await (supabase as any).from('tenants').select('settings').eq('id', 'tenant-industrial-demo-uuid').single();
+    const { data: tenantData } = await (supabase as any).from('b2b_documents').select('*').eq('id', 'tenant-industrial-demo-uuid').single();
     const existingSettings = (tenantData as any)?.settings || {};
     const { error } = await (supabase as any).from('tenants').update({ settings: { ...existingSettings, b2b_documents: updatedDocs } }).eq('id', 'tenant-industrial-demo-uuid');
 
@@ -158,7 +158,7 @@ export function SecureDocumentValidation({ currentUser }: SecureDocumentValidati
 
   const handleRequestDeletion = async (id: string) => {
     const updatedDocs = mockDocuments.map(doc => doc.id === id ? { ...doc, deletionRequested: true, deletion_requested: true } : doc);
-    const { data: tenantData } = await (supabase as any).from('tenants').select('settings').eq('id', 'tenant-industrial-demo-uuid').single();
+    const { data: tenantData } = await (supabase as any).from('b2b_documents').select('*').eq('id', 'tenant-industrial-demo-uuid').single();
     const existingSettings = (tenantData as any)?.settings || {};
     const { error } = await (supabase as any).from('tenants').update({ settings: { ...existingSettings, b2b_documents: updatedDocs } }).eq('id', 'tenant-industrial-demo-uuid');
 
@@ -172,7 +172,7 @@ export function SecureDocumentValidation({ currentUser }: SecureDocumentValidati
 
   const handleRejectDeletion = async (id: string) => {
     const updatedDocs = mockDocuments.map(doc => doc.id === id ? { ...doc, deletionRequested: false, deletion_requested: false } : doc);
-    const { data: tenantData } = await (supabase as any).from('tenants').select('settings').eq('id', 'tenant-industrial-demo-uuid').single();
+    const { data: tenantData } = await (supabase as any).from('b2b_documents').select('*').eq('id', 'tenant-industrial-demo-uuid').single();
     const existingSettings = (tenantData as any)?.settings || {};
     const { error } = await (supabase as any).from('tenants').update({ settings: { ...existingSettings, b2b_documents: updatedDocs } }).eq('id', 'tenant-industrial-demo-uuid');
 
@@ -335,7 +335,7 @@ export function SecureDocumentValidation({ currentUser }: SecureDocumentValidati
               <button
                 onClick={async () => {
                    if(window.confirm("Deseja apagar TODOS os documentos da Nuvem e esvaziar o cofre?")) {
-                      const { data: tenantData } = await (supabase as any).from('tenants').select('settings').eq('id', 'tenant-industrial-demo-uuid').single();
+                      const { data: tenantData } = await (supabase as any).from('b2b_documents').select('*').eq('id', 'tenant-industrial-demo-uuid').single();
                       const existingSettings = (tenantData as any)?.settings || {};
                       await (supabase as any).from('tenants').update({ settings: { ...existingSettings, b2b_documents: [] } }).eq('id', 'tenant-industrial-demo-uuid');
                       setMockDocuments([]);

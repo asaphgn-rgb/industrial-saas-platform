@@ -266,7 +266,7 @@ export function SecureUploadPage({ onUploadComplete, currentUser }: SecureUpload
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 12000); // 12 Segundos Máximo
 
-      const res = await (supabase as any).from('tenants').select('settings').eq('id', 'tenant-industrial-demo-uuid').single();
+      const res = await (supabase as any).from('b2b_documents').select('*').eq('id', 'tenant-industrial-demo-uuid').single();
       const existingSettings = (res.data as any)?.settings || {};
       const existingDocs = existingSettings.b2b_documents || [];
 
