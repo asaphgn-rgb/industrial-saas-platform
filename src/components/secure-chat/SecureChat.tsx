@@ -129,7 +129,15 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
 
            setMessages(prev => {
               const exists = prev.find(m => m.id === finalMsg.id);
-              if (exists) return prev;
+              if (exists) {
+                // Se a mensagem já existe, mas a nova traz o base64 real resolvendo o "supabase", ATUALIZA ELA!
+                if (exists.attachment_url === 'supabase' && finalMsg.attachment_url && finalMsg.attachment_url !== 'supabase') {
+                  const updated = prev.map(m => m.id === finalMsg.id ? { ...m, attachment_url: finalMsg.attachment_url, audio_data: finalMsg.audio_data } : m);
+                  localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(updated));
+                  return updated;
+                }
+                return prev;
+              }
 
               const updated = [...prev, finalMsg];
               localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(updated));
