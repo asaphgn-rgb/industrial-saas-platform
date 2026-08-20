@@ -218,7 +218,7 @@ export function SecureUploadPage({ onUploadComplete }: SecureUploadPageProps) {
 
     try {
       // MOCK PARA DEMONSTRAÇÃO (SEM SUPABASE LOCAL STARTADO)
-      await new Promise(r => setTimeout(r, 2500)); // Simulando criptografia E2E e upload
+      await new Promise(r => setTimeout(r, 600)); // Simulando criptografia E2E rápida
       uploadedCount = parsedFiles.length;
 
       setUploadStatus({
@@ -256,7 +256,7 @@ export function SecureUploadPage({ onUploadComplete }: SecureUploadPageProps) {
 
       // Navegar para a validação se existir o hook de redirect (App.tsx passará)
       if (onUploadComplete) {
-         setTimeout(() => onUploadComplete(), 1500);
+         setTimeout(() => onUploadComplete(), 400);
       }
 
       return;

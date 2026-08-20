@@ -110,7 +110,7 @@ export function SecureDocumentValidation() {
     setSignatureStep('validating');
     setTimeout(() => {
       setSignatureStep('signed');
-    }, 3500); // Simulando handshake B2B longo
+    }, 800); // Handshake ultrarrápido
   };
 
   const hasCriticalIssues = mockDocuments.some(doc => doc.status === 'Pendente');

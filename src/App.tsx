@@ -176,33 +176,7 @@ export default function App() {
             </div>
           </div>
 
-          <div className="w-full h-px bg-gradient-to-r from-transparent via-elite-sand/30 to-transparent"></div>
-
-          {/* Sessão: Módulos Industriais Standard */}
-          <div>
-            <h3 className="text-[10px] font-bold text-elite-sand uppercase tracking-[0.2em] mb-4 pl-2">Operacional & ISO 9001</h3>
-            <div className="space-y-1.5">
-              <button
-                onClick={() => setActiveTab('dashboard')}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
-                  activeTab === 'dashboard' ? 'bg-slate-800 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-800'
-                }`}
-              >
-                <Activity className={`w-4 h-4 ${activeTab === 'dashboard' ? 'text-slate-300' : 'text-slate-400'}`} />
-                <span>Analytics & OEE</span>
-              </button>
-              <button
-                onClick={() => setActiveTab('qms')}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
-                  activeTab === 'qms' ? 'bg-slate-800 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-800'
-                }`}
-              >
-                <CheckCircle2 className={`w-4 h-4 ${activeTab === 'qms' ? 'text-slate-300' : 'text-slate-400'}`} />
-                <span>Gestão CAPA</span>
-              </button>
-            </div>
-          </div>
-        </aside>
+          </aside>
 
         {/* Content Area */}
         <main className="flex-1 overflow-y-auto bg-elite-paper relative">
