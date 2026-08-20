@@ -31,16 +31,32 @@ export function SecureChat({ roomId, currentUserId }: SecureChatProps) {
       const key = await deriveKey(roomId, 'SaaS-B2B-Secure-Salt');
       setCryptoKey(key);
       
-      setMessages([]);
+      // Carrega histórico E2E da memória B2B MOCK
+      const savedMessages = localStorage.getItem('B2B_MOCK_CHAT_' + roomId);
+      if (savedMessages) {
+         setMessages(JSON.parse(savedMessages));
+      } else {
+         setMessages([]);
+      }
       setLoading(false);
     } catch (e) { }
   };
 
   useEffect(() => {
     fetchMessages();
-
-    // Removemos a subscription do Realtime para o mock não travar caso o DB falhe offline
   }, [roomId]);
+
+  useEffect(() => {
+    // Listener para pegar mensagens de outras abas ou usuários que acabaram de logar
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === 'B2B_MOCK_CHAT_' + roomId && e.newValue) {
+        setMessages(JSON.parse(e.newValue));
+      }
+    };
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, [roomId]);
+
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -66,7 +82,11 @@ export function SecureChat({ roomId, currentUserId }: SecureChatProps) {
       created_at: new Date().toISOString(),
       is_read: false
     };
-    setMessages(prev => [...prev, newMsg]);
+    setMessages(prev => {
+      const updated = [...prev, newMsg];
+      localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(updated));
+      return updated;
+    });
   };
 
   if (loading) return <div className="flex h-full items-center justify-center p-4"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-elite-navy"></div></div>;
