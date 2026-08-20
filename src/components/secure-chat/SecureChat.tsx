@@ -77,15 +77,28 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
   }, []);
 
 
+
   useEffect(() => {
-    // Listener para pegar mensagens de outras abas ou usuários que acabaram de logar
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === 'B2B_MOCK_CHAT_' + roomId && e.newValue) {
-        setMessages(JSON.parse(e.newValue));
-      }
-    };
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
+    // Inscreve no canal de comunicação p2p global do supabase (Broadcast Realtime sem persistir no banco)
+    // Essa é a abordagem 100% cloud mas efêmera exigida pela FLECHA BSB. NADA FICA NO BANCO.
+    const channel = supabase.channel('room_' + roomId)
+      .on('broadcast', { event: 'new_message' }, payload => {
+        setMessages(prev => {
+          const exists = prev.find(m => m.id === payload.payload.id);
+          if (exists) return prev;
+          
+          const updated = [...prev, payload.payload];
+          localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(updated));
+          return updated;
+        });
+      })
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+            console.log("Conectado ao canal E2E cross-device");
+        }
+      });
+      
+    return () => { supabase.removeChannel(channel); };
   }, [roomId]);
 
 
@@ -129,6 +142,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
       is_read: false, sender_role: currentUserRole, sender_name: currentUserName, audio_data: base64Audio, attachment_type: 'audio'
     };
     setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
+    await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -145,6 +159,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
         is_read: false, sender_role: currentUserRole, sender_name: currentUserName, attachment_url: base64Data, attachment_type: type
       };
       setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
+      await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
     };
     reader.readAsDataURL(file);
   };
@@ -176,6 +191,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
       localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(updated));
       return updated;
     });
+    await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
   };
 
   if (loading) return <div className="flex h-full items-center justify-center p-4"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-fbsb-primary"></div></div>;
