@@ -5,8 +5,8 @@ export function SecureAboutPage() {
   return (
     <div className="p-8 md:p-12 max-w-5xl mx-auto h-full font-sans text-fbsb-text-secondary pb-32 overflow-y-auto">
       <div className="flex items-center space-x-6 mb-10 pb-6 border-b border-fbsb-border bg-fbsb-surface-100 p-6 rounded-2xl shadow-premium border border-white/5">
-         <div className="h-20 flex items-center justify-center">
-            <img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-20 w-auto object-contain" />
+         <div className="h-24 md:h-28 flex items-center justify-center">
+            <img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-24 md:h-28 w-auto object-contain" />
          </div>
          <div>
            <h1 className="text-3xl font-bold text-fbsb-text-primary tracking-tight">Ambiente Seguro</h1>
@@ -122,7 +122,7 @@ export function SecureAboutPage() {
         </section>
 
         <section className="bg-fbsb-surface-100 p-10 rounded-2xl shadow-premium border border-white/5 text-center relative overflow-hidden">
-          <img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-20 w-auto object-contain mx-auto mb-4 relative z-10" />
+          <img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-24 md:h-32 w-auto object-contain mx-auto mb-4 relative z-10" />
           <p className="text-sm text-fbsb-cyan font-bold tracking-[0.2em] uppercase mb-8 relative z-10">
             Privacidade para compartilhar. Inteligência para validar. Segurança para negociar.
           </p>

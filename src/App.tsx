@@ -119,7 +119,7 @@ export default function App() {
             </svg>
           </button>
           <div className="flex items-center">
-             <div className="flex items-center justify-center mr-4"><img src={LogoUrl} alt="FLECHA BSB Logo" className="h-9 w-auto object-contain" /></div>
+             <div className="flex items-center justify-center mr-4"><img src={LogoUrl} alt="FLECHA BSB Logo" className="h-12 md:h-16 w-auto object-contain scale-110 origin-left" /></div>
           </div>
           <div className="hidden sm:block">
             <p className="text-[11px] uppercase tracking-widest text-fbsb-text-muted font-bold mt-0.5">Ambiente Restrito</p>
