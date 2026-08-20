@@ -87,10 +87,11 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
 
 
 
+
   useEffect(() => {
-    // FALLBACK DE ENGENHARIA DE COMUNICAÇÃO:
-    // Se o Supabase Realtime falhar por bloqueios de rede 4G ou falta de WebSockets na Vercel,
-    // garantimos a sincronização Celular <-> Computador via Short-Polling de alta performance.
+    // Sincronização Serverless Multi-Dispositivo (Garantia Tripla)
+    
+    // 1. Polling de Alta Performance (Banco de Dados Opcional)
     const pollTimer = setInterval(async () => {
        if (!cryptoKey) return;
        try {
@@ -100,13 +101,12 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
            .eq('room_id', roomId)
            .order('created_at', { ascending: true });
            
-         if (data && !error) {
+         if (data && !error && data.length > 0) {
             const decMsgs = await Promise.all(data.map(async (msg: any) => ({
               ...msg,
               content: await decryptE2E(msg.content, cryptoKey)
             })));
             
-            // Só atualiza a tela se tiver novas mensagens para não piscar
             setMessages(prev => {
                if (prev.length === decMsgs.length) return prev;
                localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(decMsgs));
@@ -114,33 +114,28 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
             });
          }
        } catch (e) {}
-    }, 2000); // 2 segundos (Long Polling Simulator)
+    }, 1500);
     
-    // Mantemos o listener Realtime como via principal rápida (Postgres Changes)
-    const channel = supabase.channel('realtime_chat')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'b2b_secure_chat', filter: `room_id=eq.${roomId}` },
-        async (payload) => {
+    // 2. Broadcast Channel (P2P Nuvem Livre para Mobile vs Desktop)
+    const channel = supabase.channel('room_' + roomId)
+      .on('broadcast', { event: 'new_message' }, async (payload) => {
           if (!cryptoKey) return;
-          const newMsgCloud = payload.new;
-          if (newMsgCloud.sender_id === currentUserId) return;
+          const msgCloud = payload.payload;
+          if (msgCloud.sender_id === currentUserId) return;
           
           try {
-            const dec = await decryptE2E(newMsgCloud.content, cryptoKey);
-            const msgObj = { ...newMsgCloud, content: dec } as Message;
             setMessages(prev => {
-              const exists = prev.find(m => m.id === msgObj.id);
+              const exists = prev.find(m => m.id === msgCloud.id);
               if (exists) return prev;
-              const up = [...prev, msgObj];
+              const up = [...prev, msgCloud];
               localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up));
               return up;
             });
           } catch(e) {}
-        }
-      )
+      })
       .subscribe();
       
+    // 3. Destruir Rastros
     const wipeDataOnClose = () => {
        supabase.from('b2b_secure_chat').delete().eq('room_id', roomId).then(() => {});
     };
@@ -185,6 +180,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
     }
   };
 
+
   const sendAudioMessage = async (base64Audio: string) => {
     if (!cryptoKey) return;
     const cipherB64 = await encryptE2E("Mensagem de Voz", cryptoKey);
@@ -195,6 +191,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
     };
     setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
     
+    await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
     try {
       await supabase.from('b2b_secure_chat').insert({
       id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
@@ -202,6 +199,16 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
     } as any);
     } catch(e) {}
   };
+    setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
+    
+    try {
+      await supabase.from('b2b_secure_chat').insert({
+      id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
+      sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64, audio_data: base64Audio, attachment_type: 'audio'
+    } as any);
+    } catch(e) {}
+  };
+
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -218,6 +225,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
       };
       setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
       
+      await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
       try {
       await supabase.from('b2b_secure_chat').insert({
         id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
@@ -227,6 +235,18 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
     };
     reader.readAsDataURL(file);
   };
+      setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
+      
+      try {
+      await supabase.from('b2b_secure_chat').insert({
+        id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
+        sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64, attachment_url: base64Data, attachment_type: type
+      } as any);
+    } catch(e) {}
+    };
+    reader.readAsDataURL(file);
+  };
+
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -246,6 +266,24 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
       created_at: new Date().toISOString(),
       is_read: false
     };
+    
+    setMessages(prev => {
+      const updated = [...prev, newMsg];
+      localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(updated));
+      return updated;
+    });
+    
+    // TRUQUE: Disparar pelo Broadcast (Instantaneo PC <-> Celular)
+    await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
+    
+    // Em paralelo, tentar gravar no banco (caso o usuario tenha DB)
+    try {
+      await supabase.from('b2b_secure_chat').insert({
+        id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
+        sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64
+      } as any);
+    } catch(e) {}
+  };
     
     setMessages(prev => {
       const updated = [...prev, newMsg];
