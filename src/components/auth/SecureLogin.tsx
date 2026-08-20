@@ -14,12 +14,13 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
   const [error, setError] = useState('');
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
-  // Lista oficial de usuários (E-mail e Senha exclusivos)
+  // Lista oficial de usuários (E-mail e Senha exclusivos para Sala REGULARIZAÇÃO)
   const validCredentials: Record<string, any> = {
-    'admin@flechabsb.com': { password: 'mastervault', user: { id: '22222222-2222-2222-2222-222222222222', name: 'Administrador (CEO)', role: 'Acesso Global & Master', initials: 'CEO', email: 'admin@flechabsb.com' } },
-    'socio@flechabsb.com': { password: 'auditvault', user: { id: '33333333-3333-3333-3333-333333333333', name: 'Sócio / Auditor', role: 'Auditoria & Due Diligence', initials: 'AUD', email: 'socio@flechabsb.com' } },
-    'investidor@flechabsb.com': { password: 'investvault', user: { id: '44444444-4444-4444-4444-444444444444', name: 'Investidor (Comprador)', role: 'Avaliação de Ativos', initials: 'INV', email: 'investidor@flechabsb.com' } },
-    'juridico@flechabsb.com': { password: 'legalvault', user: { id: '55555555-5555-5555-5555-555555555555', name: 'Jurídico (Advogado)', role: 'Compliance & Contratos', initials: 'JUR', email: 'juridico@flechabsb.com' } }
+    'ceo@flechabsb.com': { password: 'ceovault', user: { id: '11111111-1111-1111-1111-111111111111', name: 'Direção Executiva', role: 'Diretor (CEO)', initials: 'CEO', email: 'ceo@flechabsb.com' } },
+    'adm@flechabsb.com': { password: 'adminvault', user: { id: '22222222-2222-2222-2222-222222222222', name: 'Administrativo', role: 'Gestão & Backoffice', initials: 'ADM', email: 'adm@flechabsb.com' } },
+    'juridico@flechabsb.com': { password: 'legalvault', user: { id: '55555555-5555-5555-5555-555555555555', name: 'Jurídico', role: 'Compliance & Contratos', initials: 'JUR', email: 'juridico@flechabsb.com' } },
+    'socio@flechabsb.com': { password: 'auditvault', user: { id: '33333333-3333-3333-3333-333333333333', name: 'Sócio', role: 'Auditoria & Investimentos', initials: 'SOC', email: 'socio@flechabsb.com' } },
+    'operacional@flechabsb.com': { password: 'opsvault', user: { id: '77777777-7777-7777-7777-777777777777', name: 'Operações', role: 'Campo & Técnico', initials: 'OPS', email: 'operacional@flechabsb.com' } }
   };
 
   const handleLogin = async (e: React.FormEvent) => {
