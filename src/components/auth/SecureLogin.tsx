@@ -15,8 +15,8 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
 
   // Mapeamento ficticio para credenciais de teste baseado nos mockUsers
   const validCredentials: Record<string, any> = {
-    'investidor@vault.b2b': { password: '123', user: mockUsers[0] }, // M. Oliveira
-    'proprietario@vault.b2b': { password: '123', user: mockUsers[1] } // F. Silva
+    'admin@flechabsb.com': { password: 'mastervault', user: mockUsers[0] }, // CEO / Master
+    'socio@flechabsb.com': { password: 'auditvault', user: mockUsers[1] } // Sócio / Auditor
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -165,19 +165,19 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
              <div className="grid grid-cols-2 gap-3">
                <button
                  type="button"
-                 onClick={() => { setEmail('investidor@vault.b2b'); setPassword('123'); }}
+                 onClick={() => { setEmail('admin@flechabsb.com'); setPassword('mastervault'); }}
                  className="p-2 border border-slate-200 rounded-lg text-left hover:border-elite-gold hover:bg-elite-paper transition-all group"
                >
-                 <span className="text-xs font-bold text-elite-navy block">Comprador</span>
-                 <span className="text-[10px] text-slate-500">investidor@vault.b2b</span>
+                 <span className="text-xs font-bold text-elite-navy block">Administrador</span>
+                 <span className="text-[10px] text-slate-500">admin@flechabsb.com</span>
                </button>
                <button
                  type="button"
-                 onClick={() => { setEmail('proprietario@vault.b2b'); setPassword('123'); }}
+                 onClick={() => { setEmail('socio@flechabsb.com'); setPassword('auditvault'); }}
                  className="p-2 border border-slate-200 rounded-lg text-left hover:border-elite-gold hover:bg-elite-paper transition-all group"
                >
-                 <span className="text-xs font-bold text-elite-navy block">Vendedor</span>
-                 <span className="text-[10px] text-slate-500">proprietario@vault.b2b</span>
+                 <span className="text-xs font-bold text-elite-navy block">Auditor (Sócio)</span>
+                 <span className="text-[10px] text-slate-500">socio@flechabsb.com</span>
                </button>
              </div>
           </div>

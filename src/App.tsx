@@ -32,8 +32,8 @@ export default function App() {
 
   // Mocks dos usuários para teste B2B
   const mockUsers = [
-    { id: '22222222-2222-2222-2222-222222222222', name: 'M. Oliveira', role: 'Comprador (Investidor)', initials: 'MO' },
-    { id: '33333333-3333-3333-3333-333333333333', name: 'F. Silva', role: 'Vendedor (Proprietário)', initials: 'FS' }
+    { id: '22222222-2222-2222-2222-222222222222', name: 'Administrador (CEO)', role: 'Acesso Global & Master', initials: 'CEO' },
+    { id: '33333333-3333-3333-3333-333333333333', name: 'Sócio / Auditor', role: 'Auditoria & Due Diligence', initials: 'AUD' }
   ];
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
