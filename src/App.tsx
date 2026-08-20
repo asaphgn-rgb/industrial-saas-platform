@@ -37,6 +37,7 @@ export default function App() {
   ];
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const currentTenantId = 'tenant-industrial-demo-uuid';
   const currentUnitId = 'unit-sp-planta-01-uuid';
@@ -49,8 +50,16 @@ export default function App() {
   return (
     <div className="min-h-screen bg-elite-paper text-elite-navy flex flex-col font-sans">
       {/* Top Header - Estilo Premium Glassmorphism */}
-      <header className="glass-panel sticky top-0 px-8 py-5 flex items-center justify-between z-30 border-b border-elite-sand/20">
-        <div className="flex items-center space-x-4">
+      <header className="glass-panel sticky top-0 px-4 md:px-8 py-4 md:py-5 flex items-center justify-between z-30 border-b border-elite-sand/20">
+        <div className="flex items-center space-x-3 md:space-x-4">
+          <button 
+            className="md:hidden p-2 text-slate-500 hover:text-elite-navy focus:outline-none"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+            </svg>
+          </button>
           <div className="bg-gradient-to-br from-elite-navy to-slate-800 p-2.5 rounded-xl text-elite-gold shadow-premium">
             <ShieldCheck className="w-6 h-6" />
           </div>
@@ -69,7 +78,7 @@ export default function App() {
 
         <div className="flex items-center space-x-6 relative">
           <div className="flex flex-col items-end">
-             <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200">
+             <span className="hidden md:inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200">
                <Lock className="w-3 h-3" />
                <span>End-to-End Encrypted</span>
              </span>
@@ -117,16 +126,29 @@ export default function App() {
       </header>
 
       {/* Main Container */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
         {/* Sidebar - Estilo Clean Luxury */}
-        <aside className="w-72 bg-elite-white border-r border-elite-sand/20 p-6 flex flex-col space-y-8 overflow-y-auto z-10 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+        {/* Mobile Menu Overlay */}
+        {isMobileMenuOpen && (
+          <div 
+            className="md:hidden fixed inset-0 bg-slate-900/50 z-40 backdrop-blur-sm"
+            onClick={() => setIsMobileMenuOpen(false)}
+          ></div>
+        )}
+        
+        <aside className={`
+          fixed md:relative top-0 left-0 h-full z-50 md:z-10
+          w-72 bg-elite-white border-r border-elite-sand/20 p-6 flex flex-col space-y-8 overflow-y-auto shadow-[4px_0_24px_rgba(0,0,0,0.02)]
+          transform transition-transform duration-300 ease-in-out
+          ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+        `}>
 
           {/* Sessão: Módulos Seguros */}
           <div>
             <h3 className="text-[10px] font-bold text-elite-sand uppercase tracking-[0.2em] mb-4 pl-2">Due Diligence</h3>
             <div className="space-y-1.5">
               <button
-                onClick={() => setActiveTab('pipeline_secure')}
+                onClick={() => { setActiveTab('pipeline_secure'); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
                   activeTab === 'pipeline_secure'
                     ? 'bg-elite-navy text-white shadow-premium'
@@ -138,7 +160,7 @@ export default function App() {
               </button>
 
               <button
-                onClick={() => setActiveTab('upload_secure')}
+                onClick={() => { setActiveTab('upload_secure'); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
                   activeTab === 'upload_secure'
                     ? 'bg-elite-navy text-white shadow-premium'
@@ -150,7 +172,7 @@ export default function App() {
               </button>
 
               <button
-                onClick={() => setActiveTab('validation_secure')}
+                onClick={() => { setActiveTab('validation_secure'); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
                   activeTab === 'validation_secure'
                     ? 'bg-elite-navy text-white shadow-premium'
@@ -162,7 +184,7 @@ export default function App() {
               </button>
 
               <button
-                onClick={() => setActiveTab('chat_secure')}
+                onClick={() => { setActiveTab('chat_secure'); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
                   activeTab === 'chat_secure'
                     ? 'bg-elite-navy text-white shadow-premium'

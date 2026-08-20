@@ -161,7 +161,7 @@ export function SecureDocumentValidation() {
 
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4">
-        <div className="bg-white rounded-2xl shadow-premium w-full max-w-5xl h-[85vh] flex flex-col overflow-hidden relative" onContextMenu={(e) => e.preventDefault()}>
+        <div className="bg-white rounded-2xl shadow-premium w-full md:max-w-5xl h-[95vh] md:h-[85vh] flex flex-col overflow-hidden relative" onContextMenu={(e) => e.preventDefault()}>
           {/* Header do Viewer */}
           <div className="px-6 py-4 bg-elite-navy text-white flex items-center justify-between z-10 shadow-md">
             <div className="flex items-center space-x-4">
@@ -169,7 +169,7 @@ export function SecureDocumentValidation() {
                   <Lock className="w-5 h-5 text-elite-gold" />
                </div>
                <div>
-                  <h3 className="font-bold font-serif">{viewingDoc.title}</h3>
+                  <h3 className="font-bold font-serif text-sm md:text-base truncate max-w-[200px] md:max-w-md">{viewingDoc.title}</h3>
                   <p className="text-[10px] text-elite-sand uppercase tracking-widest mt-1 font-semibold">Visualização Restrita • Proibido Download</p>
                </div>
             </div>

@@ -92,7 +92,7 @@ export function SecureChat({ roomId, currentUserId }: SecureChatProps) {
   if (loading) return <div className="flex h-full items-center justify-center p-4"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-elite-navy"></div></div>;
 
   return (
-    <div className="flex flex-col h-full w-full max-w-5xl mx-auto bg-white border border-elite-sand/20 rounded-2xl shadow-premium overflow-hidden font-sans">
+    <div className="flex flex-col h-full w-full max-w-5xl mx-auto bg-white md:border border-elite-sand/20 md:rounded-2xl shadow-premium overflow-hidden font-sans absolute md:relative inset-0 md:inset-auto">
       {/* Header Blindado Premium */}
       <div className="flex items-center justify-between px-6 py-4 bg-elite-navy text-white z-10">
         <div className="flex items-center space-x-4">
@@ -111,7 +111,7 @@ export function SecureChat({ roomId, currentUserId }: SecureChatProps) {
       </div>
 
       {/* Área de Mensagens */}
-      <div className="flex-1 p-6 overflow-y-auto space-y-6 bg-[#f4f2ef] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-opacity-50">
+      <div className="flex-1 p-4 md:p-6 overflow-y-auto space-y-4 md:space-y-6 bg-[#f4f2ef] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-opacity-50">
         <div className="text-center my-6">
           <span className="text-[10px] uppercase font-bold tracking-widest bg-elite-gold text-elite-navy px-4 py-2 rounded-full shadow-sm">
             Canal monitorado por política restrita de isolamento de dados
