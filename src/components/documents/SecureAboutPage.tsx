@@ -6,7 +6,22 @@ export function SecureAboutPage() {
     <div className="p-8 md:p-12 max-w-5xl mx-auto h-full font-sans text-fbsb-text-secondary pb-32 overflow-y-auto">
       <div className="flex items-center space-x-4 mb-10 pb-6 border-b border-fbsb-border">
          <div className="w-16 h-16 flex items-center justify-center">
-            <img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="w-full h-full object-contain" />
+            
+<svg viewBox="0 0 400 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full object-contain">
+  <g transform="translate(10, 10) scale(0.9)">
+    <path d="M50 10 L85 25 V60 C85 85 65 105 50 115 C35 105 15 85 15 60 V25 L50 10 Z" fill="#0c2c5c" stroke="#061c40" strokeWidth="2"/>
+    <path d="M35 25 H65 V85 H35 V25 Z" fill="#f8fafc" stroke="#cbd5e1" strokeWidth="1"/>
+    <path d="M40 35 H60 M40 45 H60 M40 55 H50" stroke="#94a3b8" strokeWidth="3" strokeLinecap="round"/>
+    <rect x="45" y="70" width="10" height="10" rx="2" fill="#0c2c5c"/>
+    <path d="M47 70 V67 C47 65 53 65 53 67 V70" stroke="#0c2c5c" strokeWidth="2" fill="none"/>
+    <path d="M0 60 H10 M-5 70 H15 M5 80 H10" stroke="#00b4b4" strokeWidth="4" strokeLinecap="round"/>
+    <path d="M5 65 Q 45 45 80 50 L 70 40 L 95 55 L 75 75 L 80 60 Q 45 65 5 65 Z" fill="#00b4b4" />
+  </g>
+  <text x="110" y="75" fontFamily="sans-serif" fontWeight="900" fontSize="48" fill="#0c2c5c" letterSpacing="-1">FLECHA</text>
+  <text x="295" y="75" fontFamily="sans-serif" fontWeight="900" fontSize="48" fill="#00b4b4" letterSpacing="-1">BSB</text>
+  <text x="110" y="100" fontFamily="sans-serif" fontWeight="500" fontSize="14" fill="#475569">Compartilhamento Seguro de Documentos</text>
+</svg>
+
          </div>
          <div>
            <h1 className="text-3xl font-bold text-fbsb-text-primary tracking-tight">FLECHA <span className="text-fbsb-cyan">BSB</span></h1>
@@ -122,7 +137,22 @@ export function SecureAboutPage() {
         </section>
 
         <section className="bg-gradient-to-br from-fbsb-surface-200 to-fbsb-surface-100 p-10 rounded-2xl border border-fbsb-cyan/30 shadow-glow-cyan text-center relative overflow-hidden">
-          <img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-16 mx-auto mb-4 relative z-10 object-contain" />
+          
+<svg viewBox="0 0 400 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-16 mx-auto mb-4 relative z-10 object-contain">
+  <g transform="translate(10, 10) scale(0.9)">
+    <path d="M50 10 L85 25 V60 C85 85 65 105 50 115 C35 105 15 85 15 60 V25 L50 10 Z" fill="#0c2c5c" stroke="#061c40" strokeWidth="2"/>
+    <path d="M35 25 H65 V85 H35 V25 Z" fill="#f8fafc" stroke="#cbd5e1" strokeWidth="1"/>
+    <path d="M40 35 H60 M40 45 H60 M40 55 H50" stroke="#94a3b8" strokeWidth="3" strokeLinecap="round"/>
+    <rect x="45" y="70" width="10" height="10" rx="2" fill="#0c2c5c"/>
+    <path d="M47 70 V67 C47 65 53 65 53 67 V70" stroke="#0c2c5c" strokeWidth="2" fill="none"/>
+    <path d="M0 60 H10 M-5 70 H15 M5 80 H10" stroke="#00b4b4" strokeWidth="4" strokeLinecap="round"/>
+    <path d="M5 65 Q 45 45 80 50 L 70 40 L 95 55 L 75 75 L 80 60 Q 45 65 5 65 Z" fill="#00b4b4" />
+  </g>
+  <text x="110" y="75" fontFamily="sans-serif" fontWeight="900" fontSize="48" fill="#0c2c5c" letterSpacing="-1">FLECHA</text>
+  <text x="295" y="75" fontFamily="sans-serif" fontWeight="900" fontSize="48" fill="#00b4b4" letterSpacing="-1">BSB</text>
+  <text x="110" y="100" fontFamily="sans-serif" fontWeight="500" fontSize="14" fill="#475569">Compartilhamento Seguro de Documentos</text>
+</svg>
+
           <p className="text-sm text-fbsb-cyan font-bold tracking-[0.2em] uppercase mb-8 relative z-10">
             Privacidade para compartilhar. Inteligência para validar. Segurança para negociar.
           </p>
