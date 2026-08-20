@@ -59,10 +59,16 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
         if (savedMessages) setMessages(JSON.parse(savedMessages));
       }
       setLoading(false);
-    } catch (e) { setLoading(false); }
+    } catch (e) {
+      setLoading(false);
+      console.error(e);
+    }
   };
 
-  useEffect(() => { fetchMessages(); }, [roomId]);
+  useEffect(() => {
+    fetchMessages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [roomId]);
 
   useEffect(() => {
     const handleBlur = () => setSecurityBlur(true);
@@ -94,7 +100,9 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
         try {
            let decContent = payload.content;
            if (payload.content && payload.content.length > 20 && !payload.content.startsWith('http')) {
-               try { decContent = await decryptE2E(payload.content, cryptoKey); } catch(e) {}
+               try { decContent = await decryptE2E(payload.content, cryptoKey); } catch(e) {
+                 console.error(e);
+               }
            }
            const finalMsg = { ...payload, content: decContent };
 
@@ -107,7 +115,9 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
                    if (d.attachment_url) finalMsg.attachment_url = d.attachment_url;
                    if (d.audio_data) finalMsg.audio_data = d.audio_data;
                 }
-              } catch(e) {}
+              } catch(e) {
+                console.error(e);
+              }
            }
 
            setMessages(prev => {
@@ -118,7 +128,9 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
               localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(updated));
               return updated;
            });
-        } catch(e) {}
+        } catch(e) {
+          console.error(e);
+        }
     });
 
     const wipeDataOnClose = () => {
@@ -181,7 +193,9 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
         id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
         sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64, audio_data: base64Audio, attachment_type: 'audio'
       } as any);
-    } catch(e) {}
+    } catch(e) {
+      console.error(e);
+    }
 
     // Dispara sinalização em tempo real (apenas o aviso leve)
     ntfyRelay.pushMessage({ ...pushMsg, content: cipherB64 });
@@ -211,7 +225,9 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
           id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
           sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64, attachment_url: base64Data, attachment_type: type
         } as any);
-      } catch(e) {}
+      } catch(e) {
+        console.error(e);
+      }
 
       // Dispara sinalização em tempo real
       ntfyRelay.pushMessage({ ...pushMsg, content: cipherB64 });
@@ -251,7 +267,9 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
         id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
         sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64
       } as any);
-    } catch(e) {}
+    } catch(e) {
+      console.error(e);
+    }
   };
 
   if (loading) return <div className="flex h-full items-center justify-center p-4"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-fbsb-primary"></div></div>;
@@ -306,22 +324,26 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
 
                 {msg.attachment_url && msg.attachment_type === 'image' && (
                    <div className="mt-3 relative rounded-lg overflow-hidden border border-fbsb-border/30">
-                      <img src={msg.attachment_url} alt="Anexo Seguro" className="max-w-full max-h-48 object-cover" />
+                      <a href={msg.attachment_url} target="_blank" rel="noopener noreferrer">
+                        <img src={msg.attachment_url} alt="Anexo Seguro" className="max-w-full max-h-48 object-cover cursor-pointer hover:opacity-90 transition-opacity" />
+                      </a>
                    </div>
                 )}
                 {msg.attachment_url && msg.attachment_type === 'pdf' && (
-                   <div className={`mt-3 flex items-center p-3 rounded-xl cursor-pointer transition-colors ${
-                     isMine ? 'bg-fbsb-surface-200/50 hover:bg-fbsb-surface-200' : 'bg-fbsb-bg-main hover:bg-fbsb-text-secondary/20'
-                   }`} onClick={() => {
-                      const w = window.open("");
-                      w?.document.write("<iframe width='100%' height='100%' src='" + msg.attachment_url + "'></iframe>");
-                   }}>
+                   <a
+                     href={msg.attachment_url}
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     className={`mt-3 flex items-center p-3 rounded-xl cursor-pointer transition-colors ${
+                       isMine ? 'bg-fbsb-surface-200/50 hover:bg-fbsb-surface-200' : 'bg-fbsb-bg-main hover:bg-fbsb-text-secondary/20'
+                     }`}
+                   >
                       <FileText className={`w-5 h-5 mr-3 ${isMine ? 'text-fbsb-cyan' : 'text-fbsb-text-primary'}`}/>
                       <div>
                         <span className="text-xs font-bold block">Documento Seguro.pdf</span>
-                        <span className="text-[10px] opacity-70 uppercase tracking-wider">Clique para visualizar</span>
+                        <span className="text-[10px] opacity-70 uppercase tracking-wider">Clique para visualizar nativamente</span>
                       </div>
-                   </div>
+                   </a>
                 )}
                 {msg.audio_data && (
                    <div className="mt-3 w-48 md:w-64">
