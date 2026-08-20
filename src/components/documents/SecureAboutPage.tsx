@@ -4,12 +4,12 @@ import { ShieldCheck, Lock, FileText, CheckCircle2, AlertTriangle, Search, Activ
 export function SecureAboutPage() {
   return (
     <div className="p-8 md:p-12 max-w-5xl mx-auto h-full font-sans text-fbsb-text-secondary pb-32 overflow-y-auto">
-      <div className="flex items-center space-x-6 mb-10 pb-6 border-b border-fbsb-border bg-[#253745] p-6 rounded-2xl shadow-premium border border-white/5">
+      <div className="flex items-center space-x-6 mb-10 pb-6 border-b border-fbsb-border bg-fbsb-surface-100 p-6 rounded-2xl shadow-premium border border-white/5">
          <div className="h-20 flex items-center justify-center">
             <img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-20 w-auto object-contain" />
          </div>
          <div>
-           <h1 className="text-3xl font-bold text-[#CCD0CF] tracking-tight">Ambiente Seguro</h1>
+           <h1 className="text-3xl font-bold text-fbsb-text-primary tracking-tight">Ambiente Seguro</h1>
            <p className="text-sm font-bold text-fbsb-cyan tracking-widest uppercase mt-1">Compartilhamento Privado de Documentos B2B</p>
          </div>
       </div>
@@ -121,24 +121,24 @@ export function SecureAboutPage() {
           </div>
         </section>
 
-        <section className="bg-[#253745] p-10 rounded-2xl shadow-premium border border-white/5 text-center relative overflow-hidden">
+        <section className="bg-fbsb-surface-100 p-10 rounded-2xl shadow-premium border border-white/5 text-center relative overflow-hidden">
           <img src="/logo-flecha.png" alt="FLECHA BSB Logo" className="h-20 w-auto object-contain mx-auto mb-4 relative z-10" />
           <p className="text-sm text-fbsb-cyan font-bold tracking-[0.2em] uppercase mb-8 relative z-10">
             Privacidade para compartilhar. Inteligência para validar. Segurança para negociar.
           </p>
 
           <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 max-w-4xl mx-auto relative z-10">
-             <div className="bg-[#11212D] px-6 py-4 rounded-xl border border-white/5 flex-1 w-full flex flex-col items-center justify-center">
+             <div className="bg-fbsb-bg-main px-6 py-4 rounded-xl border border-white/5 flex-1 w-full flex flex-col items-center justify-center">
                 <Lock className="w-5 h-5 text-fbsb-cyan mb-2" />
-                <p className="text-xs font-medium text-[#CCD0CF] text-center">A informação é compartilhada<br/>somente entre usuários autorizados.</p>
+                <p className="text-xs font-medium text-fbsb-text-primary text-center">A informação é compartilhada<br/>somente entre usuários autorizados.</p>
              </div>
-             <div className="bg-[#11212D] px-6 py-4 rounded-xl border border-white/5 flex-1 w-full flex flex-col items-center justify-center">
+             <div className="bg-fbsb-bg-main px-6 py-4 rounded-xl border border-white/5 flex-1 w-full flex flex-col items-center justify-center">
                 <Activity className="w-5 h-5 text-fbsb-primary-light mb-2" />
-                <p className="text-xs font-medium text-[#CCD0CF] text-center">A conversa existe somente<br/>durante a sessão.</p>
+                <p className="text-xs font-medium text-fbsb-text-primary text-center">A conversa existe somente<br/>durante a sessão.</p>
              </div>
-             <div className="bg-[#11212D] px-6 py-4 rounded-xl border border-white/5 flex-1 w-full flex flex-col items-center justify-center">
+             <div className="bg-fbsb-bg-main px-6 py-4 rounded-xl border border-white/5 flex-1 w-full flex flex-col items-center justify-center">
                 <Layers className="w-5 h-5 text-fbsb-success mb-2" />
-                <p className="text-xs font-medium text-[#CCD0CF] text-center">O documento é analisado<br/>antes do envio definitivo.</p>
+                <p className="text-xs font-medium text-fbsb-text-primary text-center">O documento é analisado<br/>antes do envio definitivo.</p>
              </div>
           </div>
 

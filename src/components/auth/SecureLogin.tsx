@@ -47,7 +47,7 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[#06141B] flex items-center justify-center p-4 font-sans relative overflow-hidden selection:bg-fbsb-cyan selection:text-[#CCD0CF]">
+    <div className="min-h-screen bg-fbsb-bg-deep flex items-center justify-center p-4 font-sans relative overflow-hidden selection:bg-fbsb-cyan selection:text-fbsb-text-primary">
 
       {/* Background Decorativo e Efeitos */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
@@ -58,34 +58,34 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
       <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-0 bg-fbsb-surface-100/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden relative z-10">
 
         {/* Painel Esquerdo: Marketing e Branding */}
-        <div className="hidden md:flex flex-col justify-between p-12 bg-[#11212D] relative border-r border-white/5">
+        <div className="hidden md:flex flex-col justify-between p-12 bg-fbsb-bg-main relative border-r border-white/5">
            
               <div className="flex items-center mb-8"><img src={LogoUrl} alt="FLECHA BSB Logo" className="h-28 w-auto object-contain" /></div>
 
-              <p className="text-[#9BA8AB] mt-4 text-sm leading-relaxed max-w-sm">
+              <p className="text-fbsb-text-secondary mt-4 text-sm leading-relaxed max-w-sm">
                 Plataforma B2B para compartilhamento privado e análise inteligente de documentos entre usuários autorizados.
 
-<br/><br/><strong className="text-[#CCD0CF]">FLECHA BSB</strong> — Privacidade para compartilhar. Inteligência para validar. Segurança para negociar.
+<br/><br/><strong className="text-fbsb-text-primary">FLECHA BSB</strong> — Privacidade para compartilhar. Inteligência para validar. Segurança para negociar.
               </p>
 
            <div className="space-y-4">
-              <div className="flex items-center space-x-3 text-[#9BA8AB] text-sm">
-                 <CheckCircle2 className="w-4 h-4 text-[#9BA8AB]" />
+              <div className="flex items-center space-x-3 text-fbsb-text-secondary text-sm">
+                 <CheckCircle2 className="w-4 h-4 text-fbsb-text-secondary" />
                  <span>Criptografia de Padrao Militar (AES-GCM)</span>
               </div>
-              <div className="flex items-center space-x-3 text-[#9BA8AB] text-sm">
-                 <CheckCircle2 className="w-4 h-4 text-[#9BA8AB]" />
+              <div className="flex items-center space-x-3 text-fbsb-text-secondary text-sm">
+                 <CheckCircle2 className="w-4 h-4 text-fbsb-text-secondary" />
                  <span>Gestao Documental Sigilosa com Trilha de Auditoria</span>
               </div>
-              <div className="flex items-center space-x-3 text-[#9BA8AB] text-sm">
-                 <CheckCircle2 className="w-4 h-4 text-[#9BA8AB]" />
+              <div className="flex items-center space-x-3 text-fbsb-text-secondary text-sm">
+                 <CheckCircle2 className="w-4 h-4 text-fbsb-text-secondary" />
                  <span>Canais de Negociacao Anti-Espionagem Corporativa</span>
               </div>
            </div>
         </div>
 
         {/* Painel Direito: Formulario de Login */}
-        <div className="p-8 md:p-12 flex flex-col justify-center bg-[#253745] relative">
+        <div className="p-8 md:p-12 flex flex-col justify-center bg-fbsb-surface-100 relative">
 
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold text-fbsb-text-primary font-serif">Autenticacao Restrita</h2>
@@ -95,7 +95,7 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
           <form onSubmit={handleLogin} className="space-y-5 max-w-sm mx-auto w-full">
 
             {error && (
-               <div className="p-3 bg-[#4A5C6A] border border-[#4A5C6A] rounded-lg text-[#9BA8AB] text-xs font-bold text-center animate-pulse">
+               <div className="p-3 bg-fbsb-surface-200 border border-fbsb-border rounded-lg text-fbsb-text-secondary text-xs font-bold text-center animate-pulse">
                  {error}
                </div>
             )}
@@ -110,7 +110,7 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
                    type="email"
                    value={email}
                    onChange={(e) => setEmail(e.target.value)}
-                   className="block w-full pl-10 pr-3 py-3 border border-fbsb-border rounded-xl bg-[#11212D] focus:bg-[#4A5C6A] text-fbsb-text-primary text-sm font-medium focus:ring-2 focus:ring-fbsb-cyan focus:border-fbsb-cyan transition-all outline-none"
+                   className="block w-full pl-10 pr-3 py-3 border border-fbsb-border rounded-xl bg-fbsb-bg-main focus:bg-fbsb-surface-200 text-fbsb-text-primary text-sm font-medium focus:ring-2 focus:ring-fbsb-cyan focus:border-fbsb-cyan transition-all outline-none"
                    placeholder="seu.nome@empresa.com"
                    required
                  />
@@ -127,7 +127,7 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
                    type={showPassword ? 'text' : 'password'}
                    value={password}
                    onChange={(e) => setPassword(e.target.value)}
-                   className="block w-full pl-10 pr-10 py-3 border border-fbsb-border rounded-xl bg-[#11212D] focus:bg-[#4A5C6A] text-fbsb-text-primary text-sm font-medium focus:ring-2 focus:ring-fbsb-cyan focus:border-fbsb-cyan transition-all outline-none"
+                   className="block w-full pl-10 pr-10 py-3 border border-fbsb-border rounded-xl bg-fbsb-bg-main focus:bg-fbsb-surface-200 text-fbsb-text-primary text-sm font-medium focus:ring-2 focus:ring-fbsb-cyan focus:border-fbsb-cyan transition-all outline-none"
                    placeholder="123"
                    required
                  />
@@ -145,16 +145,16 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
             <button
               type="submit"
               disabled={isAuthenticating}
-              className="w-full flex items-center justify-center px-4 py-4 border border-transparent text-sm font-bold rounded-xl text-[#06141B] bg-fbsb-cyan hover:bg-[#9BA8AB] shadow-glow-cyan uppercase tracking-widest transition-all mt-4 disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center px-4 py-4 border border-transparent text-sm font-bold rounded-xl text-fbsb-bg-deep bg-fbsb-cyan hover:bg-fbsb-surface-300 shadow-glow-cyan uppercase tracking-widest transition-all mt-4 disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {isAuthenticating ? (
                 <>
-                   <Lock className="animate-pulse w-5 h-5 mr-2 text-[#06141B]" />
+                   <Lock className="animate-pulse w-5 h-5 mr-2 text-fbsb-bg-deep" />
                    Verificando Chaves...
                 </>
               ) : (
                 <>
-                   <Fingerprint className="w-5 h-5 mr-2 text-[#06141B]" />
+                   <Fingerprint className="w-5 h-5 mr-2 text-fbsb-bg-deep" />
                    Destravar Cofre
                 </>
               )}

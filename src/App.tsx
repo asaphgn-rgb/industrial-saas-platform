@@ -108,7 +108,7 @@ export default function App() {
     <div className="min-h-screen bg-fbsb-bg-main text-fbsb-text-primary flex flex-col font-sans">
 
       {/* Top Header - Estilo Premium Light para acomodar a Logo Naturalmente */}
-      <header className="sticky top-0 px-4 md:px-8 py-4 flex items-center justify-between z-30 border-b border-white/5 bg-[#06141B]/95 backdrop-blur-2xl shadow-premium">
+      <header className="sticky top-0 px-4 md:px-8 py-4 flex items-center justify-between z-30 border-b border-white/5 bg-fbsb-bg-deep/95 backdrop-blur-2xl shadow-premium">
         <div className="flex items-center space-x-3 md:space-x-4">
           <button 
             className="md:hidden p-2 text-fbsb-bg-main hover:text-fbsb-primary focus:outline-none"
@@ -129,21 +129,21 @@ export default function App() {
 
         <div className="hidden md:flex items-center space-x-6 text-sm">
            <div className="relative">
-             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#9BA8AB]" />
-             <input type="text" placeholder="Pesquisar no cofre..." className="pl-9 pr-4 py-2 bg-[#253745] border border-[#4A5C6A] rounded-full text-xs text-[#9BA8AB] focus:outline-none focus:ring-1 focus:ring-fbsb-cyan focus:bg-[#CCD0CF] w-64 transition-all" />
+             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-fbsb-text-secondary" />
+             <input type="text" placeholder="Pesquisar no cofre..." className="pl-9 pr-4 py-2 bg-fbsb-surface-100 border border-fbsb-border rounded-full text-xs text-fbsb-text-secondary focus:outline-none focus:ring-1 focus:ring-fbsb-cyan focus:bg-fbsb-primary-light w-64 transition-all" />
            </div>
         </div>
 
         <div className="flex items-center space-x-6 relative">
           <div className="flex flex-col items-end">
-             <span className="hidden md:inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#4A5C6A] text-[#9BA8AB] border border-[#4A5C6A]">
+             <span className="hidden md:inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-fbsb-surface-200 text-fbsb-text-secondary border border-fbsb-border">
                <Lock className="w-3 h-3" />
                <span>End-to-End Encrypted</span>
              </span>
           </div>
           <div className="flex items-center space-x-3 pl-6 border-l border-fbsb-border relative">
              <button className="text-fbsb-text-secondary hover:text-fbsb-text-primary transition-colors">
-               <Settings className="w-5 h-5 text-[#9BA8AB]" />
+               <Settings className="w-5 h-5 text-fbsb-text-secondary" />
              </button>
 
              {/* Componente de Switch de Usuário (Demonstração B2B) */}
@@ -153,8 +153,8 @@ export default function App() {
                  onClick={() => setShowUserMenu(!showUserMenu)}
                >
                  <div className="text-right hidden md:block">
-                   <p className="text-xs font-bold text-[#9BA8AB]">{currentUser.name}</p>
-                   <p className="text-[10px] text-[#9BA8AB] font-semibold uppercase">{currentUser.role}</p>
+                   <p className="text-xs font-bold text-fbsb-text-secondary">{currentUser.name}</p>
+                   <p className="text-[10px] text-fbsb-text-secondary font-semibold uppercase">{currentUser.role}</p>
                  </div>
                  <div className="h-10 w-10 bg-gradient-to-br from-fbsb-primary to-slate-800 rounded-full flex items-center justify-center shadow-inner-gold transform group-hover:scale-105 transition-transform border-2 border-fbsb-cyan">
                    <span className="text-sm font-bold text-fbsb-cyan">{currentUser.initials}</span>
@@ -178,7 +178,7 @@ export default function App() {
       });
       setCurrentUser(null);
     }}
-    className="w-full flex items-center justify-center p-3 rounded-lg transition-colors text-center text-[#9BA8AB] hover:bg-[#4A5C6A] hover:text-[#9BA8AB] border border-transparent font-bold text-xs"
+    className="w-full flex items-center justify-center p-3 rounded-lg transition-colors text-center text-fbsb-text-secondary hover:bg-fbsb-surface-200 hover:text-fbsb-text-secondary border border-transparent font-bold text-xs"
   >
      Encerrar Sessão (Log out)
   </button>
@@ -204,7 +204,7 @@ export default function App() {
         
         <aside className={`
           fixed md:relative top-0 left-0 h-full z-50 md:z-10
-          w-72 bg-[#11212D] border-r border-white/5 p-6 flex flex-col space-y-8 overflow-y-auto shadow-[4px_0_24px_rgba(0,0,0,0.02)]
+          w-72 bg-fbsb-bg-main border-r border-white/5 p-6 flex flex-col space-y-8 overflow-y-auto shadow-[4px_0_24px_rgba(0,0,0,0.02)]
           transform transition-transform duration-300 ease-in-out
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
         `}>
@@ -217,7 +217,7 @@ export default function App() {
                 onClick={() => { setActiveTab('pipeline_secure'); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
                   activeTab === 'pipeline_secure'
-                    ? 'bg-[#253745] text-[#CCD0CF] shadow-premium border border-white/5'
+                    ? 'bg-fbsb-surface-100 text-fbsb-text-primary shadow-premium border border-white/5'
                     : 'text-fbsb-text-secondary hover:bg-fbsb-surface-200 hover:text-fbsb-text-primary'
                 }`}
               >
@@ -229,7 +229,7 @@ export default function App() {
                 onClick={() => { setActiveTab('upload_secure'); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
                   activeTab === 'upload_secure'
-                    ? 'bg-[#253745] text-[#CCD0CF] shadow-premium border border-white/5'
+                    ? 'bg-fbsb-surface-100 text-fbsb-text-primary shadow-premium border border-white/5'
                     : 'text-fbsb-text-secondary hover:bg-fbsb-surface-200 hover:text-fbsb-text-primary'
                 }`}
               >
@@ -241,7 +241,7 @@ export default function App() {
                 onClick={() => { setActiveTab('validation_secure'); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
                   activeTab === 'validation_secure'
-                    ? 'bg-[#253745] text-[#CCD0CF] shadow-premium border border-white/5'
+                    ? 'bg-fbsb-surface-100 text-fbsb-text-primary shadow-premium border border-white/5'
                     : 'text-fbsb-text-secondary hover:bg-fbsb-surface-200 hover:text-fbsb-text-primary'
                 }`}
               >
@@ -253,13 +253,13 @@ export default function App() {
                 onClick={() => { setActiveTab('chat_secure'); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
                   activeTab === 'chat_secure'
-                    ? 'bg-[#253745] text-[#CCD0CF] shadow-premium border border-white/5'
+                    ? 'bg-fbsb-surface-100 text-fbsb-text-primary shadow-premium border border-white/5'
                     : 'text-fbsb-text-secondary hover:bg-fbsb-surface-200 hover:text-fbsb-text-primary'
                 }`}
               >
                 <MessageSquareLock className={`w-4 h-4 ${activeTab === 'chat_secure' ? 'text-fbsb-cyan' : 'text-fbsb-text-secondary'}`} />
                 <span className="flex-1 text-left tracking-wide">Canais Criptografados</span>
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${activeTab === 'chat_secure' ? 'bg-fbsb-surface-100 text-fbsb-text-primary' : 'bg-fbsb-cyan text-[#CCD0CF]'}`}>3</span>
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${activeTab === 'chat_secure' ? 'bg-fbsb-surface-100 text-fbsb-text-primary' : 'bg-fbsb-cyan text-fbsb-text-primary'}`}>3</span>
               </button>
             </div>
           </div>
@@ -267,7 +267,7 @@ export default function App() {
           </aside>
 
         {/* Content Area */}
-        <main className="flex-1 overflow-y-auto bg-[#06141B] relative">
+        <main className="flex-1 overflow-y-auto bg-fbsb-bg-deep relative">
           {/* Módulos Novos - Ambiente Secreto */}
           {activeTab === 'pipeline_secure' && (<div className="absolute inset-0 bg-fbsb-bg-main overflow-y-auto"><SecureAboutPage /></div>)}
 
@@ -298,10 +298,10 @@ export default function App() {
                   <span className="text-xs font-semibold text-fbsb-text-secondary uppercase tracking-wider">OEE Global Fabril</span>
                   <div className="mt-2 flex items-baseline space-x-2">
                     <span className="text-3xl font-bold text-fbsb-text-secondary">86.4%</span>
-                    <span className="text-xs text-[#9BA8AB] font-medium">+2.1% vs meta</span>
+                    <span className="text-xs text-fbsb-text-secondary font-medium">+2.1% vs meta</span>
                   </div>
                   <div className="mt-4 w-full bg-fbsb-surface-200 rounded-full h-1.5">
-                    <div className="bg-[#4A5C6A] h-1.5 rounded-full" style={{ width: '86.4%' }}></div>
+                    <div className="bg-fbsb-surface-200 h-1.5 rounded-full" style={{ width: '86.4%' }}></div>
                   </div>
                 </div>
 
@@ -309,7 +309,7 @@ export default function App() {
                   <span className="text-xs font-semibold text-fbsb-text-secondary uppercase tracking-wider">Não Conformidades Abertas</span>
                   <div className="mt-2 flex items-baseline space-x-2">
                     <span className="text-3xl font-bold text-fbsb-text-secondary">2</span>
-                    <span className="text-xs text-[#9BA8AB] font-medium">Ciclo CAPA ativo</span>
+                    <span className="text-xs text-fbsb-text-secondary font-medium">Ciclo CAPA ativo</span>
                   </div>
                   <div className="mt-4 text-xs text-fbsb-text-secondary">1 em investigação • 1 em verificação</div>
                 </div>
@@ -324,9 +324,9 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="bg-fbsb-surface-200 border border-fbsb-border rounded-xl p-6 text-[#CCD0CF] shadow-md">
+              <div className="bg-fbsb-surface-200 border border-fbsb-border rounded-xl p-6 text-fbsb-text-primary shadow-md">
                 <h3 className="text-base font-semibold flex items-center">
-                  <ShieldCheck className="w-5 h-5 text-[#9BA8AB] mr-2" />
+                  <ShieldCheck className="w-5 h-5 text-fbsb-text-secondary mr-2" />
                   Conexão Operacional Multi-Tenant
                 </h3>
                 <p className="text-sm text-fbsb-text-secondary mt-2 leading-relaxed">

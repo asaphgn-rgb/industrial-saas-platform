@@ -13,51 +13,51 @@ export default {
       colors: {
         fbsb: {
           bg: {
-            deep: '#06141B', 
-            main: '#11212D', 
+            deep: '#03090F', // Ultra dark navy
+            main: '#07131D', // Dark navy
           },
           surface: {
-            100: '#253745', 
-            200: '#4A5C6A', 
-            300: '#9BA8AB', 
+            100: '#0D2235', // Cards
+            200: '#16344E', // Hover cards
+            300: '#1F4A6D', // Active states
           },
           border: {
-            DEFAULT: '#4A5C6A',
-            soft: '#253745',
+            DEFAULT: '#1A324A',
+            soft: '#0D2235',
           },
           primary: {
-            DEFAULT: '#9BA8AB', 
-            light: '#CCD0CF',
+            DEFAULT: '#005BB5', // Shield Blue
+            light: '#3388FF',
           },
-          cyan: '#9BA8AB', 
-          success: '#9BA8AB', 
-          ai: '#9BA8AB',
-          warning: '#4A5C6A',
-          danger: '#4A5C6A',
+          cyan: '#00D4FF', // Light Cyan from Logo Arrow
+          success: '#00E676', // Green for valid
+          ai: '#00D4FF',
+          warning: '#FFC107',
+          danger: '#FF3B30',
           text: {
-            primary: '#CCD0CF',
-            secondary: '#9BA8AB',
-            muted: '#4A5C6A',
+            primary: '#F0F6FC', // Bright ice white
+            secondary: '#8BADC1', // Muted ice blue
+            muted: '#4B6982',
           }
         },
         elite: {
-          gold: '#9BA8AB',
-          navy: '#11212D',
-          sand: '#9BA8AB',
-          paper: '#06141B',
-          white: '#CCD0CF',
+          gold: '#00D4FF',
+          navy: '#07131D',
+          sand: '#8BADC1',
+          paper: '#03090F',
+          white: '#F0F6FC',
         }
       },
       boxShadow: {
-        'premium': '0 10px 30px -10px rgba(6, 20, 27, 0.8), inset 0 1px 1px rgba(204, 208, 207, 0.05)',
-        'premium-hover': '0 15px 40px -10px rgba(6, 20, 27, 0.9), inset 0 1px 1px rgba(204, 208, 207, 0.1)',
-        'inner-gold': 'inset 0 1px 1px rgba(204, 208, 207, 0.1)',
-        'glow-blue': '0 0 20px rgba(155, 168, 171, 0.2)',
-        'glow-cyan': '0 0 20px rgba(155, 168, 171, 0.3)',
-        'neumorph': '5px 5px 15px rgba(6,20,27,0.8), -5px -5px 15px rgba(37,55,69,0.5)',
+        'premium': '0 10px 30px -10px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
+        'premium-hover': '0 15px 40px -10px rgba(0, 0, 0, 0.9), inset 0 1px 1px rgba(255, 255, 255, 0.1)',
+        'inner-gold': 'inset 0 1px 1px rgba(0, 212, 255, 0.15)',
+        'glow-blue': '0 0 20px rgba(0, 91, 181, 0.4)',
+        'glow-cyan': '0 0 20px rgba(0, 212, 255, 0.3)',
+        'neumorph': '5px 5px 15px rgba(3,9,15,0.8), -5px -5px 15px rgba(13,34,53,0.5)',
       },
       backgroundImage: {
-        'glass-gradient': 'linear-gradient(135deg, rgba(37,55,69,0.8) 0%, rgba(17,33,45,0.95) 100%)',
+        'glass-gradient': 'linear-gradient(135deg, rgba(13,34,53,0.8) 0%, rgba(7,19,29,0.95) 100%)',
       }
     },
   },

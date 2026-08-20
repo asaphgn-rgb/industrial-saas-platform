@@ -150,7 +150,11 @@
       "Bash(curl -s -d '{\"hello\":\"world\"}' https://ntfy.sh/flechabsb_chat_test_123)",
       "Bash(sed -i 's/className=\"h-20 w-auto object-contain filter invert hue-rotate-180 brightness-\\\\[1.5\\\\] contrast-\\\\[1.2\\\\]\" className=\"mx-auto mb-4 relative z-10\"/className=\"h-20 w-auto object-contain filter invert hue-rotate-180 brightness-\\\\[1.5\\\\] contrast-\\\\[1.2\\\\] mx-auto mb-4 relative z-10\"/g' src/components/documents/SecureAboutPage.tsx)",
       "Bash(curl -s -X POST https://kvdb.io/AEyQCvAyYtJo4EW7KwWsWa/test_attachment -d \"test\")",
-      "Bash(curl -s https://kvdb.io/AEyQCvAyYtJo4EW7KwWsWa/test_attachment)"
+      "Bash(curl -s https://kvdb.io/AEyQCvAyYtJo4EW7KwWsWa/test_attachment)",
+      "Bash(git pull *)",
+      "Bash(ls -la \"D:\\\\GERAL\\\\TELA\\\\flecha bsb\\\\public\")",
+      "Bash(node apply-new-theme.js)",
+      "Bash(node apply-new-theme.cjs)"
     ]
   }
 }
