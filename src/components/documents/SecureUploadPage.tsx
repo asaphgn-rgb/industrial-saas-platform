@@ -20,6 +20,8 @@ interface ParsedFile {
   title: string;
   category: DueDiligenceCategory;
   consultativeNote: string;
+  fileData?: string;
+  fileType?: string;
 }
 
 interface UploadResponse {
@@ -29,7 +31,11 @@ interface UploadResponse {
   uploadedCount: number;
 }
 
-export function SecureUploadPage() {
+interface SecureUploadPageProps {
+  onUploadComplete?: () => void;
+}
+
+export function SecureUploadPage({ onUploadComplete }: SecureUploadPageProps) {
   const [dragActive, setDragActive] = useState(false);
   const [parsedFiles, setParsedFiles] = useState<ParsedFile[]>([]);
 
@@ -156,6 +162,39 @@ export function SecureUploadPage() {
         message: "[DEMO] Todos os documentos foram encriptados e classificados com sucesso no cofre.",
         uploadedCount
       });
+
+      // Gravar dados mockados na memória local para a tela de Validação enxergar que algo foi upado
+      const docsForValidation = parsedFiles.map((pf) => {
+         // Ajuste do mock para mapear o status de auditoria dependendo da categoria e de uma heurística boba
+         let status: 'Aprovado'|'Pendente' = 'Aprovado';
+         let resolutionAction = undefined;
+
+         if (pf.category === 'Fiscal_INCRA' && pf.file.name.toLowerCase().includes('2024')) {
+             status = 'Pendente';
+             resolutionAction = 'Acessar o portal do SNCR (Sistema Nacional de Cadastro Rural) via gov.br, gerar o boleto da taxa de serviço cadastral de 2026, efetuar o pagamento e emitir o CCIR atualizado. O sistema confirmará a compensação em até 48h úteis.';
+         }
+
+         return {
+           id: pf.id,
+           title: pf.title,
+           category: pf.category.split('_')[0] as any, // Transforma 'Juridico_Propriedade' em 'Juridico'
+           status: status,
+           uploadDate: new Date().toISOString().split('T')[0],
+           issuingAuthority: 'Autoridade Reguladora Virtual',
+           regulatoryAnalysis: pf.consultativeNote,
+           resolutionAction,
+           fileData: pf.fileData,
+           fileType: pf.fileType
+         };
+      });
+
+      localStorage.setItem('B2B_MOCK_VAULT', JSON.stringify(docsForValidation));
+
+      // Navegar para a validação se existir o hook de redirect (App.tsx passará)
+      if (onUploadComplete) {
+         setTimeout(() => onUploadComplete(), 1500);
+      }
+
       return;
 
     } catch (err: any) {
