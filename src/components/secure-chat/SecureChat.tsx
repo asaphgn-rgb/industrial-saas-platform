@@ -90,18 +90,34 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
     // Motor de Sincronização Absoluto via Ntfy (Bypass Total Vercel/Supabase, Porta 443)
     ntfyRelay.connect(roomId, async (payload) => {
         if (!cryptoKey || payload.sender_id === currentUserId) return;
-        
+
         try {
            let decContent = payload.content;
            if (payload.content && payload.content.length > 20 && !payload.content.startsWith('http')) {
                try { decContent = await decryptE2E(payload.content, cryptoKey); } catch(e) {}
            }
            const finalMsg = { ...payload, content: decContent };
-           
+
+           // Tratamento de arquivo muito grande (Download do KVDB) bypass limites WSS
+           if (finalMsg.attachment_url && finalMsg.attachment_url.startsWith('kvdb:')) {
+              const fileId = finalMsg.attachment_url.split('kvdb:')[1];
+              try {
+                const res = await fetch(`https://kvdb.io/AEyQCvAyYtJo4EW7KwWsWa/file_${fileId}`);
+                if (res.ok) finalMsg.attachment_url = await res.text();
+              } catch(e) {}
+           }
+           if (finalMsg.audio_data && finalMsg.audio_data.startsWith('kvdb:')) {
+              const fileId = finalMsg.audio_data.split('kvdb:')[1];
+              try {
+                const res = await fetch(`https://kvdb.io/AEyQCvAyYtJo4EW7KwWsWa/file_${fileId}`);
+                if (res.ok) finalMsg.audio_data = await res.text();
+              } catch(e) {}
+           }
+
            setMessages(prev => {
               const exists = prev.find(m => m.id === finalMsg.id);
               if (exists) return prev;
-              
+
               const updated = [...prev, finalMsg];
               localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(updated));
               return updated;
@@ -161,8 +177,15 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
 
     setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
 
+    const attachmentId = crypto.randomUUID();
+    try {
+       await fetch(`https://kvdb.io/AEyQCvAyYtJo4EW7KwWsWa/file_${attachmentId}`, { method: 'POST', body: base64Audio });
+    } catch(e) {}
+
+    const pushMsg = { ...newMsg, audio_data: `kvdb:${attachmentId}` };
+
     await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
-    ntfyRelay.pushMessage({ ...newMsg, content: cipherB64 });
+    ntfyRelay.pushMessage({ ...pushMsg, content: cipherB64 });
 
     try {
       await supabase.from('b2b_secure_chat').insert({
@@ -188,8 +211,15 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
 
       setMessages(prev => { const up = [...prev, newMsg]; localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up)); return up; });
 
+      const attachmentId = crypto.randomUUID();
+      try {
+         await fetch(`https://kvdb.io/AEyQCvAyYtJo4EW7KwWsWa/file_${attachmentId}`, { method: 'POST', body: base64Data });
+      } catch(e) {}
+
+      const pushMsg = { ...newMsg, attachment_url: `kvdb:${attachmentId}` };
+
       await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
-      ntfyRelay.pushMessage({ ...newMsg, content: cipherB64 });
+      ntfyRelay.pushMessage({ ...pushMsg, content: cipherB64 });
 
       try {
         await supabase.from('b2b_secure_chat').insert({

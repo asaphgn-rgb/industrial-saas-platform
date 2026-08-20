@@ -2,38 +2,10 @@ import fs from 'fs';
 
 let content = fs.readFileSync('src/components/secure-chat/SecureChat.tsx', 'utf8');
 
-if (!content.includes('mqttSync')) {
-  content = content.replace("import { supabase } from '../../lib/supabase';", 
-  "import { supabase } from '../../lib/supabase';\nimport { mqttRelay } from '../../lib/mqttSync';");
-}
-
-const oldEffect = /  useEffect\(\(\) => \{\n    \/\/ Sincronização Serverless Multi-Dispositivo \(Garantia Tripla\)[\s\S]*?  \}, \[roomId, cryptoKey\]\);/g;
-
-const newEffect = `  useEffect(() => {
+const newEffect = `
+  useEffect(() => {
     // Sincronização Serverless Multi-Dispositivo (Garantia Tripla)
     
-    // 0. MQTT Relay P2P (Celular vs PC via Internet independente de Banco)
-    mqttRelay.connect(roomId, async (payload) => {
-      if (payload.sender_id === currentUserId) return;
-      try {
-        let decContent = payload.content;
-        // Tenta descriptografar se não for arquivo
-        if (payload.content && cryptoKey && payload.content.length > 50) {
-           try { decContent = await decryptE2E(payload.content, cryptoKey); } catch(e){}
-        }
-        
-        const msgCloud = { ...payload, content: decContent };
-        
-        setMessages(prev => {
-          const exists = prev.find(m => m.id === msgCloud.id);
-          if (exists) return prev;
-          const up = [...prev, msgCloud];
-          localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(up));
-          return up;
-        });
-      } catch(e) {}
-    });
-
     // 1. Polling de Alta Performance (Banco de Dados Opcional)
     const pollTimer = setInterval(async () => {
        if (!cryptoKey) return;
@@ -53,7 +25,7 @@ const newEffect = `  useEffect(() => {
             setMessages(prev => {
                if (prev.length === decMsgs.length) return prev;
                localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(decMsgs));
-               return decMsgs as any[];
+               return decMsgs as Message[];
             });
          }
        } catch (e) {}
@@ -86,18 +58,54 @@ const newEffect = `  useEffect(() => {
       
     return () => { 
       clearInterval(pollTimer);
-      mqttRelay.disconnect();
       supabase.removeChannel(channel); 
       window.removeEventListener('beforeunload', wipeDataOnClose);
     };
-  }, [roomId, cryptoKey]);`;
+  }, [roomId, cryptoKey]);
+`;
 
-content = content.replace(oldEffect, newEffect);
+// Substituir hook principal
+content = content.replace(/  useEffect\(\(\) => \{\n    \/\/ FALLBACK DE ENGENHARIA DE COMUNICAÇÃO:[\s\S]*?  \}, \[roomId, cryptoKey\]\);\n/, newEffect);
 
+const sendMsgFix = `
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newMessage.trim() || !cryptoKey) return;
+    const msg = newMessage;
+    setNewMessage("");
 
-// Substituindo apenas as injeções exatas de Supabase insert para plugar o mqttRelay sem quebrar blocos {}
-content = content.replace(/await supabase\.channel\('room_' \+ roomId\)\.send\(\{ type: 'broadcast', event: 'new_message', payload: newMsg \}\);/g, 
-`await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
-    mqttRelay.sendMessage({ ...newMsg, content: cipherB64 });`);
+    const cipherB64 = await encryptE2E(msg, cryptoKey);
+    const decrypted = await decryptE2E(cipherB64, cryptoKey);
+
+    const newMsg: Message = {
+      sender_role: currentUserRole,
+      sender_name: currentUserName,
+      id: crypto.randomUUID(),
+      sender_id: currentUserId,
+      content: decrypted,
+      created_at: new Date().toISOString(),
+      is_read: false
+    };
+    
+    setMessages(prev => {
+      const updated = [...prev, newMsg];
+      localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(updated));
+      return updated;
+    });
+    
+    // TRUQUE: Disparar pelo Broadcast (Instantaneo PC <-> Celular)
+    await supabase.channel('room_' + roomId).send({ type: 'broadcast', event: 'new_message', payload: newMsg });
+    
+    // Em paralelo, tentar gravar no banco (caso o usuario tenha DB)
+    try {
+      await supabase.from('b2b_secure_chat').insert({
+        id: newMsg.id, tenant_id: 'tenant-industrial-demo-uuid', room_id: roomId, sender_id: currentUserId,
+        sender_name: currentUserName, sender_role: currentUserRole, content: cipherB64
+      } as any);
+    } catch(e) {}
+  };
+`;
+
+content = content.replace(/  const handleSendMessage = async \(e: React\.FormEvent\) => \{[\s\S]*?  \};\n/, sendMsgFix);
 
 fs.writeFileSync('src/components/secure-chat/SecureChat.tsx', content);
