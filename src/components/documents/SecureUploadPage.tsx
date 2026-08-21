@@ -61,6 +61,7 @@ interface ParsedFile {
   category: DueDiligenceCategory;
   consultativeNote: string;
   fileData?: string;
+  rawFile?: File;
   fileType?: string;
 }
 
@@ -157,29 +158,10 @@ export function SecureUploadPage({ onUploadComplete, currentUser }: SecureUpload
     const newParsedFiles = await Promise.all(
       files.map(async (file, idx) => {
         const parsed = analyzeFile(file, currentOffset + idx);
-
-        // Removemos o travamento de ler arquivos de 9MB para Base64 no frontend!
-        // O Supabase Client cuidará do multipart-upload ou nós armazenamos apenas os bytes essenciais
-        // para não travar a main thread do DOM (React Render).
-        const limitSize = 1000000 * 2; // 2MB máximo em Base64 para garantir performance sem storage
-        if (file.size <= limitSize) {
-           try {
-             const readFileAsBase64 = (f: File): Promise<string> => new Promise((resolve, reject) => {
-               const reader = new FileReader();
-               reader.onload = () => resolve(reader.result as string);
-               reader.onerror = reject;
-               reader.readAsDataURL(f);
-             });
-             parsed.fileData = await readFileAsBase64(file);
-             parsed.fileType = file.type;
-           } catch (e) {
-             console.error('Erro ao ler arquivo', e);
-           }
-        } else {
-           // O arquivo é muito grande (Ex: 9MB). Ignoramos o parser Base64 pro navegador não engasgar.
-           parsed.fileType = file.type;
-           parsed.fileData = undefined; // Sera interceptado como is_too_large
-        }
+        
+        // Vamos guardar o objeto File original e o seu mimetype
+        parsed.fileType = file.type;
+        parsed.rawFile = file; // <-- CAMPO NOVO: Para mandar no form-data do Storage
 
         return parsed;
       })
@@ -228,15 +210,9 @@ export function SecureUploadPage({ onUploadComplete, currentUser }: SecureUpload
     setIsUploading(true);
     setUploadStatus(null);
 
-    let uploadedCount = 0;
-
     try {
-      // MOCK PARA DEMONSTRAÇÃO (SEM SUPABASE LOCAL STARTADO)
-      await new Promise(r => setTimeout(r, 600)); // Simulando criptografia E2E rápida
-      uploadedCount = parsedFiles.length;
-
-      // Gravar dados na nuvem usando o JSON de tenants (Fallback Global para Computadores Externos)
-      const cloudDocuments = parsedFiles.map((pf) => {
+      // Cria todos os uploads para o Storage e monta o payload do BD em paralelo
+      const cloudDocuments = await Promise.all(parsedFiles.map(async (pf) => {
          let status = 'Aprovado';
          let resolutionAction = null;
 
@@ -245,9 +221,25 @@ export function SecureUploadPage({ onUploadComplete, currentUser }: SecureUpload
              resolutionAction = 'Acessar o portal do SNCR (Sistema Nacional de Cadastro Rural) via gov.br, gerar o boleto da taxa de serviço cadastral de 2026, efetuar o pagamento e emitir o CCIR atualizado. O sistema confirmará a compensação em até 48h úteis.';
          }
 
-         // Limitador de Payload: Impede travamento por limite JSON do PostgREST.
-         // Se a string base64 for maior que 1.5MB, descartamos a string e mandamos apenas um aviso para o visualizador (mantendo a metadado rastreável da ISO 9001).
-         const isTooLarge = pf.fileData && pf.fileData.length > 1500000;
+         let filePath = null;
+         
+         // Se houver arquivo físico e tamanho > 0, subir pro Storage
+         if (pf.rawFile) {
+            const fileName = `${Date.now()}_${pf.rawFile.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+            filePath = `vdr_uploads/${fileName}`;
+            
+            const { error: uploadError } = await supabase.storage
+              .from('vdr_secure_files')
+              .upload(filePath, pf.rawFile, {
+                cacheControl: '3600',
+                upsert: false
+              });
+              
+            if (uploadError) {
+              console.error("Falha ao subir binário para bucket", uploadError);
+              filePath = null; // Falhou
+            }
+         }
 
          return {
            id: pf.id,
@@ -259,21 +251,17 @@ export function SecureUploadPage({ onUploadComplete, currentUser }: SecureUpload
            issuing_authority: 'Autoridade Reguladora Virtual',
            regulatory_analysis: pf.consultativeNote,
            resolution_action: resolutionAction,
-           file_data: isTooLarge ? null : pf.fileData, // Evita travamento (Timeout ou 413 Payload Too Large)
+           file_data: filePath, // Caminho no S3 Bucket, não Base64
            file_type: pf.fileType,
-           is_too_large: isTooLarge,
+           is_too_large: false, // O Bucket não tem limite severo como o Base64 JSON
            uploader_name: currentUser?.name || 'Usuário Não Identificado',
            uploader_role: currentUser?.role || 'Usuário do Sistema',
            uploader_email: currentUser?.email || 'N/A'
          };
-      });
+      }));
 
-      // API do Supabase tem timeout padrão que trava o Client se os blobs demorarem. Adicionando AbortController:
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 12000); // 12 Segundos Máximo
-
-      const { error } = await (supabase as any).from('b2b_documents').insert(cloudDocuments).abortSignal(controller.signal);
-      clearTimeout(timeoutId);
+      // API do Supabase BD Save.
+      const { error } = await (supabase as any).from('b2b_documents').insert(cloudDocuments);
 
       if (error) {
         throw new Error(error.message);
@@ -282,7 +270,7 @@ export function SecureUploadPage({ onUploadComplete, currentUser }: SecureUpload
       setUploadStatus({
         success: true,
         message: "O lote foi encriptado e sincronizado com o cofre de nuvem.",
-        uploadedCount
+        uploadedCount: cloudDocuments.length
       });
 
       if (onUploadComplete) {
@@ -293,10 +281,6 @@ export function SecureUploadPage({ onUploadComplete, currentUser }: SecureUpload
     } catch (err: any) {
       console.error("Falha no Lote:", err);
       let errorMsg = err.message || 'Falha no armazenamento seguro.';
-
-      if (err.name === 'AbortError') {
-         errorMsg = "Tempo esgotado (Timeout). A internet ou o tamanho do arquivo impediu a conclusão em tempo hábil. Reduza o volume do lote e tente novamente.";
-      }
 
       setUploadStatus({
         success: false,
