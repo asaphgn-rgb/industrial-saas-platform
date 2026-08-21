@@ -213,7 +213,7 @@ export default function App() {
             </svg>
           </button>
           <div className="flex items-center">
-             <div className="flex items-center justify-center mr-6"><img src={LogoUrl} alt="FLECHA BSB Logo" className="h-16 md:h-24 w-auto object-contain scale-125 origin-left" /></div>
+             <div className="flex items-center justify-center md:mr-6"><img src={LogoUrl} alt="FLECHA BSB Logo" className="h-10 md:h-24 w-auto object-contain scale-110 md:scale-125 origin-left" /></div>
           </div>
           <div className="hidden sm:block">
             <p className="text-[11px] uppercase tracking-widest text-fbsb-text-muted font-bold mt-0.5 ml-4">Ambiente Restrito: <span className="text-fbsb-cyan">{currentUser.currentFolder || 'COFRE GERAL'}</span></p>
@@ -221,14 +221,14 @@ export default function App() {
         </div>
 
 
-        <div className="flex items-center space-x-6 relative">
+        <div className="flex items-center space-x-3 md:space-x-6 relative">
           <div className="flex flex-col items-end">
-             <span className="hidden md:inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-fbsb-surface-200 text-fbsb-text-secondary border border-fbsb-border">
+             <span className="hidden lg:inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-fbsb-surface-200 text-fbsb-text-secondary border border-fbsb-border">
                <Lock className="w-3 h-3" />
                <span>End-to-End Encrypted</span>
              </span>
           </div>
-          <div className="flex items-center space-x-3 pl-0 md:pl-6 md:border-l border-fbsb-border relative">
+          <div className="flex items-center space-x-3 pl-0 md:pl-6 lg:border-l border-fbsb-border relative">
 
              {/* Componente de Switch de Usuário (Demonstração B2B) */}
              <div className="relative">
@@ -240,8 +240,8 @@ export default function App() {
                    <p className="text-xs font-bold text-fbsb-text-secondary">{currentUser.name}</p>
                    <p className="text-[10px] text-fbsb-text-secondary font-semibold uppercase">{currentUser.role}</p>
                  </div>
-                 <div className="h-10 w-10 bg-gradient-to-br from-fbsb-primary to-slate-800 rounded-full flex items-center justify-center shadow-inner-gold transform group-hover:scale-105 transition-transform border-2 border-fbsb-cyan">
-                   <span className="text-sm font-bold text-fbsb-cyan">{currentUser.initials}</span>
+                 <div className="h-8 w-8 md:h-10 md:w-10 bg-gradient-to-br from-fbsb-primary to-slate-800 rounded-full flex items-center justify-center shadow-inner-gold transform group-hover:scale-105 transition-transform border border-fbsb-cyan">
+                   <span className="text-xs md:text-sm font-bold text-fbsb-cyan">{currentUser.initials}</span>
                  </div>
                </div>
 

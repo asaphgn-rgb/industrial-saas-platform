@@ -264,15 +264,15 @@ export function CeoAccessControl({ currentTenantId }: CeoAccessControlProps) {
         </div>
 
         {/* Tabs flutuantes */}
-        <div className="flex mt-6 bg-fbsb-bg-deep/60 rounded-2xl p-1.5 border border-white/5 gap-1">
+        <div className="flex mt-6 bg-fbsb-bg-deep/60 rounded-2xl p-1.5 border border-white/5 gap-1 overflow-x-auto modern-scroll">
           {tabs.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)}
-              className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all duration-300 ${
+              className={`flex-1 min-w-[120px] flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all duration-300 ${
                 tab === t.id
                   ? 'bg-gradient-to-r from-fbsb-primary to-fbsb-cyan/60 text-white shadow-lg shadow-fbsb-cyan/20'
                   : 'text-fbsb-text-secondary hover:text-white hover:bg-white/5'
               }`}>
-              {t.icon}<span className="hidden sm:inline">{t.label}</span>
+              {t.icon}<span className="inline">{t.label}</span>
             </button>
           ))}
         </div>
@@ -554,32 +554,34 @@ export function CeoAccessControl({ currentTenantId }: CeoAccessControlProps) {
                   <FolderLock className="w-4 h-4 text-fbsb-cyan" />
                   <span className="text-xs font-bold text-fbsb-cyan uppercase tracking-widest">{room}</span>
                 </div>
-                <table className="w-full text-[11px]">
-                  <thead><tr className="border-b border-white/5 text-fbsb-text-secondary uppercase tracking-wider">
-                    <th className="text-left py-2.5 px-5">Colaborador</th>
-                    <th className="text-center py-2.5 px-2">Ver</th>
-                    <th className="text-center py-2.5 px-2">Upload</th>
-                    <th className="text-center py-2.5 px-2">Solic. Excl.</th>
-                    <th className="text-center py-2.5 px-2">Excluir</th>
-                  </tr></thead>
-                  <tbody className="divide-y divide-white/5">
-                    {Object.keys(permMatrix[room]||{}).map(email => {
-                      const p = permMatrix[room][email]; const isCeo = email === 'ceo@flechabsb.com';
-                      const usr = users.find(u => u.email === email);
-                      return (
-                        <tr key={email} className="hover:bg-white/[0.02] transition-colors">
-                          <td className="py-3 px-5"><span className="font-semibold text-white">{usr?.name || email}</span>{isCeo && <span className="text-[9px] text-fbsb-cyan ml-2">SUPREMO</span>}</td>
-                          {(['canView','canUpload','canRequestDelete','canDirectDelete'] as const).map(f => (
-                            <td key={f} className="py-3 px-2 text-center">
-                              {savingPerm === `${room}__${email}__${f}` ? <RefreshCw className="w-4 h-4 animate-spin text-fbsb-cyan mx-auto" /> :
-                              <Toggle on={p?.[f]??true} onChange={() => changePerm(room, email, f, !(p?.[f]??true))} disabled={isCeo && (f==='canView'||f==='canDirectDelete')} />}
-                            </td>
-                          ))}
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                <div className="overflow-x-auto modern-scroll">
+                  <table className="w-full text-[11px] min-w-[600px]">
+                    <thead><tr className="border-b border-white/5 text-fbsb-text-secondary uppercase tracking-wider">
+                      <th className="text-left py-2.5 px-5">Colaborador</th>
+                      <th className="text-center py-2.5 px-2">Ver</th>
+                      <th className="text-center py-2.5 px-2">Upload</th>
+                      <th className="text-center py-2.5 px-2">Solic. Excl.</th>
+                      <th className="text-center py-2.5 px-2">Excluir</th>
+                    </tr></thead>
+                    <tbody className="divide-y divide-white/5">
+                      {Object.keys(permMatrix[room]||{}).map(email => {
+                        const p = permMatrix[room][email]; const isCeo = email === 'ceo@flechabsb.com';
+                        const usr = users.find(u => u.email === email);
+                        return (
+                          <tr key={email} className="hover:bg-white/[0.02] transition-colors">
+                            <td className="py-3 px-5 whitespace-nowrap"><span className="font-semibold text-white">{usr?.name || email}</span>{isCeo && <span className="text-[9px] text-fbsb-cyan ml-2">SUPREMO</span>}</td>
+                            {(['canView','canUpload','canRequestDelete','canDirectDelete'] as const).map(f => (
+                              <td key={f} className="py-3 px-2 text-center">
+                                {savingPerm === `${room}__${email}__${f}` ? <RefreshCw className="w-4 h-4 animate-spin text-fbsb-cyan mx-auto" /> :
+                                <div className="flex justify-center"><Toggle on={p?.[f]??true} onChange={() => changePerm(room, email, f, !(p?.[f]??true))} disabled={isCeo && (f==='canView'||f==='canDirectDelete')} /></div>}
+                              </td>
+                            ))}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             ))
           )}
