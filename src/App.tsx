@@ -117,59 +117,77 @@ export default function App() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Timeout de 5 minutos (300.000 ms) para deslogar por inatividade e auto-bloqueio se fechar a aba
-  useEffect(() => {
-    if (!currentUser) return;
-    
-    let inactivityTimer: any;
-    
-    const resetTimer = () => {
-      clearTimeout(inactivityTimer);
-      inactivityTimer = setTimeout(() => {
-        setCurrentUser(null);
-        alert("Sessão expirada por inatividade (5 minutos) por motivo de segurança. O cofre está trancado, faça o login novamente para reaver seus arquivos.");
-      }, 5 * 60 * 1000);
-    };
+    // Timeout de 5 minutos (300.000 ms) para deslogar por inatividade e auto-bloqueio se fechar a aba
+    useEffect(() => {
+      if (!currentUser) return;
 
-    // Limpa chat e dados quando a página for fechada ou recarregada (Zero Trace restrito)
-    const handleBeforeUnload = () => {
-      // Destruição total de dados sensíveis locais da sessão atual ao sair (Zero Trace)
+      let inactivityTimer: any;
+
+      const resetTimer = () => {
+        clearTimeout(inactivityTimer);
+        inactivityTimer = setTimeout(() => {
+          handleLogout(); // Chama a função completa de Zero Trace
+          alert("Sessão expirada por inatividade (5 minutos) por motivo de segurança. O cofre e o chat foram trancados e destruídos da memória, faça o login novamente.");
+        }, 5 * 60 * 1000);
+      };
+
+      // Limpa chat e dados quando a página for fechada ou recarregada (Zero Trace restrito)
+      const handleBeforeUnload = () => {
+        // Exclusão remota síncrona/desligada do Supabase via fire-and-forget
+        try {
+          // Utiliza fetch nativo (Beacon/keepalive) para garantir que roda mesmo fechando a aba
+          navigator.sendBeacon(
+            `${supabase['supabaseUrl']}/rest/v1/b2b_secure_chat?room_id=eq.11111111-1111-1111-1111-111111111111`,
+            null
+          ); // O supabase não aceita DELETE direto via sendBeacon de forma simples sem headers,
+             // então dependendo da rigidez, a exclusão por onbeforeunload pode falhar na rede,
+             // mas executamos o código abaixo em paralelo.
+
+          supabase.from('b2b_secure_chat').delete().eq('room_id', '11111111-1111-1111-1111-111111111111').then(()=>{});
+        } catch(e){}
+
+        // Destruição total de dados sensíveis locais da sessão atual ao sair (Zero Trace)
+        Object.keys(localStorage).forEach(key => {
+          if (key.startsWith('B2B_MOCK_') || key.startsWith('SECURE_CRYPTO_') || key.startsWith('B2B_MEDIA_')) {
+            localStorage.removeItem(key);
+          }
+        });
+        sessionStorage.clear();
+      };
+
+      window.addEventListener('mousemove', resetTimer);
+      window.addEventListener('keydown', resetTimer);
+      window.addEventListener('scroll', resetTimer);
+      window.addEventListener('click', resetTimer);
+      window.addEventListener('beforeunload', handleBeforeUnload);
+
+      resetTimer();
+
+      return () => {
+        clearTimeout(inactivityTimer);
+        window.removeEventListener('mousemove', resetTimer);
+        window.removeEventListener('keydown', resetTimer);
+        window.removeEventListener('scroll', resetTimer);
+        window.removeEventListener('click', resetTimer);
+        window.removeEventListener('beforeunload', handleBeforeUnload);
+      };
+    }, [currentUser]);
+
+    const handleLogout = async () => {
+      // 1. Apaga mensagens do Supabase (Zero Trace Real)
+      try {
+        await supabase.from('b2b_secure_chat').delete().eq('room_id', '11111111-1111-1111-1111-111111111111');
+      } catch(e) { console.error("Falha ao apagar chat do servidor", e); }
+
+      // 2. Destruição total local no Logout voluntário
       Object.keys(localStorage).forEach(key => {
-        if (key.startsWith('B2B_MOCK_') || key.startsWith('SECURE_CRYPTO_')) {
+        if (key.startsWith('B2B_MOCK_') || key.startsWith('SECURE_CRYPTO_') || key.startsWith('B2B_MEDIA_')) {
           localStorage.removeItem(key);
         }
       });
       sessionStorage.clear();
+      setCurrentUser(null);
     };
-
-    window.addEventListener('mousemove', resetTimer);
-    window.addEventListener('keydown', resetTimer);
-    window.addEventListener('scroll', resetTimer);
-    window.addEventListener('click', resetTimer);
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    resetTimer();
-
-    return () => {
-      clearTimeout(inactivityTimer);
-      window.removeEventListener('mousemove', resetTimer);
-      window.removeEventListener('keydown', resetTimer);
-      window.removeEventListener('scroll', resetTimer);
-      window.removeEventListener('click', resetTimer);
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [currentUser]);
-
-  const handleLogout = () => {
-    // Destruição total no Logout voluntário
-    Object.keys(localStorage).forEach(key => {
-      if (key.startsWith('B2B_MOCK_') || key.startsWith('SECURE_CRYPTO_')) {
-        localStorage.removeItem(key);
-      }
-    });
-    sessionStorage.clear();
-    setCurrentUser(null);
-  };
 
 
   const currentTenantId = 'tenant-industrial-demo-uuid';
