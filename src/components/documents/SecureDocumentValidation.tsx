@@ -194,31 +194,53 @@ export function SecureDocumentValidation({ currentUser }: SecureDocumentValidati
     useEffect(() => {
       if (!viewingDoc || !viewingDoc.fileData) return;
 
-      // Otimização de Engenharia: Transformar Base64 em Blob URL nativamente (mais rápido e sem falhas)
-      try {
-        if (viewingDoc.fileData.startsWith('data:')) {
-          fetch(viewingDoc.fileData)
-            .then(res => res.blob())
-            .then(blob => {
-              const url = URL.createObjectURL(blob);
-              setBlobUrl(url);
-            })
-            .catch(err => {
-              console.error("Falha ao gerar blob via fetch:", err);
-              setBlobUrl(viewingDoc.fileData || null); // Fallback direto para o Base64
-            });
-        } else {
-          setBlobUrl(viewingDoc.fileData || null);
+      let revoke: string | null = null;
+
+      const load = async () => {
+        const fd = viewingDoc.fileData!;
+
+        // Caso 1: caminho no Supabase Storage (novo padrão)
+        if (fd.startsWith('vdr_uploads/')) {
+          try {
+            const { data, error } = await supabase.storage
+              .from('vdr_secure_files')
+              .createSignedUrl(fd, 120); // URL expira em 120 segundos
+            if (data && !error) {
+              setBlobUrl(data.signedUrl);
+            } else {
+              console.error('Erro ao gerar SignedURL:', error);
+              setBlobUrl(null);
+            }
+          } catch (e) {
+            console.error('Falha de rede ao gerar SignedURL:', e);
+            setBlobUrl(null);
+          }
+          return;
         }
-      } catch (err) {
-        console.error("Falha ao otimizar visualização do documento:", err);
-        setBlobUrl(viewingDoc.fileData || null); // Fallback
-      }
+
+        // Caso 2: legado Base64 (data:application/pdf;base64,...)
+        if (fd.startsWith('data:')) {
+          try {
+            const res = await fetch(fd);
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            revoke = url;
+            setBlobUrl(url);
+          } catch {
+            setBlobUrl(fd);
+          }
+          return;
+        }
+
+        // Fallback genérico
+        setBlobUrl(fd);
+      };
+
+      load();
 
       return () => {
-        if (blobUrl && blobUrl.startsWith('blob:')) {
-          URL.revokeObjectURL(blobUrl);
-        }
+        if (revoke) URL.revokeObjectURL(revoke);
+        setBlobUrl(null);
       };
     }, [viewingDoc]);
 
