@@ -1,1009 +1,667 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
-  ShieldAlert, Users, FolderLock, ToggleRight, ToggleLeft,
-  AlertTriangle, CheckCircle2, PlusCircle, Trash2, Eye, EyeOff,
-  RefreshCw, Search, Filter, Download, TrendingUp, BarChart2,
+  ShieldAlert, Users, FolderLock,
+  AlertTriangle, CheckCircle2, Trash2, Eye, EyeOff,
+  RefreshCw, Search, Filter, TrendingUp, BarChart2,
   Lock, Unlock, UserPlus, Activity, Clock, FileText, Upload,
-  ChevronDown, ChevronUp, X, Save, Key, Shield
+  X, Save, Key, Shield, Mail, Copy, ChevronRight
 } from 'lucide-react';
 import {
-  LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
+  AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import { supabase } from '../../lib/supabase';
 
-interface CeoAccessControlProps {
-  currentTenantId: string;
-}
-
+/* ═══ TIPOS ═══ */
+interface CeoAccessControlProps { currentTenantId: string }
 interface VdrUser {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  initials: string;
-  is_active: boolean;
-  created_by: string;
-  created_at: string;
-  last_login_at: string | null;
-  login_count: number;
+  id: string; name: string; email: string; role: string; initials: string;
+  is_active: boolean; created_by: string; created_at: string;
+  last_login_at: string | null; login_count: number;
 }
-
 interface AuditEntry {
-  id: string;
-  user_email: string;
-  user_name: string;
-  user_role: string;
-  action: string;
-  target_type: string;
-  target_id: string;
-  target_name: string;
-  details: Record<string, unknown>;
-  created_at: string;
+  id: string; user_email: string; user_name: string; user_role: string;
+  action: string; target_type: string; target_id: string; target_name: string;
+  details: Record<string, unknown>; created_at: string;
 }
-
 interface PermissionSet {
-  canView: boolean;
-  canUpload: boolean;
-  canRequestDelete: boolean;
-  canDirectDelete: boolean;
+  canView: boolean; canUpload: boolean; canRequestDelete: boolean; canDirectDelete: boolean;
 }
 
+/* ═══ CONSTANTES ═══ */
 const TENANT_ID = 'tenant-industrial-demo-uuid';
 const DATA_ROOMS = ['REGULARIZAÇÃO', 'CONTRATOS', 'FINANCEIRO', 'JURÍDICO'];
-
-const CHART_COLORS = ['#00d4ff', '#a78bfa', '#34d399', '#fb923c', '#f87171'];
-
+const COLORS = ['#00d4ff', '#a78bfa', '#34d399', '#fb923c', '#f87171', '#818cf8'];
 const ACTION_LABELS: Record<string, string> = {
-  LOGIN: '🔑 Login',
-  LOGOUT: '🚪 Logout',
-  UPLOAD: '📤 Upload',
-  VIEW: '👁 Visualização',
-  DELETE_REQUEST: '🗑 Solicitação de Exclusão',
-  DELETE: '❌ Exclusão',
-  PERMISSION_CHANGE: '🔒 Alteração de Permissão',
-  USER_CREATE: '👤 Criação de Usuário',
-  USER_TOGGLE: '🔄 Status de Usuário',
+  LOGIN: '🔑 Login', LOGOUT: '🚪 Logout', UPLOAD: '📤 Upload',
+  VIEW: '👁 Visualização', DELETE_REQUEST: '🗑 Solicitação Exclusão',
+  DELETE: '❌ Exclusão', PERMISSION_CHANGE: '🔒 Alteração Permissão',
+  USER_CREATE: '👤 Criação Usuário', USER_TOGGLE: '🔄 Status Usuário',
 };
+const ROLES = ['Gestão & Backoffice', 'Compliance & Contratos', 'Auditoria & Investimentos', 'Campo & Técnico', 'Financeiro', 'Diretoria'];
 
-// ─── Helpers ────────────────────────────────────────────────────────────────
-
-function generatePassword(): string {
-  const chars = 'abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789@#$';
-  return Array.from({ length: 12 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+/* ═══ HELPERS ═══ */
+function genPwd(): string {
+  const c = 'abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789@#$!';
+  return Array.from({ length: 14 }, () => c[Math.floor(Math.random() * c.length)]).join('');
 }
-
-function fmtDate(iso: string | null): string {
+function fmt(iso: string | null): string {
   if (!iso) return '—';
   return new Date(iso).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 }
-
-async function logAudit(payload: Partial<AuditEntry>) {
-  try {
-    await (supabase as any).from('audit_trail').insert({
-      tenant_id: TENANT_ID,
-      created_at: new Date().toISOString(),
-      ...payload,
-    });
-  } catch { /* silently ignore audit write errors */ }
+async function logAudit(p: Partial<AuditEntry>) {
+  try { await (supabase as any).from('audit_trail').insert({ tenant_id: TENANT_ID, created_at: new Date().toISOString(), ...p }); } catch {}
 }
 
-// ─── Sub-components ─────────────────────────────────────────────────────────
-
-function SectionHeader({ icon, title, subtitle }: { icon: React.ReactNode; title: string; subtitle: string }) {
+/* ═══ ANEL DE PROGRESSO SVG ═══ */
+function ProgressRing({ pct, size = 80, stroke = 6 }: { pct: number; size?: number; stroke?: number }) {
+  const r = (size - stroke) / 2;
+  const circ = 2 * Math.PI * r;
+  const off = circ - (pct / 100) * circ;
+  const color = pct >= 80 ? '#34d399' : pct >= 50 ? '#fb923c' : '#f87171';
   return (
-    <div className="flex items-center space-x-4 mb-6">
-      <div className="p-3 bg-fbsb-primary rounded-xl shadow-inner-gold">{icon}</div>
-      <div>
-        <h2 className="text-xl font-bold font-serif">{title}</h2>
-        <p className="text-xs text-fbsb-text-secondary mt-0.5">{subtitle}</p>
-      </div>
-    </div>
+    <svg width={size} height={size} className="shrink-0">
+      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#1a324a" strokeWidth={stroke} />
+      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth={stroke}
+        strokeDasharray={circ} strokeDashoffset={off} strokeLinecap="round"
+        transform={`rotate(-90 ${size/2} ${size/2})`}
+        style={{ transition: 'stroke-dashoffset 1s ease' }} />
+      <text x="50%" y="50%" textAnchor="middle" dy="0.35em" className="fill-white text-lg font-bold">{pct}%</text>
+    </svg>
   );
 }
 
-function StatCard({ label, value, sub, color = 'cyan' }: { label: string; value: string | number; sub?: string; color?: string }) {
-  const colorMap: Record<string, string> = {
-    cyan: 'text-fbsb-cyan border-fbsb-cyan/30',
-    purple: 'text-purple-400 border-purple-400/30',
-    green: 'text-emerald-400 border-emerald-400/30',
-    orange: 'text-orange-400 border-orange-400/30',
-    red: 'text-red-400 border-red-400/30',
-  };
+/* ═══ TOGGLE MODERNO ═══ */
+function Toggle({ on, onChange, disabled }: { on: boolean; onChange: () => void; disabled?: boolean }) {
   return (
-    <div className={`bg-fbsb-bg-main border rounded-xl p-4 ${colorMap[color] || colorMap.cyan}`}>
-      <p className="text-[10px] uppercase tracking-widest text-fbsb-text-secondary mb-1">{label}</p>
-      <p className={`text-3xl font-bold ${colorMap[color]?.split(' ')[0]}`}>{value}</p>
-      {sub && <p className="text-[11px] text-fbsb-text-secondary mt-1">{sub}</p>}
-    </div>
+    <button onClick={onChange} disabled={disabled}
+      className={`w-10 h-[22px] rounded-full relative transition-colors ${disabled ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'} ${on ? 'bg-fbsb-cyan' : 'bg-fbsb-surface-300'}`}>
+      <span className={`absolute top-[2px] w-[18px] h-[18px] rounded-full bg-white shadow transition-transform ${on ? 'left-[20px]' : 'left-[2px]'}`} />
+    </button>
   );
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
-// MAIN COMPONENT
-// ═══════════════════════════════════════════════════════════════════════════
-
+/* ═══════════════════════════════════════ COMPONENTE PRINCIPAL ═══ */
 export function CeoAccessControl({ currentTenantId }: CeoAccessControlProps) {
-  const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'permissions' | 'audit'>('overview');
+  const [tab, setTab] = useState<'overview'|'users'|'permissions'|'audit'>('overview');
 
-  // ── State: Users ──
+  /* Estado Usuários */
   const [users, setUsers] = useState<VdrUser[]>([]);
   const [usersLoading, setUsersLoading] = useState(true);
-  const [showNewUserForm, setShowNewUserForm] = useState(false);
-  const [newUser, setNewUser] = useState({ name: '', email: '', role: '', initials: '' });
-  const [newUserPassword, setNewUserPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [savingUser, setSavingUser] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [form, setForm] = useState({ name: '', email: '', role: ROLES[0], initials: '' });
+  const [pwd, setPwd] = useState('');
+  const [showPwd, setShowPwd] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [copied, setCopied] = useState(false);
+  /* Permissões do novo usuário no formulário */
+  const [newPerms, setNewPerms] = useState<Record<string, PermissionSet>>(() => {
+    const m: Record<string, PermissionSet> = {};
+    DATA_ROOMS.forEach(r => { m[r] = { canView: true, canUpload: true, canRequestDelete: true, canDirectDelete: false }; });
+    return m;
+  });
 
-  // ── State: Permissions ──
+  /* Estado Permissões */
   const [permMatrix, setPermMatrix] = useState<Record<string, Record<string, PermissionSet>>>({});
   const [permLoading, setPermLoading] = useState(true);
-  const [savingPerm, setSavingPerm] = useState<string | null>(null);
+  const [savingPerm, setSavingPerm] = useState<string|null>(null);
 
-  // ── State: Audit Trail ──
-  const [auditEntries, setAuditEntries] = useState<AuditEntry[]>([]);
+  /* Estado Auditoria */
+  const [audit, setAudit] = useState<AuditEntry[]>([]);
   const [auditLoading, setAuditLoading] = useState(true);
-  const [auditFilter, setAuditFilter] = useState({ user: '', action: '', search: '' });
-  const [auditPage, setAuditPage] = useState(0);
-  const AUDIT_PAGE_SIZE = 20;
+  const [af, setAf] = useState({ user: '', action: '', search: '' });
+  const [page, setPage] = useState(0);
+  const PG = 15;
 
-  // ── State: Analytics ──
-  const [analytics, setAnalytics] = useState<{
-    totalDocs: number;
-    approvedDocs: number;
-    pendingDocs: number;
-    deletionRequests: number;
-    uploadsPerUser: Array<{ name: string; uploads: number }>;
-    docsByCategory: Array<{ category: string; count: number }>;
-    actionsOverTime: Array<{ date: string; uploads: number; views: number; deletions: number }>;
+  /* Estado Analytics */
+  const [an, setAn] = useState<{
+    totalDocs: number; approvedDocs: number; pendingDocs: number; deletionRequests: number;
+    uploadsPerUser: { name: string; uploads: number }[];
+    docsByCategory: { category: string; count: number }[];
+    actionsOverTime: { date: string; uploads: number; views: number; deletions: number }[];
     compliance: number;
-  } | null>(null);
+  }|null>(null);
 
-  // ════════════════════════════════════════
-  // DATA FETCHERS
-  // ════════════════════════════════════════
-
+  /* ═══ FETCHERS ═══ */
   const fetchUsers = useCallback(async () => {
     setUsersLoading(true);
-    try {
-      const { data } = await (supabase as any)
-        .from('vdr_users')
-        .select('*')
-        .eq('tenant_id', TENANT_ID)
-        .order('created_at', { ascending: false });
-      if (data) setUsers(data);
-    } finally {
-      setUsersLoading(false);
-    }
+    try { const { data } = await (supabase as any).from('vdr_users').select('*').eq('tenant_id', TENANT_ID).order('created_at', { ascending: false }); if (data) setUsers(data); } finally { setUsersLoading(false); }
   }, []);
 
-  const fetchPermissions = useCallback(async () => {
+  const fetchPerms = useCallback(async () => {
     setPermLoading(true);
     try {
-      const { data } = await (supabase as any)
-        .from('vdr_permissions')
-        .select('*')
-        .eq('tenant_id', TENANT_ID);
-
-      const matrix: Record<string, Record<string, PermissionSet>> = {};
-      DATA_ROOMS.forEach(room => {
-        matrix[room] = {};
-        // default permissions
-        const defaultUsers = [
-          'ceo@flechabsb.com', 'socio@flechabsb.com',
-          'juridico@flechabsb.com', 'adm@flechabsb.com', 'operacional@flechabsb.com'
-        ];
-        defaultUsers.forEach(email => {
-          matrix[room][email] = {
-            canView: true,
-            canUpload: email !== 'ceo@flechabsb.com',
-            canRequestDelete: email !== 'ceo@flechabsb.com',
-            canDirectDelete: email === 'ceo@flechabsb.com',
-          };
-        });
-      });
-
-      // overlay DB rows
-      if (data) {
-        data.forEach((row: any) => {
-          if (!matrix[row.data_room]) matrix[row.data_room] = {};
-          matrix[row.data_room][row.user_email] = {
-            canView: row.can_view,
-            canUpload: row.can_upload,
-            canRequestDelete: row.can_request_delete,
-            canDirectDelete: row.can_direct_delete,
-          };
-        });
-      }
-      setPermMatrix(matrix);
-    } finally {
-      setPermLoading(false);
-    }
+      const { data } = await (supabase as any).from('vdr_permissions').select('*').eq('tenant_id', TENANT_ID);
+      const mx: Record<string, Record<string, PermissionSet>> = {};
+      const defEmails = ['ceo@flechabsb.com','socio@flechabsb.com','juridico@flechabsb.com','adm@flechabsb.com','operacional@flechabsb.com'];
+      DATA_ROOMS.forEach(room => { mx[room] = {}; defEmails.forEach(e => { mx[room][e] = { canView: true, canUpload: e !== 'ceo@flechabsb.com', canRequestDelete: e !== 'ceo@flechabsb.com', canDirectDelete: e === 'ceo@flechabsb.com' }; }); });
+      if (data) data.forEach((r: any) => { if (!mx[r.data_room]) mx[r.data_room] = {}; mx[r.data_room][r.user_email] = { canView: r.can_view, canUpload: r.can_upload, canRequestDelete: r.can_request_delete, canDirectDelete: r.can_direct_delete }; });
+      setPermMatrix(mx);
+    } finally { setPermLoading(false); }
   }, []);
 
   const fetchAudit = useCallback(async () => {
     setAuditLoading(true);
-    try {
-      const { data } = await (supabase as any)
-        .from('audit_trail')
-        .select('*')
-        .eq('tenant_id', TENANT_ID)
-        .order('created_at', { ascending: false })
-        .limit(500);
-      if (data) setAuditEntries(data);
-    } finally {
-      setAuditLoading(false);
-    }
+    try { const { data } = await (supabase as any).from('audit_trail').select('*').eq('tenant_id', TENANT_ID).order('created_at', { ascending: false }).limit(500); if (data) setAudit(data); } finally { setAuditLoading(false); }
   }, []);
 
   const fetchAnalytics = useCallback(async () => {
     try {
-      const [docsRes, auditRes] = await Promise.all([
+      const [dr, ar] = await Promise.all([
         (supabase as any).from('b2b_documents').select('id,status,category,uploader_email,uploader_name,deletion_requested,created_at').eq('tenant_id', TENANT_ID),
         (supabase as any).from('audit_trail').select('action,user_email,user_name,created_at').eq('tenant_id', TENANT_ID).order('created_at', { ascending: false }).limit(300),
       ]);
-
-      const docs: any[] = docsRes.data || [];
-      const auditRows: any[] = auditRes.data || [];
-
+      const docs: any[] = dr.data || [], rows: any[] = ar.data || [];
       const approved = docs.filter(d => d.status === 'Aprovado').length;
       const pending = docs.filter(d => d.status !== 'Aprovado').length;
       const delReq = docs.filter(d => d.deletion_requested).length;
       const compliance = docs.length > 0 ? Math.round((approved / docs.length) * 100) : 0;
-
-      // uploads per user
-      const uploadsMap: Record<string, number> = {};
-      docs.forEach(d => {
-        const key = d.uploader_name || d.uploader_email || 'Desconhecido';
-        uploadsMap[key] = (uploadsMap[key] || 0) + 1;
-      });
-      const uploadsPerUser = Object.entries(uploadsMap)
-        .map(([name, uploads]) => ({ name, uploads }))
-        .sort((a, b) => b.uploads - a.uploads)
-        .slice(0, 6);
-
-      // docs by category
-      const catMap: Record<string, number> = {};
-      docs.forEach(d => { catMap[d.category] = (catMap[d.category] || 0) + 1; });
-      const docsByCategory = Object.entries(catMap).map(([category, count]) => ({ category, count }));
-
-      // actions over time (last 7 days)
+      const um: Record<string,number> = {};
+      docs.forEach(d => { const k = d.uploader_name || d.uploader_email || '?'; um[k] = (um[k]||0)+1; });
+      const uploadsPerUser = Object.entries(um).map(([name,uploads]) => ({name,uploads})).sort((a,b)=>b.uploads-a.uploads).slice(0,6);
+      const cm: Record<string,number> = {};
+      docs.forEach(d => { cm[d.category] = (cm[d.category]||0)+1; });
+      const docsByCategory = Object.entries(cm).map(([category,count])=>({category,count}));
       const today = new Date();
-      const actionsOverTime = Array.from({ length: 7 }, (_, i) => {
-        const d = new Date(today);
-        d.setDate(d.getDate() - (6 - i));
-        const dateStr = d.toISOString().slice(0, 10);
-        const label = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
-        const dayRows = auditRows.filter(r => r.created_at?.startsWith(dateStr));
-        return {
-          date: label,
-          uploads: dayRows.filter(r => r.action === 'UPLOAD').length,
-          views: dayRows.filter(r => r.action === 'VIEW').length,
-          deletions: dayRows.filter(r => r.action === 'DELETE' || r.action === 'DELETE_REQUEST').length,
-        };
+      const actionsOverTime = Array.from({length:7},(_,i) => {
+        const d = new Date(today); d.setDate(d.getDate()-(6-i));
+        const ds = d.toISOString().slice(0,10), lb = d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
+        const dr2 = rows.filter(r => r.created_at?.startsWith(ds));
+        return { date: lb, uploads: dr2.filter(r=>r.action==='UPLOAD').length, views: dr2.filter(r=>r.action==='VIEW').length, deletions: dr2.filter(r=>r.action==='DELETE'||r.action==='DELETE_REQUEST').length };
       });
-
-      setAnalytics({ totalDocs: docs.length, approvedDocs: approved, pendingDocs: pending, deletionRequests: delReq, uploadsPerUser, docsByCategory, actionsOverTime, compliance });
-    } catch (e) {
-      console.error('Analytics error', e);
-    }
+      setAn({ totalDocs: docs.length, approvedDocs: approved, pendingDocs: pending, deletionRequests: delReq, uploadsPerUser, docsByCategory, actionsOverTime, compliance });
+    } catch(e) { console.error(e); }
   }, []);
 
-  useEffect(() => {
-    fetchUsers();
-    fetchPermissions();
-    fetchAudit();
-    fetchAnalytics();
-  }, [fetchUsers, fetchPermissions, fetchAudit, fetchAnalytics]);
+  useEffect(() => { fetchUsers(); fetchPerms(); fetchAudit(); fetchAnalytics(); }, [fetchUsers, fetchPerms, fetchAudit, fetchAnalytics]);
 
-  // ════════════════════════════════════════
-  // USER MANAGEMENT ACTIONS
-  // ════════════════════════════════════════
-
-  const handleCreateUser = async () => {
-    if (!newUser.name || !newUser.email || !newUser.role || !newUser.initials || !newUserPassword) {
-      alert('Preencha todos os campos obrigatórios.'); return;
-    }
-    setSavingUser(true);
+  /* ═══ AÇÕES USUÁRIOS ═══ */
+  const handleCreate = async () => {
+    if (!form.name || !form.email || !form.initials || !pwd) { alert('Preencha todos os campos.'); return; }
+    setSaving(true);
     try {
-      const { error } = await (supabase as any).from('vdr_users').insert({
-        tenant_id: TENANT_ID,
-        name: newUser.name,
-        email: newUser.email,
-        role: newUser.role,
-        initials: newUser.initials.toUpperCase(),
-        password_hash: newUserPassword,
-        created_by: 'ceo@flechabsb.com',
-        is_active: true,
-      });
+      const { error } = await (supabase as any).from('vdr_users').insert({ tenant_id: TENANT_ID, name: form.name, email: form.email, role: form.role, initials: form.initials.toUpperCase(), password_hash: pwd, created_by: 'ceo@flechabsb.com', is_active: true });
       if (error) throw error;
-      await logAudit({
-        user_email: 'ceo@flechabsb.com',
-        user_name: 'Direção Executiva',
-        user_role: 'Diretor (CEO)',
-        action: 'USER_CREATE',
-        target_type: 'user',
-        target_name: newUser.email,
-        details: { name: newUser.name, role: newUser.role },
-      });
-      setNewUser({ name: '', email: '', role: '', initials: '' });
-      setNewUserPassword('');
-      setShowNewUserForm(false);
-      fetchUsers();
-      fetchAudit();
-    } catch (e: any) {
-      alert('Erro ao criar usuário: ' + (e?.message || e));
-    } finally {
-      setSavingUser(false);
-    }
-  };
-
-  const handleToggleUser = async (user: VdrUser) => {
-    if (user.email === 'ceo@flechabsb.com') { alert('O CEO não pode ser desativado.'); return; }
-    try {
-      await (supabase as any).from('vdr_users').update({ is_active: !user.is_active }).eq('id', user.id);
-      await logAudit({
-        user_email: 'ceo@flechabsb.com',
-        user_name: 'Direção Executiva',
-        user_role: 'Diretor (CEO)',
-        action: 'USER_TOGGLE',
-        target_type: 'user',
-        target_name: user.email,
-        details: { new_status: !user.is_active ? 'ativo' : 'bloqueado' },
-      });
-      fetchUsers();
-    } catch (e: any) {
-      alert('Erro: ' + e?.message);
-    }
-  };
-
-  // ════════════════════════════════════════
-  // PERMISSION ACTIONS
-  // ════════════════════════════════════════
-
-  const handlePermChange = async (room: string, email: string, perm: keyof PermissionSet, value: boolean) => {
-    if (email === 'ceo@flechabsb.com' && (perm === 'canDirectDelete' || perm === 'canView')) return;
-    const key = `${room}__${email}__${perm}`;
-    setSavingPerm(key);
-
-    const updated = { ...permMatrix[room][email], [perm]: value };
-    setPermMatrix(prev => ({ ...prev, [room]: { ...prev[room], [email]: updated } }));
-
-    try {
-      const { data: existing } = await (supabase as any)
-        .from('vdr_permissions')
-        .select('id')
-        .eq('tenant_id', TENANT_ID)
-        .eq('data_room', room)
-        .eq('user_email', email)
-        .single();
-
-      if (existing) {
-        await (supabase as any).from('vdr_permissions').update({
-          can_view: updated.canView,
-          can_upload: updated.canUpload,
-          can_request_delete: updated.canRequestDelete,
-          can_direct_delete: updated.canDirectDelete,
-          updated_at: new Date().toISOString(),
-        }).eq('id', existing.id);
-      } else {
-        await (supabase as any).from('vdr_permissions').insert({
-          tenant_id: TENANT_ID,
-          data_room: room,
-          user_email: email,
-          can_view: updated.canView,
-          can_upload: updated.canUpload,
-          can_request_delete: updated.canRequestDelete,
-          can_direct_delete: updated.canDirectDelete,
-        });
+      // Salvar permissões para cada pasta
+      for (const room of DATA_ROOMS) {
+        const p = newPerms[room];
+        await (supabase as any).from('vdr_permissions').insert({ tenant_id: TENANT_ID, data_room: room, user_email: form.email, can_view: p.canView, can_upload: p.canUpload, can_request_delete: p.canRequestDelete, can_direct_delete: p.canDirectDelete });
       }
-
-      await logAudit({
-        user_email: 'ceo@flechabsb.com',
-        user_name: 'Direção Executiva',
-        user_role: 'Diretor (CEO)',
-        action: 'PERMISSION_CHANGE',
-        target_type: 'permission',
-        target_name: `${room} / ${email}`,
-        details: { permission: perm, new_value: value },
-      });
-    } catch (e: any) {
-      alert('Erro ao salvar permissão: ' + e?.message);
-    } finally {
-      setSavingPerm(null);
-    }
+      await logAudit({ user_email: 'ceo@flechabsb.com', user_name: 'Direção Executiva', user_role: 'Diretor (CEO)', action: 'USER_CREATE', target_type: 'user', target_name: form.email, details: { name: form.name, role: form.role, permissions: newPerms } });
+      setForm({ name: '', email: '', role: ROLES[0], initials: '' }); setPwd(''); setShowForm(false);
+      fetchUsers(); fetchPerms(); fetchAudit();
+    } catch (e: any) { alert('Erro: ' + (e?.message || e)); } finally { setSaving(false); }
   };
 
-  // ════════════════════════════════════════
-  // AUDIT FILTERING
-  // ════════════════════════════════════════
+  const toggleUser = async (u: VdrUser) => {
+    if (u.email === 'ceo@flechabsb.com') { alert('O CEO não pode ser desativado.'); return; }
+    await (supabase as any).from('vdr_users').update({ is_active: !u.is_active }).eq('id', u.id);
+    await logAudit({ user_email: 'ceo@flechabsb.com', user_name: 'Direção Executiva', user_role: 'Diretor (CEO)', action: 'USER_TOGGLE', target_type: 'user', target_name: u.email, details: { novo_status: !u.is_active ? 'ativo' : 'bloqueado' } });
+    fetchUsers();
+  };
 
-  const filteredAudit = auditEntries.filter(e => {
-    const matchUser = !auditFilter.user || e.user_email.includes(auditFilter.user);
-    const matchAction = !auditFilter.action || e.action === auditFilter.action;
-    const matchSearch = !auditFilter.search
-      || e.target_name?.toLowerCase().includes(auditFilter.search.toLowerCase())
-      || e.user_name?.toLowerCase().includes(auditFilter.search.toLowerCase());
-    return matchUser && matchAction && matchSearch;
+  /* ═══ AÇÕES PERMISSÕES ═══ */
+  const changePerm = async (room: string, email: string, perm: keyof PermissionSet, val: boolean) => {
+    if (email === 'ceo@flechabsb.com' && (perm === 'canDirectDelete' || perm === 'canView')) return;
+    setSavingPerm(`${room}__${email}__${perm}`);
+    const upd = { ...permMatrix[room][email], [perm]: val };
+    setPermMatrix(prev => ({ ...prev, [room]: { ...prev[room], [email]: upd } }));
+    try {
+      const { data: ex } = await (supabase as any).from('vdr_permissions').select('id').eq('tenant_id', TENANT_ID).eq('data_room', room).eq('user_email', email).single();
+      if (ex) { await (supabase as any).from('vdr_permissions').update({ can_view: upd.canView, can_upload: upd.canUpload, can_request_delete: upd.canRequestDelete, can_direct_delete: upd.canDirectDelete, updated_at: new Date().toISOString() }).eq('id', ex.id); }
+      else { await (supabase as any).from('vdr_permissions').insert({ tenant_id: TENANT_ID, data_room: room, user_email: email, can_view: upd.canView, can_upload: upd.canUpload, can_request_delete: upd.canRequestDelete, can_direct_delete: upd.canDirectDelete }); }
+      await logAudit({ user_email: 'ceo@flechabsb.com', user_name: 'Direção Executiva', user_role: 'Diretor (CEO)', action: 'PERMISSION_CHANGE', target_type: 'permission', target_name: `${room} / ${email}`, details: { permissao: perm, novo_valor: val } });
+    } catch (e: any) { alert('Erro: ' + e?.message); } finally { setSavingPerm(null); }
+  };
+
+  /* Filtro auditoria */
+  const fa = audit.filter(e => {
+    if (af.user && !e.user_email.includes(af.user)) return false;
+    if (af.action && e.action !== af.action) return false;
+    if (af.search && !e.target_name?.toLowerCase().includes(af.search.toLowerCase()) && !e.user_name?.toLowerCase().includes(af.search.toLowerCase())) return false;
+    return true;
   });
+  const pa = fa.slice(page * PG, (page + 1) * PG);
 
-  const pagedAudit = filteredAudit.slice(auditPage * AUDIT_PAGE_SIZE, (auditPage + 1) * AUDIT_PAGE_SIZE);
+  /* Copiar credenciais */
+  const copyCredentials = () => {
+    const txt = `Acesso FlechaBSB\nE-mail: ${form.email}\nSenha: ${pwd}\nURL: https://www.flechabsb.com`;
+    navigator.clipboard.writeText(txt).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); });
+  };
 
-  // ════════════════════════════════════════
-  // RENDER
-  // ════════════════════════════════════════
-
+  /* ═══ TABS ═══ */
   const tabs = [
-    { id: 'overview', label: 'Visão Executiva', icon: <TrendingUp className="w-4 h-4" /> },
-    { id: 'users', label: 'Gestão de Usuários', icon: <Users className="w-4 h-4" /> },
-    { id: 'permissions', label: 'Matriz de Permissões', icon: <FolderLock className="w-4 h-4" /> },
-    { id: 'audit', label: 'Trilha de Auditoria', icon: <Activity className="w-4 h-4" /> },
-  ] as const;
+    { id: 'overview' as const, label: 'Visão Executiva', icon: <TrendingUp className="w-4 h-4" /> },
+    { id: 'users' as const, label: 'Gestão de Usuários', icon: <Users className="w-4 h-4" /> },
+    { id: 'permissions' as const, label: 'Permissões', icon: <FolderLock className="w-4 h-4" /> },
+    { id: 'audit' as const, label: 'Auditoria', icon: <Activity className="w-4 h-4" /> },
+  ];
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto text-fbsb-text-primary">
+    <div className="space-y-5 max-w-7xl mx-auto text-fbsb-text-primary">
 
-      {/* Header */}
-      <div className="bg-gradient-to-r from-fbsb-surface-100 to-fbsb-bg-deep border border-fbsb-border rounded-2xl p-6 shadow-premium">
+      {/* ══ HEADER ══ */}
+      <div className="glass-card rounded-2xl p-6 anim-fade-up">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center space-x-4">
-            <div className="p-3 bg-fbsb-primary rounded-xl shadow-inner-gold">
-              <ShieldAlert className="w-8 h-8 text-fbsb-cyan" />
+            <div className="relative">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-fbsb-primary to-fbsb-cyan/40 flex items-center justify-center shadow-glow-cyan">
+                <ShieldAlert className="w-7 h-7 text-white" />
+              </div>
+              <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-fbsb-bg-deep animate-pulse" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold font-serif">Centro de Governança Executiva</h1>
-              <p className="text-xs text-fbsb-text-secondary mt-0.5">
-                Controle total de usuários, permissões, auditoria e analytics — exclusivo CEO
-              </p>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-white to-fbsb-cyan bg-clip-text text-transparent">
+                Centro de Governança Executiva
+              </h1>
+              <p className="text-xs text-fbsb-text-secondary mt-0.5">Controle total · Exclusivo CEO · Sessão auditada</p>
             </div>
           </div>
-          <div className="flex items-center space-x-2 text-[11px] text-fbsb-text-secondary bg-fbsb-surface-200/50 px-4 py-2 rounded-lg border border-fbsb-border">
-            <Shield className="w-3 h-3 text-fbsb-cyan" />
-            <span>Sessão auditada · Todas as ações são registradas</span>
+          <div className="flex items-center space-x-2 text-[10px] bg-emerald-500/10 text-emerald-400 px-3 py-1.5 rounded-full border border-emerald-500/20">
+            <Shield className="w-3 h-3" />
+            <span className="font-semibold uppercase tracking-wider">Sessão criptografada</span>
           </div>
         </div>
 
-        {/* Tabs */}
-        <div className="flex space-x-1 mt-6 bg-fbsb-bg-main rounded-xl p-1 border border-fbsb-border">
-          {tabs.map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 flex items-center justify-center space-x-2 py-2 px-3 rounded-lg text-xs font-semibold transition-all ${
-                activeTab === tab.id
-                  ? 'bg-fbsb-primary text-white shadow'
-                  : 'text-fbsb-text-secondary hover:text-white'
-              }`}
-            >
-              {tab.icon}<span className="hidden sm:inline">{tab.label}</span>
+        {/* Tabs flutuantes */}
+        <div className="flex mt-6 bg-fbsb-bg-deep/60 rounded-2xl p-1.5 border border-white/5 gap-1">
+          {tabs.map(t => (
+            <button key={t.id} onClick={() => setTab(t.id)}
+              className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all duration-300 ${
+                tab === t.id
+                  ? 'bg-gradient-to-r from-fbsb-primary to-fbsb-cyan/60 text-white shadow-lg shadow-fbsb-cyan/20'
+                  : 'text-fbsb-text-secondary hover:text-white hover:bg-white/5'
+              }`}>
+              {t.icon}<span className="hidden sm:inline">{t.label}</span>
             </button>
           ))}
         </div>
       </div>
 
-      {/* ════ TAB: VISÃO EXECUTIVA ════ */}
-      {activeTab === 'overview' && (
-        <div className="space-y-6">
-          {analytics ? (
-            <>
-              {/* KPI Cards */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <StatCard label="Total de Documentos" value={analytics.totalDocs} sub="No cofre digital" color="cyan" />
-                <StatCard label="Aprovados" value={analytics.approvedDocs} sub={`${analytics.compliance}% de conformidade`} color="green" />
-                <StatCard label="Em Análise" value={analytics.pendingDocs} sub="Aguardando revisão" color="orange" />
-                <StatCard label="Solicitações de Exclusão" value={analytics.deletionRequests} sub="Aguardam aprovação CEO" color="red" />
-              </div>
-
-              {/* Charts Row 1 */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Atividade 7 dias */}
-                <div className="bg-fbsb-bg-main border border-fbsb-border rounded-xl p-5">
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-fbsb-text-secondary mb-4">
-                    Atividade nos Últimos 7 Dias
-                  </h3>
-                  <ResponsiveContainer width="100%" height={200}>
-                    <LineChart data={analytics.actionsOverTime}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#ffffff08" />
-                      <XAxis dataKey="date" tick={{ fontSize: 10, fill: '#8b9cad' }} />
-                      <YAxis tick={{ fontSize: 10, fill: '#8b9cad' }} />
-                      <Tooltip
-                        contentStyle={{ backgroundColor: '#1a2535', border: '1px solid #2a3a4a', borderRadius: 8, fontSize: 11 }}
-                      />
-                      <Legend wrapperStyle={{ fontSize: 11 }} />
-                      <Line type="monotone" dataKey="uploads" stroke="#00d4ff" strokeWidth={2} dot={false} name="Uploads" />
-                      <Line type="monotone" dataKey="views" stroke="#a78bfa" strokeWidth={2} dot={false} name="Visualizações" />
-                      <Line type="monotone" dataKey="deletions" stroke="#f87171" strokeWidth={2} dot={false} name="Exclusões" />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-
-                {/* Uploads por usuário */}
-                <div className="bg-fbsb-bg-main border border-fbsb-border rounded-xl p-5">
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-fbsb-text-secondary mb-4">
-                    Uploads por Colaborador
-                  </h3>
-                  <ResponsiveContainer width="100%" height={200}>
-                    <BarChart data={analytics.uploadsPerUser} layout="vertical">
-                      <CartesianGrid strokeDasharray="3 3" stroke="#ffffff08" />
-                      <XAxis type="number" tick={{ fontSize: 10, fill: '#8b9cad' }} />
-                      <YAxis type="category" dataKey="name" tick={{ fontSize: 10, fill: '#8b9cad' }} width={90} />
-                      <Tooltip
-                        contentStyle={{ backgroundColor: '#1a2535', border: '1px solid #2a3a4a', borderRadius: 8, fontSize: 11 }}
-                      />
-                      <Bar dataKey="uploads" fill="#00d4ff" radius={[0, 4, 4, 0]} name="Documentos" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-
-              {/* Charts Row 2 */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Distribuição por Categoria */}
-                <div className="bg-fbsb-bg-main border border-fbsb-border rounded-xl p-5 lg:col-span-1">
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-fbsb-text-secondary mb-4">
-                    Distribuição por Categoria
-                  </h3>
-                  <ResponsiveContainer width="100%" height={180}>
-                    <PieChart>
-                      <Pie data={analytics.docsByCategory} dataKey="count" nameKey="category" cx="50%" cy="50%" outerRadius={70} label={(props: any) => `${props.category} ${((props.percent ?? 0) * 100).toFixed(0)}%`} labelLine={false}>
-                        {analytics.docsByCategory.map((_, i) => (
-                          <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
-                        ))}
-                      </Pie>
-                      <Tooltip contentStyle={{ backgroundColor: '#1a2535', border: '1px solid #2a3a4a', borderRadius: 8, fontSize: 11 }} />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-
-                {/* Parecer Consultivo */}
-                <div className="bg-fbsb-bg-main border border-fbsb-border rounded-xl p-5 lg:col-span-2">
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-fbsb-text-secondary mb-4 flex items-center">
-                    <BarChart2 className="w-4 h-4 mr-2 text-fbsb-cyan" />
-                    Parecer Consultivo Executivo
-                  </h3>
-                  <div className="space-y-3 text-[13px] text-fbsb-text-secondary leading-relaxed">
-                    <div className={`p-3 rounded-lg border-l-4 ${analytics.compliance >= 80 ? 'border-emerald-500 bg-emerald-500/10' : analytics.compliance >= 50 ? 'border-orange-400 bg-orange-400/10' : 'border-red-500 bg-red-500/10'}`}>
-                      <span className="font-bold text-white">Conformidade Documental:</span>{' '}
-                      {analytics.compliance >= 80
-                        ? `${analytics.compliance}% dos documentos estão aprovados. O cofre encontra-se em estado de conformidade adequado para apresentação a auditores externos.`
-                        : analytics.compliance >= 50
-                        ? `${analytics.compliance}% de aprovação. Recomenda-se priorizar a análise dos ${analytics.pendingDocs} documentos pendentes antes de qualquer due diligence.`
-                        : `Apenas ${analytics.compliance}% aprovados. Ação imediata requerida: revise os documentos pendentes e escale para o jurídico.`}
-                    </div>
-                    {analytics.deletionRequests > 0 && (
-                      <div className="p-3 rounded-lg border-l-4 border-orange-400 bg-orange-400/10">
-                        <span className="font-bold text-white">Solicitações Pendentes:</span>{' '}
-                        {analytics.deletionRequests} documento(s) aguardam sua aprovação de exclusão. Acesse o módulo de Validação para revisar e autorizar ou rejeitar cada solicitação.
-                      </div>
-                    )}
-                    <div className="p-3 rounded-lg border-l-4 border-fbsb-cyan/50 bg-fbsb-cyan/5">
-                      <span className="font-bold text-white">Recomendação de Governança:</span>{' '}
-                      Mantenha a trilha de auditoria revisada mensalmente. Todos os acessos, uploads e visualizações estão sendo rastreados em tempo real com identificação completa do colaborador.
-                    </div>
+      {/* ══════════ VISÃO EXECUTIVA ══════════ */}
+      {tab === 'overview' && an && (
+        <div className="space-y-5 anim-fade-up">
+          {/* KPIs */}
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+            {[
+              { label: 'Documentos', value: an.totalDocs, color: '#00d4ff', icon: <FileText className="w-5 h-5" /> },
+              { label: 'Aprovados', value: an.approvedDocs, color: '#34d399', icon: <CheckCircle2 className="w-5 h-5" /> },
+              { label: 'Pendentes', value: an.pendingDocs, color: '#fb923c', icon: <Clock className="w-5 h-5" /> },
+              { label: 'Exclusões', value: an.deletionRequests, color: '#f87171', icon: <Trash2 className="w-5 h-5" /> },
+            ].map((kpi, i) => (
+              <div key={i} className={`glass-card rounded-2xl p-5 anim-fade-scale delay-${i+1}`}>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="p-2 rounded-xl" style={{ background: kpi.color + '15' }}>
+                    <span style={{ color: kpi.color }}>{kpi.icon}</span>
                   </div>
                 </div>
+                <p className="text-3xl font-bold" style={{ color: kpi.color }}>{kpi.value}</p>
+                <p className="text-[10px] uppercase tracking-widest text-fbsb-text-secondary mt-1">{kpi.label}</p>
               </div>
-            </>
-          ) : (
-            <div className="flex items-center justify-center h-48 text-fbsb-text-secondary">
-              <RefreshCw className="w-5 h-5 animate-spin mr-2" /> Carregando analytics...
+            ))}
+            {/* Anel de conformidade */}
+            <div className="glass-card rounded-2xl p-5 flex flex-col items-center justify-center anim-fade-scale delay-5">
+              <ProgressRing pct={an.compliance} size={72} />
+              <p className="text-[10px] uppercase tracking-widest text-fbsb-text-secondary mt-2">Conformidade</p>
             </div>
-          )}
-        </div>
-      )}
+          </div>
 
-      {/* ════ TAB: GESTÃO DE USUÁRIOS ════ */}
-      {activeTab === 'users' && (
-        <div className="space-y-4">
-          <div className="bg-fbsb-bg-main border border-fbsb-border rounded-xl p-6">
-            <div className="flex items-center justify-between mb-6">
-              <SectionHeader
-                icon={<Users className="w-7 h-7 text-fbsb-cyan" />}
-                title="Gestão de Logins & Credenciais"
-                subtitle="Crie, bloqueie e gerencie os acessos dos colaboradores ao sistema"
-              />
-              <button
-                onClick={() => setShowNewUserForm(v => !v)}
-                className="flex items-center space-x-2 bg-fbsb-primary hover:bg-fbsb-primary/80 text-white text-xs font-bold px-4 py-2 rounded-lg transition-colors"
-              >
-                <UserPlus className="w-4 h-4" />
-                <span>Novo Usuário</span>
-              </button>
+          {/* Gráficos */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <div className="glass-card rounded-2xl p-5 anim-fade-up delay-2">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-fbsb-text-secondary mb-4">Atividade · 7 dias</h3>
+              <ResponsiveContainer width="100%" height={200}>
+                <AreaChart data={an.actionsOverTime}>
+                  <defs>
+                    <linearGradient id="gUp" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#00d4ff" stopOpacity={0.3}/><stop offset="100%" stopColor="#00d4ff" stopOpacity={0}/></linearGradient>
+                    <linearGradient id="gVw" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#a78bfa" stopOpacity={0.3}/><stop offset="100%" stopColor="#a78bfa" stopOpacity={0}/></linearGradient>
+                    <linearGradient id="gDl" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#f87171" stopOpacity={0.3}/><stop offset="100%" stopColor="#f87171" stopOpacity={0}/></linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#ffffff06" />
+                  <XAxis dataKey="date" tick={{ fontSize: 10, fill: '#8b9cad' }} />
+                  <YAxis tick={{ fontSize: 10, fill: '#8b9cad' }} />
+                  <Tooltip contentStyle={{ background: '#0d2235ee', border: '1px solid #1a324a', borderRadius: 12, fontSize: 11, backdropFilter: 'blur(12px)' }} />
+                  <Legend wrapperStyle={{ fontSize: 11 }} />
+                  <Area type="monotone" dataKey="uploads" stroke="#00d4ff" fill="url(#gUp)" strokeWidth={2} name="Uploads" />
+                  <Area type="monotone" dataKey="views" stroke="#a78bfa" fill="url(#gVw)" strokeWidth={2} name="Visualizações" />
+                  <Area type="monotone" dataKey="deletions" stroke="#f87171" fill="url(#gDl)" strokeWidth={2} name="Exclusões" />
+                </AreaChart>
+              </ResponsiveContainer>
             </div>
+            <div className="glass-card rounded-2xl p-5 anim-fade-up delay-3">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-fbsb-text-secondary mb-4">Uploads por Colaborador</h3>
+              <ResponsiveContainer width="100%" height={200}>
+                <BarChart data={an.uploadsPerUser} layout="vertical">
+                  <CartesianGrid strokeDasharray="3 3" stroke="#ffffff06" />
+                  <XAxis type="number" tick={{ fontSize: 10, fill: '#8b9cad' }} />
+                  <YAxis type="category" dataKey="name" tick={{ fontSize: 10, fill: '#8b9cad' }} width={85} />
+                  <Tooltip contentStyle={{ background: '#0d2235ee', border: '1px solid #1a324a', borderRadius: 12, fontSize: 11 }} />
+                  <Bar dataKey="uploads" fill="#00d4ff" radius={[0,6,6,0]} name="Documentos" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
 
-            {/* Form Novo Usuário */}
-            {showNewUserForm && (
-              <div className="mb-6 bg-fbsb-surface-100 border border-fbsb-border rounded-xl p-5">
-                <h4 className="text-sm font-bold text-white mb-4 flex items-center">
-                  <UserPlus className="w-4 h-4 mr-2 text-fbsb-cyan" />
-                  Cadastrar Novo Acesso
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-[10px] uppercase text-fbsb-text-secondary mb-1 block">Nome Completo *</label>
-                    <input
-                      className="w-full bg-fbsb-bg-deep border border-fbsb-border rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-fbsb-cyan"
-                      placeholder="Ex: João Silva"
-                      value={newUser.name}
-                      onChange={e => setNewUser(p => ({ ...p, name: e.target.value }))}
-                    />
-                  </div>
-                  <div>
-                    <label className="text-[10px] uppercase text-fbsb-text-secondary mb-1 block">E-mail *</label>
-                    <input
-                      type="email"
-                      className="w-full bg-fbsb-bg-deep border border-fbsb-border rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-fbsb-cyan"
-                      placeholder="usuario@flechabsb.com"
-                      value={newUser.email}
-                      onChange={e => setNewUser(p => ({ ...p, email: e.target.value }))}
-                    />
-                  </div>
-                  <div>
-                    <label className="text-[10px] uppercase text-fbsb-text-secondary mb-1 block">Cargo / Função *</label>
-                    <input
-                      className="w-full bg-fbsb-bg-deep border border-fbsb-border rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-fbsb-cyan"
-                      placeholder="Ex: Compliance & Contratos"
-                      value={newUser.role}
-                      onChange={e => setNewUser(p => ({ ...p, role: e.target.value }))}
-                    />
-                  </div>
-                  <div>
-                    <label className="text-[10px] uppercase text-fbsb-text-secondary mb-1 block">Iniciais (sigla) *</label>
-                    <input
-                      className="w-full bg-fbsb-bg-deep border border-fbsb-border rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-fbsb-cyan"
-                      placeholder="Ex: JUR"
-                      maxLength={4}
-                      value={newUser.initials}
-                      onChange={e => setNewUser(p => ({ ...p, initials: e.target.value.toUpperCase() }))}
-                    />
-                  </div>
-                  <div className="md:col-span-2">
-                    <label className="text-[10px] uppercase text-fbsb-text-secondary mb-1 block">Senha de Acesso *</label>
-                    <div className="flex space-x-2">
-                      <div className="relative flex-1">
-                        <input
-                          type={showPassword ? 'text' : 'password'}
-                          className="w-full bg-fbsb-bg-deep border border-fbsb-border rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-fbsb-cyan pr-10"
-                          placeholder="Senha segura"
-                          value={newUserPassword}
-                          onChange={e => setNewUserPassword(e.target.value)}
-                        />
-                        <button
-                          onClick={() => setShowPassword(v => !v)}
-                          className="absolute right-2 top-1/2 -translate-y-1/2 text-fbsb-text-secondary hover:text-white"
-                        >
-                          {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                        </button>
-                      </div>
-                      <button
-                        onClick={() => { const p = generatePassword(); setNewUserPassword(p); setShowPassword(true); }}
-                        className="flex items-center space-x-1 bg-fbsb-surface-200 hover:bg-fbsb-surface-100 border border-fbsb-border text-xs text-fbsb-text-secondary px-3 py-2 rounded-lg transition-colors"
-                      >
-                        <Key className="w-3 h-3" /><span>Gerar</span>
-                      </button>
-                    </div>
-                  </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            {/* Donut */}
+            <div className="glass-card rounded-2xl p-5 anim-fade-up delay-4">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-fbsb-text-secondary mb-4">Por Categoria</h3>
+              <ResponsiveContainer width="100%" height={180}>
+                <PieChart>
+                  <Pie data={an.docsByCategory} dataKey="count" nameKey="category" cx="50%" cy="50%" innerRadius={40} outerRadius={70}
+                    label={(p: any) => `${p.category} ${((p.percent??0)*100).toFixed(0)}%`} labelLine={false}>
+                    {an.docsByCategory.map((_,i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                  </Pie>
+                  <Tooltip contentStyle={{ background: '#0d2235ee', border: '1px solid #1a324a', borderRadius: 12, fontSize: 11 }} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            {/* Parecer */}
+            <div className="glass-card rounded-2xl p-5 lg:col-span-2 anim-fade-up delay-5">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-fbsb-text-secondary mb-4 flex items-center gap-2">
+                <BarChart2 className="w-4 h-4 text-fbsb-cyan" /> Parecer Consultivo
+              </h3>
+              <div className="space-y-3 text-[13px] text-fbsb-text-secondary">
+                <div className={`p-4 rounded-xl border-l-4 ${an.compliance >= 80 ? 'border-emerald-500 bg-emerald-500/5' : an.compliance >= 50 ? 'border-orange-400 bg-orange-400/5' : 'border-red-500 bg-red-500/5'}`}>
+                  <span className="font-bold text-white">Conformidade:</span>{' '}
+                  {an.compliance >= 80 ? `${an.compliance}% aprovados. Cofre em conformidade para auditores externos.` : `${an.compliance}% aprovados. Priorize os ${an.pendingDocs} documentos pendentes.`}
                 </div>
-                <div className="flex space-x-3 mt-4">
-                  <button
-                    onClick={handleCreateUser}
-                    disabled={savingUser}
-                    className="flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-xs font-bold px-5 py-2 rounded-lg transition-colors"
-                  >
-                    {savingUser ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                    <span>{savingUser ? 'Salvando...' : 'Criar Acesso'}</span>
-                  </button>
-                  <button
-                    onClick={() => setShowNewUserForm(false)}
-                    className="flex items-center space-x-2 bg-fbsb-surface-200 hover:bg-fbsb-surface-100 border border-fbsb-border text-xs text-fbsb-text-secondary px-4 py-2 rounded-lg transition-colors"
-                  >
-                    <X className="w-4 h-4" /><span>Cancelar</span>
-                  </button>
+                {an.deletionRequests > 0 && (
+                  <div className="p-4 rounded-xl border-l-4 border-orange-400 bg-orange-400/5">
+                    <span className="font-bold text-white">Atenção:</span> {an.deletionRequests} exclusão(ões) pendentes de aprovação.
+                  </div>
+                )}
+                <div className="p-4 rounded-xl border-l-4 border-fbsb-cyan/40 bg-fbsb-cyan/5">
+                  <span className="font-bold text-white">Governança:</span> Auditoria ativa. Acessos, uploads e visualizações rastreados em tempo real.
                 </div>
               </div>
-            )}
-
-            {/* Users Table */}
-            {usersLoading ? (
-              <div className="flex items-center justify-center h-32 text-fbsb-text-secondary">
-                <RefreshCw className="w-5 h-5 animate-spin mr-2" /> Carregando usuários...
-              </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-fbsb-border text-[10px] uppercase tracking-widest text-fbsb-text-secondary">
-                      <th className="text-left pb-3 pr-4">Colaborador</th>
-                      <th className="text-left pb-3 pr-4">Cargo</th>
-                      <th className="text-left pb-3 pr-4">Último Login</th>
-                      <th className="text-center pb-3 pr-4">Logins</th>
-                      <th className="text-center pb-3 pr-4">Status</th>
-                      <th className="text-center pb-3">Ação</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/5">
-                    {users.map(user => (
-                      <tr key={user.id} className="hover:bg-fbsb-surface-200/30 transition-colors">
-                        <td className="py-3 pr-4">
-                          <div className="flex items-center space-x-3">
-                            <div className="w-8 h-8 rounded-lg bg-fbsb-primary/30 border border-fbsb-primary/50 flex items-center justify-center text-[10px] font-bold text-fbsb-cyan">
-                              {user.initials}
-                            </div>
-                            <div>
-                              <p className="font-semibold text-white text-[13px]">{user.name}</p>
-                              <p className="text-[11px] text-fbsb-text-secondary">{user.email}</p>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="py-3 pr-4 text-[12px] text-fbsb-text-secondary">{user.role}</td>
-                        <td className="py-3 pr-4 text-[11px] text-fbsb-text-secondary">{fmtDate(user.last_login_at)}</td>
-                        <td className="py-3 pr-4 text-center">
-                          <span className="text-fbsb-cyan font-bold text-[13px]">{user.login_count ?? 0}</span>
-                        </td>
-                        <td className="py-3 pr-4 text-center">
-                          {user.is_active ? (
-                            <span className="inline-flex items-center text-[10px] uppercase font-bold text-emerald-500 bg-emerald-500/10 px-2 py-1 rounded">
-                              <CheckCircle2 className="w-3 h-3 mr-1" /> Ativo
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center text-[10px] uppercase font-bold text-red-400 bg-red-400/10 px-2 py-1 rounded">
-                              <AlertTriangle className="w-3 h-3 mr-1" /> Bloqueado
-                            </span>
-                          )}
-                        </td>
-                        <td className="py-3 text-center">
-                          {user.email !== 'ceo@flechabsb.com' ? (
-                            <button
-                              onClick={() => handleToggleUser(user)}
-                              className={`inline-flex items-center space-x-1 text-[10px] font-bold px-3 py-1.5 rounded-lg transition-colors ${
-                                user.is_active
-                                  ? 'bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20'
-                                  : 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20'
-                              }`}
-                            >
-                              {user.is_active ? <Lock className="w-3 h-3" /> : <Unlock className="w-3 h-3" />}
-                              <span>{user.is_active ? 'Bloquear' : 'Ativar'}</span>
-                            </button>
-                          ) : (
-                            <span className="text-[10px] text-fbsb-text-secondary opacity-40">Inalienável</span>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+            </div>
           </div>
         </div>
       )}
+      {tab === 'overview' && !an && (
+        <div className="flex items-center justify-center h-48 text-fbsb-text-secondary"><RefreshCw className="w-5 h-5 animate-spin mr-2" /> Carregando...</div>
+      )}
 
-      {/* ════ TAB: MATRIZ DE PERMISSÕES ════ */}
-      {activeTab === 'permissions' && (
-        <div className="bg-fbsb-bg-main border border-fbsb-border rounded-xl p-6">
-          <SectionHeader
-            icon={<FolderLock className="w-7 h-7 text-fbsb-cyan" />}
-            title="Matriz Granular de Permissões por Pasta"
-            subtitle="Defina quais ações cada colaborador pode realizar em cada Data Room"
-          />
-
-          {permLoading ? (
-            <div className="flex items-center justify-center h-32 text-fbsb-text-secondary">
-              <RefreshCw className="w-5 h-5 animate-spin mr-2" /> Carregando permissões...
+      {/* ══════════ GESTÃO DE USUÁRIOS ══════════ */}
+      {tab === 'users' && (
+        <div className="space-y-5 anim-fade-up">
+          <div className="glass-card rounded-2xl p-6">
+            <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-fbsb-primary to-purple-600/40 flex items-center justify-center">
+                  <Users className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-white">Gestão de Usuários & Credenciais</h2>
+                  <p className="text-xs text-fbsb-text-secondary">Cadastre, bloqueie e defina permissões dos colaboradores</p>
+                </div>
+              </div>
+              <button onClick={() => { setShowForm(v => !v); if (!pwd) setPwd(genPwd()); }}
+                className="flex items-center gap-2 bg-gradient-to-r from-fbsb-primary to-fbsb-cyan/60 hover:opacity-90 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-fbsb-cyan/10">
+                <UserPlus className="w-4 h-4" /> Novo Usuário
+              </button>
             </div>
-          ) : (
-            <div className="space-y-8">
-              {DATA_ROOMS.map(room => (
-                <div key={room}>
-                  <div className="flex items-center space-x-2 bg-fbsb-surface-200 px-4 py-2 rounded-t-lg border border-b-0 border-fbsb-border">
-                    <FolderLock className="w-4 h-4 text-fbsb-cyan" />
-                    <span className="text-xs font-bold text-fbsb-cyan uppercase tracking-widest">Pasta:</span>
-                    <span className="text-sm font-bold text-white">{room}</span>
+
+            {/* ── FORMULÁRIO NOVO USUÁRIO ── */}
+            {showForm && (
+              <div className="mb-6 bg-fbsb-bg-deep/60 border border-white/5 rounded-2xl p-6 anim-fade-scale">
+                <h4 className="text-sm font-bold text-white mb-5 flex items-center gap-2">
+                  <UserPlus className="w-4 h-4 text-fbsb-cyan" /> Cadastrar Novo Acesso
+                </h4>
+
+                {/* Dados Pessoais */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                  <div>
+                    <label className="text-[10px] uppercase text-fbsb-text-secondary mb-1 block tracking-wider">Nome completo *</label>
+                    <input className="w-full bg-fbsb-surface-100 border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-fbsb-cyan/50 transition-colors" placeholder="Ex: João Silva" value={form.name} onChange={e => setForm(p => ({...p, name: e.target.value}))} />
                   </div>
-                  <div className="bg-fbsb-surface-100 border border-fbsb-border rounded-b-lg overflow-x-auto">
+                  <div>
+                    <label className="text-[10px] uppercase text-fbsb-text-secondary mb-1 block tracking-wider">E-mail *</label>
+                    <input type="email" className="w-full bg-fbsb-surface-100 border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-fbsb-cyan/50 transition-colors" placeholder="usuario@flechabsb.com" value={form.email} onChange={e => setForm(p => ({...p, email: e.target.value}))} />
+                  </div>
+                  <div>
+                    <label className="text-[10px] uppercase text-fbsb-text-secondary mb-1 block tracking-wider">Cargo / Função *</label>
+                    <select className="w-full bg-fbsb-surface-100 border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-fbsb-cyan/50" value={form.role} onChange={e => setForm(p => ({...p, role: e.target.value}))}>
+                      {ROLES.map(r => <option key={r} value={r}>{r}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-[10px] uppercase text-fbsb-text-secondary mb-1 block tracking-wider">Iniciais (sigla) *</label>
+                    <input className="w-full bg-fbsb-surface-100 border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-fbsb-cyan/50" placeholder="JUR" maxLength={4} value={form.initials} onChange={e => setForm(p => ({...p, initials: e.target.value.toUpperCase()}))} />
+                  </div>
+                </div>
+
+                {/* Senha */}
+                <div className="mb-5">
+                  <label className="text-[10px] uppercase text-fbsb-text-secondary mb-1 block tracking-wider">Senha gerada automaticamente</label>
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <input type={showPwd ? 'text' : 'password'} className="w-full bg-fbsb-surface-100 border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-fbsb-cyan/50 pr-10 font-mono" value={pwd} onChange={e => setPwd(e.target.value)} />
+                      <button onClick={() => setShowPwd(v=>!v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-fbsb-text-secondary hover:text-white">
+                        {showPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                    <button onClick={() => { setPwd(genPwd()); setShowPwd(true); }} className="flex items-center gap-1 bg-fbsb-surface-200 hover:bg-fbsb-surface-300 border border-white/5 text-xs px-4 py-2.5 rounded-xl text-fbsb-text-secondary transition-colors">
+                      <Key className="w-3 h-3" /> Gerar
+                    </button>
+                    <button onClick={copyCredentials} className={`flex items-center gap-1 text-xs px-4 py-2.5 rounded-xl transition-all ${copied ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-fbsb-surface-200 hover:bg-fbsb-surface-300 border border-white/5 text-fbsb-text-secondary'}`}>
+                      {copied ? <CheckCircle2 className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                      {copied ? 'Copiado!' : 'Copiar'}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Permissões do novo usuário por pasta */}
+                <div className="mb-5">
+                  <h5 className="text-xs font-bold text-white mb-3 flex items-center gap-2">
+                    <FolderLock className="w-3.5 h-3.5 text-fbsb-cyan" /> Definir Permissões por Pasta
+                  </h5>
+                  <div className="bg-fbsb-surface-100/50 rounded-xl border border-white/5 overflow-hidden">
                     <table className="w-full text-[11px]">
                       <thead>
-                        <tr className="border-b border-white/5 text-fbsb-text-secondary uppercase tracking-widest">
-                          <th className="text-left py-2 px-4">Colaborador</th>
-                          <th className="text-center py-2 px-3">
-                            <div className="flex flex-col items-center">
-                              <Eye className="w-3 h-3 mb-0.5" />Visualizar
-                            </div>
-                          </th>
-                          <th className="text-center py-2 px-3">
-                            <div className="flex flex-col items-center">
-                              <Upload className="w-3 h-3 mb-0.5" />Upload
-                            </div>
-                          </th>
-                          <th className="text-center py-2 px-3">
-                            <div className="flex flex-col items-center">
-                              <FileText className="w-3 h-3 mb-0.5" />Solicitar Excl.
-                            </div>
-                          </th>
-                          <th className="text-center py-2 px-3">
-                            <div className="flex flex-col items-center">
-                              <Trash2 className="w-3 h-3 mb-0.5" />Excluir Direta
-                            </div>
-                          </th>
+                        <tr className="border-b border-white/5 text-fbsb-text-secondary uppercase tracking-wider">
+                          <th className="text-left py-2.5 px-4">Pasta</th>
+                          <th className="text-center py-2.5 px-2"><Eye className="w-3 h-3 mx-auto" /></th>
+                          <th className="text-center py-2.5 px-2"><Upload className="w-3 h-3 mx-auto" /></th>
+                          <th className="text-center py-2.5 px-2"><FileText className="w-3 h-3 mx-auto" /></th>
+                          <th className="text-center py-2.5 px-2"><Trash2 className="w-3 h-3 mx-auto" /></th>
+                        </tr>
+                        <tr className="border-b border-white/5 text-[9px] text-fbsb-text-secondary">
+                          <th></th><th className="py-1">Ver</th><th className="py-1">Upload</th><th className="py-1">Solicitar Excl.</th><th className="py-1">Excluir</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-white/5">
-                        {Object.keys(permMatrix[room] || {}).map(email => {
-                          const perms = permMatrix[room][email];
-                          const isCeo = email === 'ceo@flechabsb.com';
-                          const userObj = users.find(u => u.email === email);
-                          const displayName = userObj?.name || email;
-
-                          const PermToggle = ({ field, value, locked }: { field: keyof PermissionSet; value: boolean; locked?: boolean }) => {
-                            const key = `${room}__${email}__${field}`;
-                            const saving = savingPerm === key;
-                            return (
-                              <button
-                                disabled={locked || saving}
-                                onClick={() => handlePermChange(room, email, field, !value)}
-                                className={`mx-auto flex items-center justify-center transition-opacity ${locked ? 'opacity-30 cursor-not-allowed' : 'hover:opacity-80'}`}
-                              >
-                                {saving ? (
-                                  <RefreshCw className="w-5 h-5 animate-spin text-fbsb-cyan" />
-                                ) : value ? (
-                                  <ToggleRight className="w-6 h-6 text-fbsb-cyan drop-shadow-[0_0_6px_rgba(0,212,255,0.5)]" />
-                                ) : (
-                                  <ToggleLeft className="w-6 h-6 text-fbsb-text-secondary" />
-                                )}
-                              </button>
-                            );
-                          };
-
-                          return (
-                            <tr key={email} className="hover:bg-fbsb-surface-200/30 transition-colors">
-                              <td className="py-3 px-4">
-                                <div>
-                                  <p className="font-semibold text-white">{displayName}</p>
-                                  <p className="text-fbsb-text-secondary">{email}</p>
-                                  {isCeo && <span className="text-[9px] text-fbsb-cyan uppercase">Acesso Supremo</span>}
-                                </div>
+                      <tbody>
+                        {DATA_ROOMS.map(room => (
+                          <tr key={room} className="border-b border-white/5 last:border-0 hover:bg-white/[0.02]">
+                            <td className="py-2.5 px-4 font-semibold text-white">{room}</td>
+                            {(['canView','canUpload','canRequestDelete','canDirectDelete'] as const).map(f => (
+                              <td key={f} className="py-2.5 px-2 text-center">
+                                <Toggle on={newPerms[room][f]} onChange={() => setNewPerms(prev => ({...prev, [room]: {...prev[room], [f]: !prev[room][f]}}))} />
                               </td>
-                              <td className="py-3 px-3 text-center">
-                                <PermToggle field="canView" value={perms?.canView ?? true} locked={isCeo} />
-                              </td>
-                              <td className="py-3 px-3 text-center">
-                                <PermToggle field="canUpload" value={perms?.canUpload ?? true} locked={isCeo} />
-                              </td>
-                              <td className="py-3 px-3 text-center">
-                                <PermToggle field="canRequestDelete" value={perms?.canRequestDelete ?? true} locked={isCeo} />
-                              </td>
-                              <td className="py-3 px-3 text-center">
-                                <PermToggle field="canDirectDelete" value={perms?.canDirectDelete ?? false} locked={!isCeo && false} />
-                              </td>
-                            </tr>
-                          );
-                        })}
+                            ))}
+                          </tr>
+                        ))}
                       </tbody>
                     </table>
                   </div>
                 </div>
-              ))}
-            </div>
+
+                {/* Botões */}
+                <div className="flex gap-3">
+                  <button onClick={handleCreate} disabled={saving}
+                    className="flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:opacity-90 disabled:opacity-50 text-white text-xs font-bold px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-emerald-600/10">
+                    {saving ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                    {saving ? 'Salvando...' : 'Criar Acesso & Permissões'}
+                  </button>
+                  <button onClick={() => setShowForm(false)} className="flex items-center gap-2 bg-fbsb-surface-200 hover:bg-fbsb-surface-300 border border-white/5 text-xs text-fbsb-text-secondary px-5 py-2.5 rounded-xl transition-colors">
+                    <X className="w-4 h-4" /> Cancelar
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* ── TABELA DE USUÁRIOS ── */}
+            {usersLoading ? (
+              <div className="flex items-center justify-center h-32 text-fbsb-text-secondary"><RefreshCw className="w-5 h-5 animate-spin mr-2" /> Carregando...</div>
+            ) : (
+              <div className="space-y-3">
+                {users.map((u, i) => (
+                  <div key={u.id} className={`glass-card rounded-xl p-4 flex items-center justify-between flex-wrap gap-3 anim-fade-up delay-${Math.min(i+1,6)}`}>
+                    <div className="flex items-center gap-3">
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-[11px] font-bold border ${u.is_active ? 'bg-fbsb-primary/20 border-fbsb-cyan/30 text-fbsb-cyan' : 'bg-red-500/10 border-red-500/20 text-red-400'}`}>
+                        {u.initials}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-white text-[13px]">{u.name}</p>
+                        <p className="text-[11px] text-fbsb-text-secondary">{u.email} · {u.role}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="text-center hidden md:block">
+                        <p className="text-xs font-bold text-fbsb-cyan">{u.login_count ?? 0}</p>
+                        <p className="text-[9px] text-fbsb-text-secondary uppercase">Logins</p>
+                      </div>
+                      <div className="hidden md:block text-[10px] text-fbsb-text-secondary">
+                        {fmt(u.last_login_at)}
+                      </div>
+                      {u.is_active
+                        ? <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20"><CheckCircle2 className="w-3 h-3" /> Ativo</span>
+                        : <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-red-400 bg-red-500/10 px-2.5 py-1 rounded-lg border border-red-500/20"><AlertTriangle className="w-3 h-3" /> Bloqueado</span>
+                      }
+                      {u.email !== 'ceo@flechabsb.com' ? (
+                        <button onClick={() => toggleUser(u)}
+                          className={`flex items-center gap-1 text-[10px] font-bold px-3 py-1.5 rounded-lg transition-all ${u.is_active ? 'bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20' : 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20'}`}>
+                          {u.is_active ? <><Lock className="w-3 h-3" /> Bloquear</> : <><Unlock className="w-3 h-3" /> Ativar</>}
+                        </button>
+                      ) : <span className="text-[10px] text-fbsb-text-secondary opacity-40">Inalienável</span>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ══════════ PERMISSÕES ══════════ */}
+      {tab === 'permissions' && (
+        <div className="space-y-5 anim-fade-up">
+          {permLoading ? <div className="flex items-center justify-center h-32 text-fbsb-text-secondary"><RefreshCw className="w-5 h-5 animate-spin mr-2" /></div> : (
+            DATA_ROOMS.map(room => (
+              <div key={room} className="glass-card rounded-2xl overflow-hidden">
+                <div className="flex items-center gap-2 bg-gradient-to-r from-fbsb-primary/20 to-transparent px-5 py-3 border-b border-white/5">
+                  <FolderLock className="w-4 h-4 text-fbsb-cyan" />
+                  <span className="text-xs font-bold text-fbsb-cyan uppercase tracking-widest">{room}</span>
+                </div>
+                <table className="w-full text-[11px]">
+                  <thead><tr className="border-b border-white/5 text-fbsb-text-secondary uppercase tracking-wider">
+                    <th className="text-left py-2.5 px-5">Colaborador</th>
+                    <th className="text-center py-2.5 px-2">Ver</th>
+                    <th className="text-center py-2.5 px-2">Upload</th>
+                    <th className="text-center py-2.5 px-2">Solic. Excl.</th>
+                    <th className="text-center py-2.5 px-2">Excluir</th>
+                  </tr></thead>
+                  <tbody className="divide-y divide-white/5">
+                    {Object.keys(permMatrix[room]||{}).map(email => {
+                      const p = permMatrix[room][email]; const isCeo = email === 'ceo@flechabsb.com';
+                      const usr = users.find(u => u.email === email);
+                      return (
+                        <tr key={email} className="hover:bg-white/[0.02] transition-colors">
+                          <td className="py-3 px-5"><span className="font-semibold text-white">{usr?.name || email}</span>{isCeo && <span className="text-[9px] text-fbsb-cyan ml-2">SUPREMO</span>}</td>
+                          {(['canView','canUpload','canRequestDelete','canDirectDelete'] as const).map(f => (
+                            <td key={f} className="py-3 px-2 text-center">
+                              {savingPerm === `${room}__${email}__${f}` ? <RefreshCw className="w-4 h-4 animate-spin text-fbsb-cyan mx-auto" /> :
+                              <Toggle on={p?.[f]??true} onChange={() => changePerm(room, email, f, !(p?.[f]??true))} disabled={isCeo && (f==='canView'||f==='canDirectDelete')} />}
+                            </td>
+                          ))}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            ))
           )}
         </div>
       )}
 
-      {/* ════ TAB: TRILHA DE AUDITORIA ════ */}
-      {activeTab === 'audit' && (
-        <div className="bg-fbsb-bg-main border border-fbsb-border rounded-xl p-6">
-          <div className="flex items-start justify-between mb-6 flex-wrap gap-4">
-            <SectionHeader
-              icon={<Activity className="w-7 h-7 text-fbsb-cyan" />}
-              title="Trilha de Auditoria Imutável"
-              subtitle="Registro completo de todas as ações realizadas no sistema"
-            />
-            <button
-              onClick={fetchAudit}
-              className="flex items-center space-x-2 bg-fbsb-surface-200 hover:bg-fbsb-surface-100 border border-fbsb-border text-xs text-fbsb-text-secondary px-3 py-2 rounded-lg transition-colors"
-            >
-              <RefreshCw className="w-3 h-3" /><span>Atualizar</span>
+      {/* ══════════ AUDITORIA ══════════ */}
+      {tab === 'audit' && (
+        <div className="glass-card rounded-2xl p-6 anim-fade-up">
+          <div className="flex items-center justify-between mb-5 flex-wrap gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500/20 to-red-500/20 flex items-center justify-center">
+                <Activity className="w-6 h-6 text-orange-400" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-white">Trilha de Auditoria Imutável</h2>
+                <p className="text-xs text-fbsb-text-secondary">{fa.length} registros</p>
+              </div>
+            </div>
+            <button onClick={fetchAudit} className="flex items-center gap-1 bg-fbsb-surface-200 text-xs text-fbsb-text-secondary px-3 py-2 rounded-xl hover:bg-fbsb-surface-300 transition-colors border border-white/5">
+              <RefreshCw className="w-3 h-3" /> Atualizar
             </button>
           </div>
 
           {/* Filtros */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5 bg-fbsb-surface-100 p-4 rounded-xl border border-fbsb-border">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-fbsb-text-secondary" />
-              <input
-                className="w-full bg-fbsb-bg-deep border border-fbsb-border rounded-lg pl-8 pr-3 py-2 text-xs text-white focus:outline-none focus:border-fbsb-cyan"
-                placeholder="Buscar por nome ou documento..."
-                value={auditFilter.search}
-                onChange={e => { setAuditFilter(p => ({ ...p, search: e.target.value })); setAuditPage(0); }}
-              />
+              <input className="w-full bg-fbsb-surface-100 border border-white/5 rounded-xl pl-9 pr-3 py-2.5 text-xs text-white focus:outline-none focus:border-fbsb-cyan/50" placeholder="Buscar..." value={af.search} onChange={e => { setAf(p=>({...p,search:e.target.value})); setPage(0); }} />
             </div>
             <div className="relative">
-              <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-fbsb-text-secondary" />
-              <input
-                className="w-full bg-fbsb-bg-deep border border-fbsb-border rounded-lg pl-8 pr-3 py-2 text-xs text-white focus:outline-none focus:border-fbsb-cyan"
-                placeholder="Filtrar por e-mail..."
-                value={auditFilter.user}
-                onChange={e => { setAuditFilter(p => ({ ...p, user: e.target.value })); setAuditPage(0); }}
-              />
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-fbsb-text-secondary" />
+              <input className="w-full bg-fbsb-surface-100 border border-white/5 rounded-xl pl-9 pr-3 py-2.5 text-xs text-white focus:outline-none focus:border-fbsb-cyan/50" placeholder="Filtrar e-mail..." value={af.user} onChange={e => { setAf(p=>({...p,user:e.target.value})); setPage(0); }} />
             </div>
-            <select
-              className="w-full bg-fbsb-bg-deep border border-fbsb-border rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-fbsb-cyan"
-              value={auditFilter.action}
-              onChange={e => { setAuditFilter(p => ({ ...p, action: e.target.value })); setAuditPage(0); }}
-            >
+            <select className="w-full bg-fbsb-surface-100 border border-white/5 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-fbsb-cyan/50" value={af.action} onChange={e => { setAf(p=>({...p,action:e.target.value})); setPage(0); }}>
               <option value="">Todas as ações</option>
-              {Object.entries(ACTION_LABELS).map(([key, label]) => (
-                <option key={key} value={key}>{label}</option>
-              ))}
+              {Object.entries(ACTION_LABELS).map(([k,v])=><option key={k} value={k}>{v}</option>)}
             </select>
           </div>
 
-          {/* Summary row */}
-          <div className="flex items-center justify-between mb-3 text-[11px] text-fbsb-text-secondary">
-            <span>{filteredAudit.length} registros encontrados</span>
-            <div className="flex items-center space-x-2">
-              <button disabled={auditPage === 0} onClick={() => setAuditPage(p => p - 1)} className="px-2 py-1 bg-fbsb-surface-200 rounded disabled:opacity-30 hover:bg-fbsb-surface-100 transition-colors">← Anterior</button>
-              <span>Pág. {auditPage + 1} / {Math.max(1, Math.ceil(filteredAudit.length / AUDIT_PAGE_SIZE))}</span>
-              <button disabled={(auditPage + 1) * AUDIT_PAGE_SIZE >= filteredAudit.length} onClick={() => setAuditPage(p => p + 1)} className="px-2 py-1 bg-fbsb-surface-200 rounded disabled:opacity-30 hover:bg-fbsb-surface-100 transition-colors">Próxima →</button>
-            </div>
-          </div>
-
-          {auditLoading ? (
-            <div className="flex items-center justify-center h-32 text-fbsb-text-secondary">
-              <RefreshCw className="w-5 h-5 animate-spin mr-2" /> Carregando trilha...
-            </div>
-          ) : pagedAudit.length === 0 ? (
-            <div className="text-center py-12 text-fbsb-text-secondary text-sm">
-              <Activity className="w-8 h-8 mx-auto mb-3 opacity-30" />
-              Nenhum registro encontrado com os filtros aplicados.
-            </div>
+          {/* Timeline */}
+          {auditLoading ? <div className="flex items-center justify-center h-32 text-fbsb-text-secondary"><RefreshCw className="w-5 h-5 animate-spin" /></div> : pa.length === 0 ? (
+            <div className="text-center py-12 text-fbsb-text-secondary text-sm"><Activity className="w-8 h-8 mx-auto mb-3 opacity-30" />Nenhum registro encontrado.</div>
           ) : (
-            <div className="space-y-2">
-              {pagedAudit.map(entry => (
-                <div key={entry.id} className="bg-fbsb-surface-100 border border-white/5 rounded-xl p-4 hover:border-fbsb-border transition-colors">
-                  <div className="flex items-start justify-between flex-wrap gap-2">
-                    <div className="flex items-start space-x-3">
-                      <div className="w-8 h-8 rounded-lg bg-fbsb-primary/20 border border-fbsb-primary/30 flex items-center justify-center text-[10px] font-bold text-fbsb-cyan shrink-0 mt-0.5">
-                        {(entry.user_name || entry.user_email || '?').slice(0, 3).toUpperCase()}
-                      </div>
+            <div className="relative modern-scroll max-h-[500px] overflow-y-auto">
+              {/* Linha vertical da timeline */}
+              <div className="absolute left-[18px] top-0 bottom-0 w-px bg-gradient-to-b from-fbsb-cyan/30 via-fbsb-primary/20 to-transparent" />
+              <div className="space-y-1">
+                {pa.map((e, i) => (
+                  <div key={e.id} className={`relative pl-10 py-3 hover:bg-white/[0.02] rounded-xl transition-colors anim-fade-up delay-${Math.min(i+1,6)}`}>
+                    {/* Dot */}
+                    <div className="absolute left-[14px] top-[18px] w-[9px] h-[9px] rounded-full bg-fbsb-cyan border-2 border-fbsb-bg-deep" />
+                    <div className="flex items-start justify-between gap-2 flex-wrap">
                       <div>
-                        <div className="flex items-center space-x-2 flex-wrap gap-1">
-                          <span className="text-[11px] font-bold text-white">{entry.user_name || entry.user_email}</span>
-                          <span className="text-[10px] text-fbsb-text-secondary">{entry.user_role}</span>
-                          <span className="text-[10px] text-fbsb-text-secondary">·</span>
-                          <span className="text-[10px] text-fbsb-text-secondary">{entry.user_email}</span>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-[11px] font-bold text-white">{e.user_name || e.user_email}</span>
+                          <span className="text-[10px] text-fbsb-text-secondary">{e.user_email}</span>
                         </div>
-                        <div className="flex items-center space-x-2 mt-1 flex-wrap gap-1">
-                          <span className="text-[11px] font-semibold text-fbsb-cyan">
-                            {ACTION_LABELS[entry.action] || entry.action}
-                          </span>
-                          {entry.target_name && (
-                            <>
-                              <span className="text-[10px] text-fbsb-text-secondary">→</span>
-                              <span className="text-[11px] text-white">{entry.target_name}</span>
-                            </>
-                          )}
-                          {entry.target_type && (
-                            <span className="text-[9px] uppercase tracking-wider text-fbsb-text-secondary bg-fbsb-surface-200 px-1.5 py-0.5 rounded">
-                              {entry.target_type}
-                            </span>
-                          )}
+                        <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                          <span className="text-[11px] font-semibold text-fbsb-cyan">{ACTION_LABELS[e.action]||e.action}</span>
+                          {e.target_name && <><ChevronRight className="w-3 h-3 text-fbsb-text-secondary" /><span className="text-[11px] text-white">{e.target_name}</span></>}
                         </div>
-                        {entry.details && Object.keys(entry.details).length > 0 && (
-                          <div className="mt-1 text-[10px] text-fbsb-text-secondary font-mono bg-fbsb-bg-deep/50 px-2 py-1 rounded">
-                            {JSON.stringify(entry.details)}
-                          </div>
+                        {e.details && Object.keys(e.details).length > 0 && (
+                          <p className="mt-1 text-[10px] text-fbsb-text-secondary font-mono bg-fbsb-bg-deep/50 px-2 py-1 rounded-lg inline-block">{JSON.stringify(e.details)}</p>
                         )}
                       </div>
-                    </div>
-                    <div className="flex items-center space-x-1 text-[10px] text-fbsb-text-secondary shrink-0">
-                      <Clock className="w-3 h-3" />
-                      <span>{fmtDate(entry.created_at)}</span>
+                      <span className="flex items-center gap-1 text-[10px] text-fbsb-text-secondary shrink-0"><Clock className="w-3 h-3" />{fmt(e.created_at)}</span>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           )}
+
+          {/* Paginação */}
+          <div className="flex items-center justify-between mt-4 text-[11px] text-fbsb-text-secondary">
+            <span>Página {page+1} / {Math.max(1,Math.ceil(fa.length/PG))}</span>
+            <div className="flex gap-2">
+              <button disabled={page===0} onClick={()=>setPage(p=>p-1)} className="px-3 py-1.5 bg-fbsb-surface-200 rounded-lg disabled:opacity-30 hover:bg-fbsb-surface-300 transition-colors border border-white/5">← Anterior</button>
+              <button disabled={(page+1)*PG >= fa.length} onClick={()=>setPage(p=>p+1)} className="px-3 py-1.5 bg-fbsb-surface-200 rounded-lg disabled:opacity-30 hover:bg-fbsb-surface-300 transition-colors border border-white/5">Próxima →</button>
+            </div>
+          </div>
         </div>
       )}
     </div>

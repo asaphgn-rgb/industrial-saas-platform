@@ -1,5 +1,10 @@
 # CLAUDE.md - Diretrizes Técnicas e de Governança
 
+## 0. Idioma Obrigatório
+- **TODA comunicação do assistente DEVE ser exclusivamente em Português (Brasil).**
+- Isso inclui: respostas, comentários de código, mensagens de commit, nomes de variáveis descritivas, labels de UI, alertas e logs voltados ao usuário.
+- NUNCA responda em inglês, a menos que o usuário solicite explicitamente.
+
 ## 1. Visão Geral do Sistema
 Este repositório contém a fundação do **SaaS Industrial & SGQ ISO 9001**, uma plataforma multi-tenant de missão crítica voltada para gestão fabril (MES/MOM), controle de qualidade, manutenção (PCM), rastreabilidade de lote e conformidade estrita com a norma **ISO 9001:2015**.
 

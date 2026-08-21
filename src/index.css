@@ -34,3 +34,95 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-fbsb-primary to-fbsb-cyan;
   }
 }
+
+/* ─── Modern Dashboard Animations ─── */
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,212,255,0.15); }
+  50%      { box-shadow: 0 0 20px 4px rgba(0,212,255,0.10); }
+}
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes orbitDot {
+  0%   { transform: rotate(0deg) translateX(28px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(28px) rotate(-360deg); }
+}
+
+.anim-fade-up   { animation: fadeInUp 0.5s cubic-bezier(.16,1,.3,1) both; }
+.anim-fade-scale { animation: fadeInScale 0.45s cubic-bezier(.16,1,.3,1) both; }
+.anim-slide-right { animation: slideInRight 0.4s cubic-bezier(.16,1,.3,1) both; }
+.anim-shimmer {
+  background: linear-gradient(90deg, transparent 25%, rgba(0,212,255,0.06) 50%, transparent 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s infinite;
+}
+.anim-pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
+.anim-count      { animation: countUp 0.6s cubic-bezier(.16,1,.3,1) both; }
+
+.delay-1 { animation-delay: 0.06s; }
+.delay-2 { animation-delay: 0.12s; }
+.delay-3 { animation-delay: 0.18s; }
+.delay-4 { animation-delay: 0.24s; }
+.delay-5 { animation-delay: 0.30s; }
+.delay-6 { animation-delay: 0.36s; }
+
+/* Glassmorphism card */
+.glass-card {
+  background: linear-gradient(135deg, rgba(13,34,53,0.65) 0%, rgba(7,19,29,0.85) 100%);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid rgba(0,212,255,0.08);
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.25s;
+}
+.glass-card:hover {
+  border-color: rgba(0,212,255,0.18);
+  box-shadow: 0 8px 32px -8px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,212,255,0.08);
+  transform: translateY(-1px);
+}
+
+/* Scrollbar modern */
+.modern-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+.modern-scroll::-webkit-scrollbar-track { background: transparent; }
+.modern-scroll::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.18); border-radius: 10px; }
+.modern-scroll::-webkit-scrollbar-thumb:hover { background: rgba(0,212,255,0.35); }
+
+/* Toggle switch modern */
+.toggle-track {
+  width: 40px; height: 22px;
+  border-radius: 999px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+.toggle-track::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: white;
+  transition: transform 0.25s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+.toggle-track.on  { background: #00d4ff; }
+.toggle-track.off { background: #2a3a4a; }
+.toggle-track.on::after  { transform: translateX(18px); }
+.toggle-track.off::after { transform: translateX(0); }

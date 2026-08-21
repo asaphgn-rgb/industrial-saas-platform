@@ -186,7 +186,8 @@
       "Bash(curl -s 'https://ydeoqgmdaoqprualzufc.supabase.co/rest/v1/audit_trail?select=id&limit=1' -H 'apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlkZW9xZ21kYW9xcHJ1YWx6dWZjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NzI3MzUwMywiZXhwIjoyMTAyODQ5NTAzfQ.VvEk-Et6qHUKjarZ02XsQbu42HLOBEpLWN4WzPZZMnU' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlkZW9xZ21kYW9xcHJ1YWx6dWZjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NzI3MzUwMywiZXhwIjoyMTAyODQ5NTAzfQ.VvEk-Et6qHUKjarZ02XsQbu42HLOBEpLWN4WzPZZMnU')",
       "Bash(curl -s -X POST https://ydeoqgmdaoqprualzufc.supabase.co/pg/query -H 'apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlkZW9xZ21kYW9xcHJ1YWx6dWZjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NzI3MzUwMywiZXhwIjoyMTAyODQ5NTAzfQ.VvEk-Et6qHUKjarZ02XsQbu42HLOBEpLWN4WzPZZMnU' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlkZW9xZ21kYW9xcHJ1YWx6dWZjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NzI3MzUwMywiZXhwIjoyMTAyODQ5NTAzfQ.VvEk-Et6qHUKjarZ02XsQbu42HLOBEpLWN4WzPZZMnU' -H 'Content-Type: application/json' -d '{\"query\":\"SELECT 1 as test\"}')",
       "Bash(export SUPABASE_DB_PASSWORD=\"\")",
-      "Bash(git commit -m 'feat: CEO Executive Governance Center - full permissions matrix, user management, audit trail & recharts analytics *)"
+      "Bash(git commit -m 'feat: CEO Executive Governance Center - full permissions matrix, user management, audit trail & recharts analytics *)",
+      "Bash(git commit -m 'feat: dashboard moderno com glassmorphism, gráficos de area, donut chart, anel de progresso, timeline de auditoria e cadastro de usuário com permissões integradas *)"
     ]
   }
 }
