@@ -346,6 +346,29 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
     }
   };
 
+  // --- Ação Forçada de Destruição Total de Chat (Zero Trace Manual) ---
+  const handleDestroyChat = async () => {
+    if (!confirm("Isso apagará permanentemente TODO o histórico, fotos e anexos desta sala no seu dispositivo e no servidor. Deseja prosseguir com a EXCLUSÃO ZERO TRACE?")) return;
+
+    // 1. Destrói chaves locais do MOCK relativas ao Chat (só do chat para não quebrar o upload atual)
+    Object.keys(localStorage).forEach(key => {
+       if (key.startsWith('B2B_MOCK_CHAT_' + roomId) || key.startsWith('B2B_MEDIA_')) {
+          localStorage.removeItem(key);
+       }
+    });
+
+    // 2. Destrói no banco de dados
+    try {
+       await supabase.from('b2b_secure_chat').delete().eq('room_id', roomId);
+    } catch(e) {
+       console.error("Falha ao apagar chat do servidor", e);
+    }
+
+    // 3. Atualiza UI local
+    setMessages([]);
+    alert("Historico do chat destruído com sucesso. Nenhuma trilha restante.");
+  };
+
   if (loading) return <div className="flex h-full items-center justify-center p-4"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-fbsb-primary"></div></div>;
 
   return (
@@ -361,10 +384,10 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
           </div>
         </div>
         <div className="flex items-center space-x-3">
-          <div className="hidden md:flex items-center px-3 py-1.5 bg-fbsb-surface-200 rounded-lg border border-fbsb-border">
-             <ShieldAlert className="w-4 h-4 text-fbsb-cyan mr-2" />
-             <span className="text-[10px] uppercase font-bold text-fbsb-text-secondary tracking-wider">Alto Sigilo</span>
-          </div>
+          <button onClick={handleDestroyChat} className="hidden md:flex items-center px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg border border-red-500/20 transition-colors">
+             <ShieldAlert className="w-4 h-4 mr-2" />
+             <span className="text-[10px] uppercase font-bold tracking-wider">Destruir Histórico</span>
+          </button>
         </div>
       </div>
 

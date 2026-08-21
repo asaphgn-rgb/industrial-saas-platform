@@ -131,10 +131,15 @@ export default function App() {
       }, 5 * 60 * 1000);
     };
 
-    // Limpa chat e dados quando a página for fechada ou recarregada (Zero Trace)
+    // Limpa chat e dados quando a página for fechada ou recarregada (Zero Trace restrito)
     const handleBeforeUnload = () => {
-       // Zero-Trace amenizado: Mantemos o cofre e o histórico da sala para demonstração colaborativa.
-       // Não destrói B2B_MOCK_VAULT e nem B2B_MOCK_CHAT no refresh
+      // Destruição total de dados sensíveis locais da sessão atual ao sair (Zero Trace)
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('B2B_MOCK_') || key.startsWith('SECURE_CRYPTO_')) {
+          localStorage.removeItem(key);
+        }
+      });
+      sessionStorage.clear();
     };
 
     window.addEventListener('mousemove', resetTimer);
@@ -142,7 +147,7 @@ export default function App() {
     window.addEventListener('scroll', resetTimer);
     window.addEventListener('click', resetTimer);
     window.addEventListener('beforeunload', handleBeforeUnload);
-    
+
     resetTimer();
 
     return () => {
@@ -154,6 +159,17 @@ export default function App() {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [currentUser]);
+
+  const handleLogout = () => {
+    // Destruição total no Logout voluntário
+    Object.keys(localStorage).forEach(key => {
+      if (key.startsWith('B2B_MOCK_') || key.startsWith('SECURE_CRYPTO_')) {
+        localStorage.removeItem(key);
+      }
+    });
+    sessionStorage.clear();
+    setCurrentUser(null);
+  };
 
 
   const currentTenantId = 'tenant-industrial-demo-uuid';
@@ -219,18 +235,10 @@ export default function App() {
                     </div>
                     <div className="p-2 space-y-1">
   <button
-    onClick={() => {
-      // Limpeza de Chat Temporário exigida na regra de negócios da FLECHA BSB
-      Object.keys(localStorage).forEach(key => {
-        if (key.startsWith('B2B_MOCK_CHAT_')) {
-          localStorage.removeItem(key);
-        }
-      });
-      setCurrentUser(null);
-    }}
-    className="w-full flex items-center justify-center p-3 rounded-lg transition-colors text-center text-fbsb-text-secondary hover:bg-fbsb-surface-200 hover:text-fbsb-text-secondary border border-transparent font-bold text-xs"
+    onClick={handleLogout}
+    className="w-full flex items-center justify-center p-3 rounded-lg transition-colors text-center text-red-400 hover:bg-red-500/10 hover:text-red-300 border border-transparent font-bold text-xs"
   >
-     Encerrar Sessão (Log out)
+     Encerrar Sessão (Zero Trace)
   </button>
 </div>
 </div>
