@@ -138,7 +138,16 @@ export function SecureDocumentValidation({ currentUser }: SecureDocumentValidati
   };
 
   const handleDeleteDocument = async (id: string) => {
+    // Busca o caminho no bucket antes de deletar o registro
+    const { data: docData } = await (supabase as any).from('b2b_documents').select('file_data').eq('id', id).single();
+    
+    // Apaga o registro
     const { error } = await (supabase as any).from('b2b_documents').delete().eq('id', id);
+    
+    // Tenta apagar o binário se existir
+    if (!error && docData && docData.file_data && docData.file_data.startsWith('vdr_uploads/')) {
+       await supabase.storage.from('vdr_secure_files').remove([docData.file_data]);
+    }
     const updatedDocs = mockDocuments.filter(doc => doc.id !== id);
 
     if (!error) {
@@ -324,7 +333,17 @@ export function SecureDocumentValidation({ currentUser }: SecureDocumentValidati
               <button
                 onClick={async () => {
                    if(window.confirm("Deseja apagar TODOS os documentos da Nuvem e esvaziar o cofre?")) {
+                      // Busca todos os arquivos no Storage primeiro
+                      const { data: allDocs } = await (supabase as any).from('b2b_documents').select('file_data').eq('tenant_id', 'tenant-industrial-demo-uuid');
+                      const filesToRemove = allDocs?.map((d: any) => d.file_data).filter((f: string) => f && f.startsWith('vdr_uploads/')) || [];
+                      
+                      // Apaga do Postgres
                       await (supabase as any).from('b2b_documents').delete().eq('tenant_id', 'tenant-industrial-demo-uuid');
+                      
+                      // Apaga do Storage (Lote)
+                      if (filesToRemove.length > 0) {
+                         await supabase.storage.from('vdr_secure_files').remove(filesToRemove);
+                      }
                       setMockDocuments([]);
                       alert("Cofre esvaziado com sucesso!");
                    }
