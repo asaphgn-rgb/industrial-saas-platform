@@ -17,7 +17,7 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
 
   // Lista oficial de usuários (E-mail e Senha exclusivos para Sala REGULARIZAÇÃO)
   const validCredentials: Record<string, any> = {
-    'ceo@flechabsb.com': { password: 'ceovault', user: { id: '11111111-1111-1111-1111-111111111111', name: 'Direção Executiva', role: 'Diretor (CEO)', initials: 'CEO', email: 'ceo@flechabsb.com' } },
+    'ceo@flechabsb.com': { password: '123', user: { id: '11111111-1111-1111-1111-111111111111', name: 'Direção Executiva', role: 'Diretor (CEO)', initials: 'CEO', email: 'ceo@flechabsb.com' } },
     'adm@flechabsb.com': { password: 'adminvault', user: { id: '22222222-2222-2222-2222-222222222222', name: 'Administrativo', role: 'Gestão & Backoffice', initials: 'ADM', email: 'adm@flechabsb.com' } },
     'juridico@flechabsb.com': { password: 'legalvault', user: { id: '55555555-5555-5555-5555-555555555555', name: 'Jurídico', role: 'Compliance & Contratos', initials: 'JUR', email: 'juridico@flechabsb.com' } },
     'socio@flechabsb.com': { password: 'auditvault', user: { id: '33333333-3333-3333-3333-333333333333', name: 'Sócio', role: 'Auditoria & Investimentos', initials: 'SOC', email: 'socio@flechabsb.com' } },
@@ -71,52 +71,55 @@ export function SecureLogin({ onLogin, mockUsers }: SecureLoginProps) {
   };
 
   return (
-    <div className="min-h-screen bg-fbsb-bg-deep flex items-center justify-center p-4 font-sans relative overflow-hidden selection:bg-fbsb-cyan selection:text-fbsb-text-primary">
+    <div className="min-h-[100dvh] w-full bg-fbsb-bg-deep flex items-center justify-center p-4 font-sans relative overflow-x-hidden selection:bg-fbsb-cyan selection:text-fbsb-text-primary">
 
       {/* Background Decorativo e Efeitos */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-         <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-fbsb-cyan rounded-full blur-[150px] opacity-10"></div>
-         
+         <div className="absolute top-[-10%] left-[-10%] md:-top-[20%] md:-left-[10%] w-[50%] h-[50%] bg-fbsb-cyan rounded-full blur-[100px] md:blur-[150px] opacity-10"></div>
       </div>
 
-      <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-0 bg-fbsb-surface-100/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden relative z-10">
+      <div className="w-full max-w-5xl flex flex-col md:grid md:grid-cols-2 gap-0 bg-fbsb-surface-100/5 backdrop-blur-xl border border-white/10 rounded-2xl md:rounded-3xl shadow-2xl relative z-10">
 
         {/* Painel Esquerdo: Marketing e Branding */}
-        <div className="hidden md:flex flex-col justify-between p-12 bg-fbsb-bg-main relative border-r border-white/5">
+        <div className="hidden md:flex flex-col justify-between p-12 bg-fbsb-bg-main relative border-r border-white/5 rounded-l-3xl">
 
-              <div className="flex items-center mb-8"><img src={LogoUrl} alt="FLECHA BSB Logo" className="h-40 md:h-56 w-auto object-contain drop-shadow-[0_0_25px_rgba(0,212,255,0.2)]" /></div>
+              <div className="flex items-center justify-center md:justify-start mb-8"><img src={LogoUrl} alt="FLECHA BSB Logo" className="h-32 md:h-56 w-auto max-w-full object-contain drop-shadow-[0_0_25px_rgba(0,212,255,0.2)]" /></div>
 
-              <p className="text-fbsb-text-secondary mt-4 text-sm leading-relaxed max-w-sm">
+              <p className="text-fbsb-text-secondary mt-4 text-xs md:text-sm leading-relaxed max-w-sm">
                 Plataforma B2B para compartilhamento privado e análise inteligente de documentos entre usuários autorizados.
 
 <br/><br/><strong className="text-fbsb-text-primary">FLECHA BSB</strong> — Privacidade para compartilhar. Inteligência para validar. Segurança para negociar.
               </p>
 
-           <div className="space-y-4">
-              <div className="flex items-center space-x-3 text-fbsb-text-secondary text-sm">
-                 <CheckCircle2 className="w-4 h-4 text-fbsb-text-secondary" />
+           <div className="space-y-4 mt-8">
+              <div className="flex items-center space-x-3 text-fbsb-text-secondary text-[11px] md:text-sm">
+                 <CheckCircle2 className="w-4 h-4 text-fbsb-text-secondary shrink-0" />
                  <span>Criptografia de Padrao Militar (AES-GCM)</span>
               </div>
-              <div className="flex items-center space-x-3 text-fbsb-text-secondary text-sm">
-                 <CheckCircle2 className="w-4 h-4 text-fbsb-text-secondary" />
+              <div className="flex items-center space-x-3 text-fbsb-text-secondary text-[11px] md:text-sm">
+                 <CheckCircle2 className="w-4 h-4 text-fbsb-text-secondary shrink-0" />
                  <span>Gestao Documental Sigilosa com Trilha de Auditoria</span>
               </div>
-              <div className="flex items-center space-x-3 text-fbsb-text-secondary text-sm">
-                 <CheckCircle2 className="w-4 h-4 text-fbsb-text-secondary" />
+              <div className="flex items-center space-x-3 text-fbsb-text-secondary text-[11px] md:text-sm">
+                 <CheckCircle2 className="w-4 h-4 text-fbsb-text-secondary shrink-0" />
                  <span>Canais de Negociacao Anti-Espionagem Corporativa</span>
               </div>
            </div>
         </div>
 
         {/* Painel Direito: Formulario de Login */}
-        <div className="p-8 md:p-12 flex flex-col justify-center bg-fbsb-surface-100 relative">
-
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-fbsb-text-primary font-serif">Autenticacao Restrita</h2>
-            <p className="text-sm text-fbsb-text-secondary mt-2">Acesso monitorado. Identifique-se para continuar.</p>
+        <div className="p-6 sm:p-8 md:p-12 flex flex-col justify-center bg-fbsb-surface-100 relative w-full rounded-2xl md:rounded-l-none md:rounded-r-3xl">
+          {/* Logo exibida apenas no celular */}
+          <div className="md:hidden flex justify-center mb-6">
+            <img src={LogoUrl} alt="FLECHA BSB Logo" className="h-20 sm:h-24 w-auto max-w-full object-contain drop-shadow-[0_0_15px_rgba(0,212,255,0.2)]" />
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-5 max-w-sm mx-auto w-full">
+          <div className="text-center mb-6 md:mb-8">
+            <h2 className="text-xl md:text-2xl font-bold text-fbsb-text-primary font-serif">Autenticacao Restrita</h2>
+            <p className="text-xs sm:text-sm text-fbsb-text-secondary mt-1">Acesso monitorado. Identifique-se para continuar.</p>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-4 md:space-y-5 max-w-sm mx-auto w-full">
 
             {error && (
                <div className="p-3 bg-fbsb-surface-200 border border-fbsb-border rounded-lg text-fbsb-text-secondary text-xs font-bold text-center animate-pulse">

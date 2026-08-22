@@ -42,9 +42,26 @@ export class NtfySync {
 
   async pushMessage(messageObj: any) {
     try {
+      // Quando a string for grande (como áudios de longa duração ou fotos), o POST no ntfy bloqueia ou corta no meio, matando o JSON.
+      // O Supabase tem RLS e já grava em background. O ntfy será apenas um SINALIZADOR para que as outras telas saibam que há algo novo para puxar.
+
+      const safePayload = {
+        id: messageObj.id,
+        sender_id: messageObj.sender_id,
+        sender_role: messageObj.sender_role,
+        sender_name: messageObj.sender_name,
+        created_at: messageObj.created_at,
+        is_read: messageObj.is_read,
+        attachment_type: messageObj.attachment_type,
+        // Limita o envio do base64 via Notification Server. Se for muito grande, envia flag 'supabase'
+        content: messageObj.content?.length > 4000 ? 'supabase' : messageObj.content,
+        attachment_url: messageObj.attachment_url?.length > 1000 ? 'supabase' : messageObj.attachment_url,
+        audio_data: messageObj.audio_data?.length > 1000 ? 'supabase' : messageObj.audio_data
+      };
+
       await fetch(`https://ntfy.sh/${this.topic}`, {
         method: 'POST',
-        body: JSON.stringify(messageObj),
+        body: JSON.stringify(safePayload),
         headers: {
           'Title': 'B2B Sync',
           'Priority': 'default'

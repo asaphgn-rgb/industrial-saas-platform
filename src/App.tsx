@@ -24,10 +24,12 @@ import { supabase } from './lib/supabase';
 import { SecureUploadPage } from './components/documents/SecureUploadPage';
 import { KanbanBoard } from './components/kanban/KanbanBoard';
 import { SecureChat } from './components/secure-chat/SecureChat';
+import { CommunicationHub } from './components/secure-chat/CommunicationHub';
 import { SecureDocumentValidation } from './components/documents/SecureDocumentValidation';
 import { SecureLogin } from './components/auth/SecureLogin';
 import { SecureAboutPage } from './components/documents/SecureAboutPage';
 import { CeoAccessControl } from './components/admin/CeoAccessControl';
+import { FlechaAIAssistant } from './components/ui/FlechaAIAssistant';
 
 type TabType = 'dashboard' | 'qms' | 'mes' | 'documents' | 'upload_secure' | 'pipeline_secure' | 'chat_secure' | 'validation_secure';
 
@@ -196,6 +198,24 @@ export default function App() {
   const demoBoardId = '00000000-0000-0000-0000-000000000001';
   const demoRoomId = '11111111-1111-1111-1111-111111111111';
 
+  /* Tenta buscar configs do workspace atual via Mock/Local (já que o login é estático na demo) */
+  const currentUserCompany = currentUser?.currentFolder;
+  const companyWorkspaceData = (() => {
+    try {
+      const companies = JSON.parse(localStorage.getItem('B2B_COMPANIES') || '[]');
+      return companies.find((c: any) => c.name === currentUserCompany);
+    } catch { return null; }
+  })();
+
+  const features = companyWorkspaceData?.features ?? { upload: true, validation: true, chat: true };
+
+  // Se o usuário atual teve o módulo bloqueado pela CEO, e estava naquela aba, joga pra outra.
+  useEffect(() => {
+    if (activeTab === 'upload_secure' && !features.upload) setActiveTab('pipeline_secure');
+    if (activeTab === 'validation_secure' && !features.validation) setActiveTab('pipeline_secure');
+    if (activeTab === 'chat_secure' && !features.chat) setActiveTab('pipeline_secure');
+  }, [features, activeTab]);
+
   if (!currentUser) return <SecureLogin onLogin={setCurrentUser} mockUsers={mockUsers} />;
 
   return (
@@ -269,6 +289,9 @@ export default function App() {
 
       {/* Main Container */}
       <div className="flex-1 flex flex-col md:flex-row overflow-hidden relative">
+        {/* Assistente Flutuante IA */}
+        <FlechaAIAssistant currentUser={currentUser} />
+
         {/* Sidebar - Estilo Clean Luxury */}
         {/* Mobile Menu Overlay */}
         {isMobileMenuOpen && (
@@ -316,42 +339,49 @@ export default function App() {
                 <span className="tracking-wide">Sobre a FLECHA BSB</span>
               </button>
 
-              <button
-                onClick={() => { setActiveTab('upload_secure'); setIsMobileMenuOpen(false); }}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm transition-all duration-300 ${
-                  activeTab === 'upload_secure'
-                    ? 'bg-fbsb-surface-100 text-white font-bold shadow-glow-cyan border border-fbsb-cyan/30'
-                    : 'text-fbsb-text-primary font-medium hover:bg-fbsb-surface-200 hover:text-white'
-                }`}
-              >
-                <UploadCloud className={`w-5 h-5 ${activeTab === 'upload_secure' ? 'text-fbsb-cyan drop-shadow-[0_0_8px_rgba(0,212,255,0.8)]' : 'text-fbsb-primary-light'}`} />
-                <span className="tracking-wide">Dossiê Documental</span>
-              </button>
+              {/* Botões renderizados condicionalmente baseado nas permissões/módulos ativados na Gestão de Empresas pela CEO */}
+              {(features.upload || currentUser?.initials === 'CEO') && (
+                 <button
+                   onClick={() => { setActiveTab('upload_secure'); setIsMobileMenuOpen(false); }}
+                   className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm transition-all duration-300 ${
+                     activeTab === 'upload_secure'
+                       ? 'bg-fbsb-surface-100 text-white font-bold shadow-glow-cyan border border-fbsb-cyan/30'
+                       : 'text-fbsb-text-primary font-medium hover:bg-fbsb-surface-200 hover:text-white'
+                   }`}
+                 >
+                   <UploadCloud className={`w-5 h-5 ${activeTab === 'upload_secure' ? 'text-fbsb-cyan drop-shadow-[0_0_8px_rgba(0,212,255,0.8)]' : 'text-fbsb-primary-light'}`} />
+                   <span className="tracking-wide">Dossiê Documental</span>
+                 </button>
+              )}
 
-              <button
-                onClick={() => { setActiveTab('validation_secure'); setIsMobileMenuOpen(false); }}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm transition-all duration-300 ${
-                  activeTab === 'validation_secure'
-                    ? 'bg-fbsb-surface-100 text-white font-bold shadow-glow-cyan border border-fbsb-cyan/30'
-                    : 'text-fbsb-text-primary font-medium hover:bg-fbsb-surface-200 hover:text-white'
-                }`}
-              >
-                <CheckCircle2 className={`w-5 h-5 ${activeTab === 'validation_secure' ? 'text-fbsb-cyan drop-shadow-[0_0_8px_rgba(0,212,255,0.8)]' : 'text-fbsb-primary-light'}`} />
-                <span className="tracking-wide">Validação & Aceite</span>
-              </button>
+              {(features.validation || currentUser?.initials === 'CEO') && (
+                 <button
+                   onClick={() => { setActiveTab('validation_secure'); setIsMobileMenuOpen(false); }}
+                   className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm transition-all duration-300 ${
+                     activeTab === 'validation_secure'
+                       ? 'bg-fbsb-surface-100 text-white font-bold shadow-glow-cyan border border-fbsb-cyan/30'
+                       : 'text-fbsb-text-primary font-medium hover:bg-fbsb-surface-200 hover:text-white'
+                   }`}
+                 >
+                   <CheckCircle2 className={`w-5 h-5 ${activeTab === 'validation_secure' ? 'text-fbsb-cyan drop-shadow-[0_0_8px_rgba(0,212,255,0.8)]' : 'text-fbsb-primary-light'}`} />
+                   <span className="tracking-wide">Validação & Aceite</span>
+                 </button>
+              )}
 
-              <button
-                onClick={() => { setActiveTab('chat_secure'); setIsMobileMenuOpen(false); }}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm transition-all duration-300 ${
-                  activeTab === 'chat_secure'
-                    ? 'bg-fbsb-surface-100 text-white font-bold shadow-glow-cyan border border-fbsb-cyan/30'
-                    : 'text-fbsb-text-primary font-medium hover:bg-fbsb-surface-200 hover:text-white'
-                }`}
-              >
-                <MessageSquareLock className={`w-5 h-5 ${activeTab === 'chat_secure' ? 'text-fbsb-cyan drop-shadow-[0_0_8px_rgba(0,212,255,0.8)]' : 'text-fbsb-primary-light'}`} />
-                <span className="flex-1 text-left tracking-wide">Canais Criptografados</span>
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${activeTab === 'chat_secure' ? 'bg-fbsb-surface-100 text-fbsb-text-primary border border-fbsb-border' : 'bg-fbsb-cyan text-[#03090F]'}`}>3</span>
-              </button>
+              {(features.chat || currentUser?.initials === 'CEO') && (
+                 <button
+                   onClick={() => { setActiveTab('chat_secure'); setIsMobileMenuOpen(false); }}
+                   className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm transition-all duration-300 ${
+                     activeTab === 'chat_secure'
+                       ? 'bg-fbsb-surface-100 text-white font-bold shadow-glow-cyan border border-fbsb-cyan/30'
+                       : 'text-fbsb-text-primary font-medium hover:bg-fbsb-surface-200 hover:text-white'
+                   }`}
+                 >
+                   <MessageSquareLock className={`w-5 h-5 ${activeTab === 'chat_secure' ? 'text-fbsb-cyan drop-shadow-[0_0_8px_rgba(0,212,255,0.8)]' : 'text-fbsb-primary-light'}`} />
+                   <span className="flex-1 text-left tracking-wide">Canais Criptografados</span>
+                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${activeTab === 'chat_secure' ? 'bg-fbsb-surface-100 text-fbsb-text-primary border border-fbsb-border' : 'bg-fbsb-cyan text-[#03090F]'}`}>3</span>
+                 </button>
+              )}
             </div>
           </div>
 
@@ -376,8 +406,11 @@ export default function App() {
           )}
 
           {activeTab === 'chat_secure' && (
-            <div className="p-4 md:p-8 h-full">
-               <SecureChat roomId={demoRoomId} currentUserId={currentUser.id} currentUserRole={currentUser.role} currentUserName={currentUser.name} />
+            <div className="h-full flex overflow-hidden">
+               <CommunicationHub
+                 currentUser={currentUser}
+                 globalRoomId={demoRoomId}
+               />
             </div>
           )}
 
@@ -385,7 +418,7 @@ export default function App() {
           {activeTab === 'dashboard' && (
             <div className="p-4 md:p-8 space-y-6">
               {/* Controles de Acesso (RBAC) */}
-              <CeoAccessControl currentTenantId={currentTenantId} />
+              <CeoAccessControl currentTenantId={currentTenantId} currentEmail={currentUser?.email} />
 
               <div className="pt-8 border-t border-white/10 mt-8">
                 <div className="flex items-center justify-between mb-6">

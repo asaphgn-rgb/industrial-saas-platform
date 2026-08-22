@@ -129,20 +129,40 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
 
     // Motor de Sincronização Absoluto via Ntfy (Bypass Total Vercel/Supabase, Porta 443)
     ntfyRelay.connect(roomId, async (payload) => {
-        if (!cryptoKey || payload.sender_id === currentUserId) return;
+        if (!cryptoKey) return;
+        // Permite mensagens do próprio usuário entrarem caso venham de OUTRA guia (usamos o ID da mensagem para evitar duplicação em vez de bloquear o sender todo)
 
         try {
            let decContent = payload.content;
            if (payload.content && payload.content.length > 20 && !payload.content.startsWith('http')) {
                try { decContent = await decryptE2E(payload.content, cryptoKey); } catch(e) {
-                 console.error(e);
+                 console.error("Falha ao decriptar:", e);
                }
            }
            const finalMsg = { ...payload, content: decContent };
 
-           // Tratamento de arquivo muito grande: Busca direto do Supabase via REST API
+           setMessages(prev => {
+              // Bloqueio exato: se a mensagem JÁ existe no meu chat, não adiciono de novo.
+              const exists = prev.find(m => m.id === finalMsg.id);
+
+              if (exists) {
+                // Se existe e a nova resolve anexo (veio 'supabase' e agora é url real)
+                if (exists.attachment_url === 'supabase' && finalMsg.attachment_url && finalMsg.attachment_url !== 'supabase') {
+                  const updated = prev.map(m => m.id === finalMsg.id ? { ...m, attachment_url: finalMsg.attachment_url, audio_data: finalMsg.audio_data } : m);
+                  localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(updated));
+                  return updated;
+                }
+                return prev; // Já tenho a mensagem e não é update de mídia, ignora.
+              }
+
+              // Se a mensagem for NOVA (de outro usuario ou de outra guia), ADICIONA!
+              const updated = [...prev, finalMsg];
+              localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(updated));
+              return updated;
+           });
+
+           // O tratamento de fallback pro BD vem FORA do state setter pra não gerar side-effects no React Sync
            if (finalMsg.attachment_url === 'supabase' || finalMsg.audio_data === 'supabase') {
-              // Fallback para ambiente de demonstração local cross-tab
               const localMediaUrl = localStorage.getItem('B2B_MEDIA_URL_' + finalMsg.id);
               const localMediaAudio = localStorage.getItem('B2B_MEDIA_AUDIO_' + finalMsg.id);
               const localMediaType = localStorage.getItem('B2B_MEDIA_TYPE_' + finalMsg.id);
@@ -151,46 +171,45 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
               if (localMediaAudio && finalMsg.audio_data === 'supabase') finalMsg.audio_data = localMediaAudio;
               if (localMediaType) finalMsg.attachment_type = localMediaType as any;
 
-              // Se ainda não resolveu com o mock local (não estão no mesmo navegador), tenta buscar do banco
               if (finalMsg.attachment_url === 'supabase' || finalMsg.audio_data === 'supabase') {
                 let retries = 8;
-                while (retries > 0) {
-                  try {
-                    const { data } = await supabase.from('b2b_secure_chat').select('attachment_url, attachment_type, audio_data').eq('id', finalMsg.id).single();
-                    if (data) {
-                       const d = data as any;
-                       if (d.attachment_url && d.attachment_url !== 'supabase') finalMsg.attachment_url = d.attachment_url;
-                       if (d.attachment_type) finalMsg.attachment_type = d.attachment_type;
-                       if (d.audio_data && d.audio_data !== 'supabase') finalMsg.audio_data = d.audio_data;
-                       break; // Sucesso, sai do loop
-                    }
-                  } catch(e) {
-                    console.error("Retentando buscar mídia no DB...", e);
+                const fetchMedia = async () => {
+                  while (retries > 0) {
+                    try {
+                      const { data } = await supabase.from('b2b_secure_chat').select('attachment_url, attachment_type, audio_data').eq('id', finalMsg.id).single();
+                      if (data) {
+                         const d = data as any;
+                         let needsUpdate = false;
+                         if (d.attachment_url && d.attachment_url !== 'supabase') { finalMsg.attachment_url = d.attachment_url; needsUpdate = true; }
+                         if (d.attachment_type) finalMsg.attachment_type = d.attachment_type;
+                         if (d.audio_data && d.audio_data !== 'supabase') { finalMsg.audio_data = d.audio_data; needsUpdate = true; }
+
+                         if (needsUpdate) {
+                            setMessages(current => {
+                               const updated = current.map(m => m.id === finalMsg.id ? { ...m, attachment_url: finalMsg.attachment_url, audio_data: finalMsg.audio_data } : m);
+                               localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(updated));
+                               return updated;
+                            });
+                         }
+                         break;
+                      }
+                    } catch(e) {}
+                    await new Promise(r => setTimeout(r, 800));
+                    retries--;
                   }
-                  await new Promise(r => setTimeout(r, 400)); // Mais ágil: Espera 400ms antes do retry
-                  retries--;
-                }
+                };
+                fetchMedia();
+              } else {
+                 // Conseguiu pelo localStorage cross-tab, então atualiza a UI
+                 setMessages(current => {
+                    const updated = current.map(m => m.id === finalMsg.id ? { ...m, attachment_url: finalMsg.attachment_url, audio_data: finalMsg.audio_data } : m);
+                    localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(updated));
+                    return updated;
+                 });
               }
            }
-
-           setMessages(prev => {
-              const exists = prev.find(m => m.id === finalMsg.id);
-              if (exists) {
-                // Se a mensagem já existe, mas a nova traz o base64 real resolvendo o "supabase", ATUALIZA ELA!
-                if (exists.attachment_url === 'supabase' && finalMsg.attachment_url && finalMsg.attachment_url !== 'supabase') {
-                  const updated = prev.map(m => m.id === finalMsg.id ? { ...m, attachment_url: finalMsg.attachment_url, audio_data: finalMsg.audio_data } : m);
-                  localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(updated));
-                  return updated;
-                }
-                return prev;
-              }
-
-              const updated = [...prev, finalMsg];
-              localStorage.setItem('B2B_MOCK_CHAT_' + roomId, JSON.stringify(updated));
-              return updated;
-           });
         } catch(e) {
-          console.error(e);
+          console.error("Falha ao injetar mensagem vinda da nuvem:", e);
         }
     });
 

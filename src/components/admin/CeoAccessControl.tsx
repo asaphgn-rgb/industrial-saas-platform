@@ -4,7 +4,7 @@ import {
   AlertTriangle, CheckCircle2, Trash2, Eye, EyeOff,
   RefreshCw, Search, Filter, TrendingUp, BarChart2,
   Lock, Unlock, UserPlus, Activity, Clock, FileText, Upload,
-  X, Save, Key, Shield, Mail, Copy, ChevronRight
+  X, Save, Key, Shield, Mail, Copy, ChevronRight, Building
 } from 'lucide-react';
 import {
   AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
@@ -13,7 +13,18 @@ import {
 import { supabase } from '../../lib/supabase';
 
 /* ═══ TIPOS ═══ */
-interface CeoAccessControlProps { currentTenantId: string }
+interface CeoAccessControlProps { currentTenantId: string; currentEmail?: string; }
+interface CompanyWorkspace {
+  id: string;
+  name: string;
+  cnpj?: string;
+  features: {
+    upload: boolean;
+    validation: boolean;
+    chat: boolean;
+  };
+  created_at: string;
+}
 interface VdrUser {
   id: string; name: string; email: string; role: string; initials: string;
   is_active: boolean; created_by: string; created_at: string;
@@ -82,24 +93,31 @@ function Toggle({ on, onChange, disabled }: { on: boolean; onChange: () => void;
 }
 
 /* ═══════════════════════════════════════ COMPONENTE PRINCIPAL ═══ */
-export function CeoAccessControl({ currentTenantId }: CeoAccessControlProps) {
-  const [tab, setTab] = useState<'overview'|'users'|'permissions'|'audit'>('overview');
+export function CeoAccessControl({ currentTenantId, currentEmail = 'ceo@flechabsb.com' }: CeoAccessControlProps) {
+  const [tab, setTab] = useState<'overview'|'companies'|'users'|'permissions'|'audit'>('overview');
+
+  /* Estado Empresas (Workspaces) */
+  const [companies, setCompanies] = useState<CompanyWorkspace[]>(() => {
+    try {
+       const saved = localStorage.getItem('B2B_COMPANIES');
+       return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
+  });
+  const [showCompanyForm, setShowCompanyForm] = useState(false);
+  const [companyForm, setCompanyForm] = useState({ name: '', cnpj: '', upload: true, validation: true, chat: true });
 
   /* Estado Usuários */
   const [users, setUsers] = useState<VdrUser[]>([]);
   const [usersLoading, setUsersLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ name: '', email: '', role: ROLES[0], initials: '' });
+  const [form, setForm] = useState({ name: '', emailPrefix: '', companyFolder: '', role: ROLES[0], initials: '' });
   const [pwd, setPwd] = useState('');
   const [showPwd, setShowPwd] = useState(false);
   const [saving, setSaving] = useState(false);
   const [copied, setCopied] = useState(false);
-  /* Permissões do novo usuário no formulário */
-  const [newPerms, setNewPerms] = useState<Record<string, PermissionSet>>(() => {
-    const m: Record<string, PermissionSet> = {};
-    DATA_ROOMS.forEach(r => { m[r] = { canView: true, canUpload: true, canRequestDelete: true, canDirectDelete: false }; });
-    return m;
-  });
+
+  /* Permissões do novo usuário (Agora setadas diretamente para a pasta da Empresa definida) */
+  const [newPerms, setNewPerms] = useState<PermissionSet>({ canView: true, canUpload: true, canRequestDelete: true, canDirectDelete: false });
 
   /* Estado Permissões */
   const [permMatrix, setPermMatrix] = useState<Record<string, Record<string, PermissionSet>>>({});
@@ -175,20 +193,49 @@ export function CeoAccessControl({ currentTenantId }: CeoAccessControlProps) {
 
   useEffect(() => { fetchUsers(); fetchPerms(); fetchAudit(); fetchAnalytics(); }, [fetchUsers, fetchPerms, fetchAudit, fetchAnalytics]);
 
-  /* ═══ AÇÕES USUÁRIOS ═══ */
+  /* ═══ AÇÕES USUÁRIOS E EMPRESAS ═══ */
+  const handleCreateCompany = () => {
+    if (!companyForm.name) { alert('O nome da Empresa é obrigatório.'); return; }
+
+    const newCompany: CompanyWorkspace = {
+      id: crypto.randomUUID(),
+      name: companyForm.name.toUpperCase().trim(),
+      cnpj: companyForm.cnpj,
+      features: {
+        upload: companyForm.upload,
+        validation: companyForm.validation,
+        chat: companyForm.chat
+      },
+      created_at: new Date().toISOString()
+    };
+
+    const updated = [...companies, newCompany];
+    setCompanies(updated);
+    localStorage.setItem('B2B_COMPANIES', JSON.stringify(updated));
+    setCompanyForm({ name: '', cnpj: '', upload: true, validation: true, chat: true });
+    setShowCompanyForm(false);
+  };
+
   const handleCreate = async () => {
-    if (!form.name || !form.email || !form.initials || !pwd) { alert('Preencha todos os campos.'); return; }
+    if (!form.name || !form.emailPrefix || !form.initials || !form.companyFolder || !pwd) { alert('Preencha todos os campos, incluindo a Empresa Vinculada (Pasta).'); return; }
     setSaving(true);
+    const fullEmail = `${form.emailPrefix.toLowerCase().trim()}@flechabsb.com`;
+    const folderName = form.companyFolder.toUpperCase().trim();
+
     try {
-      const { error } = await (supabase as any).from('vdr_users').insert({ tenant_id: TENANT_ID, name: form.name, email: form.email, role: form.role, initials: form.initials.toUpperCase(), password_hash: pwd, created_by: 'ceo@flechabsb.com', is_active: true });
+      const { error } = await (supabase as any).from('vdr_users').insert({ tenant_id: TENANT_ID, name: form.name, email: fullEmail, role: form.role, initials: form.initials.toUpperCase(), password_hash: pwd, created_by: 'ceo@flechabsb.com', is_active: true });
       if (error) throw error;
-      // Salvar permissões para cada pasta
-      for (const room of DATA_ROOMS) {
-        const p = newPerms[room];
-        await (supabase as any).from('vdr_permissions').insert({ tenant_id: TENANT_ID, data_room: room, user_email: form.email, can_view: p.canView, can_upload: p.canUpload, can_request_delete: p.canRequestDelete, can_direct_delete: p.canDirectDelete });
-      }
-      await logAudit({ user_email: 'ceo@flechabsb.com', user_name: 'Direção Executiva', user_role: 'Diretor (CEO)', action: 'USER_CREATE', target_type: 'user', target_name: form.email, details: { name: form.name, role: form.role, permissions: newPerms } });
-      setForm({ name: '', email: '', role: ROLES[0], initials: '' }); setPwd(''); setShowForm(false);
+
+      // Salvar permissões APENAS para a pasta desta Empresa
+      await (supabase as any).from('vdr_permissions').insert({ tenant_id: TENANT_ID, data_room: folderName, user_email: fullEmail, can_view: newPerms.canView, can_upload: newPerms.canUpload, can_request_delete: newPerms.canRequestDelete, can_direct_delete: newPerms.canDirectDelete });
+
+      // Automaticamente dar permissão total para a CEO (Master) enxergar a nova pasta
+      await (supabase as any).from('vdr_permissions').insert({ tenant_id: TENANT_ID, data_room: folderName, user_email: 'ceo@flechabsb.com', can_view: true, can_upload: true, can_request_delete: true, can_direct_delete: true });
+
+      await logAudit({ user_email: 'ceo@flechabsb.com', user_name: 'Direção Executiva', user_role: 'Diretor (CEO)', action: 'USER_CREATE', target_type: 'user', target_name: fullEmail, details: { name: form.name, role: form.role, permissions: newPerms, folder: folderName } });
+
+      setForm({ name: '', emailPrefix: '', companyFolder: '', role: ROLES[0], initials: '' }); setPwd(''); setShowForm(false);
+
       fetchUsers(); fetchPerms(); fetchAudit();
     } catch (e: any) { alert('Erro: ' + (e?.message || e)); } finally { setSaving(false); }
   };
@@ -225,14 +272,16 @@ export function CeoAccessControl({ currentTenantId }: CeoAccessControlProps) {
 
   /* Copiar credenciais */
   const copyCredentials = () => {
-    const txt = `Acesso FlechaBSB\nE-mail: ${form.email}\nSenha: ${pwd}\nURL: https://www.flechabsb.com`;
+    const fullEmail = `${form.emailPrefix.toLowerCase()}@flechabsb.com`;
+    const txt = `Acesso Portal FLECHA BSB\n\nLink: https://www.flechabsb.com\nLogin: ${fullEmail}\nSenha: ${pwd}\n\n*Por questões de segurança (Zero-Trace), as suas atividades serão auditadas na pasta da sua empresa.*`;
     navigator.clipboard.writeText(txt).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); });
   };
 
   /* ═══ TABS ═══ */
   const tabs = [
     { id: 'overview' as const, label: 'Visão Executiva', icon: <TrendingUp className="w-4 h-4" /> },
-    { id: 'users' as const, label: 'Gestão de Usuários', icon: <Users className="w-4 h-4" /> },
+    { id: 'companies' as const, label: 'Gestão de Empresas', icon: <Building className="w-4 h-4" /> },
+    ...(currentEmail === 'ceo@flechabsb.com' ? [{ id: 'users' as const, label: 'Gestão de Usuários', icon: <Users className="w-4 h-4" /> }] : []),
     { id: 'permissions' as const, label: 'Permissões', icon: <FolderLock className="w-4 h-4" /> },
     { id: 'audit' as const, label: 'Auditoria', icon: <Activity className="w-4 h-4" /> },
   ];
@@ -383,8 +432,122 @@ export function CeoAccessControl({ currentTenantId }: CeoAccessControlProps) {
         <div className="flex items-center justify-center h-48 text-fbsb-text-secondary"><RefreshCw className="w-5 h-5 animate-spin mr-2" /> Carregando...</div>
       )}
 
+      {/* ══════════ GESTÃO DE EMPRESAS (WORKSPACES) ══════════ */}
+      {tab === 'companies' && (
+        <div className="space-y-5 anim-fade-up">
+          <div className="glass-card rounded-2xl p-6">
+            <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-fbsb-primary to-fbsb-cyan/40 flex items-center justify-center">
+                  <Building className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-white">Workspaces Corporativos</h2>
+                  <p className="text-xs text-fbsb-text-secondary">Crie os espaços das empresas e defina quais módulos cada uma pode acessar.</p>
+                </div>
+              </div>
+              <button onClick={() => setShowCompanyForm(v => !v)}
+                className="flex items-center gap-2 bg-gradient-to-r from-fbsb-primary to-fbsb-cyan/60 hover:opacity-90 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-fbsb-cyan/10">
+                <Building className="w-4 h-4" /> Nova Empresa
+              </button>
+            </div>
+
+            {/* FORMULÁRIO NOVA EMPRESA */}
+            {showCompanyForm && (
+              <div className="mb-6 bg-fbsb-bg-deep/60 border border-white/5 rounded-2xl p-6 anim-fade-scale">
+                <h4 className="text-sm font-bold text-white mb-5 flex items-center gap-2">
+                  <Building className="w-4 h-4 text-fbsb-cyan" /> Dados do Espaço de Trabalho
+                </h4>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                  <div>
+                    <label className="text-[10px] uppercase text-fbsb-text-secondary mb-1 block tracking-wider">Razão Social / Nome da Empresa *</label>
+                    <input className="w-full bg-fbsb-surface-100 border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-fbsb-cyan/50 uppercase" placeholder="Ex: CONSTRUTORA ALFA S/A" value={companyForm.name} onChange={e => setCompanyForm(p => ({...p, name: e.target.value}))} />
+                  </div>
+                  <div>
+                    <label className="text-[10px] uppercase text-fbsb-text-secondary mb-1 block tracking-wider">CNPJ (Opcional)</label>
+                    <input className="w-full bg-fbsb-surface-100 border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-fbsb-cyan/50" placeholder="00.000.000/0000-00" value={companyForm.cnpj} onChange={e => setCompanyForm(p => ({...p, cnpj: e.target.value}))} />
+                  </div>
+                </div>
+
+                <div className="mb-5 p-4 bg-fbsb-surface-100/30 border border-white/5 rounded-xl">
+                  <h5 className="text-xs font-bold text-fbsb-text-primary mb-3">Módulos Liberados para esta Empresa</h5>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="flex items-center justify-between p-3 bg-fbsb-bg-deep rounded-lg border border-white/5">
+                      <div>
+                         <p className="text-xs font-bold text-white flex items-center gap-1"><Upload className="w-3 h-3 text-fbsb-cyan"/> Dossiê Documental</p>
+                         <p className="text-[9px] text-fbsb-text-secondary mt-0.5">Fazer upload de PDFs.</p>
+                      </div>
+                      <Toggle on={companyForm.upload} onChange={() => setCompanyForm(p => ({...p, upload: !p.upload}))} />
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-fbsb-bg-deep rounded-lg border border-white/5">
+                      <div>
+                         <p className="text-xs font-bold text-white flex items-center gap-1"><CheckCircle2 className="w-3 h-3 text-emerald-400"/> Validação & Aceite</p>
+                         <p className="text-[9px] text-fbsb-text-secondary mt-0.5">Aprovar docs no Due Diligence.</p>
+                      </div>
+                      <Toggle on={companyForm.validation} onChange={() => setCompanyForm(p => ({...p, validation: !p.validation}))} />
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-fbsb-bg-deep rounded-lg border border-white/5">
+                      <div>
+                         <p className="text-xs font-bold text-white flex items-center gap-1"><Lock className="w-3 h-3 text-purple-400"/> Canais Criptografados</p>
+                         <p className="text-[9px] text-fbsb-text-secondary mt-0.5">Chat P2P e Videoconferência.</p>
+                      </div>
+                      <Toggle on={companyForm.chat} onChange={() => setCompanyForm(p => ({...p, chat: !p.chat}))} />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <button onClick={handleCreateCompany} className="flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:opacity-90 text-white text-xs font-bold px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-emerald-600/10">
+                    <Save className="w-4 h-4" /> Cadastrar Empresa
+                  </button>
+                  <button onClick={() => setShowCompanyForm(false)} className="flex items-center gap-2 bg-fbsb-surface-200 hover:bg-fbsb-surface-300 border border-white/5 text-xs text-fbsb-text-secondary px-5 py-2.5 rounded-xl transition-colors">
+                    <X className="w-4 h-4" /> Cancelar
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* TABELA DE EMPRESAS */}
+            {companies.length === 0 ? (
+              <div className="text-center py-10 border border-dashed border-white/10 rounded-2xl">
+                <Building className="w-10 h-10 text-fbsb-text-secondary mx-auto mb-3 opacity-20" />
+                <p className="text-sm text-fbsb-text-secondary font-medium">Nenhuma empresa cadastrada no seu painel.</p>
+                <p className="text-xs text-fbsb-text-secondary/60 mt-1">Clique em Nova Empresa para configurar workspaces.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {companies.map((c, i) => (
+                  <div key={c.id} className={`p-4 bg-fbsb-surface-100/50 border border-white/5 hover:border-fbsb-cyan/30 transition-colors rounded-xl anim-fade-up delay-${Math.min(i+1,6)}`}>
+                    <div className="flex items-center justify-between mb-3 border-b border-white/5 pb-3">
+                      <div>
+                        <h4 className="font-bold text-white text-sm truncate">{c.name}</h4>
+                        <p className="text-[10px] text-fbsb-text-secondary font-mono">{c.cnpj || 'Sem CNPJ'}</p>
+                      </div>
+                      <div className="p-2 bg-fbsb-surface-200 rounded-lg"><Building className="w-4 h-4 text-fbsb-cyan" /></div>
+                    </div>
+                    <p className="text-[10px] uppercase font-bold tracking-widest text-fbsb-text-secondary mb-2">Módulos Ativos:</p>
+                    <div className="flex flex-wrap gap-2">
+                      <span className={`px-2 py-1 rounded text-[9px] font-bold uppercase tracking-wider border ${c.features.upload ? 'bg-fbsb-cyan/10 text-fbsb-cyan border-fbsb-cyan/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
+                        Uploads {c.features.upload ? 'ON' : 'OFF'}
+                      </span>
+                      <span className={`px-2 py-1 rounded text-[9px] font-bold uppercase tracking-wider border ${c.features.validation ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
+                        Due Diligence {c.features.validation ? 'ON' : 'OFF'}
+                      </span>
+                      <span className={`px-2 py-1 rounded text-[9px] font-bold uppercase tracking-wider border ${c.features.chat ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
+                        Comunicação {c.features.chat ? 'ON' : 'OFF'}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* ══════════ GESTÃO DE USUÁRIOS ══════════ */}
-      {tab === 'users' && (
+      {tab === 'users' && currentEmail === 'ceo@flechabsb.com' && (
         <div className="space-y-5 anim-fade-up">
           <div className="glass-card rounded-2xl p-6">
             <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
@@ -393,8 +556,8 @@ export function CeoAccessControl({ currentTenantId }: CeoAccessControlProps) {
                   <Users className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-white">Gestão de Usuários & Credenciais</h2>
-                  <p className="text-xs text-fbsb-text-secondary">Cadastre, bloqueie e defina permissões dos colaboradores</p>
+                  <h2 className="text-xl font-bold text-white">Gestão de Usuários</h2>
+                  <p className="text-xs text-fbsb-text-secondary">Cadastre, bloqueie e defina permissões</p>
                 </div>
               </div>
               <button onClick={() => { setShowForm(v => !v); if (!pwd) setPwd(genPwd()); }}
@@ -417,8 +580,11 @@ export function CeoAccessControl({ currentTenantId }: CeoAccessControlProps) {
                     <input className="w-full bg-fbsb-surface-100 border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-fbsb-cyan/50 transition-colors" placeholder="Ex: João Silva" value={form.name} onChange={e => setForm(p => ({...p, name: e.target.value}))} />
                   </div>
                   <div>
-                    <label className="text-[10px] uppercase text-fbsb-text-secondary mb-1 block tracking-wider">E-mail *</label>
-                    <input type="email" className="w-full bg-fbsb-surface-100 border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-fbsb-cyan/50 transition-colors" placeholder="usuario@flechabsb.com" value={form.email} onChange={e => setForm(p => ({...p, email: e.target.value}))} />
+                    <label className="text-[10px] uppercase text-fbsb-text-secondary mb-1 block tracking-wider">Departamento / Login *</label>
+                    <div className="flex bg-fbsb-surface-100 border border-white/5 rounded-xl overflow-hidden focus-within:border-fbsb-cyan/50 transition-colors">
+                      <input type="text" className="w-full bg-transparent px-4 py-2.5 text-sm text-white outline-none" placeholder="juridico.joao" value={form.emailPrefix} onChange={e => setForm(p => ({...p, emailPrefix: e.target.value.replace(/[^a-zA-Z0-9.-]/g, '')}))} />
+                      <span className="bg-fbsb-surface-200 text-fbsb-text-secondary px-3 py-2.5 text-sm border-l border-white/5 flex items-center select-none font-bold">@flechabsb.com</span>
+                    </div>
                   </div>
                   <div>
                     <label className="text-[10px] uppercase text-fbsb-text-secondary mb-1 block tracking-wider">Cargo / Função *</label>
@@ -429,6 +595,32 @@ export function CeoAccessControl({ currentTenantId }: CeoAccessControlProps) {
                   <div>
                     <label className="text-[10px] uppercase text-fbsb-text-secondary mb-1 block tracking-wider">Iniciais (sigla) *</label>
                     <input className="w-full bg-fbsb-surface-100 border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-fbsb-cyan/50" placeholder="JUR" maxLength={4} value={form.initials} onChange={e => setForm(p => ({...p, initials: e.target.value.toUpperCase()}))} />
+                  </div>
+                </div>
+
+                {/* Bloco de Empresa Vinculada */}
+                <div className="mb-5 p-4 bg-fbsb-surface-100/30 border border-fbsb-cyan/20 rounded-xl">
+                  <h5 className="text-xs font-bold text-fbsb-cyan mb-3 flex items-center gap-2">
+                    <FolderLock className="w-4 h-4" /> Isolamento Multi-Tenancy (Empresa Vinculada)
+                  </h5>
+                  <p className="text-[10px] text-fbsb-text-secondary mb-3 leading-relaxed">
+                    Este usuário será alocado dentro da pasta da empresa abaixo e terá acesso <strong>APENAS</strong> aos recursos que foram liberados para ela.
+                  </p>
+                  <div>
+                     <label className="text-[10px] uppercase text-fbsb-text-secondary mb-1 block tracking-wider">Selecione a Empresa (Workspace) *</label>
+                     <select
+                       className="w-full bg-fbsb-bg-deep border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white font-bold tracking-wide focus:outline-none focus:border-fbsb-cyan/50 transition-colors"
+                       value={form.companyFolder}
+                       onChange={e => setForm(p => ({...p, companyFolder: e.target.value}))}
+                     >
+                       <option value="">-- Selecione uma Empresa --</option>
+                       {companies.map(c => (
+                         <option key={c.id} value={c.name}>{c.name}</option>
+                       ))}
+                     </select>
+                     {companies.length === 0 && (
+                       <p className="text-[10px] text-red-400 mt-2 mt-1">⚠️ Você precisa cadastrar ao menos uma empresa na aba "Gestão de Empresas" antes de criar usuários.</p>
+                     )}
                   </div>
                 </div>
 
@@ -447,7 +639,7 @@ export function CeoAccessControl({ currentTenantId }: CeoAccessControlProps) {
                     </button>
                     <button onClick={copyCredentials} className={`flex items-center gap-1 text-xs px-4 py-2.5 rounded-xl transition-all ${copied ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-fbsb-surface-200 hover:bg-fbsb-surface-300 border border-white/5 text-fbsb-text-secondary'}`}>
                       {copied ? <CheckCircle2 className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                      {copied ? 'Copiado!' : 'Copiar'}
+                      {copied ? 'Copiado!' : 'Copiar Login & Senha'}
                     </button>
                   </div>
                 </div>
@@ -455,33 +647,35 @@ export function CeoAccessControl({ currentTenantId }: CeoAccessControlProps) {
                 {/* Permissões do novo usuário por pasta */}
                 <div className="mb-5">
                   <h5 className="text-xs font-bold text-white mb-3 flex items-center gap-2">
-                    <FolderLock className="w-3.5 h-3.5 text-fbsb-cyan" /> Definir Permissões por Pasta
+                    <Shield className="w-3.5 h-3.5 text-fbsb-text-secondary" /> Permissões da Empresa Selecionada
                   </h5>
                   <div className="bg-fbsb-surface-100/50 rounded-xl border border-white/5 overflow-hidden">
                     <table className="w-full text-[11px]">
                       <thead>
                         <tr className="border-b border-white/5 text-fbsb-text-secondary uppercase tracking-wider">
-                          <th className="text-left py-2.5 px-4">Pasta</th>
-                          <th className="text-center py-2.5 px-2"><Eye className="w-3 h-3 mx-auto" /></th>
-                          <th className="text-center py-2.5 px-2"><Upload className="w-3 h-3 mx-auto" /></th>
-                          <th className="text-center py-2.5 px-2"><FileText className="w-3 h-3 mx-auto" /></th>
-                          <th className="text-center py-2.5 px-2"><Trash2 className="w-3 h-3 mx-auto" /></th>
-                        </tr>
-                        <tr className="border-b border-white/5 text-[9px] text-fbsb-text-secondary">
-                          <th></th><th className="py-1">Ver</th><th className="py-1">Upload</th><th className="py-1">Solicitar Excl.</th><th className="py-1">Excluir</th>
+                          <th className="text-left py-2.5 px-4">Ação</th>
+                          <th className="text-center py-2.5 px-2">Ver / Ler</th>
+                          <th className="text-center py-2.5 px-2">Fazer Upload</th>
+                          <th className="text-center py-2.5 px-2">Pedir Exclusão</th>
+                          <th className="text-center py-2.5 px-2">Apagar (Admin)</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {DATA_ROOMS.map(room => (
-                          <tr key={room} className="border-b border-white/5 last:border-0 hover:bg-white/[0.02]">
-                            <td className="py-2.5 px-4 font-semibold text-white">{room}</td>
-                            {(['canView','canUpload','canRequestDelete','canDirectDelete'] as const).map(f => (
-                              <td key={f} className="py-2.5 px-2 text-center">
-                                <Toggle on={newPerms[room][f]} onChange={() => setNewPerms(prev => ({...prev, [room]: {...prev[room], [f]: !prev[room][f]}}))} />
-                              </td>
-                            ))}
+                          <tr className="border-b border-white/5 last:border-0 hover:bg-white/[0.02]">
+                            <td className="py-2.5 px-4 font-bold text-fbsb-cyan">{form.companyFolder || 'Preencha a Empresa acima'}</td>
+                            <td className="py-2.5 px-2 text-center">
+                              <Toggle on={newPerms.canView} onChange={() => setNewPerms(prev => ({...prev, canView: !prev.canView}))} />
+                            </td>
+                            <td className="py-2.5 px-2 text-center">
+                              <Toggle on={newPerms.canUpload} onChange={() => setNewPerms(prev => ({...prev, canUpload: !prev.canUpload}))} />
+                            </td>
+                            <td className="py-2.5 px-2 text-center">
+                              <Toggle on={newPerms.canRequestDelete} onChange={() => setNewPerms(prev => ({...prev, canRequestDelete: !prev.canRequestDelete}))} />
+                            </td>
+                            <td className="py-2.5 px-2 text-center">
+                              <Toggle on={newPerms.canDirectDelete} onChange={() => setNewPerms(prev => ({...prev, canDirectDelete: !prev.canDirectDelete}))} />
+                            </td>
                           </tr>
-                        ))}
                       </tbody>
                     </table>
                   </div>
@@ -507,34 +701,48 @@ export function CeoAccessControl({ currentTenantId }: CeoAccessControlProps) {
             ) : (
               <div className="space-y-3">
                 {users.map((u, i) => (
-                  <div key={u.id} className={`glass-card rounded-xl p-4 flex items-center justify-between flex-wrap gap-3 anim-fade-up delay-${Math.min(i+1,6)}`}>
-                    <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-[11px] font-bold border ${u.is_active ? 'bg-fbsb-primary/20 border-fbsb-cyan/30 text-fbsb-cyan' : 'bg-red-500/10 border-red-500/20 text-red-400'}`}>
-                        {u.initials}
+                  <div key={u.id} className={`glass-card rounded-xl p-4 anim-fade-up delay-${Math.min(i+1,6)}`}>
+                    {/* Linha Principal (Nome / Avatar) */}
+                    <div className="flex items-start justify-between gap-3 mb-3 border-b border-white/5 pb-3">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 shrink-0 rounded-xl flex items-center justify-center text-[11px] font-bold border ${u.is_active ? 'bg-fbsb-primary/20 border-fbsb-cyan/30 text-fbsb-cyan' : 'bg-red-500/10 border-red-500/20 text-red-400'}`}>
+                          {u.initials}
+                        </div>
+                        <div>
+                          <p className="font-semibold text-white text-[13px]">{u.name}</p>
+                          <p className="text-[11px] text-fbsb-text-secondary break-all">{u.email}</p>
+                          <p className="text-[10px] text-fbsb-cyan uppercase font-bold tracking-wider mt-0.5">{u.role}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-semibold text-white text-[13px]">{u.name}</p>
-                        <p className="text-[11px] text-fbsb-text-secondary">{u.email} · {u.role}</p>
+                      <div className="shrink-0">
+                        {u.is_active
+                          ? <span className="flex items-center gap-1 text-[9px] uppercase font-bold text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-lg border border-emerald-500/20"><CheckCircle2 className="w-3 h-3" /> <span className="hidden sm:inline">Ativo</span></span>
+                          : <span className="flex items-center gap-1 text-[9px] uppercase font-bold text-red-400 bg-red-500/10 px-2 py-1 rounded-lg border border-red-500/20"><AlertTriangle className="w-3 h-3" /> <span className="hidden sm:inline">Bloqueado</span></span>
+                        }
                       </div>
                     </div>
-                    <div className="flex items-center gap-4">
-                      <div className="text-center hidden md:block">
-                        <p className="text-xs font-bold text-fbsb-cyan">{u.login_count ?? 0}</p>
-                        <p className="text-[9px] text-fbsb-text-secondary uppercase">Logins</p>
+
+                    {/* Linha Secundária (Estatísticas e Ações) */}
+                    <div className="flex items-center justify-between gap-4 mt-2">
+                      <div className="flex items-center gap-4">
+                        <div className="text-left">
+                          <p className="text-xs font-bold text-fbsb-cyan">{u.login_count ?? 0}</p>
+                          <p className="text-[9px] text-fbsb-text-secondary uppercase">Logins</p>
+                        </div>
+                        <div className="text-left">
+                          <p className="text-[10px] font-medium text-white">{fmt(u.last_login_at)}</p>
+                          <p className="text-[9px] text-fbsb-text-secondary uppercase">Último Acesso</p>
+                        </div>
                       </div>
-                      <div className="hidden md:block text-[10px] text-fbsb-text-secondary">
-                        {fmt(u.last_login_at)}
+
+                      <div className="shrink-0">
+                        {u.email !== 'ceo@flechabsb.com' ? (
+                          <button onClick={() => toggleUser(u)}
+                            className={`flex items-center justify-center gap-1 text-[10px] font-bold px-4 py-2 w-full sm:w-auto rounded-lg transition-all ${u.is_active ? 'bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20' : 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20'}`}>
+                            {u.is_active ? <><Lock className="w-3 h-3" /> Bloquear</> : <><Unlock className="w-3 h-3" /> Ativar</>}
+                          </button>
+                        ) : <span className="text-[10px] font-bold text-fbsb-text-secondary uppercase tracking-widest opacity-40">Inalienável</span>}
                       </div>
-                      {u.is_active
-                        ? <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20"><CheckCircle2 className="w-3 h-3" /> Ativo</span>
-                        : <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-red-400 bg-red-500/10 px-2.5 py-1 rounded-lg border border-red-500/20"><AlertTriangle className="w-3 h-3" /> Bloqueado</span>
-                      }
-                      {u.email !== 'ceo@flechabsb.com' ? (
-                        <button onClick={() => toggleUser(u)}
-                          className={`flex items-center gap-1 text-[10px] font-bold px-3 py-1.5 rounded-lg transition-all ${u.is_active ? 'bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20' : 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20'}`}>
-                          {u.is_active ? <><Lock className="w-3 h-3" /> Bloquear</> : <><Unlock className="w-3 h-3" /> Ativar</>}
-                        </button>
-                      ) : <span className="text-[10px] text-fbsb-text-secondary opacity-40">Inalienável</span>}
                     </div>
                   </div>
                 ))}
@@ -555,7 +763,42 @@ export function CeoAccessControl({ currentTenantId }: CeoAccessControlProps) {
                   <span className="text-xs font-bold text-fbsb-cyan uppercase tracking-widest">{room}</span>
                 </div>
                 <div className="overflow-x-auto modern-scroll">
-                  <table className="w-full text-[11px] min-w-[600px]">
+                  {/* Container md:hidden para cards no mobile */}
+                  <div className="md:hidden space-y-4 pt-4">
+                     {Object.keys(permMatrix[room]||{}).map(email => {
+                       const p = permMatrix[room][email]; const isCeo = email === 'ceo@flechabsb.com';
+                       const usr = users.find(u => u.email === email);
+                       return (
+                         <div key={email} className="bg-fbsb-surface-100/50 rounded-xl p-4 border border-white/5 space-y-4">
+                           <div className="flex justify-between items-center border-b border-white/5 pb-2">
+                             <span className="font-semibold text-white text-sm">{usr?.name || email}</span>
+                             {isCeo && <span className="text-[9px] text-fbsb-cyan uppercase tracking-wider font-bold">Supremo</span>}
+                           </div>
+                            <div className="grid grid-cols-2 gap-4 text-xs">
+                              <div className="flex justify-between items-center">
+                                <span className="text-fbsb-text-secondary">Visualizar</span>
+                                <Toggle on={p?.canView??true} onChange={() => changePerm(room, email, 'canView', !(p?.canView??true))} disabled={isCeo} />
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <span className="text-fbsb-text-secondary">Upload</span>
+                                <Toggle on={p?.canUpload??true} onChange={() => changePerm(room, email, 'canUpload', !(p?.canUpload??true))} disabled={isCeo} />
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <span className="text-fbsb-text-secondary">Pedir Exclusão</span>
+                                <Toggle on={p?.canRequestDelete??true} onChange={() => changePerm(room, email, 'canRequestDelete', !(p?.canRequestDelete??true))} disabled={isCeo} />
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <span className="text-fbsb-text-secondary">Excluir (Admin)</span>
+                                <Toggle on={p?.canDirectDelete??true} onChange={() => changePerm(room, email, 'canDirectDelete', !(p?.canDirectDelete??true))} disabled={isCeo} />
+                              </div>
+                            </div>
+                         </div>
+                       );
+                     })}
+                  </div>
+
+                  {/* Tabela nativa para desktop */}
+                  <table className="hidden md:table w-full text-[11px] min-w-[600px]">
                     <thead><tr className="border-b border-white/5 text-fbsb-text-secondary uppercase tracking-wider">
                       <th className="text-left py-2.5 px-5">Colaborador</th>
                       <th className="text-center py-2.5 px-2">Ver</th>
@@ -626,29 +869,40 @@ export function CeoAccessControl({ currentTenantId }: CeoAccessControlProps) {
           {auditLoading ? <div className="flex items-center justify-center h-32 text-fbsb-text-secondary"><RefreshCw className="w-5 h-5 animate-spin" /></div> : pa.length === 0 ? (
             <div className="text-center py-12 text-fbsb-text-secondary text-sm"><Activity className="w-8 h-8 mx-auto mb-3 opacity-30" />Nenhum registro encontrado.</div>
           ) : (
-            <div className="relative modern-scroll max-h-[500px] overflow-y-auto">
+            <div className="relative modern-scroll max-h-[500px] overflow-y-auto pr-2">
               {/* Linha vertical da timeline */}
               <div className="absolute left-[18px] top-0 bottom-0 w-px bg-gradient-to-b from-fbsb-cyan/30 via-fbsb-primary/20 to-transparent" />
-              <div className="space-y-1">
+              <div className="space-y-3">
                 {pa.map((e, i) => (
-                  <div key={e.id} className={`relative pl-10 py-3 hover:bg-white/[0.02] rounded-xl transition-colors anim-fade-up delay-${Math.min(i+1,6)}`}>
+                  <div key={e.id} className={`relative pl-10 py-4 bg-fbsb-surface-100/30 border border-white/5 hover:border-fbsb-cyan/30 rounded-xl transition-colors anim-fade-up delay-${Math.min(i+1,6)}`}>
                     {/* Dot */}
-                    <div className="absolute left-[14px] top-[18px] w-[9px] h-[9px] rounded-full bg-fbsb-cyan border-2 border-fbsb-bg-deep" />
-                    <div className="flex items-start justify-between gap-2 flex-wrap">
-                      <div>
+                    <div className="absolute left-[14px] top-[22px] w-[9px] h-[9px] rounded-full bg-fbsb-cyan border-2 border-fbsb-bg-deep shadow-[0_0_8px_rgba(0,212,255,0.8)]" />
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-start justify-between gap-2 flex-wrap">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="text-[11px] font-bold text-white">{e.user_name || e.user_email}</span>
+                          <span className="text-xs font-bold text-white bg-white/5 px-2 py-1 rounded-md">{e.user_name || e.user_email}</span>
                           <span className="text-[10px] text-fbsb-text-secondary">{e.user_email}</span>
                         </div>
-                        <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-                          <span className="text-[11px] font-semibold text-fbsb-cyan">{ACTION_LABELS[e.action]||e.action}</span>
-                          {e.target_name && <><ChevronRight className="w-3 h-3 text-fbsb-text-secondary" /><span className="text-[11px] text-white">{e.target_name}</span></>}
-                        </div>
-                        {e.details && Object.keys(e.details).length > 0 && (
-                          <p className="mt-1 text-[10px] text-fbsb-text-secondary font-mono bg-fbsb-bg-deep/50 px-2 py-1 rounded-lg inline-block">{JSON.stringify(e.details)}</p>
+                        <span className="flex items-center gap-1 text-[10px] font-bold text-fbsb-cyan shrink-0 bg-fbsb-cyan/10 px-2 py-1 rounded-md border border-fbsb-cyan/20">
+                          <Clock className="w-3 h-3" />{fmt(e.created_at)}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2 mt-1 flex-wrap">
+                        <span className="text-xs font-bold text-emerald-400 uppercase tracking-widest">{ACTION_LABELS[e.action]||e.action}</span>
+                        {e.target_name && (
+                          <>
+                            <ChevronRight className="w-4 h-4 text-fbsb-text-secondary" />
+                            <span className="text-[11px] text-white break-all bg-fbsb-bg-deep px-2 py-1 rounded border border-white/5">{e.target_name}</span>
+                          </>
                         )}
                       </div>
-                      <span className="flex items-center gap-1 text-[10px] text-fbsb-text-secondary shrink-0"><Clock className="w-3 h-3" />{fmt(e.created_at)}</span>
+
+                      {e.details && Object.keys(e.details).length > 0 && (
+                        <div className="mt-2 text-[10px] text-fbsb-text-secondary font-mono bg-fbsb-bg-deep/80 p-3 rounded-lg border border-white/5 overflow-x-auto">
+                          {JSON.stringify(e.details, null, 2)}
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
