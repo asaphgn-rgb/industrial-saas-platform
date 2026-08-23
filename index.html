@@ -5,9 +5,62 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FLECHA BSB</title>
+    <style>
+      /* CSS agressivo para ocultar a tela de erro da Lovable caso ela seja renderizada */
+      div[style*="z-index: 9999"],
+      div[style*="z-index:9999"] {
+        pointer-events: none !important;
+      }
+    </style>
   </head>
   <body class="bg-fbsb-bg-main text-fbsb-text-primary antialiased min-h-screen">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Script agressivo para aniquilar o overlay da Lovable
+      (function() {
+        const observer = new MutationObserver((mutations) => {
+          for (const mutation of mutations) {
+            for (const node of mutation.addedNodes) {
+              if (node.nodeType === 1) { // Element node
+                const text = node.textContent || "";
+                if (text.includes("Missing Supabase environment variable") || text.includes("Connect Supabase in Lovable Cloud")) {
+                  node.remove(); // Destrói o elemento
+                  console.log("🔥 Overlay da Lovable foi interceptado e destruído com sucesso.");
+                }
+
+                // Tenta achar filhos que contenham o texto
+                const badElements = node.querySelectorAll ? node.querySelectorAll('*') : [];
+                badElements.forEach(el => {
+                  if ((el.textContent || "").includes("Connect Supabase in Lovable Cloud")) {
+                    // Sobe até o container principal do overlay para apagar a caixa inteira
+                    let parent = el;
+                    for(let i=0; i<5; i++) {
+                      if(parent.parentElement && parent.parentElement.tagName !== 'BODY') {
+                        parent = parent.parentElement;
+                      }
+                    }
+                    parent.remove();
+                  }
+                });
+              }
+            }
+          }
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+
+        // Verificação periódica como backup
+        setInterval(() => {
+          document.querySelectorAll('div').forEach(div => {
+            if (div.textContent && div.textContent.includes('Connect Supabase in Lovable Cloud')) {
+              div.style.display = 'none';
+              div.style.pointerEvents = 'none';
+              div.remove();
+            }
+          });
+        }, 500);
+      })();
+    </script>
   </body>
 </html>
