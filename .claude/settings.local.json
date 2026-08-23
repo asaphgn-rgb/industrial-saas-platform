@@ -190,7 +190,17 @@
       "Bash(git commit -m 'feat: dashboard moderno com glassmorphism, gráficos de area, donut chart, anel de progresso, timeline de auditoria e cadastro de usuário com permissões integradas *)",
       "Bash(git commit -m 'feat\\(security\\): implementar Zero-Trace absoluto para o Chat E2E *)",
       "Bash(curl -X POST https://ujttkjvxxljonqepglae.supabase.co/rest/v1/rpc/exec -H 'apikey: sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA' -H 'Content-Type: application/json' -d '{\"query\": \"DROP POLICY IF EXISTS \\\\\"allow_all_importacoes\\\\\" ON public.importacoes; CREATE POLICY \\\\\"allow_all_importacoes\\\\\" ON public.importacoes FOR ALL USING \\(true\\) WITH CHECK \\(true\\); DROP POLICY IF EXISTS \\\\\"allow_all_importacao_linhas\\\\\" ON public.importacao_linhas; CREATE POLICY \\\\\"allow_all_importacao_linhas\\\\\" ON public.importacao_linhas FOR ALL USING \\(true\\) WITH CHECK \\(true\\);\"}')",
-      "Bash(cd .. && ls)"
+      "Bash(cd .. && ls)",
+      "Bash(rm -rf src/routes/_authenticated/implantacao src/lib/integracao-dados.* src/components/flux)",
+      "Bash(cat \"D:\\\\GERAL\\\\TELA\\\\FLUX FILMES\\\\PLANILHAS DE IMPLANTAÇÃO\\\\planilhas para UP LOAD\\\\flux_unidades_medida_revisado_100.xlsx\")",
+      "Bash(node generate_implant_report.cjs)",
+      "Bash(curl -X POST https://ujttkjvxxljonqepglae.supabase.co/rest/v1/rpc/exec -H 'apikey: sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA' -H 'Content-Type: application/json' -d '{\"query\": \"SELECT count\\(*\\) FROM information_schema.tables WHERE table_schema = '\\\\''public'\\\\'';\"}')",
+      "Bash(curl -s -X POST https://ujttkjvxxljonqepglae.supabase.co/rest/v1/importacoes -H 'apikey: sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA' -H 'Content-Type: application/json' -H 'Prefer: return=representation' -d '{\"tenant_id\": \"00000000-0000-0000-0000-000000000000\", \"modulo\": \"unidades_medida\", \"status\": \"em_validacao\", \"total_linhas\": 2, \"arquivo_nome\": \"flux_unidades_medida_revisado_100.xlsx\", \"arquivo_path\": \"local/temp\"}')",
+      "Bash(curl -s -X POST https://ujttkjvxxljonqepglae.supabase.co/rest/v1/importacoes -H 'apikey: sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA' -H 'Content-Type: application/json' -H 'Prefer: return=representation' -d '{\"tenant_id\": \"00000000-0000-0000-0000-000000000000\", \"modulo\": \"unidades_medida\", \"status\": \"em_validacao\", \"total_linhas\": 2, \"arquivo_nome\": \"flux_unidades_medida_revisado_100.xlsx\"}')",
+      "Bash(node fix_db_missing_schema.cjs)",
+      "Bash(curl -X POST https://ujttkjvxxljonqepglae.supabase.co/rest/v1/rpc/exec -H 'apikey: sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA' -H 'Content-Type: application/json' -d '{\"query\": \"CREATE TABLE IF NOT EXISTS public.unidades_medida \\(id uuid default gen_random_uuid\\(\\) primary key, tenant_id uuid not null, sigla text not null, nome text not null, casas_decimais integer default 0, created_at timestamp with time zone default now\\(\\)\\);\"}')",
+      "Bash(node run_sql.cjs)",
+      "Bash(curl -s -X POST \"https://ujttkjvxxljonqepglae.supabase.co/rest/v1/importacao_linhas\" -H \"apikey: sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA\" -H \"Content-Type: application/json\" -H \"Prefer: return=representation\" -d '{\"importacao_id\": \"e42b8846-d4e8-4d16-b82f-ff4e41139a65\", \"tenant_id\": \"00000000-0000-0000-0000-000000000000\", \"numero_linha\": 3, \"dados_originais\": {\"nome\": \"Litro\", \"sigla\": \"L\", \"casas_decimais\": 2}, \"status\": \"valida\"}')"
     ]
   }
 }

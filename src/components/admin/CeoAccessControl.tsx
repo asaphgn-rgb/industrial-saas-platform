@@ -11,6 +11,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import { supabase } from '../../lib/supabase';
+import { deriveKey, decryptE2E } from '../../lib/crypto';
 
 /* ═══ TIPOS ═══ */
 interface CeoAccessControlProps { currentTenantId: string; currentEmail?: string; }
@@ -94,7 +95,7 @@ function Toggle({ on, onChange, disabled }: { on: boolean; onChange: () => void;
 
 /* ═══════════════════════════════════════ COMPONENTE PRINCIPAL ═══ */
 export function CeoAccessControl({ currentTenantId, currentEmail = 'ceo@flechabsb.com' }: CeoAccessControlProps) {
-  const [tab, setTab] = useState<'overview'|'companies'|'users'|'permissions'|'audit'>('overview');
+  const [tab, setTab] = useState<'overview'|'companies'|'users'|'permissions'|'audit'|'atas'>('overview');
 
   /* Estado Empresas (Workspaces) */
   const [companies, setCompanies] = useState<CompanyWorkspace[]>(() => {
@@ -139,6 +140,10 @@ export function CeoAccessControl({ currentTenantId, currentEmail = 'ceo@flechabs
     actionsOverTime: { date: string; uploads: number; views: number; deletions: number }[];
     compliance: number;
   }|null>(null);
+
+  /* Estado Atas */
+  const [atas, setAtas] = useState<{id: string; content: string; sender_email: string; created_at: string;}[]>([]);
+  const [atasLoading, setAtasLoading] = useState(false);
 
   /* ═══ FETCHERS ═══ */
   const fetchUsers = useCallback(async () => {
@@ -191,7 +196,46 @@ export function CeoAccessControl({ currentTenantId, currentEmail = 'ceo@flechabs
     } catch(e) { console.error(e); }
   }, []);
 
-  useEffect(() => { fetchUsers(); fetchPerms(); fetchAudit(); fetchAnalytics(); }, [fetchUsers, fetchPerms, fetchAudit, fetchAnalytics]);
+  const fetchAtas = useCallback(async () => {
+    setAtasLoading(true);
+    try {
+      const { data, error } = await (supabase as any)
+        .from('b2b_secure_chat')
+        .select('id, content, sender_email, created_at, room_id')
+        .eq('attachment_type', 'ata')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      if (data) {
+        const decryptedAtas = [];
+        for (const record of data) {
+          try {
+            const key = await deriveKey(record.room_id, 'SaaS-B2B-Secure-Salt');
+            const decryptedContent = await decryptE2E(record.content, key);
+            decryptedAtas.push({
+              id: record.id,
+              content: decryptedContent,
+              sender_email: record.sender_email,
+              created_at: record.created_at
+            });
+          } catch (e) {
+            console.error(`Erro ao descriptografar a ata ${record.id}:`, e);
+          }
+        }
+        setAtas(decryptedAtas);
+      }
+    } catch (err) {
+      console.error("Erro ao buscar atas:", err);
+    } finally {
+      setAtasLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchUsers(); fetchPerms(); fetchAudit(); fetchAnalytics();
+    if (tab === 'atas' && atas.length === 0) fetchAtas();
+  }, [fetchUsers, fetchPerms, fetchAudit, fetchAnalytics, tab, atas.length, fetchAtas]);
 
   /* ═══ AÇÕES USUÁRIOS E EMPRESAS ═══ */
   const handleCreateCompany = () => {
@@ -283,6 +327,7 @@ export function CeoAccessControl({ currentTenantId, currentEmail = 'ceo@flechabs
     { id: 'companies' as const, label: 'Gestão de Empresas', icon: <Building className="w-4 h-4" /> },
     ...(currentEmail === 'ceo@flechabsb.com' ? [{ id: 'users' as const, label: 'Gestão de Usuários', icon: <Users className="w-4 h-4" /> }] : []),
     { id: 'permissions' as const, label: 'Permissões', icon: <FolderLock className="w-4 h-4" /> },
+    { id: 'atas' as const, label: 'Atas de Reunião', icon: <FileText className="w-4 h-4" /> },
     { id: 'audit' as const, label: 'Auditoria', icon: <Activity className="w-4 h-4" /> },
   ];
 
@@ -917,6 +962,58 @@ export function CeoAccessControl({ currentTenantId, currentEmail = 'ceo@flechabs
               <button disabled={page===0} onClick={()=>setPage(p=>p-1)} className="px-3 py-1.5 bg-fbsb-surface-200 rounded-lg disabled:opacity-30 hover:bg-fbsb-surface-300 transition-colors border border-white/5">← Anterior</button>
               <button disabled={(page+1)*PG >= fa.length} onClick={()=>setPage(p=>p+1)} className="px-3 py-1.5 bg-fbsb-surface-200 rounded-lg disabled:opacity-30 hover:bg-fbsb-surface-300 transition-colors border border-white/5">Próxima →</button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ══════════ ATAS DE REUNIÃO ══════════ */}
+      {tab === 'atas' && (
+        <div className="space-y-5 anim-fade-up">
+          <div className="glass-card rounded-2xl p-6">
+            <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center">
+                  <FileText className="w-6 h-6 text-fbsb-cyan" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-white">Gestão de Atas (ISO 9001)</h2>
+                  <p className="text-xs text-fbsb-text-secondary">Decodificando atas criptografadas E2E das videoconferências via WebRTC</p>
+                </div>
+              </div>
+              <button onClick={fetchAtas} className="flex items-center gap-1 bg-fbsb-surface-200 text-xs text-fbsb-text-secondary px-3 py-2 rounded-xl hover:bg-fbsb-surface-300 transition-colors border border-white/5">
+                <RefreshCw className={`w-3 h-3 ${atasLoading ? 'animate-spin' : ''}`} /> Atualizar
+              </button>
+            </div>
+
+            {atasLoading ? (
+              <div className="flex items-center justify-center h-32 text-fbsb-text-secondary">
+                <RefreshCw className="w-5 h-5 animate-spin mr-2" /> Descriptografando Chaves...
+              </div>
+            ) : atas.length === 0 ? (
+              <div className="text-center py-12 text-fbsb-text-secondary text-sm border border-dashed border-white/10 rounded-2xl">
+                <FileText className="w-10 h-10 mx-auto mb-3 opacity-20" />
+                Nenhuma ata foi gerada ainda. <br/>
+                <span className="text-xs opacity-60">Inicie uma Videoconferência e clique em "Gravar Reunião & Ata".</span>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {atas.map((ata, i) => (
+                  <div key={ata.id} className={`p-5 bg-fbsb-surface-100/50 border border-white/5 hover:border-fbsb-cyan/30 rounded-xl transition-colors anim-fade-up delay-${Math.min(i+1,6)}`}>
+                    <div className="flex justify-between items-start mb-4 border-b border-white/5 pb-3">
+                      <div>
+                        <span className="text-xs font-bold text-white bg-white/5 px-2 py-1 rounded-md">{ata.sender_email}</span>
+                      </div>
+                      <span className="flex items-center gap-1 text-[10px] font-bold text-fbsb-cyan shrink-0 bg-fbsb-cyan/10 px-2 py-1 rounded-md border border-fbsb-cyan/20">
+                        <Clock className="w-3 h-3" />{fmt(ata.created_at)}
+                      </span>
+                    </div>
+                    <div className="text-xs text-fbsb-text-secondary whitespace-pre-wrap font-mono leading-relaxed max-h-[300px] overflow-y-auto modern-scroll pr-2">
+                      {ata.content}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}

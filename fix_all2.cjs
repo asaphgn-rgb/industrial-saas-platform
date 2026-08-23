@@ -1,19 +1,17 @@
 const fs = require('fs');
 
-function fix(file) {
-    let code = fs.readFileSync(file, 'utf8');
-    
-    // Convert 'const order = data' or similar to 'const order = data as any;'
-    code = code.replace(/const (\w+) = data;/g, 'const $1 = data as any;');
-    
-    // Supabase update/insert type casting 
-    code = code.replace(/\.update\(\{([\s\S]*?)\}\)/g, '.update({$1} as any)');
-    code = code.replace(/\.insert\(\{([\s\S]*?)\}\)/g, '.insert({$1} as any)');
-    code = code.replace(/\.insert\(\[\{([\s\S]*?)\}\]\)/g, '.insert([{$1}] as any)');
-    
-    fs.writeFileSync(file, code);
+async function run() {
+  const { createClient } = require('@supabase/supabase-js');
+  const SUPABASE_URL = "https://ujttkjvxxljonqepglae.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA";
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const { data, error } = await supabase.from('unidades_medida').select('*').limit(1);
+  if (error) {
+    console.log("ERRO AO CONSULTAR BANCO:", error.message);
+  } else {
+    console.log("CONSULTA SUCESSO. A TABELA EXISTE.");
+  }
 }
 
-fix('src/services/industrial-mes.service.ts');
-fix('src/services/qms-capa.service.ts');
-fix('src/services/qms-document.service.ts');
+run();

@@ -1,4 +1,4 @@
-# CLAUDE.md - Diretrizes Técnicas e de Governança
+# CLAUDE.md - Diretrizes Técnicas, Arquitetura e Governança
 
 ## 0. Idioma Obrigatório
 - **TODA comunicação do assistente DEVE ser exclusivamente em Português (Brasil).**
@@ -6,68 +6,53 @@
 - NUNCA responda em inglês, a menos que o usuário solicite explicitamente.
 
 ## 1. Visão Geral do Sistema
-Este repositório contém a fundação do **SaaS Industrial & SGQ ISO 9001**, uma plataforma multi-tenant de missão crítica voltada para gestão fabril (MES/MOM), controle de qualidade, manutenção (PCM), rastreabilidade de lote e conformidade estrita com a norma **ISO 9001:2015**.
-
----
+Este repositório contém o **MORAR BEM BRASIL / PLATAFORMA DIAMOND**, uma plataforma SaaS fintech habitacional para gestão completa de:
+Administração Global, Federações, Associações, Associados, Cadastro habitacional, Upload documental, Pastas digitais, Backup geral, Pré-análise de crédito, Consulta SPC/Serasa, Score, Produtos (disponíveis, desejados, personalizados), Contratos digitais, CRM comercial, Transações, Comissões, IA flutuante, Auditoria e LGPD.
 
 ## 2. Princípios Inegociáveis de Arquitetura & Segurança
 
-1. **Isolamento Multi-Tenant Estrito**:
-   - Todas as tabelas de negócio DEVEM conter `tenant_id UUID NOT NULL REFERENCES tenants(id)`.
-   - NUNCA execute consultas ou mutações sem filtrar pelo `tenant_id` do usuário autenticado.
-   - O Row Level Security (RLS) DEVE estar permanentemente ativado em 100% das tabelas públicas.
-   - NUNCA desabilite o RLS para contornar problemas de desenvolvimento.
-
-2. **Segregação de Ambientes**:
-   - **LOCAL / DEV**: Ambiente de desenvolvimento, migrations locais e testes unitários/integrados.
-   - **HML / STAGING**: Ambiente espelho de produção para homologação, QA e validação de cliente.
-   - **PROD**: Ambiente de produção estritamente protegido. Alterações diretas em PROD são PROIBIDAS.
-
-3. **Gestão de Segredos & Credenciais**:
+1. **Stack Obrigatória:** React, TypeScript, Tailwind CSS, Supabase, PostgreSQL, Supabase Auth, RLS, Storage Privado, Edge Functions.
+2. **Segurança de Dados e Segredos:**
    - NUNCA comite arquivos `.env`, `.env.local` ou credenciais em texto plano.
-   - A `service_role_key` do Supabase NUNCA deve ser exposta no código frontend ou enviada ao cliente.
-   - Utilize variáveis de ambiente injetadas via GitHub Secrets / Supabase Secrets.
+   - NUNCA exponha CPF, CNPJ, tokens, senhas ou documentos.
+   - A `service_role_key` NUNCA deve ser exposta no código frontend ou enviada ao cliente.
+3. **Isolamento de Dados (RLS Obrigatório):**
+   - O Row Level Security (RLS) DEVE estar permanentemente ativado em 100% das tabelas sensíveis.
+   - Nenhuma tabela sensível pode ficar sem RLS. NUNCA desabilite o RLS.
+4. **Armazenamento Seguro:** 
+   - Storage privado obrigatório. NENHUM documento público.
+5. **Privacidade e LGPD:**
+   - Consulta de crédito SOMENTE com consentimento ativo. CPF e CNPJ devem ser mascarados nas interfaces.
+6. **Integridade de Informações Habitacionais/Financeiras:**
+   - NENHUMA aprovação bancária definitiva deve ser prometida ou exibida. 
+   - A pré-análise é EXCLUSIVAMENTE consultiva.
 
-4. **Trilha de Auditoria Imutável (Audit Trail)**:
-   - Toda alteração em registros críticos do SGQ (não conformidades, documentos, inspeções de lote) deve registrar:
-     * **Quem** (`user_id`), **O quê** (`table_name`, `record_id`, `action`), **Quando** (`created_at`), **Dados anteriores** (`old_data`), **Novos dados** (`new_data`) e **Justificativa** (`reason`).
-   - A tabela `audit_logs` é estritamente imutável (gatilho bloqueia UPDATE e DELETE).
+## 3. Hierarquia RBAC Obrigatória (Controle de Acesso)
 
----
+O sistema segue uma estrutura hierárquica estrita: **Admin Global -> Federação -> Associação -> Associado**
 
-## 3. Padrões de Código e Stack Tecnológica
+1. **Admin Global:** Visualiza e gerencia 100% do sistema, cadastra qualquer nível, bloqueia/libera acessos, gerencia produtos exclusivos e configurações globais.
+2. **Federação:** Visualiza e gerencia apenas a sua própria Federação, suas Associações vinculadas e seus dados. Pode cadastrar apenas suas Associações.
+3. **Associação:** Visualiza apenas a própria Associação e os Associados vinculados a ela. Pode cadastrar apenas seus Associados.
+4. **Associado:** Visualiza apenas os seus próprios dados, pasta digital, produtos e status. Não pode visualizar outros associados. Não cadastra usuários.
 
-- **Frontend**: React 18 / Vite / TypeScript / Tailwind CSS / Lucide React / TanStack Query.
-- **Backend / Database**: Supabase (PostgreSQL 15+ / Auth / Storage / Edge Functions).
-- **Validação de Schemas**: Zod para todas as entradas de usuário e respostas de API.
-- **Testes**: Vitest + React Testing Library + testes dedicados de isolamento RLS.
-- **Conformidade Industrial**: ISA-95 (Enterprise > Site > Area > Work Center > Work Unit).
+## 4. UI e Navegação
 
----
+- **Menu Lateral Obrigatório:** Nenhuma página autenticada pode existir sem menu lateral. O menu deve ser responsivo e adaptado por perfil de usuário.
+- **Não criar apenas telas visuais:** Não deixar botões sem função. Dados falsos em dashboards sem indicação clara de mock são proibidos. Nenhuma rota sem proteção.
 
-## 4. Fluxo de Trabalho Git (Branch Strategy)
+## 5. Fluxo de Desenvolvimento e Fases
 
-- `main`: Código em produção. Protegido contra commits diretos e force-push.
-- `develop`: Integração contínua e homologação (Staging).
-- `feature/<nome-da-feature>`: Branches criadas a partir de `develop` para desenvolvimento de novas capacidades.
-- `hotfix/<correcao-emergencial>`: Branches criadas a partir de `main` para correção de incidentes críticos em produção.
+O desenvolvimento segue uma estrutura rigorosa de fases (Fase 1 à Fase 23, conforme definido no prompt original). Regras para evolução de código:
+- Crie código modular, limpo, componentizado, reaproveitável e profissional.
+- Antes de instalar qualquer biblioteca, verificar a real necessidade.
+- Testes rigorosos em cada etapa, com validação de RLS e políticas de segurança.
+- As mudanças no banco (Supabase) DEVEM sempre ser feitas via migrations locais (`supabase/migrations/`).
 
----
+## 6. Trilha de Auditoria e Notificações (Audit Trail & Logs)
 
-## 5. Procedimentos de Modificação e Migrations no Supabase
+- Modificações sensíveis (criação de usuários, consultas, bloqueios, upload documental, contratos) devem gerar registros na trilha de auditoria e emitir notificações para a Administração Global quando aplicável.
+- **Eventos Críticos:** Toda a trilha de acesso, aceite de LGPD, e visualização de dados devem possuir registro imutável com data, hora, IP, user_agent e status.
 
-1. Sempre crie migrations versionadas em `supabase/migrations/<timestamp>_<nome_descritivo>.sql`.
-2. Nunca altere o schema diretamente no painel do Supabase sem gerar a migration correspondente.
-3. Toda migration deve incluir políticas de RLS e índices correspondentes.
-4. Execute `npm run test:rls` antes de submeter qualquer Pull Request com alterações de banco.
-
----
-
-## 6. Comportamento Obrigatório do Agente / Assistente
-
-- **Análise Prévia**: Entenda o impacto em multi-tenancy e segurança antes de sugerir código.
-- **Testes pós-mudança**: Valide a compilação (`npm run typecheck`) e execute testes unitários.
-- **Revisão de Diff**: Garanta que nenhum arquivo temporário, secret ou dependência desnecessária seja incluído.
-
-## 7. Regras de Blindagem (Comunicação E2E)
-- **NÃO ALTERE O MOTOR DE SINCRONIZAÇÃO `ntfySync.ts`**: O sistema de chat criptografado (`SecureChat.tsx`) opera perfeitamente sobre WebSocket via Porta 443 usando `ntfy.sh`. Sob nenhuma hipótese reverta para Supabase Broadcast, KVDB, Polling ou MQTT, pois isso causará quebra de firewall no 4G e bloqueios de Rate Limit por IP. Esta arquitetura está TRAVADA e HOMOLOGADA.
+## 7. Regras de Blindagem Existentes (Manter)
+- **NÃO ALTERE O MOTOR DE SINCRONIZAÇÃO `ntfySync.ts` (se existir/utilizado):** O sistema de chat criptografado opera perfeitamente sobre WebSocket via Porta 443 usando `ntfy.sh`. Sob nenhuma hipótese reverta para Supabase Broadcast, KVDB, Polling ou MQTT, pois isso causará quebra de firewall no 4G e bloqueios de Rate Limit por IP. Esta arquitetura está TRAVADA e HOMOLOGADA.
