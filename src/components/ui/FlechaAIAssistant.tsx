@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Send, X, Bot, ChevronRight, Activity, Zap, Info } from 'lucide-react';
+import { Send, X, Bot, ChevronRight, Activity, Zap, Info, Rocket, Navigation } from 'lucide-react';
 
 interface FlechaAIAssistantProps {
   currentUser?: { name: string; initials: string; role: string };
@@ -83,9 +83,9 @@ export function FlechaAIAssistant({ currentUser }: FlechaAIAssistantProps) {
              <div className="relative">
                 {/* Imagem personalizada pelo Usuário para a IA */}
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00d4ff] to-[#a78bfa] p-0.5 shadow-glow-cyan overflow-hidden">
-                   <img src="/ai-bot.png" alt="Flecha IA" className="w-full h-full object-cover rounded-[10px]" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                   <img src="https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=150&h=150&fit=crop" alt="Flecha IA" className="w-full h-full object-cover rounded-[10px]" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                    {/* Fallback svg se não carregar a imagem externa */}
-                   <Bot className="absolute inset-0 m-auto w-6 h-6 text-white" style={{ zIndex: -1 }} />
+                   <Navigation className="absolute inset-0 m-auto w-6 h-6 text-white" style={{ zIndex: -1 }} />
                 </div>
                 <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-[2.5px] border-fbsb-bg-deep rounded-full shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
              </div>
@@ -187,8 +187,8 @@ export function FlechaAIAssistant({ currentUser }: FlechaAIAssistantProps) {
              <X className="w-7 h-7 text-fbsb-text-secondary" />
            ) : (
              <div className="w-full h-full relative overflow-hidden rounded-full p-1 bg-fbsb-bg-deep flex items-center justify-center group-hover:bg-fbsb-surface-100 transition-colors">
-               <img src="/ai-bot.png" alt="Flecha IA" className="w-full h-full object-cover scale-110 drop-shadow-lg z-10" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-               <Bot className="absolute m-auto w-7 h-7 text-fbsb-cyan" />
+               <img src="https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=150&h=150&fit=crop" alt="Flecha IA" className="w-full h-full object-cover scale-110 drop-shadow-lg z-10" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+               <Navigation className="absolute m-auto w-7 h-7 text-fbsb-cyan" />
                <div className="absolute -bottom-1 -right-1 z-20">
                   <Activity className="w-5 h-5 text-emerald-400 fill-emerald-400/20 drop-shadow-md" />
                </div>
