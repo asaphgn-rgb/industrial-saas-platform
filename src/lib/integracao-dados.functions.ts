@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { supabase } from "@/lib/supabase";
 import {
   MODULOS,
   isModuloValido,
@@ -13,14 +13,12 @@ const moduloEnum = z
   .refine(isModuloValido, "Módulo de importação desconhecido")
   .transform((v) => v as ModuloIntegracao);
 
+const getSessionInfo = async () => {
+  const { data: { session } } = await supabase.auth.getSession();
+  return { supabase, userId: session?.user?.id };
+};
 
-/**
- * Cria uma importação e insere as linhas no staging.
- * O parsing do XLSX acontece no cliente para reduzir carga do servidor;
- * aqui apenas validamos, persistimos e reportamos erros.
- */
 export const stagearImportacao = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
   .validator((input) =>
     z
       .object({
@@ -34,8 +32,8 @@ export const stagearImportacao = createServerFn({ method: "POST" })
       })
       .parse(input),
   )
-  .handler(async ({ data, context }) => {
-    const { supabase, userId } = context;
+  .handler(async ({ data }) => {
+    const { supabase, userId } = await getSessionInfo();
 
     const { data: profile, error: profErr } = await supabase
       .from("profiles")
@@ -43,10 +41,8 @@ export const stagearImportacao = createServerFn({ method: "POST" })
       .eq("id", userId)
       .maybeSingle();
 
-    // Fallback: se não achar o tenant (banco cru)
     const tenantId = profile?.tenant_id || "00000000-0000-0000-0000-000000000000";
 
-    // Cria cabeçalho
     const { data: imp, error: impErr } = await supabase
       .from("importacoes")
       .insert({
@@ -78,7 +74,6 @@ export const stagearImportacao = createServerFn({ method: "POST" })
       };
     });
 
-    // Insere em lotes de 500
     for (let i = 0; i < rows.length; i += 500) {
       const chunk = rows.slice(i, i + 500);
       const { error } = await supabase.from("importacao_linhas").insert(chunk);
@@ -97,15 +92,10 @@ export const stagearImportacao = createServerFn({ method: "POST" })
     return { importacaoId: imp.id, total: rows.length, validas, comErro };
   });
 
-/**
- * Confirma a importação: transfere linhas 'valida' para a tabela final.
- * Só linhas válidas são gravadas; duplicidades (código já existente no tenant) viram erro.
- */
 export const confirmarImportacao = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
   .validator((input) => z.object({ importacaoId: z.string().uuid() }).parse(input))
-  .handler(async ({ data, context }) => {
-    const { supabase, userId } = context;
+  .handler(async ({ data }) => {
+    const { supabase, userId } = await getSessionInfo();
 
     const { data: profile } = await supabase
       .from("profiles")
@@ -141,7 +131,6 @@ export const confirmarImportacao = createServerFn({ method: "POST" })
     let importadas = 0;
     let falhas = 0;
 
-    // Resolve campos de referência (código legível → UUID) em uma consulta por tabela.
     const refCampos = schema.campos.filter((c) => c.referencia);
     const mapas = new Map<string, Map<string, string>>();
     for (const campo of refCampos) {
@@ -220,166 +209,36 @@ export const confirmarImportacao = createServerFn({ method: "POST" })
       }
     }
 
-
     await supabase
       .from("importacoes")
       .update({
-        status: falhas === 0 ? "importada" : "com_erro",
-        linhas_importadas: importadas,
-        mensagem: `Importadas: ${importadas}. Falhas: ${falhas}.`,
+        status: falhas > 0 ? "com_erro" : "importada",
+        linhas_validas: importadas,
+        linhas_com_erro: falhas,
       })
       .eq("id", imp.id);
 
     return { importadas, falhas };
   });
 
-/** Atualiza os dados de uma linha em staging e revalida somente ela. */
-export const atualizarLinhaImportacao = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .validator((input) =>
-    z
-      .object({
-        linhaId: z.string().uuid(),
-        dados: z.record(z.string(), z.unknown()),
-      })
-      .parse(input),
-  )
-  .handler(async ({ data, context }) => {
-    const { supabase } = context;
-    const { data: linha, error } = await supabase
-      .from("importacao_linhas")
-      .select("id, importacao_id")
-      .eq("id", data.linhaId)
-      .maybeSingle();
-    if (error || !linha) throw new Error("Linha não encontrada.");
-
-    const { data: imp } = await supabase
-      .from("importacoes")
-      .select("modulo")
-      .eq("id", linha.importacao_id)
-      .maybeSingle();
-    if (!imp) throw new Error("Importação não encontrada.");
-
-    const modulo = imp.modulo as ModuloIntegracao;
-    const { valida, erros, normalizada } = validarLinha(modulo, data.dados);
-
-    const { error: upErr } = await supabase
-      .from("importacao_linhas")
-      .update({
-        dados_originais: normalizada as never,
-        status: valida ? "valida" : "com_erro",
-        erros_validacao: erros.length ? erros.join("; ").slice(0, 500) : null,
-      })
-      .eq("id", data.linhaId);
-    if (upErr) throw new Error(upErr.message);
-
-    await recontarImportacao(supabase, linha.importacao_id);
-    return { valida, erros };
-  });
-
-/** Exclui (descarta) uma linha do staging. */
-export const excluirLinhaImportacao = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .validator((input) => z.object({ linhaId: z.string().uuid() }).parse(input))
-  .handler(async ({ data, context }) => {
-    const { supabase } = context;
-    const { data: linha } = await supabase
-      .from("importacao_linhas")
-      .select("importacao_id")
-      .eq("id", data.linhaId)
-      .maybeSingle();
-    const { error } = await supabase.from("importacao_linhas").delete().eq("id", data.linhaId);
-    if (error) throw new Error(error.message);
-    if (linha?.importacao_id) await recontarImportacao(supabase, linha.importacao_id);
-    return { ok: true };
-  });
-
-/** Descarta de uma vez todas as linhas com erro de uma importação. */
-export const descartarLinhasComErro = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+export const getLinhasErro = createServerFn({ method: "GET" })
   .validator((input) => z.object({ importacaoId: z.string().uuid() }).parse(input))
-  .handler(async ({ data, context }) => {
-    const { supabase } = context;
-    const { error } = await supabase
+  .handler(async ({ data }) => {
+    const { supabase } = await getSessionInfo();
+    const { data: rows } = await supabase
       .from("importacao_linhas")
-      .delete()
+      .select("id, numero_linha, dados_originais, erros_validacao")
       .eq("importacao_id", data.importacaoId)
-      .eq("status", "com_erro");
-    if (error) throw new Error(error.message);
-    await recontarImportacao(supabase, data.importacaoId);
-    return { ok: true };
-  });
-
-type LooseClient = {
-  from: (t: string) => {
-    select: (c: string) => {
-      eq: (col: string, v: string) => PromiseLike<{ data: { status: string }[] | null }>;
-    };
-    update: (v: Record<string, unknown>) => {
-      eq: (c: string, v: string) => PromiseLike<unknown>;
-    };
-  };
-};
-
-async function recontarImportacao(client: unknown, importacaoId: string) {
-  const supabase = client as LooseClient;
-  const { data: rows } = await supabase
-    .from("importacao_linhas")
-    .select("status")
-    .eq("importacao_id", importacaoId);
-
-  const lista = rows ?? [];
-  const validas = lista.filter((r) => r.status === "valida").length;
-  const comErro = lista.filter((r) => r.status === "com_erro").length;
-  const importadas = lista.filter((r) => r.status === "importada").length;
-  await supabase
-    .from("importacoes")
-    .update({
-      total_linhas: lista.length,
-      linhas_validas: validas,
-      linhas_com_erro: comErro,
-      linhas_importadas: importadas,
-      status:
-        importadas > 0 && comErro === 0
-          ? "importada"
-          : comErro > 0
-            ? "com_erro"
-            : "validada",
-    })
-    .eq("id", importacaoId);
-}
-
-
-export const listarImportacoes = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
-    const { data, error } = await context.supabase
-      .from("importacoes")
-      .select(
-        "id, modulo, status, arquivo_nome, total_linhas, linhas_validas, linhas_com_erro, linhas_importadas, created_at, mensagem",
-      )
-      .order("created_at", { ascending: false })
-      .limit(50);
-    if (error) throw new Error(error.message);
-    return data ?? [];
-  });
-
-export const listarLinhasImportacao = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .validator((input) =>
-    z
-      .object({ importacaoId: z.string().uuid(), somenteErros: z.boolean().optional() })
-      .parse(input),
-  )
-  .handler(async ({ data, context }) => {
-    let q = context.supabase
-      .from("importacao_linhas")
-      .select("id, numero_linha, status, erros_validacao, dados_originais")
-      .eq("importacao_id", data.importacaoId)
+      .eq("status", "com_erro")
       .order("numero_linha", { ascending: true })
-      .limit(500);
-    if (data.somenteErros) q = q.eq("status", "com_erro");
-    const { data: rows, error } = await q;
-    if (error) throw new Error(error.message);
+      .limit(100);
     return rows ?? [];
+  });
+
+export const descartarImportacao = createServerFn({ method: "POST" })
+  .validator((input) => z.object({ importacaoId: z.string().uuid() }).parse(input))
+  .handler(async ({ data }) => {
+    const { supabase } = await getSessionInfo();
+    await supabase.from("importacao_linhas").delete().eq("importacao_id", data.importacaoId);
+    await supabase.from("importacoes").delete().eq("id", data.importacaoId);
   });
