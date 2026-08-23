@@ -5,7 +5,7 @@ import { useState, useRef } from "react";
 import { friendlyError } from "@/lib/friendly-error";
 // XLSX é carregado sob demanda (lazy) para reduzir o bundle inicial (~400KB gzip)
 const loadXLSX = () => import("xlsx");
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
 import { PageHeader } from "@/components/flux/PageHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { FileUploadDropzone } from "@/components/flux/FileUploadDropzone";

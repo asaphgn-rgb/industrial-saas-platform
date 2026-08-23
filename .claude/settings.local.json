@@ -200,7 +200,13 @@
       "Bash(node fix_db_missing_schema.cjs)",
       "Bash(curl -X POST https://ujttkjvxxljonqepglae.supabase.co/rest/v1/rpc/exec -H 'apikey: sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA' -H 'Content-Type: application/json' -d '{\"query\": \"CREATE TABLE IF NOT EXISTS public.unidades_medida \\(id uuid default gen_random_uuid\\(\\) primary key, tenant_id uuid not null, sigla text not null, nome text not null, casas_decimais integer default 0, created_at timestamp with time zone default now\\(\\)\\);\"}')",
       "Bash(node run_sql.cjs)",
-      "Bash(curl -s -X POST \"https://ujttkjvxxljonqepglae.supabase.co/rest/v1/importacao_linhas\" -H \"apikey: sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA\" -H \"Content-Type: application/json\" -H \"Prefer: return=representation\" -d '{\"importacao_id\": \"e42b8846-d4e8-4d16-b82f-ff4e41139a65\", \"tenant_id\": \"00000000-0000-0000-0000-000000000000\", \"numero_linha\": 3, \"dados_originais\": {\"nome\": \"Litro\", \"sigla\": \"L\", \"casas_decimais\": 2}, \"status\": \"valida\"}')"
+      "Bash(curl -s -X POST \"https://ujttkjvxxljonqepglae.supabase.co/rest/v1/importacao_linhas\" -H \"apikey: sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA\" -H \"Content-Type: application/json\" -H \"Prefer: return=representation\" -d '{\"importacao_id\": \"e42b8846-d4e8-4d16-b82f-ff4e41139a65\", \"tenant_id\": \"00000000-0000-0000-0000-000000000000\", \"numero_linha\": 3, \"dados_originais\": {\"nome\": \"Litro\", \"sigla\": \"L\", \"casas_decimais\": 2}, \"status\": \"valida\"}')",
+      "Bash(node fix_supabase7.cjs)",
+      "Bash(find /c/Users/Fabiano -name \"*a3f125ed*.png\" -type f -mtime -1 2>/dev/null)",
+      "Bash(find / -name \"*1-a3f125ed.png\" -type f 2>/dev/null | head -n 1)",
+      "Bash(xargs sed -i 's/@\\\\/integrations\\\\/supabase\\\\/client/@\\\\/lib\\\\/supabase/g')",
+      "Bash(curl -s 'https://i.ibb.co/6y4VjL7/bot.png' -I)",
+      "Bash(git ls-tree *)"
     ]
   }
 }
