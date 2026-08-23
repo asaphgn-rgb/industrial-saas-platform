@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { NAV } from "@/components/flux/AppSidebar";
 import { useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
 import { sanitizePostgrestLike } from "@/lib/search-sanitize";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/components/ui/sidebar";

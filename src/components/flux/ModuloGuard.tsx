@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useRouterState } from "@tanstack/react-router";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
 import { checarAcessoModulo } from "@/lib/modulo-acesso.functions";
 import { LoadingState } from "@/components/flux/LoadingState";
 import { PermissionDenied } from "@/components/flux/PermissionDenied";

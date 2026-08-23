@@ -2,7 +2,7 @@ import { formatBRL } from "@/components/flux/MoneyValue";
 import { friendlyError } from "@/lib/friendly-error";
 import { Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase as typed } from "@/integrations/supabase/client";
+import { supabase as typed } from "@/lib/supabase";
 import { PageHeader } from "@/components/flux/PageHeader";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

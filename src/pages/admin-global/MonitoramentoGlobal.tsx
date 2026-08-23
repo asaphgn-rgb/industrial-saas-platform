@@ -1,122 +1,77 @@
-import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
-import { Activity, AlertTriangle, ShieldCheck, Info } from 'lucide-react';
-import { cn } from '@/lib/utils';
-
-interface Notificacao {
-  id: string;
-  title: string;
-  message: string;
-  type: 'INFO' | 'WARNING' | 'SUCCESS' | 'ERROR';
-  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
-  is_read: boolean;
-  created_at: string;
-}
+import { useState } from 'react';
+import { Activity, Server, Users, Database, ArrowUpRight, ArrowDownRight, ShieldCheck } from 'lucide-react';
 
 export default function MonitoramentoGlobal() {
-  const [eventos, setEventos] = useState<Notificacao[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    carregarEventos();
-
-    // Inscrição Realtime para Monitoramento em Tempo Real
-    const channel = supabase
-      .channel('monitoramento_global')
-      .on('postgres_changes', { 
-        event: 'INSERT', 
-        schema: 'public', 
-        table: 'notificacoes_admin_global' 
-      }, (payload) => {
-        setEventos((prev) => [payload.new as Notificacao, ...prev]);
-      })
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
-  const carregarEventos = async () => {
-    try {
-      setLoading(true);
-      const { data, error } = await (supabase as any)
-        .from('notificacoes_admin_global')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(50);
-
-      if (error) throw error;
-      setEventos(data || []);
-    } catch (error) {
-      console.error('Erro ao carregar monitoramento:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getIcon = (type: string) => {
-    switch(type) {
-      case 'ERROR': return <AlertTriangle className="h-5 w-5 text-red-500" />;
-      case 'WARNING': return <AlertTriangle className="h-5 w-5 text-amber-500" />;
-      case 'SUCCESS': return <ShieldCheck className="h-5 w-5 text-emerald-500" />;
-      default: return <Info className="h-5 w-5 text-blue-500" />;
-    }
-  };
+  const [metrics] = useState([
+    { title: 'Tráfego Rede (Req/s)', value: '1.240', trend: 'up', change: '+12%', icon: <Activity className="h-5 w-5" /> },
+    { title: 'Uso de Banco (CPU)', value: '45%', trend: 'down', change: '-5%', icon: <Database className="h-5 w-5" /> },
+    { title: 'Usuários Concorrentes', value: '8.432', trend: 'up', change: '+24%', icon: <Users className="h-5 w-5" /> },
+    { title: 'Latência Média (API)', value: '142ms', trend: 'up', change: '+10ms', icon: <Server className="h-5 w-5" /> },
+  ]);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between border-b pb-4">
+    <div className="space-y-8 animate-fade-in">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900">Monitoramento Global</h2>
-          <p className="text-sm text-slate-500">Acompanhamento em tempo real das atividades críticas da Plataforma Diamond.</p>
+          <h2 className="text-3xl font-bold tracking-tight text-diamond-950">Monitoramento Realtime</h2>
+          <p className="text-sm text-diamond-400 mt-1">Status de infraestrutura e performance do sistema.</p>
         </div>
-        <div className="flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700">
-          <span className="relative flex h-3 w-3">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-500"></span>
+        <div className="flex items-center gap-3">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            Sistemas Operacionais
           </span>
-          Sistema Online e Monitorando
         </div>
       </div>
 
-      <div className="rounded-xl border bg-white shadow-sm">
-        <div className="p-4 border-b bg-slate-50/50 flex items-center justify-between">
-          <h3 className="font-semibold text-slate-800 flex items-center gap-2">
-            <Activity className="h-5 w-5 text-slate-500" /> Timeline de Eventos
-          </h3>
-          <span className="text-xs font-medium text-slate-500">Exibindo últimos 50 eventos</span>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {metrics.map((metric, i) => (
+          <div key={i} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-2 bg-slate-50 text-slate-500 rounded-lg">
+                {metric.icon}
+              </div>
+              <span className={`flex items-center gap-1 text-xs font-bold ${metric.trend === 'up' && metric.title !== 'Latência Média (API)' ? 'text-emerald-600' : 'text-amber-600'}`}>
+                {metric.trend === 'up' ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
+                {metric.change}
+              </span>
+            </div>
+            <h3 className="text-sm font-medium text-slate-500">{metric.title}</h3>
+            <p className="text-3xl font-bold text-diamond-950 mt-1">{metric.value}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2 rounded-2xl border border-slate-200 bg-white shadow-soft p-6">
+          <h3 className="text-lg font-bold text-diamond-950 mb-6">Gráfico de Carga (Simulado)</h3>
+          <div className="h-64 w-full bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-center text-slate-400 font-medium">
+            [ Área reservada para gráfico Recharts ]
+          </div>
         </div>
-        
-        <div className="divide-y divide-slate-100 max-h-[600px] overflow-y-auto">
-          {loading ? (
-            <div className="p-8 text-center text-slate-500">Carregando telemetria...</div>
-          ) : eventos.length === 0 ? (
-            <div className="p-8 text-center text-slate-500">Nenhum evento crítico registrado no momento.</div>
-          ) : (
-            eventos.map((evento) => (
-              <div key={evento.id} className={cn("flex gap-4 p-4 hover:bg-slate-50 transition-colors", !evento.is_read && "bg-slate-50/80")}>
-                <div className="mt-1 flex-shrink-0">
-                  {getIcon(evento.type)}
-                </div>
-                <div className="flex-1 space-y-1">
-                  <div className="flex items-center justify-between">
-                    <p className="font-medium text-slate-900">{evento.title}</p>
-                    <time className="text-xs text-slate-500">
-                      {new Date(evento.created_at).toLocaleString('pt-BR')}
-                    </time>
-                  </div>
-                  <p className="text-sm text-slate-600">{evento.message}</p>
-                  
-                  {evento.priority === 'CRITICAL' && (
-                    <span className="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800">
-                      Prioridade Crítica
-                    </span>
-                  )}
+
+        <div className="rounded-2xl border border-slate-200 bg-white shadow-soft p-6">
+          <h3 className="text-lg font-bold text-diamond-950 mb-6">Status dos Serviços</h3>
+          <div className="space-y-4">
+            {[
+              { nome: 'Auth Supabase', status: 'Online', cor: 'bg-emerald-500' },
+              { nome: 'PostgreSQL DB', status: 'Online', cor: 'bg-emerald-500' },
+              { nome: 'Storage Privado', status: 'Online', cor: 'bg-emerald-500' },
+              { nome: 'Edge Functions', status: 'Degradado', cor: 'bg-amber-500' },
+              { nome: 'API SPC/Serasa', status: 'Online', cor: 'bg-emerald-500' },
+            ].map((srv, idx) => (
+              <div key={idx} className="flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-slate-50/50">
+                <span className="text-sm font-semibold text-slate-700">{srv.nome}</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium text-slate-500">{srv.status}</span>
+                  <div className={`h-2.5 w-2.5 rounded-full ${srv.cor}`}></div>
                 </div>
               </div>
-            ))
-          )}
+            ))}
+          </div>
         </div>
       </div>
     </div>

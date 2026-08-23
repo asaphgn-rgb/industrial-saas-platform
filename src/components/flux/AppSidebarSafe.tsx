@@ -40,7 +40,7 @@ import {
 } from "@/components/ui/sidebar";
 import fluxMark from "@/assets/brand/flux-mark.webp";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
 
 type SafeItem = {
   title: string;

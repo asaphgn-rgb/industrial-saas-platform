@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase as typedSupabase } from "@/integrations/supabase/client";
+import { supabase as typedSupabase } from "@/lib/supabase";
 import fluxMark from "@/assets/brand/flux-mark.webp";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

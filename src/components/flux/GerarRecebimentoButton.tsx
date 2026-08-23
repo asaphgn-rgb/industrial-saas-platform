@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { supabase as typedSupabase } from "@/integrations/supabase/client";
+import { supabase as typedSupabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

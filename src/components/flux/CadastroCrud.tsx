@@ -3,7 +3,7 @@ import { friendlyError } from "@/lib/friendly-error";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRealtimeInvalidate } from "@/hooks/useRealtimeInvalidate";
-import { supabase as typedSupabase } from "@/integrations/supabase/client";
+import { supabase as typedSupabase } from "@/lib/supabase";
 // Cast to bypass typegen lag — new tables in this fase aren't yet in types.ts
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const supabase = typedSupabase as any;

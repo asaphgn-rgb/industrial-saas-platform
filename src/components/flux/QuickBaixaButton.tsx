@@ -1,7 +1,7 @@
 import { formatBRL } from "@/components/flux/MoneyValue";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase as typedSupabase } from "@/integrations/supabase/client";
+import { supabase as typedSupabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { supabase as typedSupabase } from "@/integrations/supabase/client";
+import { supabase as typedSupabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { ArrowRightCircle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
