@@ -1,30 +1,11 @@
---- temp-flux-repo/src/routes/_authenticated/implantacao/integracao-dados.tsx
-+++ temp-flux-repo/src/routes/_authenticated/implantacao/integracao-dados.tsx
-@@ -370,7 +370,12 @@
+--- src/routes/_authenticated/implantacao/integracao-dados.tsx
++++ src/routes/_authenticated/implantacao/integracao-dados.tsx
+@@ -370,7 +370,7 @@
        setModuloSelecionado(null);
        qc.invalidateQueries({ queryKey: ["importacoes"] });
      } catch (e) {
--      toast.error(e instanceof Error ? e.message : friendlyError(e, "Falha ao processar arquivo."));
-+      const errStr = String(e);
-+      if (errStr.includes("Falha ao gravar linhas:")) {
-+         toast.error(`Erro do banco ao gravar as linhas: ${errStr}`);
-+      } else {
-+         toast.error(e instanceof Error ? e.message : friendlyError(e, "Falha ao processar arquivo."));
-+      }
-     } finally {
-       setEnviando(false);
-       setEtapa("");
-@@ -405,7 +410,12 @@
-       setModuloSelecionado(null);
-       qc.invalidateQueries({ queryKey: ["importacoes"] });
-     } catch (e) {
--      toast.error(friendlyError(e, "Falha ao enviar os lotes."));
-+      const errStr = String(e);
-+      if (errStr.includes("Falha ao gravar linhas:")) {
-+         toast.error(`Erro do banco ao gravar os lotes: ${errStr}`);
-+      } else {
-+         toast.error(e instanceof Error ? e.message : friendlyError(e, "Falha ao enviar os lotes."));
-+      }
+-      toast.error(friendlyError(e, "Falha ao processar arquivo."));
++      toast.error(e instanceof Error ? e.message : friendlyError(e, "Falha ao processar arquivo."));
      } finally {
        setEnviando(false);
        setEtapa("");

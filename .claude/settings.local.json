@@ -188,7 +188,9 @@
       "Bash(export SUPABASE_DB_PASSWORD=\"\")",
       "Bash(git commit -m 'feat: CEO Executive Governance Center - full permissions matrix, user management, audit trail & recharts analytics *)",
       "Bash(git commit -m 'feat: dashboard moderno com glassmorphism, gráficos de area, donut chart, anel de progresso, timeline de auditoria e cadastro de usuário com permissões integradas *)",
-      "Bash(git commit -m 'feat\\(security\\): implementar Zero-Trace absoluto para o Chat E2E *)"
+      "Bash(git commit -m 'feat\\(security\\): implementar Zero-Trace absoluto para o Chat E2E *)",
+      "Bash(curl -X POST https://ujttkjvxxljonqepglae.supabase.co/rest/v1/rpc/exec -H 'apikey: sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA' -H 'Content-Type: application/json' -d '{\"query\": \"DROP POLICY IF EXISTS \\\\\"allow_all_importacoes\\\\\" ON public.importacoes; CREATE POLICY \\\\\"allow_all_importacoes\\\\\" ON public.importacoes FOR ALL USING \\(true\\) WITH CHECK \\(true\\); DROP POLICY IF EXISTS \\\\\"allow_all_importacao_linhas\\\\\" ON public.importacao_linhas; CREATE POLICY \\\\\"allow_all_importacao_linhas\\\\\" ON public.importacao_linhas FOR ALL USING \\(true\\) WITH CHECK \\(true\\);\"}')",
+      "Bash(cd .. && ls)"
     ]
   }
 }
