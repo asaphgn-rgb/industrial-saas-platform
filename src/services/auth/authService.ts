@@ -1,4 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '@/lib/supabase';
 import { User, AuthSession } from '@/types/auth';
 
 export const authService = {
@@ -12,7 +12,7 @@ export const authService = {
       return { user: null, session: null, isLoading: false };
     }
 
-    const { data: profile } = await supabase
+    const { data: profile } = await (supabase as any)
       .from('profiles')
       .select('*')
       .eq('id', session.user.id)

@@ -10,12 +10,18 @@ import { RoleGuard } from '@/guards/RoleGuard';
 // Pages
 import Login from '@/pages/auth/Login';
 import DashboardRouter from '@/pages/dashboard/DashboardRouter';
+import CRMComercial from '@/pages/shared/CRMComercial';
+
+// Pages - Admin Global
 import MonitoramentoGlobal from '@/pages/admin-global/MonitoramentoGlobal';
 import GestaoProdutos from '@/pages/admin-global/GestaoProdutos';
+import GestaoFederacoes from '@/pages/admin-global/GestaoFederacoes';
+import AuditoriaLogs from '@/pages/admin-global/AuditoriaLogs';
+
+// Pages - Associado
 import CadastroMultiStep from '@/pages/associado/cadastro/CadastroMultiStep';
 import VitrineProdutos from '@/pages/associado/produtos/VitrineProdutos';
 import PastaDigital from '@/pages/associado/pasta-digital/PastaDigital';
-import CRMComercial from '@/pages/shared/CRMComercial';
 
 function App() {
   const { setUser, setLoading } = useAuth();
@@ -43,8 +49,10 @@ function App() {
         </Route>
 
         <Route element={<RoleGuard allowedRoles={['ADMIN_GLOBAL']}><AppShell /></RoleGuard>}>
-          <Route path="/admin-global/monitoramento" element={<MonitoramentoGlobal />} />
+          <Route path="/admin-global/federacoes" element={<GestaoFederacoes />} />
           <Route path="/admin-global/produtos" element={<GestaoProdutos />} />
+          <Route path="/admin-global/monitoramento" element={<MonitoramentoGlobal />} />
+          <Route path="/admin-global/auditoria" element={<AuditoriaLogs />} />
         </Route>
 
         <Route element={<RoleGuard allowedRoles={['ASSOCIADO']}><AppShell /></RoleGuard>}>

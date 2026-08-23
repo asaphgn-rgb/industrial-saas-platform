@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '@/lib/supabase';
 import { Activity, AlertTriangle, ShieldCheck, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -40,7 +40,7 @@ export default function MonitoramentoGlobal() {
   const carregarEventos = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('notificacoes_admin_global')
         .select('*')
         .order('created_at', { ascending: false })

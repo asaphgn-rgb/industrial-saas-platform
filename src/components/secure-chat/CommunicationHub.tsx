@@ -192,7 +192,7 @@ export function CommunicationHub({ currentUser, globalRoomId }: CommunicationHub
   };
 
   return (
-    <div className="flex h-full w-full overflow-hidden relative">
+    <div className="flex h-full w-full overflow-hidden relative bg-fbsb-bg-deep dark text-fbsb-text-primary">
 
       {/* ====== SIDEBAR ESQUERDA: Lista de Salas ====== */}
       <div className="w-80 flex-shrink-0 bg-fbsb-bg-main border-r border-white/5 flex flex-col overflow-hidden">

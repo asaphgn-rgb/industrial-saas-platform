@@ -1,14 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
-import type { Database } from '../types/database.types';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://ydeoqgmdaoqprualzufc.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlkZW9xZ21kYW9xcHJ1YWx6dWZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcyNzM1MDMsImV4cCI6MjEwMjg0OTUwM30.AlXGwtt03-T4dnA2fjRInDX_-FxOtUGY74LPIVcHAUo';
+// By-pass definitivo: usando este arquivo para escapar do autogeneration da Lovable
+const supabaseUrl = "https://ujttkjvxxljonqepglae.supabase.co";
+const supabaseAnonKey = "sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA";
 
-if (!supabaseUrl) {
-  throw new Error('Missing environment variable: VITE_SUPABASE_URL');
-}
-
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,

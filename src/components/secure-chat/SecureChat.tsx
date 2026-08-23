@@ -391,7 +391,7 @@ export function SecureChat({ roomId, currentUserId, currentUserRole, currentUser
   if (loading) return <div className="flex h-full items-center justify-center p-4"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-fbsb-primary"></div></div>;
 
   return (
-    <div className="flex flex-col h-full w-full max-w-5xl mx-auto bg-fbsb-bg-main md:border border-white/5 md:rounded-3xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.05)] overflow-hidden font-sans absolute md:relative inset-0 md:inset-auto">
+    <div className="flex flex-col h-full w-full max-w-5xl mx-auto bg-fbsb-bg-deep md:border border-white/5 md:rounded-3xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.05)] overflow-hidden font-sans absolute md:relative inset-0 md:inset-auto dark">
       <div className="flex items-center justify-between px-6 py-4 bg-fbsb-surface-100 text-fbsb-text-primary z-10 border-b border-white/5">
         <div className="flex items-center space-x-4">
           <div className="p-2.5 bg-fbsb-surface-200 rounded-xl shadow-inner-gold">
