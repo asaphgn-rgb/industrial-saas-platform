@@ -83,7 +83,7 @@ export function VideoConferenceRoom({ roomId, roomName, currentUserName, onClose
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-fbsb-bg-deep dark text-fbsb-text-primary">
+    <div className="fixed inset-0 z-50 flex flex-col bg-fbsb-bg-deep">
 
       {/* Header Topo da Sala */}
       <div className="h-16 bg-fbsb-surface-100 border-b border-fbsb-border flex items-center justify-between px-6 z-10 shadow-md">
