@@ -5,13 +5,14 @@
 - Isso inclui: respostas, comentários de código, mensagens de commit, nomes de variáveis descritivas, labels de UI, alertas e logs voltados ao usuário.
 - NUNCA responda em inglês, a menos que o usuário solicite explicitamente.
 
-## 1. Visão Geral do Sistema
-Este repositório contém o **MORAR BEM BRASIL / PLATAFORMA DIAMOND**, uma plataforma SaaS fintech habitacional para gestão completa de:
-Administração Global, Federações, Associações, Associados, Cadastro habitacional, Upload documental, Pastas digitais, Backup geral, Pré-análise de crédito, Consulta SPC/Serasa, Score, Produtos (disponíveis, desejados, personalizados), Contratos digitais, CRM comercial, Transações, Comissões, IA flutuante, Auditoria e LGPD.
+## 1. Visão Geral do Sistema (Prompt Mestre Universal V2.1 - Low-Cost Edition)
+Este repositório contém o **MORAR BEM BRASIL / PLATAFORMA DIAMOND**, uma plataforma SaaS fintech habitacional projetada sob a ótica **Low-Cost Enterprise SaaS**.
+O foco é maximizar a eficiência, delegando o processamento pesado para o banco de dados (Supabase/PostgreSQL) via RPCs, utilizando Vercel para hospedagem frontend, React Query para caching agressivo, Supabase Storage (com limitações restritas) para arquivos e Resend para o envio de e-mails de baixo custo.
+A plataforma faz a gestão completa de: Administração Global, Federações, Associações, Associados, Cadastro habitacional, Upload documental, Pastas digitais, Backup geral, Pré-análise de crédito, Consulta SPC/Serasa, Score, Produtos (disponíveis, desejados, personalizados), Contratos digitais, CRM comercial, Transações, Comissões, IA flutuante, Auditoria e LGPD.
 
-## 2. Princípios Inegociáveis de Arquitetura & Segurança
+## 2. Princípios Inegociáveis de Arquitetura & Segurança (Low-Cost Edition)
 
-1. **Stack Obrigatória:** React, TypeScript, Tailwind CSS, Supabase, PostgreSQL, Supabase Auth, RLS, Storage Privado, Edge Functions.
+1. **Stack Obrigatória:** React, TypeScript, Tailwind CSS, React Query (Caching), Supabase (PostgreSQL, Auth, Storage, Edge Functions/RPCs), Vercel, Resend.
 2. **Segurança de Dados e Segredos:**
    - NUNCA comite arquivos `.env`, `.env.local` ou credenciais em texto plano.
    - NUNCA exponha CPF, CNPJ, tokens, senhas ou documentos.
@@ -19,11 +20,15 @@ Administração Global, Federações, Associações, Associados, Cadastro habita
 3. **Isolamento de Dados (RLS Obrigatório):**
    - O Row Level Security (RLS) DEVE estar permanentemente ativado em 100% das tabelas sensíveis.
    - Nenhuma tabela sensível pode ficar sem RLS. NUNCA desabilite o RLS.
-4. **Armazenamento Seguro:** 
-   - Storage privado obrigatório. NENHUM documento público.
-5. **Privacidade e LGPD:**
+4. **Armazenamento e Caching (Otimização de Custos):** 
+   - Storage privado obrigatório no Supabase com limites restritos de tamanho para evitar custos de banda/armazenamento. NENHUM documento público.
+   - Uso agressivo de **React Query** para minimizar chamadas repetitivas ao banco de dados.
+   - Lógica pesada e validações DEVEM ser movidas para **PostgreSQL RPCs/Edge Functions** para reduzir processamento no cliente.
+5. **Comunicação:**
+   - E-mails transacionais utilizando a infraestrutura de baixo custo do **Resend**.
+6. **Privacidade e LGPD:**
    - Consulta de crédito SOMENTE com consentimento ativo. CPF e CNPJ devem ser mascarados nas interfaces.
-6. **Integridade de Informações Habitacionais/Financeiras:**
+7. **Integridade de Informações Habitacionais/Financeiras:**
    - NENHUMA aprovação bancária definitiva deve ser prometida ou exibida. 
    - A pré-análise é EXCLUSIVAMENTE consultiva.
 
@@ -45,9 +50,10 @@ O sistema segue uma estrutura hierárquica estrita: **Admin Global -> Federaçã
 
 O desenvolvimento segue uma estrutura rigorosa de fases (Fase 1 à Fase 23, conforme definido no prompt original). Regras para evolução de código:
 - Crie código modular, limpo, componentizado, reaproveitável e profissional.
-- Antes de instalar qualquer biblioteca, verificar a real necessidade.
+- Antes de instalar qualquer biblioteca, verificar a real necessidade (foco no Low-Cost Edition: evite bibliotecas pesadas e desnecessárias).
 - Testes rigorosos em cada etapa, com validação de RLS e políticas de segurança.
 - As mudanças no banco (Supabase) DEVEM sempre ser feitas via migrations locais (`supabase/migrations/`).
+- Delegar a maior parte da lógica de negócio para RPCs no banco de dados para evitar vazamento de memória e processamento inútil no cliente.
 
 ## 6. Trilha de Auditoria e Notificações (Audit Trail & Logs)
 

@@ -1,9 +1,11 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import RoleGuard from './guards/RoleGuard';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from './lib/react-query';
+import { RoleGuard } from './guards/RoleGuard';
 
 // Layouts
 import Sidebar from './components/layout/Sidebar';
-import Topbar from './components/layout/Topbar';
+import { Topbar } from './components/layout/Topbar'; // AQUI A CORREÇÃO (destructuring)
 
 // Pages
 import Login from './pages/auth/Login';
@@ -24,7 +26,7 @@ function AppLayout({ children }: { children: React.ReactNode }) {
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0">
         <Topbar />
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 mt-20">
           <div className="max-w-7xl mx-auto">
             {children}
           </div>
@@ -37,9 +39,10 @@ function AppLayout({ children }: { children: React.ReactNode }) {
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
 
         {/* Rotas ADMIN_GLOBAL */}
@@ -125,6 +128,7 @@ function App() {
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </Router>
+    </QueryClientProvider>
   );
 }
 

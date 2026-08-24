@@ -206,7 +206,20 @@
       "Bash(find / -name \"*1-a3f125ed.png\" -type f 2>/dev/null | head -n 1)",
       "Bash(xargs sed -i 's/@\\\\/integrations\\\\/supabase\\\\/client/@\\\\/lib\\\\/supabase/g')",
       "Bash(curl -s 'https://i.ibb.co/6y4VjL7/bot.png' -I)",
-      "Bash(git ls-tree *)"
+      "Bash(git ls-tree *)",
+      "Bash(curl -v -H \"apikey: sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA\" -H \"Authorization: Bearer sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA\" \"https://ujttkjvxxljonqepglae.supabase.co/rest/v1/centros_custo?select=*\")",
+      "Bash(rm fix_users*.cjs run_sql.cjs)",
+      "Bash(curl -s -X POST https://ujttkjvxxljonqepglae.supabase.co/auth/v1/signup -H 'apikey: sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA' -H 'Content-Type: application/json' -d '{\"email\":\"ceo2@flechabsb.com\",\"password\":\"ceovault\"}')",
+      "Bash(lt --port 54064 --subdomain morarbembrasil)",
+      "Bash(npx ngrok *)",
+      "Bash(serve -s dist -l 3000)",
+      "Bash(lt --port 3000 --subdomain sistemadiamond)",
+      "Bash(lt --port 54064 --subdomain plataformadiamond)",
+      "Bash(mkdir -p src/lib)",
+      "Bash(lt --port 3000 --subdomain sistemadiamond2)",
+      "Bash(curl -s -X POST https://ujttkjvxxljonqepglae.supabase.co/auth/v1/token?grant_type=password -H 'apikey: sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA' -H 'Content-Type: application/json' -d '{\"email\":\"ceo@flechabsb.com\",\"password\":\"ceovault\"}')",
+      "Bash(curl -s -I \"https://ujttkjvxxljonqepglae.supabase.co\")",
+      "Bash(curl -s -X POST \"https://ujttkjvxxljonqepglae.supabase.co/auth/v1/token?grant_type=password\" -H \"apikey: sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA\" -H \"Content-Type: application/json\" -d '{\"email\":\"ceo@flechabsb.com\",\"password\":\"ceovault\"}')"
     ]
   }
 }

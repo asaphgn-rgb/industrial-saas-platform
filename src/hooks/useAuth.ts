@@ -12,7 +12,7 @@ interface AuthState {
 
 export const useAuth = create<AuthState>((set) => ({
   user: null,
-  isLoading: true,
+  isLoading: false, // Alterado de true para false para não travar na inicialização mockada
   isAuthenticated: false,
   setUser: (user) => set({ user, isAuthenticated: !!user, isLoading: false }),
   setLoading: (isLoading) => set({ isLoading }),

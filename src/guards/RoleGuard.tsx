@@ -8,15 +8,16 @@ interface RoleGuardProps {
 }
 
 export function RoleGuard({ children, allowedRoles }: RoleGuardProps) {
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, isAuthenticated } = useAuth();
   const location = useLocation();
 
   if (isLoading) {
     return <div className="flex h-screen items-center justify-center">Carregando...</div>;
   }
 
-  if (!user) {
-    return <Navigate to="/auth/login" state={{ from: location }} replace />;
+  // Verifica isAuthenticated para evitar loops
+  if (!isAuthenticated || !user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   if (user.status === 'BLOCKED') {

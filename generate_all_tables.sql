@@ -1,93 +1,68 @@
--- Criando as tabelas vitais para recebimento das planilhas de implantação
+-- Run this in the Supabase SQL Editor to forcefully create and bypass the confirmation blocks for all these essential users.
+-- This creates them directly in the auth schema and the public.profiles schema.
 
--- Centros de Custo
-CREATE TABLE IF NOT EXISTS public.centros_custo (
-  id uuid default gen_random_uuid() primary key,
-  tenant_id uuid not null,
-  codigo text not null,
-  nome text not null,
-  tipo text,
-  ativo boolean default true,
-  created_by uuid,
-  created_at timestamp with time zone default now()
-);
-ALTER TABLE public.centros_custo DISABLE ROW LEVEL SECURITY;
-GRANT ALL ON public.centros_custo TO anon, authenticated, service_role;
+DO $$
+DECLARE
+  v_user_id uuid;
+  v_ceo_id uuid;
+  v_adm_id uuid;
+  v_jur_id uuid;
+  v_socio_id uuid;
+  v_ops_id uuid;
+BEGIN
+  -- CEO
+  v_ceo_id := gen_random_uuid();
+  INSERT INTO auth.users (id, instance_id, email, encrypted_password, email_confirmed_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at, role)
+  VALUES (v_ceo_id, '00000000-0000-0000-0000-000000000000', 'ceo@flechabsb.com', crypt('ceovault', gen_salt('bf')), now(), '{"provider":"email","providers":["email"]}', '{}', now(), now(), 'authenticated')
+  ON CONFLICT (email) DO UPDATE SET encrypted_password = crypt('ceovault', gen_salt('bf')), email_confirmed_at = now()
+  RETURNING id INTO v_ceo_id;
 
--- Depósitos
-CREATE TABLE IF NOT EXISTS public.depositos (
-  id uuid default gen_random_uuid() primary key,
-  tenant_id uuid not null,
-  codigo text not null,
-  nome text not null,
-  tipo text,
-  capacidade_kg numeric,
-  created_by uuid,
-  created_at timestamp with time zone default now()
-);
-ALTER TABLE public.depositos DISABLE ROW LEVEL SECURITY;
-GRANT ALL ON public.depositos TO anon, authenticated, service_role;
+  INSERT INTO public.profiles (id, email, role, nome_completo)
+  VALUES (v_ceo_id, 'ceo@flechabsb.com', 'ADMIN_GLOBAL', 'Direção Executiva (CEO)')
+  ON CONFLICT (id) DO UPDATE SET role = 'ADMIN_GLOBAL';
 
--- Clientes
-CREATE TABLE IF NOT EXISTS public.clientes (
-  id uuid default gen_random_uuid() primary key,
-  tenant_id uuid not null,
-  cnpj_cpf text not null,
-  razao_social text not null,
-  nome_fantasia text,
-  email text,
-  telefone text,
-  endereco_completo text,
-  created_by uuid,
-  created_at timestamp with time zone default now()
-);
-ALTER TABLE public.clientes DISABLE ROW LEVEL SECURITY;
-GRANT ALL ON public.clientes TO anon, authenticated, service_role;
+  -- ADM
+  v_adm_id := gen_random_uuid();
+  INSERT INTO auth.users (id, instance_id, email, encrypted_password, email_confirmed_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at, role)
+  VALUES (v_adm_id, '00000000-0000-0000-0000-000000000000', 'adm@flechabsb.com', crypt('adminvault', gen_salt('bf')), now(), '{"provider":"email","providers":["email"]}', '{}', now(), now(), 'authenticated')
+  ON CONFLICT (email) DO UPDATE SET encrypted_password = crypt('adminvault', gen_salt('bf')), email_confirmed_at = now()
+  RETURNING id INTO v_adm_id;
 
--- Fornecedores
-CREATE TABLE IF NOT EXISTS public.fornecedores (
-  id uuid default gen_random_uuid() primary key,
-  tenant_id uuid not null,
-  cnpj_cpf text not null,
-  razao_social text not null,
-  nome_fantasia text,
-  categoria text,
-  email text,
-  created_by uuid,
-  created_at timestamp with time zone default now()
-);
-ALTER TABLE public.fornecedores DISABLE ROW LEVEL SECURITY;
-GRANT ALL ON public.fornecedores TO anon, authenticated, service_role;
+  INSERT INTO public.profiles (id, email, role, nome_completo)
+  VALUES (v_adm_id, 'adm@flechabsb.com', 'ADMIN_GLOBAL', 'Gestão Administrativa / Backoffice')
+  ON CONFLICT (id) DO UPDATE SET role = 'ADMIN_GLOBAL';
 
--- Produtos
-CREATE TABLE IF NOT EXISTS public.produtos (
-  id uuid default gen_random_uuid() primary key,
-  tenant_id uuid not null,
-  codigo text not null,
-  descricao text not null,
-  tipo text,
-  unidade_medida_id uuid,
-  peso_kg numeric,
-  largura_mm numeric,
-  espessura_micras numeric,
-  created_by uuid,
-  created_at timestamp with time zone default now()
-);
-ALTER TABLE public.produtos DISABLE ROW LEVEL SECURITY;
-GRANT ALL ON public.produtos TO anon, authenticated, service_role;
+  -- JURIDICO
+  v_jur_id := gen_random_uuid();
+  INSERT INTO auth.users (id, instance_id, email, encrypted_password, email_confirmed_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at, role)
+  VALUES (v_jur_id, '00000000-0000-0000-0000-000000000000', 'juridico@flechabsb.com', crypt('legalvault', gen_salt('bf')), now(), '{"provider":"email","providers":["email"]}', '{}', now(), now(), 'authenticated')
+  ON CONFLICT (email) DO UPDATE SET encrypted_password = crypt('legalvault', gen_salt('bf')), email_confirmed_at = now()
+  RETURNING id INTO v_jur_id;
 
--- Materias Primas
-CREATE TABLE IF NOT EXISTS public.materias_primas (
-  id uuid default gen_random_uuid() primary key,
-  tenant_id uuid not null,
-  codigo text not null,
-  descricao text not null,
-  categoria text,
-  unidade_medida_id uuid,
-  estoque_minimo numeric,
-  created_by uuid,
-  created_at timestamp with time zone default now()
-);
-ALTER TABLE public.materias_primas DISABLE ROW LEVEL SECURITY;
-GRANT ALL ON public.materias_primas TO anon, authenticated, service_role;
+  INSERT INTO public.profiles (id, email, role, nome_completo)
+  VALUES (v_jur_id, 'juridico@flechabsb.com', 'ADMIN_GLOBAL', 'Jurídico / Compliance')
+  ON CONFLICT (id) DO UPDATE SET role = 'ADMIN_GLOBAL';
 
+  -- SOCIO
+  v_socio_id := gen_random_uuid();
+  INSERT INTO auth.users (id, instance_id, email, encrypted_password, email_confirmed_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at, role)
+  VALUES (v_socio_id, '00000000-0000-0000-0000-000000000000', 'socio@flechabsb.com', crypt('auditvault', gen_salt('bf')), now(), '{"provider":"email","providers":["email"]}', '{}', now(), now(), 'authenticated')
+  ON CONFLICT (email) DO UPDATE SET encrypted_password = crypt('auditvault', gen_salt('bf')), email_confirmed_at = now()
+  RETURNING id INTO v_socio_id;
+
+  INSERT INTO public.profiles (id, email, role, nome_completo)
+  VALUES (v_socio_id, 'socio@flechabsb.com', 'ADMIN_GLOBAL', 'Sócio / Auditoria')
+  ON CONFLICT (id) DO UPDATE SET role = 'ADMIN_GLOBAL';
+
+  -- OPERACOES
+  v_ops_id := gen_random_uuid();
+  INSERT INTO auth.users (id, instance_id, email, encrypted_password, email_confirmed_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at, role)
+  VALUES (v_ops_id, '00000000-0000-0000-0000-000000000000', 'operacional@flechabsb.com', crypt('opsvault', gen_salt('bf')), now(), '{"provider":"email","providers":["email"]}', '{}', now(), now(), 'authenticated')
+  ON CONFLICT (email) DO UPDATE SET encrypted_password = crypt('opsvault', gen_salt('bf')), email_confirmed_at = now()
+  RETURNING id INTO v_ops_id;
+
+  INSERT INTO public.profiles (id, email, role, nome_completo)
+  VALUES (v_ops_id, 'operacional@flechabsb.com', 'FEDERACAO', 'Operações / Campo & Técnico')
+  ON CONFLICT (id) DO UPDATE SET role = 'FEDERACAO';
+
+END $$;

@@ -1,13 +1,14 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
+  prefix: "",
   theme: {
     container: {
       center: true,
@@ -17,18 +18,20 @@ export default {
       },
     },
     extend: {
-      fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-      },
       colors: {
-        /* EXTENSÃO DA PALETA DIAMOND */
+        /* PALETA DIAMOND PREMIUM */
         diamond: {
-          950: '#0A0F1E', // Fundo mais escuro/Sidebar
-          900: '#1B2A41', // Azul Noturno
-          500: '#3B82F6', // Azul Brilhante (Primary)
-          400: '#94A3B8', // Cinza Metálico
-          100: '#E2E8F0', // Cinza Gelo Claro
-          50:  '#F8FAFC', // Cinza Gelidíssimo (Backgrounds)
+          50: '#F1F5F9', // Cinza Gelo Claro
+          100: '#E2E8F0', // Cinza Base
+          200: '#CBD5E1', 
+          300: '#94A3B8', // Cinza Metálico
+          400: '#64748B', 
+          500: '#3B82F6', // Azul Vibrante Primário
+          600: '#2563EB',
+          700: '#1D4ED8',
+          800: '#1E40AF',
+          900: '#1E3A8A',
+          950: '#1B2A41', // Azul Noturno Profundo Secundário
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -78,17 +81,12 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "fade-in": {
-          from: { opacity: "0" },
-          to: { opacity: "1" },
-        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in": "fade-in 0.3s ease-out",
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config
+} satisfies Config;

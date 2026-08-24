@@ -1,8 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 
-// By-pass definitivo: usando este arquivo para escapar do autogeneration da Lovable
-const supabaseUrl = "https://ujttkjvxxljonqepglae.supabase.co";
-const supabaseAnonKey = "sb_publishable_vd4vwvZg0Pk1WniViBOdFw_1ALig3hA";
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
