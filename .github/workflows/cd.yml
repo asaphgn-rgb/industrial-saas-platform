@@ -1,66 +1,110 @@
-name: CD - Multi-Environment Deployment
+name: CD - Publicação automática
 
 on:
   push:
     branches:
-      - develop # Deploy para DEV/HML
-      - main    # Deploy para PROD (exige aprovação de Environment)
+      - main
+      - develop
+      - 'codex/**'
+      - 'feature/**'
+      - 'hotfix/**'
+
+concurrency:
+  group: publicacao-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
-  deploy-staging:
-    name: Deploy to Staging / DEV
-    if: github.ref == 'refs/heads/develop'
+  validar-e-publicar-preview:
+    name: Validar e publicar prévia
+    if: github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
-      name: staging
-      url: https://staging.industrial-saas.local
+      name: preview
     steps:
-      - name: Checkout Repository
+      - name: Baixar código
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
-      - name: Install Dependencies
+      - name: Instalar dependências
         run: npm ci
 
-      - name: Build Staging Artifact
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL_STAGING }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY_STAGING }}
-          VITE_APP_ENV: staging
+      - name: Validar tipos
+        run: npm run typecheck
+
+      - name: Executar testes
+        run: npm run test
+
+      - name: Gerar build
         run: npm run build
 
-      - name: Verify Staging Artifact
-        run: ls -la dist/
+      - name: Buscar configuração da Vercel
+        run: npx vercel@latest pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-  deploy-production:
-    name: Deploy to Production
+      - name: Gerar artefato da prévia
+        run: npx vercel@latest build --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Publicar prévia
+        run: npx vercel@latest deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+  validar-e-publicar-producao:
+    name: Validar e publicar produção
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: production
-      url: https://app.industrial-saas.local
     steps:
-      - name: Checkout Repository
+      - name: Baixar código
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
-      - name: Install Dependencies
+      - name: Instalar dependências
         run: npm ci
 
-      - name: Build Production Artifact
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL_PROD }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY_PROD }}
-          VITE_APP_ENV: production
+      - name: Validar tipos
+        run: npm run typecheck
+
+      - name: Executar testes
+        run: npm run test
+
+      - name: Gerar build
         run: npm run build
 
-      - name: Verify Production Artifact
-        run: ls -la dist/
+      - name: Buscar configuração de produção
+        run: npx vercel@latest pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Gerar artefato de produção
+        run: npx vercel@latest build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Publicar em produção
+        run: npx vercel@latest deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
