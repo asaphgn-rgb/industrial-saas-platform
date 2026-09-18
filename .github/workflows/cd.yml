@@ -1,4 +1,4 @@
-name: CD - Publicação automática
+name: CI - Validação para publicação Lovable
 
 on:
   push:
@@ -8,21 +8,21 @@ on:
       - 'codex/**'
       - 'feature/**'
       - 'hotfix/**'
+  pull_request:
+    branches:
+      - main
 
 concurrency:
-  group: publicacao-${{ github.ref }}
+  group: validacao-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
-  validar-e-publicar-preview:
-    name: Validar e publicar prévia
-    if: github.ref != 'refs/heads/main'
+  validar:
+    name: Validar código antes da publicação
     runs-on: ubuntu-latest
-    environment:
-      name: preview
     steps:
       - name: Baixar código
         uses: actions/checkout@v4
@@ -44,67 +44,3 @@ jobs:
 
       - name: Gerar build
         run: npm run build
-
-      - name: Buscar configuração da Vercel
-        run: npx vercel@latest pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Gerar artefato da prévia
-        run: npx vercel@latest build --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Publicar prévia
-        run: npx vercel@latest deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-  validar-e-publicar-producao:
-    name: Validar e publicar produção
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    environment:
-      name: production
-    steps:
-      - name: Baixar código
-        uses: actions/checkout@v4
-
-      - name: Configurar Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-
-      - name: Instalar dependências
-        run: npm install --legacy-peer-deps --no-audit --no-fund
-
-      - name: Validar tipos
-        run: npm run typecheck
-
-      - name: Executar testes
-        run: npm run test
-
-      - name: Gerar build
-        run: npm run build
-
-      - name: Buscar configuração de produção
-        run: npx vercel@latest pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Gerar artefato de produção
-        run: npx vercel@latest build --prod --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Publicar em produção
-        run: npx vercel@latest deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
