@@ -1,66 +1,46 @@
-name: CD - Multi-Environment Deployment
+name: CI - Validação para publicação Lovable
 
 on:
   push:
     branches:
-      - develop # Deploy para DEV/HML
-      - main    # Deploy para PROD (exige aprovação de Environment)
+      - main
+      - develop
+      - 'codex/**'
+      - 'feature/**'
+      - 'hotfix/**'
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: validacao-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
-  deploy-staging:
-    name: Deploy to Staging / DEV
-    if: github.ref == 'refs/heads/develop'
+  validar:
+    name: Validar código antes da publicação
     runs-on: ubuntu-latest
-    environment:
-      name: staging
-      url: https://staging.industrial-saas.local
     steps:
-      - name: Checkout Repository
+      - name: Baixar código
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
+          cache: npm
 
-      - name: Install Dependencies
-        run: npm ci
+      - name: Instalar dependências
+        run: npm install --legacy-peer-deps --no-audit --no-fund
 
-      - name: Build Staging Artifact
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL_STAGING }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY_STAGING }}
-          VITE_APP_ENV: staging
+      - name: Validar tipos
+        run: npm run typecheck
+
+      - name: Executar testes
+        run: npm run test
+
+      - name: Gerar build
         run: npm run build
-
-      - name: Verify Staging Artifact
-        run: ls -la dist/
-
-  deploy-production:
-    name: Deploy to Production
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    environment:
-      name: production
-      url: https://app.industrial-saas.local
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Build Production Artifact
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL_PROD }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY_PROD }}
-          VITE_APP_ENV: production
-        run: npm run build
-
-      - name: Verify Production Artifact
-        run: ls -la dist/
