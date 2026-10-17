@@ -43,6 +43,7 @@ export default function Sidebar() {
   const menuHabitacional = {
     ADMIN_GLOBAL: [
       { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard Habitacional' },
+      { path: '/admin/simulador-santander', icon: Calculator, label: 'Simulador Santander' },
       { path: '/admin/espelho-vendas', icon: Building2, label: 'Espelho de Vendas' },
       { path: '/admin/fila-social', icon: Users, label: 'Fila Social & Scoring' },
       { path: '/admin/contratos', icon: FileText, label: 'Contratos Digitais' },
@@ -60,6 +61,7 @@ export default function Sidebar() {
     ],
     FEDERACAO: [
       { path: '/federacao/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+      { path: '/admin/simulador-santander', icon: Calculator, label: 'Esteira de Crédito' },
       { path: '/admin/espelho-vendas', icon: Building2, label: 'Espelho de Vendas' },
       { path: '/admin/fila-social', icon: Users, label: 'Fila Regional' },
       { path: '/federacao/associacoes', icon: Building, label: 'Minhas Associações' },
@@ -68,6 +70,7 @@ export default function Sidebar() {
     ],
     ASSOCIACAO: [
       { path: '/associacao/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+      { path: '/admin/simulador-santander', icon: Calculator, label: 'Simular p/ Associado' },
       { path: '/admin/espelho-vendas', icon: Building2, label: 'Mapa de Unidades' },
       { path: '/admin/fila-social', icon: Users, label: 'Fila de Convocação' },
       { path: '/associacao/associados', icon: Users, label: 'Meus Associados' },
@@ -76,6 +79,7 @@ export default function Sidebar() {
     ],
     ASSOCIADO: [
       { path: '/associado/dashboard', icon: LayoutDashboard, label: 'Meu Painel' },
+      { path: '/admin/simulador-santander', icon: Calculator, label: 'Simular Meu Financiamento' },
       { path: '/associado/documentos', icon: FolderLock, label: 'Pasta Digital' },
       { path: '/admin/contratos', icon: FileText, label: 'Meus Contratos' },
       { path: '/associado/produtos', icon: Package, label: 'Meu Imóvel' },

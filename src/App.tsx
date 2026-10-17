@@ -32,6 +32,7 @@ import CashbackMoradia from './pages/cartao/CashbackMoradia';
 import EspelhoUnidades from './pages/habitacional/EspelhoUnidades';
 import FilaSocialScoring from './pages/habitacional/FilaSocialScoring';
 import GestaoContratosDigitais from './pages/habitacional/GestaoContratosDigitais';
+import SimuladorCreditoSantander from './pages/habitacional/SimuladorCreditoSantander';
 import { CommunicationHub } from './components/secure-chat/CommunicationHub';
 import FloatingAIAssistant from './components/assistant/FloatingAIAssistant';
 import { useAuth } from './hooks/useAuth';
@@ -164,6 +165,14 @@ function App() {
           element={
             <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO', 'ASSOCIADO']}>
               <AppLayout><GestaoContratosDigitais /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/admin/simulador-santander"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO', 'ASSOCIADO']}>
+              <AppLayout><SimuladorCreditoSantander /></AppLayout>
             </RoleGuard>
           }
         />
