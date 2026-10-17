@@ -11,7 +11,10 @@ import {
   ShieldCheck,
   AlertCircle,
   PiggyBank,
-  Sparkles
+  Sparkles,
+  Flame,
+  Award,
+  ChevronRight
 } from 'lucide-react';
 import { ResgateCashbackMoradia } from '@/types/cartao';
 
@@ -70,58 +73,64 @@ export default function CashbackMoradia() {
   };
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-8 animate-fade-in select-none">
+      {/* Header Corporativo Santander */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200/80">
         <div>
           <div className="flex items-center gap-2">
-            <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-              Cashback Habitacional & Fidelidade Social
-            </h2>
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 flex items-center gap-1">
-              <Sparkles className="h-3.5 w-3.5" /> Integração Fintech + Moradia
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-[#EC0000] border border-red-200">
+              Economia Circular & Fidelidade Esfera
             </span>
           </div>
-          <p className="text-sm text-slate-500 mt-1">
-            Utilize o cashback acumulado das suas compras diárias na rede credenciada do Cartão Diamond para abater suas parcelas e cotas habitacionais.
+          <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 mt-1">
+            Cashback Habitacional & Fidelidade Social
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+            Converta automaticamente o cashback gerado nas compras cotidianas em desconto nas parcelas e cotas habitacionais.
           </p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <span className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold bg-red-50 text-[#EC0000] border border-red-200 shadow-sm">
+            <Flame className="h-4 w-4 text-[#EC0000] fill-[#EC0000]" /> Pontos Esfera Ativos
+          </span>
         </div>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-3">
-        {/* Painel Central de Saldo e Ação de Resgate */}
-        <div className="lg:col-span-2 bg-gradient-to-br from-purple-950 via-slate-900 to-diamond-950 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden border border-purple-800/40 flex flex-col justify-between">
-          <div className="absolute right-0 top-0 translate-x-12 -translate-y-12 opacity-10 pointer-events-none">
-            <PiggyBank className="w-80 h-80 text-purple-300" />
+        {/* Painel Central Santander Unique Red Style */}
+        <div className="lg:col-span-2 bg-gradient-to-br from-[#1C1C1C] via-[#141414] to-[#0A0A0A] rounded-3xl p-8 text-white shadow-xl relative overflow-hidden border border-neutral-800 flex flex-col justify-between">
+          <div className="absolute right-0 top-0 translate-x-12 -translate-y-12 opacity-5 pointer-events-none">
+            <PiggyBank className="w-80 h-80 text-white" />
           </div>
 
           <div className="relative z-10 space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30">
-              <Coins className="h-3.5 w-3.5 text-amber-400" /> Saldo Acumulado para Habitação
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-white/10 text-red-300 border border-white/10">
+              <Coins className="h-3.5 w-3.5 text-amber-400" /> Saldo Acumulado para Amortização Habitacional
             </div>
 
             <div>
-              <p className="text-sm text-slate-300">Saldo Disponível para Amortização:</p>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Saldo Líquido Disponível:</p>
               <h3 className="text-4xl sm:text-5xl font-black text-white mt-1 tracking-tight">
                 R$ {saldoDisponivel.toFixed(2).replace('.', ',')}
               </h3>
-              <p className="text-xs text-emerald-400 font-medium mt-1 flex items-center gap-1">
-                <TrendingUp className="h-3.5 w-3.5" /> +R$ 64,80 acumulados este mês na rede parceira
+              <p className="text-xs text-emerald-400 font-semibold mt-1 flex items-center gap-1">
+                <TrendingUp className="h-3.5 w-3.5" /> +R$ 64,80 acumulados este mês na rede credenciada
               </p>
             </div>
           </div>
 
           {/* Card de Ação de Desconto */}
-          <div className="relative z-10 mt-8 pt-6 border-t border-purple-800/60 bg-white/5 backdrop-blur-md p-6 rounded-2xl border border-white/10 space-y-4">
+          <div className="relative z-10 mt-8 pt-6 border-t border-neutral-800 bg-white/5 backdrop-blur-md p-6 rounded-2xl border border-white/10 space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <p className="text-xs uppercase font-bold text-purple-300 tracking-wider">Unidade Beneficiada:</p>
-                <p className="font-bold text-white text-base">Residencial Diamante Sul · Apto 102</p>
+                <p className="text-xs uppercase font-bold text-red-400 tracking-wider">Unidade Habitacional Beneficiada:</p>
+                <p className="font-black text-white text-base">Residencial Diamante Sul · Apto 102</p>
                 <p className="text-xs text-slate-400">Contrato Ativo: CTR-5001 · Vencimento da Cota: 10/11/2026</p>
               </div>
 
               <div className="w-full sm:w-auto">
-                <label className="text-xs text-slate-300 block mb-1">Valor a Abater (R$):</label>
+                <label className="text-xs text-slate-300 block mb-1 font-bold">Valor a Abater (R$):</label>
                 <div className="flex items-center gap-2">
                   <input
                     type="number"
@@ -130,23 +139,23 @@ export default function CashbackMoradia() {
                     step={10}
                     value={valorAmortizacao}
                     onChange={e => setValorAmortizacao(Number(e.target.value))}
-                    className="w-32 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white font-bold outline-none focus:border-purple-500"
+                    className="w-32 bg-neutral-900 border border-neutral-700 rounded-xl px-3 py-2 text-sm text-white font-bold outline-none focus:border-[#EC0000]"
                   />
                   <button
                     onClick={handleAmortizar}
-                    className="px-5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-sm shadow-lg shadow-purple-600/30 flex items-center gap-2 transition-all flex-shrink-0"
+                    className="px-5 py-2.5 rounded-xl bg-[#EC0000] hover:bg-[#CC0000] text-white font-bold text-xs shadow-md shadow-red-600/30 flex items-center gap-2 transition-all shrink-0"
                   >
-                    Amortizar Agora <ArrowRight className="h-4 w-4" />
+                    Abater na Parcela <ArrowRight className="h-4 w-4" />
                   </button>
                 </div>
               </div>
             </div>
 
             {amortizadoSucesso && (
-              <div className="p-3 bg-emerald-500/20 border border-emerald-500/40 rounded-xl text-emerald-300 text-xs flex items-center gap-2 animate-in fade-in">
-                <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
+              <div className="p-3.5 bg-emerald-500/20 border border-emerald-500/40 rounded-xl text-emerald-300 text-xs flex items-center gap-2 animate-in fade-in font-semibold">
+                <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
                 <span>
-                  Desconto de R$ {valorAmortizacao.toFixed(2).replace('.', ',')} aplicado com sucesso no boleto da sua cota habitacional!
+                  Desconto de R$ {valorAmortizacao.toFixed(2).replace('.', ',')} aplicado com sucesso no próximo boleto da sua cota habitacional!
                 </span>
               </div>
             )}
@@ -154,61 +163,67 @@ export default function CashbackMoradia() {
         </div>
 
         {/* Como Funciona o Cashback Habitacional */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-soft space-y-4">
-          <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
-            <Building className="h-5 w-5 text-purple-600" />
-            Ecossistema de Economia Circular
-          </h3>
+        <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-soft space-y-4 flex flex-col justify-between">
+          <div>
+            <h3 className="font-black text-slate-900 text-base flex items-center gap-2 pb-3 border-b border-slate-100">
+              <Building className="h-5 w-5 text-[#EC0000]" />
+              Ecossistema de Economia Circular
+            </h3>
 
-          <div className="space-y-3 text-xs text-slate-600 leading-relaxed">
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-start gap-2.5">
-              <span className="w-5 h-5 rounded-full bg-purple-100 text-purple-700 font-bold flex items-center justify-center flex-shrink-0 text-[10px]">
-                1
-              </span>
-              <div>
-                <strong className="text-slate-900 block font-semibold">Compre na Rede Credenciada</strong>
-                Supermercados, postos e farmácias conveniados devolvem de 2% a 6.5% de cashback direto para sua conta.
+            <div className="space-y-3 text-xs text-slate-600 leading-relaxed mt-4">
+              <div className="p-3.5 bg-[#F4F6F9] rounded-2xl border border-slate-100 flex items-start gap-2.5">
+                <span className="w-5 h-5 rounded-full bg-red-100 text-[#EC0000] font-bold flex items-center justify-center shrink-0 text-[10px]">
+                  1
+                </span>
+                <div>
+                  <strong className="text-slate-900 block font-bold">Compre na Rede Credenciada</strong>
+                  Supermercados, postos e farmácias conveniados devolvem de 2% a 6.5% de cashback direto para sua conta.
+                </div>
+              </div>
+
+              <div className="p-3.5 bg-[#F4F6F9] rounded-2xl border border-slate-100 flex items-start gap-2.5">
+                <span className="w-5 h-5 rounded-full bg-red-100 text-[#EC0000] font-bold flex items-center justify-center shrink-0 text-[10px]">
+                  2
+                </span>
+                <div>
+                  <strong className="text-slate-900 block font-bold">Custódia Remunerada</strong>
+                  O saldo acumulado é mantido em conta de custódia Bacen e não expira enquanto o associado for filiado ativo.
+                </div>
+              </div>
+
+              <div className="p-3.5 bg-[#F4F6F9] rounded-2xl border border-slate-100 flex items-start gap-2.5">
+                <span className="w-5 h-5 rounded-full bg-red-100 text-[#EC0000] font-bold flex items-center justify-center shrink-0 text-[10px]">
+                  3
+                </span>
+                <div>
+                  <strong className="text-slate-900 block font-bold">Moradia Mais Acessível</strong>
+                  Converta seu saldo direto em abatimento da entrada, parcelas de amortização ou quitação antecipada.
+                </div>
               </div>
             </div>
+          </div>
 
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-start gap-2.5">
-              <span className="w-5 h-5 rounded-full bg-purple-100 text-purple-700 font-bold flex items-center justify-center flex-shrink-0 text-[10px]">
-                2
-              </span>
-              <div>
-                <strong className="text-slate-900 block font-semibold">Saldo Protegido</strong>
-                O saldo acumulado é mantido em custódia remunerada e não expira enquanto o associado mantiver o plano ativo.
-              </div>
-            </div>
-
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-start gap-2.5">
-              <span className="w-5 h-5 rounded-full bg-purple-100 text-purple-700 font-bold flex items-center justify-center flex-shrink-0 text-[10px]">
-                3
-              </span>
-              <div>
-                <strong className="text-slate-900 block font-semibold">Moradia Mais Barata</strong>
-                Converta seus pontos e cashback direto em desconto na entrada, nas parcelas mensais ou na quitação da sua moradia.
-              </div>
-            </div>
+          <div className="pt-4 border-t border-slate-100 text-[11px] text-slate-400 text-center font-medium">
+            Benefício auditado pelo Conselho Fiscal e garantido por contrato associativo
           </div>
         </div>
       </div>
 
       {/* Histórico de Resgates Realizados */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-soft overflow-hidden">
+      <div className="bg-white rounded-3xl border border-slate-200 shadow-soft overflow-hidden">
         <div className="p-6 border-b border-slate-100 flex items-center justify-between">
           <div>
-            <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
-              <History className="h-5 w-5 text-purple-600" />
+            <h3 className="font-black text-slate-900 text-base flex items-center gap-2">
+              <History className="h-5 w-5 text-[#EC0000]" />
               Extrato de Amortizações Habitacionais
             </h3>
-            <p className="text-xs text-slate-400 mt-0.5">Histórico de resgates creditados no rateio da sua unidade</p>
+            <p className="text-xs text-slate-400 mt-0.5">Histórico de créditos aplicados no rateio da sua unidade</p>
           </div>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50/80 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+          <table className="w-full text-left text-sm text-slate-600">
+            <thead className="bg-[#F8FAFC] text-[11px] uppercase font-bold text-slate-400 border-b border-slate-200/80">
               <tr>
                 <th className="py-4 px-6">Data da Operação</th>
                 <th className="py-4 px-6">Contrato & Unidade</th>
@@ -217,17 +232,17 @@ export default function CashbackMoradia() {
                 <th className="py-4 px-6">Status da Liquidação</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-100 text-xs">
               {historicoResgates.map(resg => (
                 <tr key={resg.id} className="hover:bg-slate-50/60 transition-colors">
-                  <td className="py-4 px-6 font-semibold text-slate-900">
+                  <td className="py-4 px-6 font-bold text-slate-900">
                     {resg.data_operacao}
                   </td>
                   <td className="py-4 px-6">
-                    <p className="font-semibold text-slate-900">{resg.unidade_moradia}</p>
+                    <p className="font-bold text-slate-900">{resg.unidade_moradia}</p>
                     <p className="text-xs text-slate-400 font-mono">Contrato {resg.contrato_numero}</p>
                   </td>
-                  <td className="py-4 px-6 font-bold text-emerald-600 text-base">
+                  <td className="py-4 px-6 font-black text-emerald-600 text-sm">
                     - R$ {resg.valor_resgatado.toFixed(2).replace('.', ',')}
                   </td>
                   <td className="py-4 px-6 text-xs text-slate-600">
@@ -235,7 +250,7 @@ export default function CashbackMoradia() {
                     <p className="text-slate-400">Atual: R$ {resg.novo_saldo.toFixed(2).replace('.', ',')}</p>
                   </td>
                   <td className="py-4 px-6">
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                       <CheckCircle2 className="h-3.5 w-3.5" /> Abatido na Cota Habitacional
                     </span>
                   </td>

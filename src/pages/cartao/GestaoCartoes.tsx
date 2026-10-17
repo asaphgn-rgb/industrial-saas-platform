@@ -12,7 +12,10 @@ import {
   Clock,
   ShieldAlert,
   ArrowRight,
-  Download
+  Download,
+  Flame,
+  ShieldCheck,
+  ChevronRight
 } from 'lucide-react';
 import { CartaoItem } from '@/types/cartao';
 
@@ -103,35 +106,41 @@ export default function GestaoCartoes() {
   });
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-8 animate-fade-in select-none">
+      {/* Header Corporativo Santander */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200/80">
         <div>
           <div className="flex items-center gap-2">
-            <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-              Gestão da Base de Cartões
-            </h2>
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
-              Fintech Diamond
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-[#EC0000] border border-red-200">
+              Emissão & Gestão de Limites Bacen
             </span>
           </div>
-          <p className="text-sm text-slate-500 mt-1">
-            Controle de limites, bloqueios preventivos antifraude e emissão de cartões físicos e virtuais.
+          <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 mt-1">
+            Gestão da Base de Cartões Santander Diamond
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+            Monitoramento de cartões físicos/virtuais, faturas, consumo de limite e travas preventivas antifraude.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <button className="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50 flex items-center gap-2 shadow-sm transition-colors">
-            <Download className="h-4 w-4" /> Exportar Base
+          <button
+            onClick={() => alert('Exportando base de cartões')}
+            className="px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-700 font-bold text-xs hover:bg-slate-50 flex items-center gap-2 shadow-sm transition-colors"
+          >
+            <Download className="h-4 w-4 text-[#EC0000]" /> Exportar Base
           </button>
-          <button className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm flex items-center gap-2 shadow-sm transition-colors">
-            <PlusCircle className="h-4 w-4" /> Solicitar Emissão
+          <button
+            onClick={() => alert('Abrindo formulário de emissão de cartão')}
+            className="px-4 py-2.5 rounded-xl bg-[#EC0000] hover:bg-[#CC0000] text-white font-bold text-xs flex items-center gap-2 shadow-md shadow-red-600/20 transition-all"
+          >
+            <PlusCircle className="h-4 w-4" /> Emitir Novo Cartão
           </button>
         </div>
       </div>
 
       {/* Barra de Filtros e Busca */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-center gap-4">
+      <div className="bg-white p-4 rounded-3xl border border-slate-200 shadow-soft flex flex-col md:flex-row items-center gap-4">
         <div className="relative flex-1 w-full">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           <input
@@ -139,7 +148,7 @@ export default function GestaoCartoes() {
             placeholder="Buscar por titular, CPF ou final do cartão..."
             value={busca}
             onChange={e => setBusca(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 text-sm rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 outline-none transition-all"
+            className="w-full pl-10 pr-4 py-2.5 text-xs rounded-2xl border border-slate-200 bg-[#F4F6F9] focus:bg-white focus:border-[#EC0000] focus:ring-4 focus:ring-red-500/10 outline-none transition-all"
           />
         </div>
 
@@ -147,7 +156,7 @@ export default function GestaoCartoes() {
           <select
             value={filtroTipo}
             onChange={e => setFiltroTipo(e.target.value)}
-            className="px-3 py-2 text-sm rounded-xl border border-slate-200 bg-white text-slate-700 outline-none focus:border-blue-500"
+            className="px-3.5 py-2 text-xs font-bold rounded-xl border border-slate-200 bg-white text-slate-700 outline-none focus:border-[#EC0000]"
           >
             <option value="TODOS">Todos os Tipos</option>
             <option value="BENEFICIO">Benefício</option>
@@ -159,7 +168,7 @@ export default function GestaoCartoes() {
           <select
             value={filtroStatus}
             onChange={e => setFiltroStatus(e.target.value)}
-            className="px-3 py-2 text-sm rounded-xl border border-slate-200 bg-white text-slate-700 outline-none focus:border-blue-500"
+            className="px-3.5 py-2 text-xs font-bold rounded-xl border border-slate-200 bg-white text-slate-700 outline-none focus:border-[#EC0000]"
           >
             <option value="TODOS">Todos os Status</option>
             <option value="ATIVO">Ativo</option>
@@ -169,31 +178,31 @@ export default function GestaoCartoes() {
         </div>
       </div>
 
-      {/* Tabela de Cartões */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-soft overflow-hidden">
+      {/* Tabela de Cartões Santander Style */}
+      <div className="bg-white rounded-3xl border border-slate-200 shadow-soft overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50/80 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+          <table className="w-full text-left text-sm text-slate-600">
+            <thead className="bg-[#F8FAFC] text-[11px] uppercase font-bold text-slate-400 border-b border-slate-200/80">
               <tr>
                 <th className="py-4 px-6">Cartão & Titular</th>
                 <th className="py-4 px-6">Tipo</th>
                 <th className="py-4 px-6">Limite Total / Disponível</th>
                 <th className="py-4 px-6">Fatura Atual</th>
-                <th className="py-4 px-6">Cashback</th>
+                <th className="py-4 px-6">Cashback / Esfera</th>
                 <th className="py-4 px-6">Status</th>
-                <th className="py-4 px-6 text-right">Ação Rápida</th>
+                <th className="py-4 px-6 text-right">Ação de Segurança</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-100 text-xs">
               {cartoesFiltrados.map(cartao => (
                 <tr key={cartao.id} className="hover:bg-slate-50/60 transition-colors">
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-3">
-                      <div className="p-2.5 rounded-xl bg-slate-900 text-blue-400">
+                      <div className="p-2.5 rounded-2xl bg-[#141414] text-[#EC0000] border border-neutral-800 shadow-sm">
                         <CreditCard className="h-5 w-5" />
                       </div>
                       <div>
-                        <p className="font-semibold text-slate-900">{cartao.titular}</p>
+                        <p className="font-bold text-slate-900 text-sm">{cartao.titular}</p>
                         <p className="text-xs text-slate-400 font-mono">
                           {cartao.numero_mascarado} • CPF {cartao.cpf_mascarado}
                         </p>
@@ -202,41 +211,44 @@ export default function GestaoCartoes() {
                   </td>
 
                   <td className="py-4 px-6">
-                    <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-slate-100 text-slate-700">
+                    <span className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700">
                       {cartao.tipo}
                     </span>
                   </td>
 
                   <td className="py-4 px-6">
-                    <p className="font-semibold text-slate-900">
-                      R$ {cartao.limite_total.toLocaleString('pt-BR')}
+                    <p className="font-black text-slate-900">
+                      R$ {cartao.limite_total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </p>
-                    <p className="text-xs text-emerald-600">
-                      Disp: R$ {cartao.limite_disponivel.toLocaleString('pt-BR')}
+                    <p className="text-[11px] font-semibold text-emerald-600">
+                      Disp: R$ {cartao.limite_disponivel.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </p>
                   </td>
 
                   <td className="py-4 px-6">
-                    <p className="font-semibold text-slate-900">
-                      R$ {cartao.fatura_atual.toLocaleString('pt-BR')}
+                    <p className="font-black text-[#EC0000]">
+                      R$ {cartao.fatura_atual.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                     </p>
-                    <p className="text-xs text-slate-400">Venc: {cartao.vencimento}</p>
+                    <p className="text-[10px] text-slate-400">Vencimento: {cartao.vencimento}</p>
                   </td>
 
                   <td className="py-4 px-6">
-                    <span className="font-bold text-emerald-600 text-sm">
+                    <span className="font-black text-slate-900 text-xs block">
                       R$ {cartao.cashback_acumulado.toFixed(2).replace('.', ',')}
+                    </span>
+                    <span className="text-[10px] font-bold text-amber-600">
+                      Abatível na Moradia
                     </span>
                   </td>
 
                   <td className="py-4 px-6">
                     <span
-                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold ${
                         cartao.status === 'ATIVO'
-                          ? 'bg-emerald-100 text-emerald-800'
+                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                           : cartao.status === 'BLOQUEADO'
-                          ? 'bg-red-100 text-red-800'
-                          : 'bg-amber-100 text-amber-800'
+                          ? 'bg-red-50 text-red-700 border border-red-200'
+                          : 'bg-amber-50 text-amber-700 border border-amber-200'
                       }`}
                     >
                       {cartao.status === 'ATIVO' && <CheckCircle2 className="h-3.5 w-3.5" />}
@@ -249,15 +261,15 @@ export default function GestaoCartoes() {
                   <td className="py-4 px-6 text-right">
                     <button
                       onClick={() => toggleStatus(cartao.id)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 transition-colors ${
+                      className={`px-3.5 py-1.5 rounded-xl text-xs font-bold inline-flex items-center gap-1.5 transition-all ${
                         cartao.status === 'ATIVO'
-                          ? 'bg-red-50 text-red-700 hover:bg-red-100'
-                          : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
+                          ? 'bg-red-50 text-[#EC0000] border border-red-200 hover:bg-red-100'
+                          : 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100'
                       }`}
                     >
                       {cartao.status === 'ATIVO' ? (
                         <>
-                          <Lock className="h-3.5 w-3.5" /> Bloquear
+                          <Lock className="h-3.5 w-3.5" /> Bloquear Cartão
                         </>
                       ) : (
                         <>
@@ -270,6 +282,14 @@ export default function GestaoCartoes() {
               ))}
             </tbody>
           </table>
+        </div>
+
+        <div className="p-4 border-t border-slate-100 bg-[#F4F6F9] text-xs text-slate-500 flex justify-between items-center">
+          <span>Barramento de autorização conectado ao arranjo de pagamento Santander / Elo / Mastercard</span>
+          <div className="flex gap-1.5">
+            <button className="px-3 py-1 rounded-xl border border-slate-200 bg-white text-slate-400 cursor-not-allowed">Anterior</button>
+            <button className="px-3 py-1 rounded-xl border border-slate-200 bg-white text-slate-400 cursor-not-allowed">Próxima</button>
+          </div>
         </div>
       </div>
     </div>
