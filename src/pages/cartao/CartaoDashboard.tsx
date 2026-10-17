@@ -2,303 +2,536 @@ import { useState } from 'react';
 import {
   CreditCard,
   TrendingUp,
-  Users,
-  Store,
-  ShieldCheck,
   ArrowUpRight,
   ArrowDownLeft,
   Percent,
-  AlertTriangle,
-  CheckCircle2,
-  Filter,
+  Plus,
+  Send,
   Download,
-  PlusCircle,
-  Lock,
-  Unlock,
-  DollarSign
+  Upload,
+  RefreshCw,
+  Clock,
+  ShieldCheck,
+  CheckCircle2,
+  AlertCircle,
+  MoreVertical,
+  Sliders,
+  Sparkles,
+  Wifi,
+  ChevronDown,
+  Calendar,
+  Layers,
+  ArrowRight,
+  PiggyBank,
+  Receipt
 } from 'lucide-react';
-import { CartaoItem, TransacaoCartao } from '@/types/cartao';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell
+} from 'recharts';
 
 export default function CartaoDashboard() {
-  const [periodo, setPeriodo] = useState('mes');
+  const [cartaoAtivoIndex, setCartaoAtivoIndex] = useState(0);
+  const [periodoCashflow, setPeriodoCashflow] = useState('6M');
 
-  // Métricas Consolidadas do Sistema CARTÃO DIAMOND
-  const kpis = [
+  // Cartões disponíveis no padrão Coinest (Forest Green e Dark Mint)
+  const cartoes = [
     {
-      titulo: 'Cartões Ativos em Circulação',
-      valor: '8.420',
-      variacao: '+12.4% este mês',
-      icone: CreditCard,
-      corIcone: 'text-blue-500 bg-blue-50'
+      id: 'crd-1',
+      titular: 'ANDREW FORBIST',
+      numero: '5582 5574 8376 5487',
+      validade: '05/29',
+      cvv: '411',
+      saldo: 415000.00,
+      tipo: 'Platinum Plus Visa',
+      categoria: 'Débito & Benefício',
+      status: 'Ativo',
+      limiteTotal: 20000.00,
+      limiteGasto: 4500.00,
+      corFundo: 'from-[#133E32] to-[#0A261E]'
     },
     {
-      titulo: 'Volume Transacionado (TPV)',
-      valor: 'R$ 4.850.210,00',
-      variacao: '+18.2% vs mês anterior',
-      icone: TrendingUp,
-      corIcone: 'text-emerald-500 bg-emerald-50'
-    },
-    {
-      titulo: 'Rede de Parceiros Credenciados',
-      valor: '342',
-      variacao: '28 novos comércios',
-      icone: Store,
-      corIcone: 'text-purple-500 bg-purple-50'
-    },
-    {
-      titulo: 'Cashback Distribuído (Clube)',
-      valor: 'R$ 142.380,50',
-      variacao: '3.2% média devolvida',
-      icone: Percent,
-      corIcone: 'text-amber-500 bg-amber-50'
+      id: 'crd-2',
+      titular: 'ANDREW FORBIST',
+      numero: '4532 9920 1845 8819',
+      validade: '11/31',
+      cvv: '742',
+      saldo: 532000.00,
+      tipo: 'Freedom Unlimited Mastercard',
+      categoria: 'Crédito Corporativo',
+      status: 'Ativo',
+      limiteTotal: 30000.00,
+      limiteGasto: 12350.00,
+      corFundo: 'from-[#174D3E] to-[#0D2E24]'
     }
   ];
 
-  // Últimas Transações Realizadas
-  const ultimasTransacoes: TransacaoCartao[] = [
+  const cartaoAtual = cartoes[cartaoAtivoIndex];
+
+  // Dados do Gráfico Cashflow (Comparativo Entradas x Saídas - Bar Chart Verde/Mint)
+  const dadosCashflow = [
+    { mes: 'Jan', receitas: 6500, despesas: 4200 },
+    { mes: 'Fev', receitas: 7200, despesas: 4800 },
+    { mes: 'Mar', receitas: 8000, despesas: 5100 },
+    { mes: 'Abr', receitas: 6900, despesas: 3900 },
+    { mes: 'Mai', receitas: 8400, despesas: 6000 },
+    { mes: 'Jun', receitas: 9100, despesas: 5400 },
+  ];
+
+  // Dados do Gráfico de Rosca de Gastos por Categoria
+  const dadosCategorias = [
+    { nome: 'Moradia & Cota', valor: 2100, cor: '#133E32' },
+    { nome: 'Investimentos', valor: 525, cor: '#2C664F' },
+    { nome: 'Educação & Cursos', valor: 420, cor: '#3D8165' },
+    { nome: 'Alimentação & Mercado', valor: 280, cor: '#5FD288' },
+    { nome: 'Lazer & Benefícios', valor: 175, cor: '#95E3AF' },
+  ];
+
+  // Planos de Poupança / Metas Habitacionais
+  const savingPlans = [
     {
-      id: 'tx-001',
-      cartao_id: 'cart-1',
-      estabelecimento: 'Supermercado Central Aliança',
-      categoria: 'ALIMENTACAO',
-      valor: 284.50,
-      tipo: 'DEBITO',
-      data_hora: '16/10/2026 14:32',
-      status: 'APROVADA'
+      titulo: 'Fundo Emergencial',
+      acumulado: 6000,
+      meta: 10000,
+      progresso: 60,
+      status: 'Em Andamento',
+      corBarra: 'bg-[#133E32]'
     },
     {
-      id: 'tx-002',
-      cartao_id: 'cart-2',
-      estabelecimento: 'Farmácia & Drogaria Popular',
-      categoria: 'FARMACIA',
-      valor: 89.90,
-      tipo: 'DEBITO',
-      data_hora: '16/10/2026 13:45',
-      status: 'APROVADA'
+      titulo: 'Entrada Moradia Própria',
+      acumulado: 25000,
+      meta: 25000,
+      progresso: 100,
+      status: 'Concluído',
+      corBarra: 'bg-[#34B765]'
     },
     {
-      id: 'tx-003',
-      cartao_id: 'cart-3',
-      estabelecimento: 'Posto Petrobrás Asa Sul',
-      categoria: 'COMBUSTIVEL',
-      valor: 220.00,
-      tipo: 'DEBITO',
-      data_hora: '16/10/2026 11:20',
-      status: 'APROVADA'
+      titulo: 'Poupança Reforma & Obra',
+      acumulado: 5600,
+      meta: 20000,
+      progresso: 28,
+      status: 'Em Andamento',
+      corBarra: 'bg-[#5F9E82]'
+    },
+  ];
+
+  // Extrato de Transações Recentes
+  const transacoesRecentes = [
+    {
+      id: 'tx-101',
+      nome: 'Conta de Energia Elétrica',
+      categoria: 'Moradia / Utilidades',
+      data: '17/10/2026 14:32',
+      valor: -295.80,
+      status: 'Concluído'
     },
     {
-      id: 'tx-004',
-      cartao_id: 'cart-4',
-      estabelecimento: 'Loja Eletrônicos & Informática',
-      categoria: 'SERVICOS',
-      valor: 1450.00,
-      tipo: 'CREDITO',
-      data_hora: '16/10/2026 09:15',
-      status: 'RECUSADA'
+      id: 'tx-102',
+      nome: 'Supermercado Central Aliança',
+      categoria: 'Alimentação (Cashback 3.5%)',
+      data: '17/10/2026 11:15',
+      valor: -204.07,
+      status: 'Concluído'
     },
     {
-      id: 'tx-005',
-      cartao_id: 'cart-5',
-      estabelecimento: 'Cashback Mensal Bonificação',
-      categoria: 'HABITACAO',
-      valor: 45.20,
-      tipo: 'CASHBACK',
-      data_hora: '15/10/2026 18:00',
-      status: 'APROVADA'
+      id: 'tx-103',
+      nome: 'Cashback Mensal Creditado',
+      categoria: 'Bonificação Rede Parceira',
+      data: '16/10/2026 18:00',
+      valor: 145.20,
+      status: 'Concluído'
+    },
+    {
+      id: 'tx-104',
+      nome: 'Assinatura Consultoria Jurídica',
+      categoria: 'Serviços Profissionais',
+      data: '16/10/2026 09:40',
+      valor: -450.00,
+      status: 'Concluído'
     }
   ];
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      {/* Top Banner Informativo de Separação de Módulo */}
-      <div className="bg-gradient-to-r from-diamond-950 via-slate-900 to-diamond-900 rounded-3xl p-6 lg:p-8 text-white shadow-xl relative overflow-hidden border border-slate-800">
-        <div className="absolute right-0 top-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
-
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-300 border border-blue-500/30">
-              <CreditCard className="h-3.5 w-3.5" /> Módulo Independente · Fintech & Benefícios
-            </div>
-            <h1 className="text-3xl font-extrabold tracking-tight text-white">
-              Gestão Exclusiva: CARTÃO DIAMOND
+    <div className="space-y-6 animate-fade-in select-none">
+      {/* Top Header com Título do Módulo e Ações */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-black text-[#133E32] tracking-tight">
+              Gestão de Cartões & Finanças
             </h1>
-            <p className="text-slate-300 text-sm max-w-2xl leading-relaxed">
-              Sistema segregado e autônomo para emissão de cartões, gestão de faturas, limite de crédito, antecipações consignadas e controle da rede credenciada de benefícios.
-            </p>
+            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-[#E1F7E8] text-[#133E32] border border-emerald-200">
+              Coinest Standard
+            </span>
           </div>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Visão consolidada de limites, cartões físicos/virtuais, fluxo de caixa e economia habitacional.
+          </p>
+        </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <button className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm shadow-lg shadow-blue-600/30 flex items-center gap-2 transition-all">
-              <PlusCircle className="h-4 w-4" />
-              Emitir Novo Cartão
-            </button>
-            <button className="px-4 py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 font-semibold text-sm border border-slate-700 flex items-center gap-2 transition-all">
-              <Download className="h-4 w-4" />
-              Relatório Bacen
-            </button>
-          </div>
+        <div className="flex items-center gap-2.5">
+          <button className="px-4 py-2 rounded-xl bg-white border border-emerald-200/80 text-xs font-bold text-[#133E32] hover:bg-emerald-50 transition-colors shadow-sm flex items-center gap-1.5">
+            <Download className="h-3.5 w-3.5 text-emerald-600" /> Exportar Extrato
+          </button>
+          <button className="px-4 py-2 rounded-xl bg-[#133E32] hover:bg-[#0E2C24] text-white text-xs font-bold shadow-md shadow-emerald-950/20 transition-all flex items-center gap-1.5">
+            <Plus className="h-3.5 w-3.5 text-[#5FD288]" /> Novo Cartão
+          </button>
         </div>
       </div>
 
-      {/* Grid de KPIs Financeiros */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {kpis.map((kpi, idx) => {
-          const Icone = kpi.icone;
-          return (
-            <div key={idx} className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-soft hover:shadow-md transition-all group">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">
-                  {kpi.titulo}
-                </span>
-                <div className={`p-2.5 rounded-xl ${kpi.corIcone}`}>
-                  <Icone className="h-5 w-5" />
-                </div>
-              </div>
-              <div className="mt-4">
-                <h3 className="text-2xl font-black text-slate-900 tracking-tight">{kpi.valor}</h3>
-                <p className="text-xs font-medium text-emerald-600 mt-1 flex items-center gap-1">
-                  <ArrowUpRight className="h-3.5 w-3.5" />
-                  {kpi.variacao}
-                </p>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Seção 2 Colunas: Visualização do Cartão Físico/Virtual & Painel de Transações */}
-      <div className="grid gap-8 lg:grid-cols-3">
-        {/* Cartão Físico / Virtual Preview */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-soft flex flex-col justify-between">
+      {/* Grid Principal: 2 Colunas (Cards & Limites à Esquerda, Cashflow à Direita) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Painel do Cartão Físico/Digital Ativo (5 Cols) */}
+        <div className="lg:col-span-5 bg-white rounded-3xl p-6 border border-emerald-100 shadow-soft flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-              <h3 className="font-bold text-slate-900 text-base">Cartão Modelo Padrão</h3>
-              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700">
-                BENEFÍCIO & CRÉDITO
-              </span>
-            </div>
-
-            {/* Simulação Visual do Cartão Diamond */}
-            <div className="mt-6 aspect-[1.586/1] w-full rounded-2xl p-6 bg-gradient-to-br from-[#0A0F1E] via-[#1B2A41] to-[#0A0F1E] text-white shadow-2xl relative overflow-hidden border border-slate-700 flex flex-col justify-between">
-              {/* Marca d'água */}
-              <div className="absolute right-0 bottom-0 translate-x-8 translate-y-8 opacity-10 pointer-events-none">
-                <CreditCard className="w-64 h-64 text-blue-400" />
+            <div className="flex items-center justify-between pb-3 border-b border-emerald-100/60">
+              <div>
+                <h3 className="text-sm font-black text-[#133E32]">Meus Cartões</h3>
+                <p className="text-[11px] text-slate-400">Clique para alternar entre cartões</p>
               </div>
-
-              <div className="flex items-center justify-between relative z-10">
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-blue-500 flex items-center justify-center font-black text-white text-xs shadow-md">
-                    D
-                  </div>
-                  <span className="font-extrabold tracking-widest text-sm text-slate-100">DIAMOND CARD</span>
-                </div>
-                <span className="text-[10px] tracking-widest text-blue-400 font-mono font-bold uppercase">
-                  Black Edition
-                </span>
-              </div>
-
-              {/* Chip Inteligente */}
-              <div className="my-auto relative z-10 flex items-center gap-3">
-                <div className="w-10 h-7 rounded-md bg-gradient-to-tr from-amber-300 to-amber-100 border border-amber-400/50 shadow-inner flex items-center justify-center">
-                  <div className="w-6 h-4 border border-amber-500/40 rounded-sm" />
-                </div>
-                <span className="text-xs text-slate-400 font-mono tracking-widest">Aproximação NFC</span>
-              </div>
-
-              <div className="relative z-10 space-y-1">
-                <p className="font-mono text-base tracking-widest text-slate-200">
-                  •••• •••• •••• 4892
-                </p>
-                <div className="flex justify-between items-end pt-1">
-                  <div>
-                    <p className="text-[9px] uppercase tracking-wider text-slate-400">Titular Associado</p>
-                    <p className="text-xs font-bold text-white tracking-wide">MARCOS VINICIUS ALMEIDA</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-[9px] uppercase tracking-wider text-slate-400">Validade</p>
-                    <p className="text-xs font-mono font-bold text-white">10/31</p>
-                  </div>
-                </div>
+              <div className="flex gap-1.5">
+                {cartoes.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setCartaoAtivoIndex(idx)}
+                    className={`h-2 rounded-full transition-all ${
+                      cartaoAtivoIndex === idx ? 'w-6 bg-[#133E32]' : 'w-2 bg-emerald-200'
+                    }`}
+                  />
+                ))}
               </div>
             </div>
-          </div>
 
-          <div className="mt-6 pt-4 border-t border-slate-100 space-y-2">
-            <div className="flex justify-between text-xs text-slate-600">
-              <span>Limite Utilizado:</span>
-              <span className="font-bold text-slate-900">R$ 1.840,00 de R$ 5.000,00</span>
-            </div>
-            <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-              <div className="bg-blue-600 h-2 rounded-full w-[36.8%]" />
-            </div>
-          </div>
-        </div>
+            {/* Cartão Estilo Coinest / Deep Forest */}
+            <div className={`mt-5 aspect-[1.586/1] w-full rounded-2xl p-6 bg-gradient-to-br ${cartaoAtual.corFundo} text-white shadow-xl relative overflow-hidden border border-emerald-800/40 flex flex-col justify-between`}>
+              {/* Marca d'água sutil */}
+              <div className="absolute right-0 bottom-0 translate-x-6 translate-y-6 opacity-5 pointer-events-none">
+                <CreditCard className="w-56 h-56 text-white" />
+              </div>
 
-        {/* Extrato e Conciliação em Tempo Real */}
-        <div className="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-soft">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-            <div>
-              <h3 className="font-bold text-slate-900 text-base">Últimas Transações Autorizadas</h3>
-              <p className="text-xs text-slate-500 mt-0.5">Processamento em tempo real com barramento antifraude ativo</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <button className="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 flex items-center gap-1.5">
-                <Filter className="h-3.5 w-3.5" /> Filtrar
-              </button>
-            </div>
-          </div>
-
-          <div className="divide-y divide-slate-100 mt-2">
-            {ultimasTransacoes.map((tx) => (
-              <div key={tx.id} className="py-3.5 flex items-center justify-between hover:bg-slate-50/60 px-2 rounded-xl transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className={`p-2.5 rounded-xl ${
-                    tx.tipo === 'CASHBACK'
-                      ? 'bg-amber-50 text-amber-600'
-                      : tx.status === 'APROVADA'
-                      ? 'bg-blue-50 text-blue-600'
-                      : 'bg-red-50 text-red-600'
-                  }`}>
-                    {tx.tipo === 'CASHBACK' ? (
-                      <Percent className="h-4 w-4" />
-                    ) : tx.status === 'APROVADA' ? (
-                      <ArrowDownLeft className="h-4 w-4" />
-                    ) : (
-                      <AlertTriangle className="h-4 w-4" />
-                    )}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-slate-900">{tx.estabelecimento}</p>
-                    <p className="text-xs text-slate-400 flex items-center gap-2 mt-0.5">
-                      <span>{tx.data_hora}</span>
-                      <span>•</span>
-                      <span className="uppercase text-[10px] tracking-wide bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">
-                        {tx.categoria}
-                      </span>
-                    </p>
-                  </div>
-                </div>
-
-                <div className="text-right">
-                  <p className={`text-sm font-bold ${
-                    tx.tipo === 'CASHBACK'
-                      ? 'text-emerald-600'
-                      : tx.status === 'APROVADA'
-                      ? 'text-slate-900'
-                      : 'text-red-500 line-through'
-                  }`}>
-                    {tx.tipo === 'CASHBACK' ? '+' : '-'} R$ {tx.valor.toFixed(2).replace('.', ',')}
+              {/* Linha Superior */}
+              <div className="flex items-start justify-between relative z-10">
+                <div>
+                  <span className="text-[10px] uppercase font-mono tracking-widest text-[#5FD288] block">
+                    {cartaoAtual.tipo}
+                  </span>
+                  <p className="text-2xl font-black text-white mt-1">
+                    R$ {cartaoAtual.saldo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                   </p>
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full inline-block mt-0.5 ${
-                    tx.status === 'APROVADA'
-                      ? 'bg-emerald-100 text-emerald-800'
-                      : 'bg-red-100 text-red-800'
-                  }`}>
-                    {tx.status}
+                </div>
+                <div className="flex items-center gap-2">
+                  <Wifi className="h-5 w-5 text-white/80 rotate-90" />
+                  <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-white/10 text-white border border-white/10">
+                    NFC
                   </span>
                 </div>
               </div>
-            ))}
+
+              {/* Chip Metálico */}
+              <div className="my-auto relative z-10 flex items-center justify-between">
+                <div className="w-10 h-7 rounded-md bg-gradient-to-tr from-amber-300 to-amber-100 border border-amber-400/50 shadow-inner flex items-center justify-center">
+                  <div className="w-6 h-4 border border-amber-500/40 rounded-sm" />
+                </div>
+                <span className="text-[11px] font-mono text-emerald-200 tracking-wider">
+                  {cartaoAtual.categoria}
+                </span>
+              </div>
+
+              {/* Dados do Cartão */}
+              <div className="relative z-10 flex items-end justify-between pt-1">
+                <div>
+                  <p className="font-mono text-xs tracking-widest text-slate-200 mb-0.5">
+                    {cartaoAtual.numero}
+                  </p>
+                  <p className="text-[11px] font-bold text-white uppercase tracking-wider">
+                    {cartaoAtual.titular}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <span className="text-[9px] text-emerald-300 block uppercase">Exp / CVV</span>
+                  <span className="font-mono text-xs font-bold text-white">
+                    {cartaoAtual.validade} · {cartaoAtual.cvv}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Ações Rápidas (Pills estilo Coinest) */}
+            <div className="grid grid-cols-4 gap-2 mt-5">
+              {[
+                { label: 'Recarregar', icone: Plus, acao: () => alert('Recarga via Pix') },
+                { label: 'Transferir', icone: Send, acao: () => alert('Transferência iniciada') },
+                { label: 'Pagar', icone: Receipt, acao: () => alert('Leitor de boleto') },
+                { label: 'Histórico', icone: Clock, acao: () => alert('Histórico completo') },
+              ].map((btn, i) => {
+                const Icone = btn.icone;
+                return (
+                  <button
+                    key={i}
+                    onClick={btn.acao}
+                    className="flex flex-col items-center justify-center p-3 rounded-2xl bg-[#F0F7F4] hover:bg-[#DCEDE5] border border-emerald-100 text-[#133E32] transition-colors"
+                  >
+                    <Icone className="h-4 w-4 mb-1 text-[#133E32]" />
+                    <span className="text-[10px] font-bold">{btn.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Barra de Limites de Gastos (Spending Limits) */}
+          <div className="mt-5 pt-4 border-t border-emerald-100/60 space-y-2">
+            <div className="flex justify-between items-center text-xs">
+              <span className="font-bold text-[#133E32]">Limite de Gastos Mensais:</span>
+              <span className="font-extrabold text-[#133E32]">
+                R$ {cartaoAtual.limiteGasto.toLocaleString('pt-BR')} <span className="text-slate-400 font-normal">de R$ {cartaoAtual.limiteTotal.toLocaleString('pt-BR')}</span>
+              </span>
+            </div>
+            <div className="w-full bg-emerald-100/80 h-2.5 rounded-full overflow-hidden flex">
+              <div
+                className="bg-[#133E32] h-full rounded-full transition-all"
+                style={{ width: `${(cartaoAtual.limiteGasto / cartaoAtual.limiteTotal) * 100}%` }}
+              />
+            </div>
+            <p className="text-[10px] text-right font-bold text-emerald-700">
+              {((cartaoAtual.limiteGasto / cartaoAtual.limiteTotal) * 100).toFixed(0)}% utilizado · R$ {(cartaoAtual.limiteTotal - cartaoAtual.limiteGasto).toLocaleString('pt-BR')} disponível
+            </p>
+          </div>
+        </div>
+
+        {/* Gráfico de Cashflow (Receitas x Despesas) (7 Cols) */}
+        <div className="lg:col-span-7 bg-white rounded-3xl p-6 border border-emerald-100 shadow-soft flex flex-col justify-between">
+          <div>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-emerald-100/60">
+              <div>
+                <h3 className="text-sm font-black text-[#133E32]">Fluxo de Caixa (Cashflow)</h3>
+                <p className="text-[11px] text-slate-400">Comparativo mensal entre entradas e despesas da carteira</p>
+              </div>
+
+              <div className="flex items-center gap-4 text-xs">
+                <div className="flex items-center gap-1.5 font-bold text-[#133E32]">
+                  <span className="w-3 h-3 rounded-md bg-[#133E32]" /> Receitas
+                </div>
+                <div className="flex items-center gap-1.5 font-bold text-emerald-600">
+                  <span className="w-3 h-3 rounded-md bg-[#5FD288]" /> Despesas
+                </div>
+                <select
+                  value={periodoCashflow}
+                  onChange={e => setPeriodoCashflow(e.target.value)}
+                  className="bg-[#F0F7F4] border border-emerald-100 rounded-xl px-2.5 py-1 text-xs font-bold text-[#133E32] outline-none"
+                >
+                  <option value="6M">Últimos 6 Meses</option>
+                  <option value="1Y">Ano Vigente</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Gráfico de Barras Duplo */}
+            <div className="h-64 mt-4 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={dadosCashflow} barGap={4}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E4EDE6" />
+                  <XAxis dataKey="mes" stroke="#97A596" fontSize={11} tickLine={false} />
+                  <YAxis stroke="#97A596" fontSize={11} tickLine={false} tickFormatter={v => `R$${v/1000}k`} />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#FFFFFF',
+                      borderRadius: '1rem',
+                      border: '1px solid #C9DCD0',
+                      boxShadow: '0 4px 20px -2px rgba(19, 62, 50, 0.1)',
+                      fontSize: '11px',
+                      fontWeight: 'bold'
+                    }}
+                    formatter={(val: number) => [`R$ ${val.toLocaleString('pt-BR')}`, '']}
+                  />
+                  <Bar dataKey="receitas" fill="#133E32" radius={[6, 6, 0, 0]} maxBarSize={22} />
+                  <Bar dataKey="despesas" fill="#5FD288" radius={[6, 6, 0, 0]} maxBarSize={22} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Cards de Métricas Rápidas no Rodapé do Cashflow */}
+          <div className="grid grid-cols-3 gap-3 pt-4 border-t border-emerald-100/60 mt-4 text-xs">
+            <div className="p-3 bg-[#F4F8F5] rounded-2xl">
+              <span className="text-[10px] font-bold text-slate-400 uppercase">Receita Total</span>
+              <p className="text-base font-black text-[#133E32] mt-0.5">R$ 78.000,00</p>
+              <span className="text-[10px] text-emerald-600 font-bold">+1.75% este mês</span>
+            </div>
+            <div className="p-3 bg-[#F4F8F5] rounded-2xl">
+              <span className="text-[10px] font-bold text-slate-400 uppercase">Despesas Totais</span>
+              <p className="text-base font-black text-slate-800 mt-0.5">R$ 43.000,00</p>
+              <span className="text-[10px] text-slate-400 font-semibold">-1.15% controlado</span>
+            </div>
+            <div className="p-3 bg-[#E1F7E8] rounded-2xl">
+              <span className="text-[10px] font-bold text-emerald-800 uppercase">Economia Gerada</span>
+              <p className="text-base font-black text-[#133E32] mt-0.5">R$ 56.000,00</p>
+              <span className="text-[10px] text-emerald-700 font-extrabold">+12.4% p/ habitação</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Grid Secundário: Categorias de Gastos (Donut Chart) + Planos de Poupança + Transações */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Distribuição por Categorias (Donut Chart) (4 Cols) */}
+        <div className="lg:col-span-4 bg-white rounded-3xl p-6 border border-emerald-100 shadow-soft flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between pb-3 border-b border-emerald-100/60">
+              <h3 className="text-sm font-black text-[#133E32]">Gastos por Categoria</h3>
+              <span className="text-[10px] font-bold bg-[#F0F7F4] text-emerald-800 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                Este Mês
+              </span>
+            </div>
+
+            {/* Donut Chart com Total no Centro */}
+            <div className="h-48 relative flex items-center justify-center mt-3">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={dadosCategorias}
+                    innerRadius={55}
+                    outerRadius={75}
+                    paddingAngle={3}
+                    dataKey="valor"
+                  >
+                    {dadosCategorias.map((entry, idx) => (
+                      <Cell key={`cell-${idx}`} fill={entry.cor} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    formatter={(val: number) => [`R$ ${val.toLocaleString('pt-BR')}`, '']}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <span className="text-[10px] font-bold uppercase text-slate-400">Total Faturado</span>
+                <span className="text-base font-black text-[#133E32]">R$ 3.500</span>
+              </div>
+            </div>
+
+            {/* Legenda Estruturada com % */}
+            <div className="space-y-2 mt-2 divide-y divide-emerald-50">
+              {dadosCategorias.map((cat, i) => (
+                <div key={i} className="flex items-center justify-between pt-1.5 text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: cat.cor }} />
+                    <span className="text-slate-600 font-semibold">{cat.nome}</span>
+                  </div>
+                  <span className="font-extrabold text-[#133E32]">R$ {cat.valor.toLocaleString('pt-BR')}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Metas & Poupança Habitacional (Saving Plans) (4 Cols) */}
+        <div className="lg:col-span-4 bg-white rounded-3xl p-6 border border-emerald-100 shadow-soft flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between pb-3 border-b border-emerald-100/60">
+              <div>
+                <h3 className="text-sm font-black text-[#133E32]">Metas Habitacionais</h3>
+                <p className="text-[10px] text-slate-400">Poupança e amortização de cotas</p>
+              </div>
+              <button
+                onClick={() => alert('Criar novo plano de poupança')}
+                className="p-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-[#133E32] transition-colors"
+                title="Adicionar Plano"
+              >
+                <Plus className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="space-y-4 mt-4">
+              {savingPlans.map((plan, i) => (
+                <div key={i} className="p-4 rounded-2xl bg-[#F4F8F5] border border-emerald-100/60 space-y-2">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-black text-[#133E32]">{plan.titulo}</span>
+                    <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full ${
+                      plan.progresso === 100
+                        ? 'bg-[#E1F7E8] text-emerald-800'
+                        : 'bg-emerald-100/60 text-[#133E32]'
+                    }`}>
+                      {plan.progresso}% {plan.status}
+                    </span>
+                  </div>
+
+                  <div className="w-full bg-emerald-200/50 h-2 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full ${plan.corBarra}`}
+                      style={{ width: `${plan.progresso}%` }}
+                    />
+                  </div>
+
+                  <div className="flex justify-between text-[11px] text-slate-500 font-semibold pt-1">
+                    <span>R$ {plan.acumulado.toLocaleString('pt-BR')}</span>
+                    <span>Meta: R$ {plan.meta.toLocaleString('pt-BR')}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-4 pt-3 border-t border-emerald-100/60 flex items-center justify-between text-xs">
+            <span className="text-slate-400 font-semibold">Total Alocado em Metas:</span>
+            <span className="font-black text-[#133E32]">R$ 36.600,00</span>
+          </div>
+        </div>
+
+        {/* Extrato de Transações Recentes (4 Cols) */}
+        <div className="lg:col-span-4 bg-white rounded-3xl p-6 border border-emerald-100 shadow-soft flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between pb-3 border-b border-emerald-100/60">
+              <div>
+                <h3 className="text-sm font-black text-[#133E32]">Transações Recentes</h3>
+                <p className="text-[10px] text-slate-400">Atividades em tempo real</p>
+              </div>
+              <button className="text-xs font-bold text-emerald-700 hover:text-emerald-900">
+                Ver Todas
+              </button>
+            </div>
+
+            <div className="space-y-3 mt-3 divide-y divide-emerald-50">
+              {transacoesRecentes.map((tx) => (
+                <div key={tx.id} className="pt-3 flex items-start justify-between">
+                  <div className="flex items-start gap-2.5">
+                    <div className={`p-2 rounded-xl shrink-0 mt-0.5 ${
+                      tx.valor > 0 ? 'bg-[#E1F7E8] text-[#133E32]' : 'bg-[#F0F7F4] text-slate-600'
+                    }`}>
+                      {tx.valor > 0 ? <ArrowDownLeft className="h-3.5 w-3.5" /> : <ArrowUpRight className="h-3.5 w-3.5" />}
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-[#133E32] leading-snug">{tx.nome}</p>
+                      <p className="text-[10px] text-slate-400 mt-0.5">{tx.categoria}</p>
+                      <span className="text-[9px] font-mono text-slate-400">{tx.data}</span>
+                    </div>
+                  </div>
+
+                  <div className="text-right">
+                    <span className={`text-xs font-black block ${
+                      tx.valor > 0 ? 'text-emerald-600' : 'text-slate-900'
+                    }`}>
+                      {tx.valor > 0 ? '+' : ''} R$ {Math.abs(tx.valor).toFixed(2).replace('.', ',')}
+                    </span>
+                    <span className="text-[9px] font-bold text-emerald-700 uppercase bg-[#E1F7E8] px-1.5 py-0.2 rounded-full">
+                      {tx.status}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-4 pt-3 border-t border-emerald-100/60 text-center">
+            <span className="text-[10px] font-mono text-slate-400">Protegido por barramento Antifraude Bacen</span>
           </div>
         </div>
       </div>
