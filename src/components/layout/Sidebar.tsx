@@ -15,13 +15,14 @@ import {
   Store,
   Wallet,
   Building2,
-  Layers,
   Sparkles,
   Coins,
   PiggyBank,
   Receipt,
   ArrowRightLeft,
-  SlidersHorizontal
+  ChevronRight,
+  Flame,
+  Award
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { authService } from '@/services/auth/authService';
@@ -45,35 +46,35 @@ export default function Sidebar() {
   // Itens de Menu do Sistema MORAR BEM BRASIL (Habitacional)
   const menuHabitacional = {
     ADMIN_GLOBAL: [
-      { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard Geral' },
+      { path: '/dashboard', icon: LayoutDashboard, label: 'Visão Geral Executiva' },
       { path: '/admin/simulador-santander', icon: CalculatorIcon, label: 'Simulador Imobiliário' },
       { path: '/admin/espelho-vendas', icon: Building2, label: 'Espelho de Vendas' },
       { path: '/admin/fila-social', icon: Users, label: 'Fila Social & Scoring' },
       { path: '/admin/contratos', icon: FileText, label: 'Contratos Digitais' },
       { path: '/admin/crm', icon: TrendingUp, label: 'Pipeline Comercial' },
       {
-        label: 'Administração Global',
+        label: 'Governança & Rede',
         icon: ShieldCheck,
         subItems: [
           { path: '/admin/federacoes', label: 'Gestão de Federações' },
           { path: '/admin/produtos', label: 'Empreendimentos' },
-          { path: '/admin/monitoramento', label: 'Monitoramento' },
+          { path: '/admin/monitoramento', label: 'Monitoramento Global' },
           { path: '/admin/auditoria', label: 'Auditoria & Logs' },
         ]
       }
     ],
     FEDERACAO: [
-      { path: '/federacao/dashboard', icon: LayoutDashboard, label: 'Dashboard Federação' },
+      { path: '/federacao/dashboard', icon: LayoutDashboard, label: 'Painel da Federação' },
       { path: '/admin/simulador-santander', icon: CalculatorIcon, label: 'Esteira de Crédito' },
       { path: '/admin/espelho-vendas', icon: Building2, label: 'Espelho de Vendas' },
       { path: '/admin/fila-social', icon: Users, label: 'Fila Regional' },
-      { path: '/federacao/associacoes', icon: Building, label: 'Associações Vinculadas' },
+      { path: '/federacao/associacoes', icon: Building, label: 'Minhas Associações' },
       { path: '/federacao/relatorios', icon: FileText, label: 'Relatórios' },
       { path: '/federacao/configuracoes', icon: Settings, label: 'Configurações' },
     ],
     ASSOCIACAO: [
-      { path: '/associacao/dashboard', icon: LayoutDashboard, label: 'Dashboard Associação' },
-      { path: '/admin/simulador-santander', icon: CalculatorIcon, label: 'Simular Crédito' },
+      { path: '/associacao/dashboard', icon: LayoutDashboard, label: 'Painel da Associação' },
+      { path: '/admin/simulador-santander', icon: CalculatorIcon, label: 'Simular p/ Associado' },
       { path: '/admin/espelho-vendas', icon: Building2, label: 'Mapa de Unidades' },
       { path: '/admin/fila-social', icon: Users, label: 'Fila de Convocação' },
       { path: '/associacao/associados', icon: Users, label: 'Meus Associados' },
@@ -89,36 +90,36 @@ export default function Sidebar() {
     ]
   };
 
-  // Itens de Menu do Sistema CARTÃO DIAMOND (Design Coinest Fintech)
+  // Itens de Menu do Sistema CARTÃO DIAMOND (Santander Private & Corporate Banking)
   const menuCartao = {
     ADMIN_GLOBAL: [
-      { path: '/cartao', icon: LayoutDashboard, label: 'Dashboard Coinest' },
-      { path: '/cartao/virtual', icon: Sparkles, label: 'Cartões & CVV' },
-      { path: '/cartao/gestao', icon: Wallet, label: 'Base de Cartões' },
-      { path: '/cartao/parceiros', icon: Store, label: 'Rede de Parceiros' },
-      { path: '/cartao/portal-lojista', icon: Receipt, label: 'Portal do Lojista' },
-      { path: '/cartao/cashback-moradia', icon: PiggyBank, label: 'Cashback & Poupança' },
+      { path: '/cartao', icon: LayoutDashboard, label: 'Central Santander Diamond' },
+      { path: '/cartao/virtual', icon: Sparkles, label: 'Cartões & CVV Dinâmico' },
+      { path: '/cartao/gestao', icon: Wallet, label: 'Base de Cartões & Limites' },
+      { path: '/cartao/parceiros', icon: Store, label: 'Rede Credenciada' },
+      { path: '/cartao/portal-lojista', icon: Receipt, label: 'Portal de Repasses' },
+      { path: '/cartao/cashback-moradia', icon: PiggyBank, label: 'Cashback Habitacional' },
       {
-        label: 'Governança & Risco',
+        label: 'Crédito & Compliance Bacen',
         icon: ShieldCheck,
         subItems: [
           { path: '/cartao/faturas', label: 'Faturas & Liquidação' },
-          { path: '/cartao/simulador-parcelamento', label: 'Simulador Bacen' },
+          { path: '/cartao/simulador-parcelamento', label: 'Simulador Bacen CET' },
           { path: '/cartao/politicas-risco', label: 'Políticas de Risco' },
-          { path: '/cartao/auditoria-antifraude', label: 'Antifraude Bacen' },
+          { path: '/cartao/auditoria-antifraude', label: 'Antifraude & COAF' },
         ]
       }
     ],
     FEDERACAO: [
-      { path: '/cartao', icon: LayoutDashboard, label: 'Painel Cartão' },
+      { path: '/cartao', icon: LayoutDashboard, label: 'Painel Regional' },
       { path: '/cartao/gestao', icon: Wallet, label: 'Cartões Regionais' },
       { path: '/cartao/parceiros', icon: Store, label: 'Comércios Regionais' },
       { path: '/cartao/portal-lojista', icon: Receipt, label: 'Repasses Lojistas' },
     ],
     ASSOCIACAO: [
-      { path: '/cartao', icon: LayoutDashboard, label: 'Painel Cartão' },
+      { path: '/cartao', icon: LayoutDashboard, label: 'Painel da Associação' },
       { path: '/cartao/gestao', icon: Wallet, label: 'Cartões dos Associados' },
-      { path: '/cartao/parceiros', icon: Store, label: 'Clube de Vantagens' },
+      { path: '/cartao/parceiros', icon: Store, label: 'Clube de Benefícios' },
       { path: '/cartao/cashback-moradia', icon: PiggyBank, label: 'Poupança Moradia' },
     ],
     ASSOCIADO: [
@@ -135,55 +136,53 @@ export default function Sidebar() {
   const items = activeMenuStructure[currentRole as keyof typeof activeMenuStructure] || [];
 
   return (
-    <aside className="w-64 bg-[#FAFCFA] border-r border-emerald-100 flex flex-col justify-between min-h-screen text-slate-700 transition-all duration-300 relative z-20 select-none">
+    <aside className="w-64 bg-white border-r border-slate-200 flex flex-col justify-between min-h-screen text-slate-800 transition-all duration-300 relative z-20 select-none shadow-sm">
 
       <div>
-        {/* Brand Header - Estilo Coinest Fintech */}
-        <div className="h-20 flex items-center px-6 border-b border-emerald-100/60 bg-white">
+        {/* Brand Header - Padrão Santander Corporate com Chama Santander + Diamond */}
+        <div className="h-20 flex items-center px-6 border-b border-slate-100 bg-white">
           <div className="flex items-center gap-3">
-            {/* Logo com 4 folhas/dots Coinest Style */}
-            <div className="w-10 h-10 rounded-2xl bg-[#133E32] flex items-center justify-center text-white shadow-md shadow-emerald-950/10">
-              <div className="grid grid-cols-2 gap-1 p-2">
-                <span className="w-2 h-2 rounded-full bg-[#5FD288]" />
-                <span className="w-2 h-2 rounded-full bg-white" />
-                <span className="w-2 h-2 rounded-full bg-white" />
-                <span className="w-2 h-2 rounded-full bg-[#5FD288]" />
-              </div>
+            {/* Ícone Chama Santander Vermelha */}
+            <div className="w-10 h-10 rounded-2xl bg-[#EC0000] flex items-center justify-center text-white shadow-md shadow-red-600/20">
+              <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-white">
+                <path d="M12 2C10.5 4.5 9 6.5 9 9c0 1.8 1 3.2 2.5 3.8C10 13.5 9 15 9 17c0 2.8 2.2 5 5 5s5-2.2 5-5c0-3.5-3-6-3-9 0-.5.1-1 .2-1.5C14.5 8 13.5 5 12 2z" />
+                <path d="M9 13.5C7.8 14.2 7 15.5 7 17c0 2.2 1.8 4 4 4 .7 0 1.4-.2 2-.5-1.5-.8-2.5-2.3-2.5-4 0-1.2.5-2.3 1.5-3-.3 0-.7 0-1 0z" opacity="0.85" />
+              </svg>
             </div>
             <div>
-              <span className="text-base font-black tracking-tight text-[#133E32] block leading-none">
-                DIAMOND
+              <span className="text-base font-black tracking-tight text-[#1C1C1C] block leading-none">
+                SANTANDER
               </span>
-              <span className="text-[10px] font-bold text-emerald-600 tracking-wider uppercase mt-0.5 block">
-                Fintech Platform
+              <span className="text-[10px] font-black text-[#EC0000] tracking-widest uppercase mt-0.5 block">
+                DIAMOND PARTNER
               </span>
             </div>
           </div>
         </div>
 
-        {/* Switcher de Ecossistemas com design de cápsula moderna */}
-        <div className="p-4 border-b border-emerald-100/60 bg-[#F4F8F5]">
-          <p className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-800/70 mb-2">
+        {/* Switcher de Ecossistemas com design Santander Executive */}
+        <div className="p-4 border-b border-slate-100 bg-[#F4F6F9]">
+          <p className="text-[10px] font-black uppercase tracking-wider text-slate-500 mb-2">
             Módulo em Operação:
           </p>
-          <div className="grid grid-cols-2 gap-1 p-1 bg-white rounded-xl border border-emerald-200/60 shadow-sm">
+          <div className="grid grid-cols-2 gap-1 p-1 bg-white rounded-xl border border-slate-200 shadow-sm">
             <button
               onClick={() => setSegment('HABITACIONAL')}
               className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-bold transition-all ${
                 currentSegment === 'HABITACIONAL'
-                  ? 'bg-[#133E32] text-white shadow-md'
-                  : 'text-slate-500 hover:text-[#133E32] hover:bg-emerald-50'
+                  ? 'bg-[#EC0000] text-white shadow-md shadow-red-600/20'
+                  : 'text-slate-600 hover:text-[#EC0000] hover:bg-red-50'
               }`}
             >
               <Building2 className="h-3.5 w-3.5" />
-              <span>Morar Bem</span>
+              <span>Habitacional</span>
             </button>
             <button
               onClick={() => setSegment('CARTAO')}
               className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-bold transition-all ${
                 currentSegment === 'CARTAO'
-                  ? 'bg-[#133E32] text-white shadow-md'
-                  : 'text-slate-500 hover:text-[#133E32] hover:bg-emerald-50'
+                  ? 'bg-[#1C1C1C] text-white shadow-md'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               }`}
             >
               <CreditCard className="h-3.5 w-3.5" />
@@ -192,16 +191,16 @@ export default function Sidebar() {
           </div>
         </div>
 
-        {/* Navegação Principal em Pills Estilo Coinest */}
+        {/* Navegação Principal em Lista Executiva */}
         <nav className="p-4 space-y-1.5 overflow-y-auto max-h-[calc(100vh-280px)]">
           {items.map((item, idx) => (
             item.subItems ? (
               <div key={idx} className="pt-3 pb-1">
-                <div className="px-3 mb-2 flex items-center gap-2 text-[11px] font-extrabold text-[#133E32]/70 uppercase tracking-wider">
-                  <item.icon className="h-3.5 w-3.5 text-emerald-600" />
+                <div className="px-3 mb-2 flex items-center gap-2 text-[11px] font-black text-slate-500 uppercase tracking-wider">
+                  <item.icon className="h-3.5 w-3.5 text-[#EC0000]" />
                   {item.label}
                 </div>
-                <div className="space-y-1 pl-3 border-l-2 border-emerald-200/60 ml-4">
+                <div className="space-y-1 pl-3 border-l-2 border-red-200 ml-4">
                   {item.subItems.map((subItem) => {
                     const isActive = location.pathname === subItem.path;
                     return (
@@ -210,8 +209,8 @@ export default function Sidebar() {
                         to={subItem.path}
                         className={`block px-3 py-2 rounded-xl text-xs font-bold transition-all ${
                           isActive
-                            ? 'bg-[#133E32] text-white shadow-sm'
-                            : 'text-slate-600 hover:text-[#133E32] hover:bg-emerald-100/50'
+                            ? 'bg-[#FFF5F5] text-[#EC0000] border-l-2 border-[#EC0000] -ml-[2px]'
+                            : 'text-slate-600 hover:text-[#EC0000] hover:bg-red-50/50'
                         }`}
                       >
                         {subItem.label}
@@ -226,11 +225,11 @@ export default function Sidebar() {
                 to={item.path}
                 className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all font-semibold text-xs ${
                   location.pathname === item.path
-                    ? 'bg-[#133E32] text-white shadow-sm font-bold'
-                    : 'text-slate-600 hover:text-[#133E32] hover:bg-emerald-100/50'
+                    ? 'bg-[#EC0000] text-white shadow-sm font-bold shadow-red-600/20'
+                    : 'text-slate-700 hover:text-[#EC0000] hover:bg-red-50/60'
                 }`}
               >
-                <item.icon className={`h-4 w-4 ${location.pathname === item.path ? 'text-[#5FD288]' : 'text-slate-500'}`} />
+                <item.icon className={`h-4 w-4 ${location.pathname === item.path ? 'text-white' : 'text-slate-500'}`} />
                 <span>{item.label}</span>
               </Link>
             )
@@ -239,25 +238,25 @@ export default function Sidebar() {
       </div>
 
       {/* Footer com Card do Usuário e Logout */}
-      <div className="p-4 border-t border-emerald-100/80 bg-white">
-        <div className="flex items-center justify-between p-2 rounded-xl bg-[#F0F6F2] border border-emerald-100 mb-2">
+      <div className="p-4 border-t border-slate-100 bg-[#F4F6F9]">
+        <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-slate-200 mb-2 shadow-sm">
           <div className="flex items-center gap-2.5 overflow-hidden">
-            <div className="w-8 h-8 rounded-full bg-[#133E32] text-[#5FD288] font-bold text-xs flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#EC0000] text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-sm">
               {user?.email?.charAt(0).toUpperCase() || 'U'}
             </div>
             <div className="truncate">
-              <p className="text-xs font-bold text-[#133E32] truncate">{user?.email?.split('@')[0]}</p>
-              <p className="text-[10px] text-emerald-700 font-semibold">{user?.role}</p>
+              <p className="text-xs font-bold text-[#1C1C1C] truncate">{user?.email?.split('@')[0]}</p>
+              <p className="text-[10px] text-[#EC0000] font-semibold">{user?.role}</p>
             </div>
           </div>
         </div>
 
         <button
           onClick={handleLogout}
-          className="flex w-full items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 border border-transparent hover:border-red-200 transition-all"
+          className="flex w-full items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-red-50 hover:text-[#EC0000] transition-all"
         >
           <LogOut className="h-3.5 w-3.5" />
-          <span>Encerrar Sessão</span>
+          <span>Sair da Conta</span>
         </button>
       </div>
     </aside>
