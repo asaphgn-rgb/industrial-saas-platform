@@ -25,6 +25,13 @@ import RedeParceiros from './pages/cartao/RedeParceiros';
 import FaturasLiquidacao from './pages/cartao/FaturasLiquidacao';
 import PoliticasRisco from './pages/cartao/PoliticasRisco';
 import AntifraudeBacen from './pages/cartao/AntifraudeBacen';
+import CartaoVirtual from './pages/cartao/CartaoVirtual';
+import SimuladorParcelamento from './pages/cartao/SimuladorParcelamento';
+import PortalLojista from './pages/cartao/PortalLojista';
+import CashbackMoradia from './pages/cartao/CashbackMoradia';
+import EspelhoUnidades from './pages/habitacional/EspelhoUnidades';
+import FilaSocialScoring from './pages/habitacional/FilaSocialScoring';
+import GestaoContratosDigitais from './pages/habitacional/GestaoContratosDigitais';
 import { CommunicationHub } from './components/secure-chat/CommunicationHub';
 import FloatingAIAssistant from './components/assistant/FloatingAIAssistant';
 import { useAuth } from './hooks/useAuth';
@@ -136,6 +143,30 @@ function App() {
             </RoleGuard>
           }
         />
+        <Route
+          path="/admin/espelho-vendas"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO']}>
+              <AppLayout><EspelhoUnidades /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/admin/fila-social"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO']}>
+              <AppLayout><FilaSocialScoring /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/admin/contratos"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO', 'ASSOCIADO']}>
+              <AppLayout><GestaoContratosDigitais /></AppLayout>
+            </RoleGuard>
+          }
+        />
 
         {/* Rotas FEDERACAO */}
         <Route
@@ -213,6 +244,38 @@ function App() {
           element={
             <RoleGuard allowedRoles={['ADMIN_GLOBAL']}>
               <AppLayout><AntifraudeBacen /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/cartao/virtual"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO', 'ASSOCIADO']}>
+              <AppLayout><CartaoVirtual /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/cartao/simulador-parcelamento"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO', 'ASSOCIADO']}>
+              <AppLayout><SimuladorParcelamento /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/cartao/portal-lojista"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO']}>
+              <AppLayout><PortalLojista /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/cartao/cashback-moradia"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO', 'ASSOCIADO']}>
+              <AppLayout><CashbackMoradia /></AppLayout>
             </RoleGuard>
           }
         />

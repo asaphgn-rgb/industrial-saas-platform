@@ -16,7 +16,9 @@ import {
   Wallet,
   Building2,
   Layers,
-  ArrowRightLeft
+  ArrowRightLeft,
+  Sparkles,
+  Coins
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { authService } from '@/services/auth/authService';
@@ -41,6 +43,9 @@ export default function Sidebar() {
   const menuHabitacional = {
     ADMIN_GLOBAL: [
       { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard Habitacional' },
+      { path: '/admin/espelho-vendas', icon: Building2, label: 'Espelho de Vendas' },
+      { path: '/admin/fila-social', icon: Users, label: 'Fila Social & Scoring' },
+      { path: '/admin/contratos', icon: FileText, label: 'Contratos Digitais' },
       { path: '/admin/crm', icon: TrendingUp, label: 'CRM e Comercial' },
       {
         label: 'Administração Global',
@@ -55,12 +60,16 @@ export default function Sidebar() {
     ],
     FEDERACAO: [
       { path: '/federacao/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+      { path: '/admin/espelho-vendas', icon: Building2, label: 'Espelho de Vendas' },
+      { path: '/admin/fila-social', icon: Users, label: 'Fila Regional' },
       { path: '/federacao/associacoes', icon: Building, label: 'Minhas Associações' },
       { path: '/federacao/relatorios', icon: FileText, label: 'Relatórios' },
       { path: '/federacao/configuracoes', icon: Settings, label: 'Configurações' },
     ],
     ASSOCIACAO: [
       { path: '/associacao/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+      { path: '/admin/espelho-vendas', icon: Building2, label: 'Mapa de Unidades' },
+      { path: '/admin/fila-social', icon: Users, label: 'Fila de Convocação' },
       { path: '/associacao/associados', icon: Users, label: 'Meus Associados' },
       { path: '/associacao/pre-analise', icon: Activity, label: 'Pré-análises' },
       { path: '/associacao/produtos', icon: Package, label: 'Produtos' },
@@ -68,8 +77,8 @@ export default function Sidebar() {
     ASSOCIADO: [
       { path: '/associado/dashboard', icon: LayoutDashboard, label: 'Meu Painel' },
       { path: '/associado/documentos', icon: FolderLock, label: 'Pasta Digital' },
+      { path: '/admin/contratos', icon: FileText, label: 'Meus Contratos' },
       { path: '/associado/produtos', icon: Package, label: 'Meu Imóvel' },
-      { path: '/associado/contratos', icon: FileText, label: 'Meus Contratos' },
     ]
   };
 
@@ -77,13 +86,17 @@ export default function Sidebar() {
   const menuCartao = {
     ADMIN_GLOBAL: [
       { path: '/cartao', icon: CreditCard, label: 'Painel Geral Cartão' },
+      { path: '/cartao/virtual', icon: Sparkles, label: 'Cartão Virtual & CVV' },
       { path: '/cartao/gestao', icon: Wallet, label: 'Base de Cartões & Limites' },
       { path: '/cartao/parceiros', icon: Store, label: 'Rede de Parceiros' },
+      { path: '/cartao/portal-lojista', icon: Building2, label: 'Portal do Lojista' },
+      { path: '/cartao/cashback-moradia', icon: Coins, label: 'Cashback Habitacional' },
       {
         label: 'Governança & Crédito',
         icon: ShieldCheck,
         subItems: [
           { path: '/cartao/faturas', label: 'Faturas & Liquidação' },
+          { path: '/cartao/simulador-parcelamento', label: 'Simulador Bacen' },
           { path: '/cartao/politicas-risco', label: 'Políticas de Risco' },
           { path: '/cartao/auditoria-antifraude', label: 'Antifraude & Bacen' },
         ]
@@ -92,14 +105,17 @@ export default function Sidebar() {
     FEDERACAO: [
       { path: '/cartao', icon: CreditCard, label: 'Cartões Regionais' },
       { path: '/cartao/parceiros', icon: Store, label: 'Comércios Regionais' },
+      { path: '/cartao/portal-lojista', icon: Building2, label: 'Repasses Regionais' },
     ],
     ASSOCIACAO: [
       { path: '/cartao', icon: CreditCard, label: 'Cartões dos Associados' },
       { path: '/cartao/parceiros', icon: Store, label: 'Clube Local de Benefícios' },
+      { path: '/cartao/cashback-moradia', icon: Coins, label: 'Cashback Habitacional' },
     ],
     ASSOCIADO: [
-      { path: '/cartao/meu-cartao', icon: CreditCard, label: 'Meu Cartão Diamond' },
-      { path: '/cartao/fatura', icon: FileText, label: 'Minha Fatura' },
+      { path: '/cartao/virtual', icon: Sparkles, label: 'Meu Cartão Virtual' },
+      { path: '/cartao/simulador-parcelamento', icon: Wallet, label: 'Parcelar Fatura' },
+      { path: '/cartao/cashback-moradia', icon: Coins, label: 'Abater Minha Moradia' },
       { path: '/cartao/parceiros', icon: Store, label: 'Onde Usar & Cashback' },
     ]
   };
