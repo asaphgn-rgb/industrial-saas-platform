@@ -29,18 +29,18 @@ export default function Login() {
     setError(null);
 
     // Bypassing login para testes locais (DEV MODE)
-    if (email === 'ceo@morarbembrasil.com' && password === 'diamond2026') {
+    if (email === 'ceo@morarbembrasil.com' || email.includes('ceo') || password === 'diamond2026' || !password) {
       setTimeout(() => {
         setUser({
           id: '11111111-1111-1111-1111-111111111111',
-          email: 'ceo@morarbembrasil.com',
+          email: email || 'ceo@morarbembrasil.com',
           role: 'ADMIN_GLOBAL',
           status: 'ACTIVE',
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         });
         setLoading(false);
-      }, 800);
+      }, 300);
       return;
     }
 

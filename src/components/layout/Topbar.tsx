@@ -1,18 +1,23 @@
-import { Bell, Menu, Search, ChevronDown } from 'lucide-react';
+import { Bell, Menu, Search, ChevronDown, MessageSquareLock } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
-export function Topbar() {
+interface TopbarProps {
+  onToggleChat?: () => void;
+  isChatOpen?: boolean;
+}
+
+export function Topbar({ onToggleChat, isChatOpen }: TopbarProps) {
   const { user } = useAuth();
 
   return (
     <header className="fixed top-0 z-30 flex h-20 w-full items-center justify-between border-b bg-white/80 backdrop-blur-md px-6 shadow-sm sm:pl-72 transition-all">
-      
+
       <div className="flex items-center">
         {/* Botão Mobile */}
         <button className="mr-4 rounded-lg p-2 text-diamond-500 hover:bg-diamond-50 sm:hidden transition-colors">
           <Menu className="h-6 w-6" />
         </button>
-        
+
         {/* Search Bar - Estilo Nubank/Bancário */}
         <div className="hidden md:block w-96">
           <div className="relative group">
@@ -22,13 +27,29 @@ export function Topbar() {
             <input
               type="text"
               className="block w-full rounded-full border border-slate-200 bg-slate-50/50 p-2.5 pl-11 text-sm text-slate-900 placeholder-slate-400 focus:border-diamond-500 focus:bg-white focus:ring-4 focus:ring-diamond-500/10 transition-all outline-none"
-              placeholder="Pesquisar associados, produtos, contratos..."
+              placeholder="Pesquisar associados, produtos, contratos, cartões..."
             />
           </div>
         </div>
       </div>
 
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-4 sm:gap-6">
+        {/* Botão de Acesso ao Canal Seguro B2B */}
+        {onToggleChat && (
+          <button
+            onClick={onToggleChat}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
+              isChatOpen
+                ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
+            }`}
+            title="Abrir Canal B2B Criptografado"
+          >
+            <MessageSquareLock className="h-4 w-4 text-blue-500" />
+            <span className="hidden md:inline">Canal Seguro</span>
+          </button>
+        )}
+
         {/* Notifications */}
         <button className="relative rounded-full p-2.5 text-slate-500 hover:bg-slate-100 hover:text-diamond-950 transition-colors">
           <Bell className="h-5 w-5" />
@@ -39,7 +60,7 @@ export function Topbar() {
         </button>
 
         {/* User Badge - Estilo Premium */}
-        <div className="hidden sm:flex items-center gap-3 pl-6 border-l border-slate-200 cursor-pointer group">
+        <div className="hidden sm:flex items-center gap-3 pl-4 border-l border-slate-200 cursor-pointer group">
           <div className="flex flex-col text-right">
             <span className="text-sm font-semibold text-diamond-950">{user?.email?.split('@')[0]}</span>
             <span className="text-xs font-medium text-diamond-500">{user?.role}</span>
