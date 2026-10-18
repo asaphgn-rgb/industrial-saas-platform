@@ -4,57 +4,57 @@
 
 @layer base {
   :root {
-    /* Paleta Santander Banking & Diamond Corporate */
-    --background: 216 20% 97%; /* #F4F6F9 Santander Gray Canvas */
-    --foreground: 0 0% 11%; /* #1C1C1C Santander Charcoal */
+    /* Paleta Coinest Fintech Benchmark */
+    --background: 140 14% 96%; /* #F4F7F5 Soft Mint Gray Canvas */
+    --foreground: 154 26% 11%; /* #15241E Deep Forest Charcoal */
 
-    /* Card background = White for crisp contrast */
+    /* Cards em Branco Puro para Contraste Crisp */
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 11%;
+    --card-foreground: 154 26% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 11%;
+    --popover-foreground: 154 26% 11%;
 
-    /* Santander Red (#EC0000 / #CC0000) */
-    --primary: 358 100% 46%; /* #EC0000 */
+    /* Cor Primária: Forest Green Executivo (#16382C) */
+    --primary: 159 43% 15%; /* #16382C */
     --primary-foreground: 0 0% 100%;
 
-    /* Dark Charcoal (#1C1C1C) */
-    --secondary: 0 0% 11%;
-    --secondary-foreground: 0 0% 98%;
+    /* Secundária: Mint Pastel (#C8F2D6) */
+    --secondary: 141 58% 87%; /* #C8F2D6 */
+    --secondary-foreground: 159 43% 15%;
 
-    /* Muted Slate (#F1F5F9 / #64748B) */
-    --muted: 210 20% 96%;
-    --muted-foreground: 215 16% 47%;
+    /* Tons Muted / Neutros Naturais */
+    --muted: 144 20% 94%;
+    --muted-foreground: 154 15% 38%;
 
-    /* Destaques interativos / Vermelho Suave */
-    --accent: 0 100% 97%; /* #FFF5F5 */
-    --accent-foreground: 358 100% 40%;
+    /* Destaques e Microinterações */
+    --accent: 141 58% 87%; /* #C8F2D6 Mint Badge */
+    --accent-foreground: 159 43% 15%;
 
-    /* Erro / Alerta */
-    --destructive: 0 84.2% 60.2%;
+    /* Alertas e Erros */
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    /* Bordas sutis no tom Santander #E2E8F0 */
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 358 100% 46%;
+    /* Bordas Sutis Coinest */
+    --border: 144 18% 90%; /* #E2EBE5 */
+    --input: 144 18% 90%;
+    --ring: 159 43% 15%;
 
-    --radius: 0.75rem; /* Bordas bancárias elegantes */
+    --radius: 1.25rem; /* Bordas arredondadas e amigáveis padrão Coinest */
   }
 }
 
 @layer base {
   * {
-    @apply border-slate-200;
+    border-color: #E2EBE5;
   }
   body {
-    /* Fundo canvas bancário Santander #F4F6F9 */
-    background-color: #F4F6F9;
-    @apply text-slate-900 antialiased font-sans selection:bg-red-200 selection:text-red-950;
+    background-color: #F4F7F5;
+    color: #15241E;
+    @apply antialiased font-sans selection:bg-[#C8F2D6] selection:text-[#16382C];
   }
 
-  /* Scrollbar customizada moderna */
+  /* Scrollbar customizada moderna e discreta */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -63,35 +63,52 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-slate-300 rounded-full hover:bg-slate-400 transition-colors;
+    background: #D1DFD7;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #A3BEB0;
   }
 }
 
-/* Utilitários Extras para Efeitos Neumórficos/Soft */
 @layer utilities {
-  .glass-panel {
-    @apply bg-white/90 backdrop-blur-md border border-white/40 shadow-sm;
+  .bg-coinest-canvas {
+    background-color: #F4F7F5;
   }
-  .shadow-soft {
-    box-shadow: 0 4px 20px -2px rgba(28, 28, 28, 0.05);
+  .bg-coinest-card {
+    background-color: #FFFFFF;
+    border: 1px solid #E2EBE5;
+    border-radius: 1.25rem;
+    box-shadow: 0 4px 20px -2px rgba(22, 56, 44, 0.04);
   }
-  .shadow-hover {
-    box-shadow: 0 10px 30px -5px rgba(236, 0, 0, 0.15);
+  .bg-coinest-forest {
+    background-color: #16382C;
+    color: #FFFFFF;
   }
-  .card-santander {
-    @apply bg-white rounded-2xl border border-slate-200 shadow-soft transition-all duration-200;
+  .bg-coinest-mint {
+    background-color: #C8F2D6;
+    color: #16382C;
   }
-  .card-santander-dark {
-    @apply bg-[#141414] text-white rounded-2xl shadow-xl border border-neutral-800;
+  .badge-coinest-mint {
+    background-color: #E8F8EE;
+    color: #16382C;
+    border: 1px solid #C8F2D6;
+    font-weight: 700;
   }
-  .card-santander-red {
-    @apply bg-gradient-to-br from-[#EC0000] via-[#CC0000] to-[#A60000] text-white rounded-2xl shadow-xl;
+  .card-coinest {
+    background-color: #FFFFFF;
+    border: 1px solid #E2EBE5;
+    border-radius: 1.25rem;
+    box-shadow: 0 4px 20px -2px rgba(22, 56, 44, 0.04), 0 2px 6px -1px rgba(22, 56, 44, 0.02);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .animate-fade-in {
-    animation: fadeIn 0.3s ease-out forwards;
+  .card-coinest:hover {
+    box-shadow: 0 10px 30px -4px rgba(22, 56, 44, 0.08);
   }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+  .card-coinest-dark {
+    background-color: #16382C;
+    color: #FFFFFF;
+    border-radius: 1.25rem;
+    box-shadow: 0 12px 35px -5px rgba(22, 56, 44, 0.35);
   }
 }

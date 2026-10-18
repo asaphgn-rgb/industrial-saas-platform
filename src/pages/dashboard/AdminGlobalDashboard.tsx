@@ -1,196 +1,172 @@
-import { Users, Building2, ShieldCheck, TrendingUp, AlertTriangle, ArrowRight, DollarSign, Award, ChevronRight, FileCheck, Landmark } from 'lucide-react';
+import { Users, Building2, ShieldCheck, TrendingUp, AlertTriangle, ArrowRight, DollarSign, Award, ChevronRight, FileCheck, Landmark, ArrowUpRight, CheckCircle2, Sliders, ArrowDownRight, Wallet, PieChart as PieChartIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function AdminGlobalDashboard() {
   const kpis = [
-    { title: 'Total de Federações', value: '12', sub: '+2 homologadas este ano', icon: Building2, color: 'text-[#EC0000]', bg: 'bg-red-50', border: 'border-red-100' },
-    { title: 'Associações Ativas', value: '148', sub: 'Rede em 18 estados', icon: Users, color: 'text-slate-900', bg: 'bg-slate-100', border: 'border-slate-200' },
-    { title: 'Associados (Base)', value: '15.430', sub: 'Cadastros auditados LGPD', icon: Users, color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-100' },
-    { title: 'Crédito Pré-Aprovado', value: '4.210', sub: 'Aptos ao financiamento', icon: ShieldCheck, color: 'text-[#EC0000]', bg: 'bg-red-50', border: 'border-red-100' }
+    { title: 'Total de Federações', value: '12', sub: '+2 homologadas este ano', trend: '+16.8%', trendPositive: true, icon: Building2 },
+    { title: 'Associações Ativas', value: '148', sub: 'Rede em 18 estados', trend: '+8.4%', trendPositive: true, icon: Users },
+    { title: 'Associados (Base)', value: '15.430', sub: 'Cadastros auditados LGPD', trend: '+12.5%', trendPositive: true, icon: Users },
+    { title: 'Crédito Pré-Aprovado', value: 'R$ 84.5M', sub: '4.210 famílias aptas', trend: '+24.1%', trendPositive: true, icon: ShieldCheck }
   ];
 
   return (
-    <div className="space-y-8 animate-fade-in select-none">
-      {/* Top Header Santander Corporate Style */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200/80">
+    <div className="space-y-6 animate-fade-in select-none">
+      {/* Top Header Coinest Style */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-[#E2EBE5]/60">
         <div>
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-[#EC0000] border border-red-200">
-              Módulo Habitacional & Gestão Global
+            <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-[#E8F8EE] text-[#16382C] border border-[#C8F2D6] inline-flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-[#10B981]" />
+              Painel de Controle Executivo
             </span>
+            <span className="text-xs text-[#88A395] font-semibold">Atualizado em tempo real</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 mt-1">
-            Painel Executivo da Presidência
+          <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-[#15241E] mt-1.5 font-sans">
+            Visão Geral da Rede Habitacional
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-            Governança corporativa, esteira imobiliária e controle central da rede Morar Bem Brasil.
+          <p className="text-xs sm:text-sm text-[#526E62] mt-0.5">
+            Governança da rede Morar Bem Brasil, esteiras de crédito e auditoria multi-tenant.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <Link
             to="/admin/simulador-santander"
-            className="px-4 py-2.5 text-xs font-bold text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors shadow-sm flex items-center gap-1.5"
+            className="px-4 py-2.5 text-xs font-bold text-[#16382C] bg-white border border-[#E2EBE5] rounded-2xl hover:bg-[#F4F7F5] transition-all shadow-sm flex items-center gap-2"
           >
-            Simulador Santander
+            <Sliders className="h-4 w-4 text-[#16382C]" />
+            Simulador Habitacional
           </Link>
           <Link
             to="/admin/espelho-vendas"
-            className="px-4 py-2.5 text-xs font-bold text-white bg-[#EC0000] hover:bg-[#CC0000] rounded-xl transition-all shadow-md shadow-red-600/20 flex items-center gap-1.5"
+            className="px-4 py-2.5 text-xs font-bold text-white bg-[#16382C] hover:bg-[#112B22] rounded-2xl transition-all shadow-md shadow-[#16382C]/10 flex items-center gap-2"
           >
             Espelho de Vendas <ChevronRight className="h-3.5 w-3.5" />
           </Link>
         </div>
       </div>
 
-      {/* Grid de 4 KPIs Institucionais */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Grid de 4 KPIs no Formato Coinest Card */}
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {kpis.map((kpi, i) => (
-          <div key={i} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft hover:shadow-md transition-all relative overflow-hidden group">
+          <div key={i} className="rounded-3xl border border-[#E2EBE5] bg-white p-6 shadow-sm hover:shadow-md transition-all group">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-xs font-bold tracking-wider text-slate-400 uppercase mb-1.5">{kpi.title}</p>
-                <p className="text-3xl font-black text-slate-900 tracking-tight">{kpi.value}</p>
-                <p className="text-[11px] font-medium text-slate-500 mt-1">{kpi.sub}</p>
+                <p className="text-xs font-bold tracking-wider text-[#88A395] uppercase mb-1.5">{kpi.title}</p>
+                <p className="text-3xl font-black text-[#15241E] tracking-tight">{kpi.value}</p>
+                <div className="flex items-center gap-2 mt-2">
+                  <span className={`inline-flex items-center gap-0.5 text-[11px] font-bold px-2 py-0.5 rounded-full ${
+                    kpi.trendPositive ? 'bg-[#E8F8EE] text-[#16382C]' : 'bg-red-50 text-red-600'
+                  }`}>
+                    {kpi.trendPositive ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
+                    {kpi.trend}
+                  </span>
+                  <span className="text-[11px] font-medium text-[#88A395] truncate">{kpi.sub}</span>
+                </div>
               </div>
-              <div className={`rounded-2xl p-3 ${kpi.bg} ${kpi.border} border`}>
-                <kpi.icon className={`h-5 w-5 ${kpi.color}`} />
+              <div className="rounded-2xl p-3 bg-[#E8F8EE] border border-[#C8F2D6]">
+                <kpi.icon className="h-5 w-5 text-[#16382C]" />
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Seção 2 Colunas: Funil Comercial e Monitoramento de Risco */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Card Comercial */}
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-soft flex flex-col justify-between">
+      {/* Seção Principal: Funil da Carteira + Gráfico de Fluxo e Distribuição */}
+      <div className="grid gap-6 lg:grid-cols-12">
+        {/* Funil da Carteira Habitacional (7 Colunas) */}
+        <div className="lg:col-span-7 rounded-3xl border border-[#E2EBE5] bg-white p-6 sm:p-7 shadow-sm flex flex-col justify-between">
           <div>
-            <div className="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+            <div className="flex justify-between items-center mb-6 pb-4 border-b border-[#E2EBE5]/60">
               <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-red-50 text-[#EC0000] rounded-xl border border-red-100">
+                <div className="p-2.5 bg-[#E8F8EE] text-[#16382C] rounded-2xl border border-[#C8F2D6]">
                   <TrendingUp className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-black text-slate-900">
+                  <h3 className="text-base font-black text-[#15241E]">
                     Funil da Carteira Habitacional
                   </h3>
-                  <p className="text-xs text-slate-400">Conversão de famílias por estágio de habilitação</p>
+                  <p className="text-xs text-[#88A395]">Etapas de habilitação e contratação das famílias</p>
                 </div>
               </div>
-              <Link to="/admin/crm" className="text-xs font-bold text-[#EC0000] hover:underline flex items-center gap-1">
-                Ver CRM <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
+              <span className="text-xs font-bold text-[#16382C] bg-[#C8F2D6] px-3 py-1 rounded-full">
+                15.430 inscritos
+              </span>
             </div>
 
-            <div className="space-y-5">
-              <div className="space-y-2">
-                <div className="flex justify-between text-xs font-bold">
-                  <span className="text-slate-600">1. Cadastros em Triagem</span>
-                  <span className="text-slate-900">15.430 famílias (100%)</span>
+            <div className="space-y-4">
+              {[
+                { etapa: '1. Cadastro & Documentação', total: 15430, pct: 100, cor: 'bg-[#16382C]' },
+                { etapa: '2. Scoring Social Concluído', total: 11200, pct: 72, cor: 'bg-[#1F4E3D]' },
+                { etapa: '3. Pré-Aprovação de Crédito', total: 4210, pct: 27, cor: 'bg-[#10B981]' },
+                { etapa: '4. Unidade Selecionada & Contrato', total: 1850, pct: 12, cor: 'bg-[#C8F2D6] text-[#16382C]' }
+              ].map((item, idx) => (
+                <div key={idx} className="space-y-1.5 p-3 rounded-2xl bg-[#F4F7F5] border border-[#E2EBE5]">
+                  <div className="flex justify-between text-xs font-bold text-[#15241E]">
+                    <span>{item.etapa}</span>
+                    <span>{item.total.toLocaleString()} ({item.pct}%)</span>
+                  </div>
+                  <div className="w-full bg-[#E2EBE5] h-2.5 rounded-full overflow-hidden">
+                    <div className={`${item.cor} h-full rounded-full transition-all duration-500`} style={{ width: `${item.pct}%` }} />
+                  </div>
                 </div>
-                <div className="h-2.5 w-full rounded-full bg-slate-100 overflow-hidden">
-                  <div className="h-full rounded-full bg-slate-800 w-full" />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between text-xs font-bold">
-                  <span className="text-slate-600">2. Pré-Análise Favorável (Elegíveis)</span>
-                  <span className="text-[#EC0000]">4.210 aptos (27.2%)</span>
-                </div>
-                <div className="h-2.5 w-full rounded-full bg-slate-100 overflow-hidden">
-                  <div className="h-full rounded-full bg-[#EC0000] w-[27.2%]" />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between text-xs font-bold">
-                  <span className="text-slate-600">3. Documentação em Conformidade (Pasta Digital)</span>
-                  <span className="text-emerald-600">2.180 aprovados (14.1%)</span>
-                </div>
-                <div className="h-2.5 w-full rounded-full bg-slate-100 overflow-hidden">
-                  <div className="h-full rounded-full bg-emerald-500 w-[14.1%]" />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between text-xs font-bold">
-                  <span className="text-slate-600">4. Contratos Assinados & Unidade Alocada</span>
-                  <span className="text-slate-900">845 contratos (5.4%)</span>
-                </div>
-                <div className="h-2.5 w-full rounded-full bg-slate-100 overflow-hidden">
-                  <div className="h-full rounded-full bg-neutral-900 w-[5.4%]" />
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-            <span>VGV Total Habilitado: <strong className="text-slate-900 font-bold">R$ 180 Milhões</strong></span>
-            <Link to="/admin/contratos" className="font-bold text-[#EC0000] hover:underline">
-              Gerenciar Contratos Digitais →
+          <div className="mt-6 pt-4 border-t border-[#E2EBE5]/60 flex items-center justify-between text-xs">
+            <span className="text-[#88A395]">Critérios auditados conforme termo de adesão e LGPD</span>
+            <Link to="/admin/crm" className="text-[#16382C] font-bold hover:underline inline-flex items-center gap-1">
+              Ver CRM Completo <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
         </div>
 
-        {/* Card Alertas e Integridade do Barramento */}
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-soft flex flex-col justify-between">
-          <div>
-            <div className="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-slate-100 text-slate-800 rounded-xl border border-slate-200">
-                  <ShieldCheck className="h-5 w-5 text-emerald-600" />
-                </div>
-                <div>
-                  <h3 className="text-base font-black text-slate-900">
-                    Governança, RLS & Auditoria
-                  </h3>
-                  <p className="text-xs text-slate-400">Proteção de dados LGPD e trilha de eventos</p>
-                </div>
-              </div>
-              <span className="text-[10px] font-black px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
-                100% RLS ATIVO
+        {/* Card em Destaque: Cartão Verde Floresta Coinest (5 Colunas) */}
+        <div className="lg:col-span-5 rounded-3xl bg-[#16382C] text-white p-7 shadow-xl flex flex-col justify-between relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#1F4E3D] rounded-full blur-3xl opacity-50 pointer-events-none" />
+
+          <div className="relative z-10 space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-[#C8F2D6] text-[#16382C]">
+                Cartão Diamond BaaS
               </span>
+              <span className="text-xs text-[#C8F2D6] font-semibold">Conta Corporativa</span>
             </div>
 
-            <div className="space-y-3 text-xs">
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 flex items-start gap-3">
-                <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
-                <div>
-                  <p className="font-bold text-slate-900">Barramento Bancário Operacional</p>
-                  <p className="text-slate-500 text-[11px] mt-0.5">
-                    Conexões com serviços de esteira de crédito, geração de hashes SHA-256 e Webhooks operando sem falhas nas últimas 24h.
-                  </p>
-                </div>
-              </div>
+            <div className="pt-2">
+              <p className="text-xs text-[#88A395] uppercase tracking-wider font-bold">Saldo sob Gestão</p>
+              <h3 className="text-3xl sm:text-4xl font-black text-white mt-1">
+                R$ 1.377.000<span className="text-lg text-[#C8F2D6]">,00</span>
+              </h3>
+            </div>
 
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 flex items-start gap-3">
-                <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
-                <div>
-                  <p className="font-bold text-slate-900">Isolamento Multi-Tenant Homologado</p>
-                  <p className="text-slate-500 text-[11px] mt-0.5">
-                    Políticas de Row Level Security ativas em 100% das tabelas. Federações e associações visualizam estritamente seus próprios dados.
-                  </p>
-                </div>
+            <div className="grid grid-cols-2 gap-3 pt-3">
+              <div className="p-3 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10">
+                <p className="text-[10px] text-[#C8F2D6] font-bold uppercase">Repasses Lojistas</p>
+                <p className="text-base font-bold text-white mt-0.5">R$ 415.000,00</p>
+                <p className="text-[10px] text-[#A3E635] mt-0.5">D+1 Liquidado</p>
               </div>
-
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 flex items-start gap-3">
-                <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
-                <div>
-                  <p className="font-bold text-slate-900">Mascaramento Ativo de Dados Sensíveis</p>
-                  <p className="text-slate-500 text-[11px] mt-0.5">
-                    CPFs, CNPJs e cartões tokenizados mascarados nas interfaces em conformidade com o Artigo 46 da LGPD.
-                  </p>
-                </div>
+              <div className="p-3 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10">
+                <p className="text-[10px] text-[#C8F2D6] font-bold uppercase">Cashback Moradia</p>
+                <p className="text-base font-bold text-white mt-0.5">R$ 56.400,00</p>
+                <p className="text-[10px] text-[#C8F2D6] mt-0.5">Amortizado</p>
               </div>
             </div>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-            <span className="text-slate-400">Trilha de Auditoria Audit Trail ativa</span>
-            <Link to="/admin/auditoria" className="font-bold text-slate-700 hover:text-[#EC0000] transition-colors">
-              Consultar Logs de Acesso →
+          <div className="relative z-10 pt-6 mt-6 border-t border-white/15 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+                <ShieldCheck className="h-4 w-4 text-[#C8F2D6]" />
+              </div>
+              <span className="text-xs text-[#C8F2D6] font-medium">Bacen & PCI-DSS Blindado</span>
+            </div>
+            <Link
+              to="/cartao"
+              className="px-4 py-2 rounded-xl bg-[#C8F2D6] hover:bg-[#b5e8c4] text-[#16382C] text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm"
+            >
+              Acessar Cartão <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
         </div>
