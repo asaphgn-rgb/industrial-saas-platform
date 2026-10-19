@@ -21,6 +21,11 @@ import AuditoriaLogs from './pages/admin-global/AuditoriaLogs';
 import MonitoramentoGlobal from './pages/admin-global/MonitoramentoGlobal';
 import LivroRazaoContabil from './pages/admin-global/LivroRazaoContabil';
 import FechamentoContabil from './pages/admin-global/FechamentoContabil';
+import ParceriasCoBranded from './pages/admin-global/ParceriasCoBranded';
+import ParticipacaoResultadosRede from './pages/federacao/ParticipacaoResultadosRede';
+import AdesaoCashbackOnboarding from './pages/associado/AdesaoCashbackOnboarding';
+import RadarImoveisDesejados from './pages/associado/RadarImoveisDesejados';
+import ContaDigitalCartaoApp from './pages/associado/ContaDigitalCartaoApp';
 import CartaoDashboard from './pages/cartao/CartaoDashboard';
 import GestaoCartoes from './pages/cartao/GestaoCartoes';
 import RedeParceiros from './pages/cartao/RedeParceiros';
@@ -163,6 +168,14 @@ function App() {
           }
         />
         <Route
+          path="/admin/parcerias-cobranded"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL']}>
+              <AppLayout><ParceriasCoBranded /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
           path="/admin/espelho-vendas"
           element={
             <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO']}>
@@ -204,6 +217,14 @@ function App() {
             </RoleGuard>
           }
         />
+        <Route
+          path="/federacao/participacao-resultados"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO']}>
+              <AppLayout><ParticipacaoResultadosRede /></AppLayout>
+            </RoleGuard>
+          }
+        />
 
         {/* Rotas ASSOCIACAO */}
         <Route
@@ -221,6 +242,30 @@ function App() {
           element={
             <RoleGuard allowedRoles={['ASSOCIADO']}>
               <AppLayout><AssociadoDashboard /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/associado/adesao-cashback"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO', 'ASSOCIADO']}>
+              <AppLayout><AdesaoCashbackOnboarding /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/associado/radar-imoveis"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO', 'ASSOCIADO']}>
+              <AppLayout><RadarImoveisDesejados /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/associado/cartao-digital"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO', 'ASSOCIADO']}>
+              <AppLayout><ContaDigitalCartaoApp /></AppLayout>
             </RoleGuard>
           }
         />

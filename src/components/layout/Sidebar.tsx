@@ -65,6 +65,7 @@ export default function Sidebar() {
           { path: '/admin/produtos', label: 'Empreendimentos' },
           { path: '/admin/livro-razao', label: 'Livro-Razão Contábil' },
           { path: '/admin/fechamento-contabil', label: 'Fechamento & DRE' },
+          { path: '/admin/parcerias-cobranded', label: 'Parcerias Co-Branded' },
           { path: '/admin/monitoramento', label: 'Monitoramento' },
           { path: '/admin/auditoria', label: 'Auditoria & Logs' },
         ]
@@ -72,6 +73,7 @@ export default function Sidebar() {
     ],
     FEDERACAO: [
       { path: '/federacao/dashboard', icon: LayoutDashboard, label: 'Painel da Federação' },
+      { path: '/federacao/participacao-resultados', icon: TrendingUp, label: 'Participação & Repasses' },
       { path: '/admin/simulador-santander', icon: CalculatorIcon, label: 'Esteira de Crédito' },
       { path: '/admin/espelho-vendas', icon: Building2, label: 'Espelho de Vendas' },
       { path: '/admin/fila-social', icon: Users, label: 'Fila Regional' },
@@ -81,6 +83,7 @@ export default function Sidebar() {
     ],
     ASSOCIACAO: [
       { path: '/associacao/dashboard', icon: LayoutDashboard, label: 'Painel da Associação' },
+      { path: '/federacao/participacao-resultados', icon: TrendingUp, label: 'Nossos Repasses' },
       { path: '/admin/simulador-santander', icon: CalculatorIcon, label: 'Simular p/ Associado' },
       { path: '/admin/espelho-vendas', icon: Building2, label: 'Mapa de Unidades' },
       { path: '/admin/fila-social', icon: Users, label: 'Fila de Convocação' },
@@ -90,6 +93,9 @@ export default function Sidebar() {
     ],
     ASSOCIADO: [
       { path: '/associado/dashboard', icon: LayoutDashboard, label: 'Meu Painel' },
+      { path: '/associado/cartao-digital', icon: Wallet, label: 'Meu Cartão Digital' },
+      { path: '/associado/adesao-cashback', icon: Sparkles, label: 'Adesão & Cashback R$50' },
+      { path: '/associado/radar-imoveis', icon: Building2, label: 'Radar de Imóveis' },
       { path: '/admin/simulador-santander', icon: CalculatorIcon, label: 'Simular Financiamento' },
       { path: '/associado/documentos', icon: FolderLock, label: 'Pasta Digital' },
       { path: '/admin/contratos', icon: FileText, label: 'Meus Contratos' },
@@ -103,6 +109,7 @@ export default function Sidebar() {
       { path: '/cartao', icon: LayoutDashboard, label: 'Dashboard Fintech' },
       { path: '/cartao/virtual', icon: Sparkles, label: 'Cartões & CVV' },
       { path: '/cartao/gestao', icon: Wallet, label: 'Gestão de Limites' },
+      { path: '/admin/parcerias-cobranded', icon: Store, label: 'Empresas Co-Branded' },
       { path: '/cartao/parceiros', icon: Store, label: 'Rede Credenciada' },
       { path: '/cartao/portal-lojista', icon: Receipt, label: 'Repasses Lojistas' },
       { path: '/cartao/cashback-moradia', icon: PiggyBank, label: 'Cashback Moradia' },
@@ -119,19 +126,22 @@ export default function Sidebar() {
     ],
     FEDERACAO: [
       { path: '/cartao', icon: LayoutDashboard, label: 'Painel Regional' },
+      { path: '/federacao/participacao-resultados', icon: TrendingUp, label: 'Bonificação & Split' },
       { path: '/cartao/gestao', icon: Wallet, label: 'Cartões Regionais' },
       { path: '/cartao/parceiros', icon: Store, label: 'Comércios Regionais' },
       { path: '/cartao/portal-lojista', icon: Receipt, label: 'Repasses Lojistas' },
     ],
     ASSOCIACAO: [
       { path: '/cartao', icon: LayoutDashboard, label: 'Painel da Associação' },
+      { path: '/federacao/participacao-resultados', icon: TrendingUp, label: 'Comissões Cartão' },
       { path: '/cartao/gestao', icon: Wallet, label: 'Cartões dos Associados' },
       { path: '/cartao/parceiros', icon: Store, label: 'Clube de Benefícios' },
       { path: '/cartao/cashback-moradia', icon: PiggyBank, label: 'Poupança Moradia' },
     ],
     ASSOCIADO: [
       { path: '/cartao', icon: LayoutDashboard, label: 'Meu Painel' },
-      { path: '/cartao/virtual', icon: Sparkles, label: 'Meu Cartão Digital' },
+      { path: '/associado/cartao-digital', icon: Wallet, label: 'Cartão Digital Pass' },
+      { path: '/associado/adesao-cashback', icon: Sparkles, label: 'Saldo Cashback R$ 50' },
       { path: '/cartao/simulador-parcelamento', icon: Wallet, label: 'Parcelar Fatura' },
       { path: '/cartao/cashback-moradia', icon: PiggyBank, label: 'Abater Moradia' },
       { path: '/cartao/parceiros', icon: Store, label: 'Onde Usar' },
