@@ -63,6 +63,7 @@ export default function Sidebar() {
         subItems: [
           { path: '/admin/federacoes', label: 'Federações' },
           { path: '/admin/produtos', label: 'Empreendimentos' },
+          { path: '/admin/livro-razao', label: 'Livro-Razão Contábil' },
           { path: '/admin/monitoramento', label: 'Monitoramento' },
           { path: '/admin/auditoria', label: 'Auditoria & Logs' },
         ]

@@ -19,6 +19,7 @@ import GestaoFederacoes from './pages/admin-global/GestaoFederacoes';
 import GestaoProdutos from './pages/admin-global/GestaoProdutos';
 import AuditoriaLogs from './pages/admin-global/AuditoriaLogs';
 import MonitoramentoGlobal from './pages/admin-global/MonitoramentoGlobal';
+import LivroRazaoContabil from './pages/admin-global/LivroRazaoContabil';
 import CartaoDashboard from './pages/cartao/CartaoDashboard';
 import GestaoCartoes from './pages/cartao/GestaoCartoes';
 import RedeParceiros from './pages/cartao/RedeParceiros';
@@ -141,6 +142,14 @@ function App() {
           element={
             <RoleGuard allowedRoles={['ADMIN_GLOBAL']}>
               <AppLayout><MonitoramentoGlobal /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/admin/livro-razao"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL']}>
+              <AppLayout><LivroRazaoContabil /></AppLayout>
             </RoleGuard>
           }
         />
