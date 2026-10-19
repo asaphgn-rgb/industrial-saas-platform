@@ -1,5 +1,31 @@
-import { Users, Building2, ShieldCheck, TrendingUp, AlertTriangle, ArrowRight, DollarSign, Award, ChevronRight, FileCheck, Landmark, ArrowUpRight, CheckCircle2, Sliders, ArrowDownRight, Wallet, PieChart as PieChartIcon } from 'lucide-react';
+import { useState } from 'react';
+import {
+  Users,
+  Building2,
+  ShieldCheck,
+  TrendingUp,
+  AlertTriangle,
+  ArrowRight,
+  DollarSign,
+  Award,
+  ChevronRight,
+  FileCheck,
+  Landmark,
+  ArrowUpRight,
+  CheckCircle2,
+  Sliders,
+  ArrowDownRight,
+  Wallet,
+  Clock,
+  Check,
+  X,
+  FileSpreadsheet,
+  Layers,
+  Shield,
+  HelpCircle
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { AlcadaAprovacaoWorkflow } from '@/types/enterprise-core';
 
 export default function AdminGlobalDashboard() {
   const kpis = [
@@ -8,6 +34,52 @@ export default function AdminGlobalDashboard() {
     { title: 'Associados (Base)', value: '15.430', sub: 'Cadastros auditados LGPD', trend: '+12.5%', trendPositive: true, icon: Users },
     { title: 'Crédito Pré-Aprovado', value: 'R$ 84.5M', sub: '4.210 famílias aptas', trend: '+24.1%', trendPositive: true, icon: ShieldCheck }
   ];
+
+  // Alçadas de Aprovação Pendentes (SAP Workflow Engine Model)
+  const [alcadas, setAlcadas] = useState<AlcadaAprovacaoWorkflow[]>([
+    {
+      id: 'alc-101',
+      tipo_solicitacao: 'APROVACAO_CREDITO',
+      entidade_referencia: 'propostas',
+      registro_id: 'prop-8842',
+      nivel_alcada: 3,
+      papel_obrigatorio: 'ADMIN_GLOBAL',
+      status_decisao: 'PENDENTE',
+      parecer_tecnico: 'Proposta habitacional acima de R$ 350.000,00 (Quadra 01, Lote 04) - Parecer da Associação e Federação favoráveis.',
+      data_decisao: undefined,
+      created_at: 'Hoje, 10:15'
+    },
+    {
+      id: 'alc-102',
+      tipo_solicitacao: 'RESERVA_UNIDADE',
+      entidade_referencia: 'unidades_habitacionais',
+      registro_id: 'und-102',
+      nivel_alcada: 2,
+      papel_obrigatorio: 'ADMIN_GLOBAL',
+      status_decisao: 'PENDENTE',
+      parecer_tecnico: 'Reserva especial de lote para mutuário cotista prioritário com pontuação social 94.2 pts.',
+      data_decisao: undefined,
+      created_at: 'Hoje, 09:40'
+    },
+    {
+      id: 'alc-103',
+      tipo_solicitacao: 'CESSAO_DIREITOS',
+      entidade_referencia: 'contratos_digitais',
+      registro_id: 'cnt-4402',
+      nivel_alcada: 3,
+      papel_obrigatorio: 'ADMIN_GLOBAL',
+      status_decisao: 'PENDENTE',
+      parecer_tecnico: 'Transferência de titularidade de cota habitacional com quitação de taxas e termo de anuência.',
+      data_decisao: undefined,
+      created_at: 'Ontem, 17:20'
+    }
+  ]);
+
+  const despacharAlcada = (id: string, decisao: 'APROVADO' | 'REPROVADO') => {
+    setAlcadas(prev =>
+      prev.map(a => (a.id === id ? { ...a, status_decisao: decisao, data_decisao: new Date().toISOString() } : a))
+    );
+  };
 
   return (
     <div className="space-y-6 animate-fade-in select-none">
@@ -19,7 +91,7 @@ export default function AdminGlobalDashboard() {
               <span className="w-2 h-2 rounded-full bg-[#10B981]" />
               Painel de Controle Executivo
             </span>
-            <span className="text-xs text-[#88A395] font-semibold">Atualizado em tempo real</span>
+            <span className="text-xs text-[#88A395] font-semibold">Padrão SAP RE-FX / TOTVS</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-[#15241E] mt-1.5 font-sans">
             Visão Geral da Rede Habitacional
@@ -29,7 +101,14 @@ export default function AdminGlobalDashboard() {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
+          <Link
+            to="/admin/livro-razao"
+            className="px-4 py-2.5 text-xs font-bold text-[#16382C] bg-white border border-[#E2EBE5] rounded-2xl hover:bg-[#F4F7F5] transition-all shadow-sm flex items-center gap-2"
+          >
+            <FileSpreadsheet className="h-4 w-4 text-[#16382C]" />
+            Livro-Razão Contábil
+          </Link>
           <Link
             to="/admin/simulador-santander"
             className="px-4 py-2.5 text-xs font-bold text-[#16382C] bg-white border border-[#E2EBE5] rounded-2xl hover:bg-[#F4F7F5] transition-all shadow-sm flex items-center gap-2"
@@ -41,7 +120,7 @@ export default function AdminGlobalDashboard() {
             to="/admin/espelho-vendas"
             className="px-4 py-2.5 text-xs font-bold text-white bg-[#16382C] hover:bg-[#112B22] rounded-2xl transition-all shadow-md shadow-[#16382C]/10 flex items-center gap-2"
           >
-            Espelho de Vendas <ChevronRight className="h-3.5 w-3.5" />
+            Espelho de Lotes <ChevronRight className="h-3.5 w-3.5" />
           </Link>
         </div>
       </div>
@@ -169,6 +248,90 @@ export default function AdminGlobalDashboard() {
               Acessar Cartão <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
+        </div>
+      </div>
+
+      {/* NOVO: Motor de Alçadas de Aprovação & Workflow Hierárquico (Padrão SAP/TOTVS) */}
+      <div className="bg-white rounded-3xl border border-[#E2EBE5] p-6 sm:p-7 shadow-sm space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#E2EBE5]/60 gap-3">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-2xl bg-[#E8F8EE] text-[#16382C] border border-[#C8F2D6]">
+              <Shield className="h-5 w-5" />
+            </div>
+            <div>
+              <h3 className="text-base font-black text-[#15241E]">
+                Alçadas de Decisão & Workflow de Governança
+              </h3>
+              <p className="text-xs text-[#88A395]">
+                Despachos mandatórios da Presidência e Federações conforme limites de competência
+              </p>
+            </div>
+          </div>
+          <span className="text-xs font-bold text-[#16382C] bg-[#E8F8EE] border border-[#C8F2D6] px-3 py-1 rounded-full">
+            {alcadas.filter(a => a.status_decisao === 'PENDENTE').length} Solicitações Pendentes
+          </span>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead>
+              <tr className="border-b border-[#E2EBE5] text-[#88A395] uppercase font-bold text-[10px]">
+                <th className="pb-3">Tipo de Solicitação</th>
+                <th className="pb-3">Alçada Requerida</th>
+                <th className="pb-3">Parecer Técnico / Objeto</th>
+                <th className="pb-3">Data</th>
+                <th className="pb-3 text-right">Status / Despacho</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#E2EBE5]/60 font-medium">
+              {alcadas.map(a => (
+                <tr key={a.id} className="hover:bg-[#F4F7F5]/50 transition-colors">
+                  <td className="py-3.5 pr-3">
+                    <span className="font-bold text-[#15241E] block">
+                      {a.tipo_solicitacao.replace(/_/g, ' ')}
+                    </span>
+                    <span className="text-[10px] text-[#88A395] font-mono">Ref: {a.registro_id}</span>
+                  </td>
+                  <td className="py-3.5">
+                    <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#F4F7F5] border border-[#E2EBE5] text-[#16382C]">
+                      Nível {a.nivel_alcada} · {a.papel_obrigatorio}
+                    </span>
+                  </td>
+                  <td className="py-3.5 text-[#526E62] max-w-md">
+                    <p className="line-clamp-2">{a.parecer_tecnico}</p>
+                  </td>
+                  <td className="py-3.5 text-[#88A395] whitespace-nowrap text-[11px]">
+                    {a.created_at}
+                  </td>
+                  <td className="py-3.5 text-right whitespace-nowrap">
+                    {a.status_decisao === 'PENDENTE' ? (
+                      <div className="inline-flex items-center gap-1.5">
+                        <button
+                          onClick={() => despacharAlcada(a.id, 'APROVADO')}
+                          className="px-3 py-1.5 rounded-xl bg-[#16382C] hover:bg-[#112B22] text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1"
+                        >
+                          <Check className="w-3.5 h-3.5 text-[#C8F2D6]" />
+                          Homologar
+                        </button>
+                        <button
+                          onClick={() => despacharAlcada(a.id, 'REPROVADO')}
+                          className="px-2.5 py-1.5 rounded-xl border border-red-200 text-red-600 hover:bg-red-50 text-xs font-bold transition-all"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    ) : (
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                        a.status_decisao === 'APROVADO' ? 'bg-[#E8F8EE] text-[#16382C]' : 'bg-red-50 text-red-600'
+                      }`}>
+                        {a.status_decisao}
+                      </span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
