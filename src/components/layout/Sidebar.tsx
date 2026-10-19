@@ -64,6 +64,7 @@ export default function Sidebar() {
           { path: '/admin/federacoes', label: 'Federações' },
           { path: '/admin/produtos', label: 'Empreendimentos' },
           { path: '/admin/livro-razao', label: 'Livro-Razão Contábil' },
+          { path: '/admin/fechamento-contabil', label: 'Fechamento & DRE' },
           { path: '/admin/monitoramento', label: 'Monitoramento' },
           { path: '/admin/auditoria', label: 'Auditoria & Logs' },
         ]
