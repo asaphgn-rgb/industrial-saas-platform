@@ -4,57 +4,60 @@
 
 @layer base {
   :root {
-    /* Paleta Coinest Fintech Benchmark */
-    --background: 140 14% 96%; /* #F4F7F5 Soft Mint Gray Canvas */
-    --foreground: 154 26% 11%; /* #15241E Deep Forest Charcoal */
+    /* Paleta Oficial DYAMOND Ecossistema Financeiro e de Benefícios */
+    --background: 218 38% 97%; /* #F4F7FC Clean Blue-Gray Canvas */
+    --foreground: 222 47% 11%; /* #0A192F Deep Navy Title */
 
-    /* Cards em Branco Puro para Contraste Crisp */
-    --card: 0 0% 100%;
-    --card-foreground: 154 26% 11%;
+    /* Cards e Superfícies */
+    --card: 0 0% 100%; /* #FFFFFF Pure White */
+    --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 154 26% 11%;
+    --popover-foreground: 222 47% 11%;
 
-    /* Cor Primária: Forest Green Executivo (#16382C) */
-    --primary: 159 43% 15%; /* #16382C */
+    /* Cor Primária: Azul Royal DYAMOND (#0066FF) */
+    --primary: 216 100% 50%; /* #0066FF */
     --primary-foreground: 0 0% 100%;
 
-    /* Secundária: Mint Pastel (#C8F2D6) */
-    --secondary: 141 58% 87%; /* #C8F2D6 */
-    --secondary-foreground: 159 43% 15%;
+    /* Cor Secundária: Azul Suave / Gelo */
+    --secondary: 216 100% 96%; /* #EBF3FF */
+    --secondary-foreground: 216 100% 40%;
 
-    /* Tons Muted / Neutros Naturais */
-    --muted: 144 20% 94%;
-    --muted-foreground: 154 15% 38%;
+    /* Tons Muted / Neutros */
+    --muted: 214 32% 93%; /* #EEF3F9 */
+    --muted-foreground: 215 16% 47%; /* #64748B */
 
-    /* Destaques e Microinterações */
-    --accent: 141 58% 87%; /* #C8F2D6 Mint Badge */
-    --accent-foreground: 159 43% 15%;
+    /* Acento / Dourado Institucional */
+    --accent: 43 74% 49%; /* #D4AF37 Gold Diamond */
+    --accent-foreground: 222 47% 11%;
 
-    /* Alertas e Erros */
-    --destructive: 0 84% 60%;
+    /* Alertas e Status */
+    --success: 150 100% 33%; /* #00A854 Green Online */
+    --success-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%; /* #EF4444 Red */
     --destructive-foreground: 0 0% 98%;
 
-    /* Bordas Sutis Coinest */
-    --border: 144 18% 90%; /* #E2EBE5 */
-    --input: 144 18% 90%;
-    --ring: 159 43% 15%;
+    /* Bordas e Inputs */
+    --border: 218 35% 91%; /* #E2E8F4 */
+    --input: 218 35% 91%;
+    --ring: 216 100% 50%;
 
-    --radius: 1.25rem; /* Bordas arredondadas e amigáveis padrão Coinest */
+    --radius: 1rem;
   }
 }
 
 @layer base {
   * {
-    border-color: #E2EBE5;
+    border-color: #E2E8F4;
   }
   body {
-    background-color: #F4F7F5;
-    color: #15241E;
-    @apply antialiased font-sans selection:bg-[#C8F2D6] selection:text-[#16382C];
+    background-color: #F4F7FC;
+    color: #0A192F;
+    @apply antialiased font-sans selection:bg-[#0066FF] selection:text-white;
   }
 
-  /* Scrollbar customizada moderna e discreta */
+  /* Scrollbar customizada clean */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -63,52 +66,28 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: #D1DFD7;
+    background: #CBD5E1;
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #A3BEB0;
+    background: #94A3B8;
   }
 }
 
 @layer utilities {
-  .bg-coinest-canvas {
-    background-color: #F4F7F5;
+  .bg-dyamond-sidebar {
+    background-color: #06152B;
   }
-  .bg-coinest-card {
+  .bg-dyamond-canvas {
+    background-color: #F4F7FC;
+  }
+  .card-dyamond {
     background-color: #FFFFFF;
-    border: 1px solid #E2EBE5;
+    border: 1px solid #E2E8F4;
     border-radius: 1.25rem;
-    box-shadow: 0 4px 20px -2px rgba(22, 56, 44, 0.04);
+    box-shadow: 0 4px 20px -2px rgba(10, 25, 47, 0.04), 0 2px 6px -1px rgba(10, 25, 47, 0.02);
   }
-  .bg-coinest-forest {
-    background-color: #16382C;
-    color: #FFFFFF;
-  }
-  .bg-coinest-mint {
-    background-color: #C8F2D6;
-    color: #16382C;
-  }
-  .badge-coinest-mint {
-    background-color: #E8F8EE;
-    color: #16382C;
-    border: 1px solid #C8F2D6;
-    font-weight: 700;
-  }
-  .card-coinest {
-    background-color: #FFFFFF;
-    border: 1px solid #E2EBE5;
-    border-radius: 1.25rem;
-    box-shadow: 0 4px 20px -2px rgba(22, 56, 44, 0.04), 0 2px 6px -1px rgba(22, 56, 44, 0.02);
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .card-coinest:hover {
-    box-shadow: 0 10px 30px -4px rgba(22, 56, 44, 0.08);
-  }
-  .card-coinest-dark {
-    background-color: #16382C;
-    color: #FFFFFF;
-    border-radius: 1.25rem;
-    box-shadow: 0 12px 35px -5px rgba(22, 56, 44, 0.35);
+  .card-dyamond:hover {
+    box-shadow: 0 10px 30px -4px rgba(10, 25, 47, 0.08);
   }
 }

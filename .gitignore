@@ -64,6 +64,8 @@ ehthumbs.db
 $RECYCLE.BIN/
 *.tmp
 *.temp
+*.zip
+test-curl.js
 
 # Documentos temporários / logs de agentes
 .claude/worktrees/

@@ -40,6 +40,19 @@ import EspelhoUnidades from './pages/habitacional/EspelhoUnidades';
 import FilaSocialScoring from './pages/habitacional/FilaSocialScoring';
 import GestaoContratosDigitais from './pages/habitacional/GestaoContratosDigitais';
 import SimuladorCreditoSantander from './pages/habitacional/SimuladorCreditoSantander';
+
+// Suíte DYAMOND - Ecossistema Financeiro e de Benefícios
+import CentralOperacoes from './pages/dyamond/CentralOperacoes';
+import Carteira360 from './pages/dyamond/Carteira360';
+import ProdutosOfertas from './pages/dyamond/ProdutosOfertas';
+import MarketplaceDyamond from './pages/dyamond/MarketplaceDyamond';
+import BeneficiosClube from './pages/dyamond/BeneficiosClube';
+import FinanceiroAPI from './pages/dyamond/FinanceiroAPI';
+import AprovacoesEsteira from './pages/dyamond/AprovacoesEsteira';
+import AtendimentoOmnichannel from './pages/dyamond/AtendimentoOmnichannel';
+import RelatoriosEstrategicos from './pages/dyamond/RelatoriosEstrategicos';
+import GovernancaControle from './pages/dyamond/GovernancaControle';
+
 import { CommunicationHub } from './components/secure-chat/CommunicationHub';
 import FloatingAIAssistant from './components/assistant/FloatingAIAssistant';
 import { useAuth } from './hooks/useAuth';
@@ -102,9 +115,91 @@ function App() {
           <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
 
-        {/* Rotas ADMIN_GLOBAL */}
+        {/* Rotas Suíte DYAMOND (10 Módulos Oficiais) */}
         <Route
           path="/dashboard"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO', 'ASSOCIADO']}>
+              <AppLayout><CentralOperacoes /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/carteira-360"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO', 'ASSOCIADO']}>
+              <AppLayout><Carteira360 /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/produtos-ofertas"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO', 'ASSOCIADO']}>
+              <AppLayout><ProdutosOfertas /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/marketplace"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO', 'ASSOCIADO']}>
+              <AppLayout><MarketplaceDyamond /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/beneficios"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO', 'ASSOCIADO']}>
+              <AppLayout><BeneficiosClube /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/financeiro-api"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO', 'ASSOCIADO']}>
+              <AppLayout><FinanceiroAPI /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/aprovacoes"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO', 'ASSOCIADO']}>
+              <AppLayout><AprovacoesEsteira /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/atendimento"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO', 'ASSOCIADO']}>
+              <AppLayout><AtendimentoOmnichannel /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/relatorios"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO', 'ASSOCIADO']}>
+              <AppLayout><RelatoriosEstrategicos /></AppLayout>
+            </RoleGuard>
+          }
+        />
+        <Route
+          path="/governanca"
+          element={
+            <RoleGuard allowedRoles={['ADMIN_GLOBAL', 'FEDERACAO', 'ASSOCIACAO', 'ASSOCIADO']}>
+              <AppLayout><GovernancaControle /></AppLayout>
+            </RoleGuard>
+          }
+        />
+
+        {/* Rotas ADMIN_GLOBAL Adicionais */}
+        <Route
+          path="/admin/dashboard-global"
           element={
             <RoleGuard allowedRoles={['ADMIN_GLOBAL']}>
               <AppLayout><AdminGlobalDashboard /></AppLayout>
