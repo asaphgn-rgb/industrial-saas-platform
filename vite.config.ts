@@ -50,5 +50,31 @@ export default defineConfig({
     host: true,
     port: parseInt(process.env.PORT || '5173'),
     allowedHosts: true,
-  }
+  },
+  esbuild: {
+    // Elimina comandos de depuração no bundle final de produção
+    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
+    legalComments: 'none',
+  },
+  build: {
+    // Supressão total de Source Maps para impedir engenharia reversa do código TypeScript
+    sourcemap: false,
+    // Minificação agressiva e ofuscação de identificadores
+    minify: 'esbuild',
+    target: 'es2020',
+    cssMinify: true,
+    rollupOptions: {
+      output: {
+        // Fragmentação modular para evitar que arquivos únicos contenham a lógica integral
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          query: ['@tanstack/react-query'],
+          icons: ['lucide-react'],
+          charts: ['recharts'],
+          supabase: ['@supabase/supabase-js'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1500,
+  },
 })
