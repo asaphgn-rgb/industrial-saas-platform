@@ -21,7 +21,7 @@ export default function CartaoVirtual() {
 
   const [cartaoVirtual, setCartaoVirtual] = useState<CartaoVirtualItem>({
     id: 'vcard-01',
-    apelido: 'DYAMOND CARD Virtual · E-commerce & Recorrência',
+    apelido: 'DYAMOND CARD Gold Premium · E-commerce & Recorrência',
     numero_mascarado: '5284 •••• •••• 7890',
     cvv_dinamico: '945',
     segundos_restantes_cvv: 52,
@@ -56,7 +56,7 @@ export default function CartaoVirtual() {
     const novoCvv = Math.floor(100 + Math.random() * 900).toString();
     setCartaoVirtual({
       id: `vcard-${Date.now()}`,
-      apelido: 'DYAMOND CARD Virtual · Uso Único Temporário',
+      apelido: 'DYAMOND CARD Gold Premium · Uso Único Temporário',
       numero_mascarado: `5284 •••• •••• ${novoFinal}`,
       cvv_dinamico: novoCvv,
       segundos_restantes_cvv: 60,
@@ -101,52 +101,48 @@ export default function CartaoVirtual() {
       </div>
 
       <div className="grid gap-8 lg:grid-cols-2">
-        {/* Renderização do Cartão DYAMOND CARD Físico-Digital Oficial */}
+        {/* Renderização do Cartão DYAMOND CARD Gold Premium Oficial */}
         <div className="space-y-6">
           <div className="relative aspect-[1.586/1] w-full rounded-3xl p-7 sm:p-8 text-white shadow-2xl overflow-hidden border border-[#22396F] flex flex-col justify-between group">
-            {/* Arte Oficial do Cartão (Imagem Integral de Fundo) */}
+            {/* Arte Oficial Exata do Cartão (11.webp / dyamond-card-gold-premium.png) */}
             <img
-              src="/assets/dyamond-card-physical.png"
-              alt="DYAMOND CARD"
+              src="/assets/dyamond-card-gold-premium.png"
+              alt="DYAMOND CARD GOLD"
               className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#010736]/30 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#010736]/25 via-transparent to-transparent pointer-events-none" />
 
             {/* Topo do Cartão */}
             <div className="relative z-10 flex items-start justify-end">
-              <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black bg-[#010736]/70 backdrop-blur-md text-cyan-300 border border-white/20">
-                DIGITAL ONLY
-              </span>
+              <button
+                type="button"
+                onClick={() => setMostrarNumero(!mostrarNumero)}
+                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#010736]/60 backdrop-blur-md border border-white/20 text-[11px] font-bold text-white hover:bg-[#010736]/80 transition-all shadow-sm"
+              >
+                {mostrarNumero ? <EyeOff className="size-3.5 text-cyan-300" /> : <Eye className="size-3.5 text-cyan-300" />}
+                <span>{mostrarNumero ? "Ocultar" : "Exibir dados"}</span>
+              </button>
             </div>
 
             {/* Número Mascarado / Exibição */}
             <div className="relative z-10 space-y-2 my-auto pt-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-              <div className="flex items-center justify-between">
-                <p className="font-mono text-xl sm:text-2xl tracking-[0.22em] text-white font-bold">
-                  {mostrarNumero ? '5284 7312 3456 7890' : cartaoVirtual.numero_mascarado}
-                </p>
-                <button
-                  onClick={() => setMostrarNumero(!mostrarNumero)}
-                  className="p-2 rounded-xl bg-[#010736]/60 backdrop-blur-md hover:bg-[#010736]/80 text-white transition-colors border border-white/20"
-                  title={mostrarNumero ? 'Ocultar' : 'Exibir número completo'}
-                >
-                  {mostrarNumero ? <EyeOff className="h-4 w-4 text-cyan-300" /> : <Eye className="h-4 w-4 text-cyan-300" />}
-                </button>
-              </div>
+              <p className="font-mono text-xl sm:text-2xl tracking-[0.22em] text-white font-bold">
+                {mostrarNumero ? '5284 7312 3456 7890' : cartaoVirtual.numero_mascarado}
+              </p>
             </div>
 
             {/* Rodapé do Cartão: Titular, Validade e CVV Dinâmico */}
             <div className="relative z-10 flex items-end justify-between text-xs pt-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
               <div className="min-w-0 pr-2">
+                <span className="text-[8px] uppercase tracking-wider text-slate-300 block font-semibold">TITULAR DO CARTÃO</span>
                 <p className="font-bold tracking-wider text-white text-[11px] truncate uppercase font-sans">
-                  FABIANO ASAPH
+                  ASAPHGN@GMAIL.COM
                 </p>
-                <p className="text-[9px] uppercase tracking-widest text-cyan-300 font-bold">CLIENTE DYAMOND</p>
               </div>
 
               <div className="px-2 text-center">
                 <span className="text-[8px] uppercase tracking-wider text-slate-300 block font-semibold">VÁLIDO ATÉ</span>
-                <span className="font-mono font-bold text-white text-xs">{cartaoVirtual.validade}</span>
+                <span className="font-mono font-bold text-white text-xs">12/30</span>
               </div>
 
               <div className="text-right">
