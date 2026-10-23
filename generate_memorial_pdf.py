@@ -2,7 +2,7 @@ import os
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image, PageBreak, KeepTogether
+    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image, PageBreak
 )
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.graphics.shapes import Drawing, Rect, String as DString, Line as DLine, Group, Polygon
@@ -29,7 +29,6 @@ class MemorialNumberedCanvas(canvas.Canvas):
 
     def draw_decorations(self, page_count):
         self.saveState()
-        # Top banner on all pages except cover (page 1)
         if self._pageNumber > 1:
             self.setStrokeColor(colors.HexColor("#010736"))
             self.setLineWidth(1.2)
@@ -42,7 +41,6 @@ class MemorialNumberedCanvas(canvas.Canvas):
             self.setFillColor(colors.HexColor("#64748B"))
             self.drawRightString(PAGE_W - 36, PAGE_H - 23, "MORAR BEM BRASIL & DYAMOND CARD · DOCUMENTO OFICIAL")
 
-        # Bottom footer on all pages
         self.setStrokeColor(colors.HexColor("#CBD5E1"))
         self.setLineWidth(0.6)
         self.line(36, 26, PAGE_W - 36, 26)
@@ -56,17 +54,15 @@ class MemorialNumberedCanvas(canvas.Canvas):
         self.drawRightString(PAGE_W - 36, 16, f"PÁGINA {self._pageNumber} DE {page_count}")
         self.restoreState()
 
-# Helpers para criação de diagramas vetoriais nítidos
+# Helpers com espaçamento matemático calculado para ZERO colisão
 def make_box(x, y, w, h, title, subtitle="", bg="#010736", text_color="#FFFFFF", border_color="#22396F"):
     g = Group()
-    # Caixa principal com bordas arredondadas
     rect = Rect(x, y, w, h, rx=5, ry=5, fillColor=colors.HexColor(bg), strokeColor=colors.HexColor(border_color), strokeWidth=1)
     g.add(rect)
-    # Título centralizado
-    t = DString(x + w / 2, y + h / 2 + (2 if subtitle else -3), title, fontName="Helvetica-Bold", fontSize=7.5, textAnchor="middle", fillColor=colors.HexColor(text_color))
+    t = DString(x + w / 2, y + h / 2 + (2.5 if subtitle else -2.5), title, fontName="Helvetica-Bold", fontSize=7, textAnchor="middle", fillColor=colors.HexColor(text_color))
     g.add(t)
     if subtitle:
-        sub = DString(x + w / 2, y + h / 2 - 8, subtitle, fontName="Helvetica", fontSize=5.5, textAnchor="middle", fillColor=colors.HexColor(text_color))
+        sub = DString(x + w / 2, y + h / 2 - 7.5, subtitle, fontName="Helvetica", fontSize=5.2, textAnchor="middle", fillColor=colors.HexColor(text_color))
         g.add(sub)
     return g
 
@@ -74,11 +70,10 @@ def make_arrow_down(x, y_start, y_end, label="", color="#22396F"):
     g = Group()
     line = DLine(x, y_start, x, y_end, strokeColor=colors.HexColor(color), strokeWidth=1.2)
     g.add(line)
-    # Ponta da seta
     arrow = Polygon(points=[x - 3, y_end + 5, x + 3, y_end + 5, x, y_end], fillColor=colors.HexColor(color), strokeColor=colors.HexColor(color))
     g.add(arrow)
     if label:
-        lbl = DString(x + 6, (y_start + y_end) / 2 - 2, label, fontName="Helvetica-Bold", fontSize=5.5, fillColor=colors.HexColor("#475569"))
+        lbl = DString(x + 5, (y_start + y_end) / 2 - 2, label, fontName="Helvetica-Bold", fontSize=5.5, fillColor=colors.HexColor("#475569"))
         g.add(lbl)
     return g
 
@@ -89,7 +84,8 @@ def make_arrow_right(x_start, x_end, y, label="", color="#22396F"):
     arrow = Polygon(points=[x_end - 5, y - 3, x_end - 5, y + 3, x_end, y], fillColor=colors.HexColor(color), strokeColor=colors.HexColor(color))
     g.add(arrow)
     if label:
-        lbl = DString((x_start + x_end) / 2, y + 4, label, fontName="Helvetica-Bold", fontSize=5.5, textAnchor="middle", fillColor=colors.HexColor("#475569"))
+        # Rótulo perfeitamente elevado acima da seta (y + 6) sem colisão com caixas
+        lbl = DString((x_start + x_end) / 2, y + 5.5, label, fontName="Helvetica-Bold", fontSize=5.2, textAnchor="middle", fillColor=colors.HexColor("#0D1C42"))
         g.add(lbl)
     return g
 
@@ -109,7 +105,6 @@ def build_memorial_pdf():
     navy_deep = colors.HexColor("#010736")
     navy_royal = colors.HexColor("#0D1C42")
     navy_accent = colors.HexColor("#22396F")
-    cream_noble = colors.HexColor("#FCF1D0")
     green_cert = colors.HexColor("#047857")
     green_bg = colors.HexColor("#ECFDF5")
     card_bg = colors.HexColor("#F8FAFD")
@@ -175,15 +170,11 @@ def build_memorial_pdf():
     # DIAGRAMA VETORIAL 1: MACRO-ARQUITETURA HIERÁRQUICA E FLUXO DE GOVERNANÇA (4 NÍVEIS)
     story.append(Paragraph("DIAGRAMA 1: HIERARQUIA MULTI-TENANT E FLUXO DE GOVERNANÇA", p_sec_title))
     d1 = Drawing(523, 115)
-    # Nível 1: DY INVEST
     d1.add(make_box(166, 78, 190, 32, "NÍVEL 1: DY INVEST", "Holding Controladora · Governança Global · RLS Macro", bg="#010736", text_color="#FCF1D0", border_color="#22396F"))
-    # Setas para Nível 2
     d1.add(make_arrow_down(210, 78, 48, "", color="#22396F"))
     d1.add(make_arrow_down(310, 78, 48, "", color="#22396F"))
-    # Nível 2: Federações
     d1.add(make_box(50, 20, 180, 28, "NÍVEL 2: FEDERAÇÃO A", "Gestão Estadual Exclusiva · Zero Acesso B", bg="#0D1C42", text_color="#FFFFFF", border_color="#22396F"))
     d1.add(make_box(290, 20, 180, 28, "NÍVEL 2: FEDERAÇÃO B", "Gestão Estadual Exclusiva · Zero Acesso A", bg="#0D1C42", text_color="#FFFFFF", border_color="#22396F"))
-    # Indicador de barreira
     d1.add(DLine(260, 15, 260, 52, strokeColor=colors.HexColor("#DC2626"), strokeWidth=1, strokeDashArray=[2, 2]))
     d1.add(DString(260, 55, "RLS BARRIER", fontName="Helvetica-Bold", fontSize=5, textAnchor="middle", fillColor=colors.HexColor("#DC2626")))
     story.append(d1)
@@ -212,7 +203,7 @@ def build_memorial_pdf():
         ("5. Alçada", "Workflow WF"),
         ("6. Posse", "Hash SHA-256")
     ]
-    box_w = 72
+    box_w = 70
     box_gap = 18
     for i, (stitle, ssub) in enumerate(steps):
         bx = 5 + i * (box_w + box_gap)
@@ -240,21 +231,22 @@ def build_memorial_pdf():
     story.append(Paragraph("Garantia de inviolabilidade, equilíbrio matemático estrito de partidas dobradas e trilha pericial forense.", p_sec_sub))
     story.append(Spacer(1, 4))
 
-    # DIAGRAMA VETORIAL 3: PARTIDAS DOBRADAS E MERKLE CHAINING
+    # DIAGRAMA VETORIAL 3: ZERO SOBREPOSIÇÃO (ESPAÇAMENTO AMPLIADO E RÓTULOS DESLOCADOS)
     story.append(Paragraph("DIAGRAMA 3: MECANISMO DE LANÇAMENTOS EQUILIBRADOS E ENCADEAMENTO MERKLE", p_sec_title))
-    d3 = Drawing(523, 85)
-    # Caixa Fato Econômico
-    d3.add(make_box(10, 42, 110, 32, "FATO ECONÔMICO", "Adesão R$ 50 / Cota", bg="#010736", text_color="#FCF1D0"))
-    d3.add(make_arrow_right(120, 160, 58, "Gera D=C", color="#22396F"))
-    # Caixas Débito e Crédito
-    d3.add(make_box(160, 52, 120, 24, "DÉBITO: R$ 50,00", "Disponibilidades / Banco", bg="#047857", text_color="#FFFFFF"))
-    d3.add(make_box(160, 18, 120, 24, "CRÉDITO: R$ 50,00", "Passivo / Cashback Moradia", bg="#0D1C42", text_color="#FFFFFF"))
-    # Seta para Merkle Chain
-    d3.add(make_arrow_right(280, 320, 48, "Assinatura SHA-256", color="#22396F"))
-    # Caixas do Merkle Chain
-    d3.add(make_box(320, 35, 90, 30, "LOTE N-1", "Hash Ant: 8a7c...", bg="#22396F", text_color="#FFFFFF"))
-    d3.add(make_arrow_right(410, 430, 50, "", color="#010736"))
-    d3.add(make_box(430, 35, 90, 30, "LOTE N (ATUAL)", "Hash Atual: f41e...", bg="#010736", text_color="#FCF1D0", border_color="#A7F3D0"))
+    d3 = Drawing(523, 90)
+    # Caixa Fato Econômico (x=5, w=105)
+    d3.add(make_box(5, 36, 105, 34, "FATO ECONÔMICO", "Adesão R$ 50 / Cota", bg="#010736", text_color="#FCF1D0"))
+    # Seta 1: de 110 até 155 (gap=45px, rótulo no topo)
+    d3.add(make_arrow_right(110, 155, 53, "D = C", color="#22396F"))
+    # Caixas Débito e Crédito (x=155, w=115)
+    d3.add(make_box(155, 51, 115, 24, "DÉBITO: R$ 50,00", "Disponibilidades / Banco", bg="#047857", text_color="#FFFFFF"))
+    d3.add(make_box(155, 17, 115, 24, "CRÉDITO: R$ 50,00", "Passivo / Cashback Moradia", bg="#0D1C42", text_color="#FFFFFF"))
+    # Seta 2: de 270 até 330 (gap=60px, rótulo no topo sem colidir com caixas)
+    d3.add(make_arrow_right(270, 330, 42, "SHA-256", color="#22396F"))
+    # Caixas Merkle Lote N-1 (x=330, w=85) e Lote N (x=435, w=85)
+    d3.add(make_box(330, 26, 85, 32, "LOTE N-1", "Hash Ant: 8a7c...", bg="#22396F", text_color="#FFFFFF"))
+    d3.add(make_arrow_right(415, 435, 42, "", color="#010736"))
+    d3.add(make_box(435, 26, 85, 32, "LOTE N (ATUAL)", "Hash Atual: f41e...", bg="#010736", text_color="#FCF1D0", border_color="#A7F3D0"))
     story.append(d3)
     story.append(Spacer(1, 4))
 
@@ -273,16 +265,23 @@ def build_memorial_pdf():
     story.append(Paragraph("Estrutura técnica da bandeira própria de benefícios, meios de autenticação física/digital e marketplace.", p_sec_sub))
     story.append(Spacer(1, 4))
 
-    # DIAGRAMA VETORIAL 4: FLUXO DE VALIDAÇÃO DE BENEFÍCIO EM ESTABELECIMENTO CREDENCIADO
+    # DIAGRAMA VETORIAL 4: ZERO SOBREPOSIÇÃO (LARGURAS CONTROLADAS E GAP OTIMIZADO)
     story.append(Paragraph("DIAGRAMA 4: FLUXO TRANSACIONAL DE VALIDAÇÃO DE BENEFÍCIO E REPASSE MDR", p_sec_title))
     d4 = Drawing(523, 75)
-    d4.add(make_box(5, 20, 95, 36, "1. ASSOCIADO", "Apresenta QR Code / Cartão", bg="#010736", text_color="#FCF1D0"))
-    d4.add(make_arrow_right(100, 130, 38, "Leitura", color="#22396F"))
-    d4.add(make_box(130, 20, 105, 36, "2. CREDENCIADO", "Lojista Valida no Portal", bg="#0D1C42", text_color="#FFFFFF"))
-    d4.add(make_arrow_right(235, 265, 38, "Tokenização", color="#22396F"))
-    d4.add(make_box(265, 20, 115, 36, "3. API GATEWAY", "Verifica Situação e Regra", bg="#22396F", text_color="#FFFFFF"))
-    d4.add(make_arrow_right(380, 410, 38, "Liquidação", color="#047857"))
-    d4.add(make_box(410, 20, 108, 36, "4. SPLIT AUTOMÁTICO", "Desconto + MDR da Rede", bg="#047857", text_color="#FFFFFF"))
+    # Caixa 1: Associado (w=90)
+    d4.add(make_box(5, 20, 90, 36, "1. ASSOCIADO", "Apresenta QR / Cartão", bg="#010736", text_color="#FCF1D0"))
+    # Seta 1: de 95 a 135 (gap=40px)
+    d4.add(make_arrow_right(95, 135, 38, "Leitura", color="#22396F"))
+    # Caixa 2: Credenciado (w=95)
+    d4.add(make_box(135, 20, 95, 36, "2. CREDENCIADO", "Lojista Valida no Portal", bg="#0D1C42", text_color="#FFFFFF"))
+    # Seta 2: de 230 a 275 (gap=45px)
+    d4.add(make_arrow_right(230, 275, 38, "Token", color="#22396F"))
+    # Caixa 3: API Gateway (w=105)
+    d4.add(make_box(275, 20, 105, 36, "3. API GATEWAY", "Valida Regra e Cartão", bg="#22396F", text_color="#FFFFFF"))
+    # Seta 3: de 380 a 425 (gap=45px)
+    d4.add(make_arrow_right(380, 425, 38, "Split", color="#047857"))
+    # Caixa 4: Split Automático (w=95)
+    d4.add(make_box(425, 20, 95, 36, "4. REPASSE MDR", "Desconto + Split Rede", bg="#047857", text_color="#FFFFFF"))
     story.append(d4)
     story.append(Spacer(1, 4))
 
