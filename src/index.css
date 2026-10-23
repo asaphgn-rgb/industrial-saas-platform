@@ -4,44 +4,47 @@
 
 @layer base {
   :root {
-    /* Paleta Oficial DYAMOND Ecossistema Financeiro e de Benefícios */
-    --background: 218 38% 97%; /* #F4F7FC Clean Blue-Gray Canvas */
-    --foreground: 222 47% 11%; /* #0A192F Deep Navy Title */
+    /* =========================================================================
+     * PALETA OFICIAL DYINVEST (DY CARD SERVIÇOS DE CONSULTORIA EM INVESTIMENTOS)
+     * #010736 (Azul Noturno) | #0D1C42 (Azul Escuro) | #22396F (Azul Royal) | #FCF1D0 (Creme Nobre)
+     * ========================================================================= */
+    --background: 218 50% 98%; /* #F8FAFD Canvas Soft */
+    --foreground: 233 96% 11%; /* #010736 Títulos e Alto Contraste */
 
     /* Cards e Superfícies */
-    --card: 0 0% 100%; /* #FFFFFF Pure White */
-    --card-foreground: 222 47% 11%;
+    --card: 0 0% 100%; /* #FFFFFF Branco Puro */
+    --card-foreground: 233 96% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 233 96% 11%;
 
-    /* Cor Primária: Azul Royal DYAMOND (#0066FF) */
-    --primary: 216 100% 50%; /* #0066FF */
+    /* Cor Primária: Azul Royal Dyinvest (#22396F) */
+    --primary: 222 53% 28%; /* #22396F */
     --primary-foreground: 0 0% 100%;
 
-    /* Cor Secundária: Azul Suave / Gelo */
-    --secondary: 216 100% 96%; /* #EBF3FF */
-    --secondary-foreground: 216 100% 40%;
+    /* Cor Secundária: Creme Nobre Dyinvest (#FCF1D0) */
+    --secondary: 44 88% 90%; /* #FCF1D0 */
+    --secondary-foreground: 233 96% 11%;
 
     /* Tons Muted / Neutros */
-    --muted: 214 32% 93%; /* #EEF3F9 */
-    --muted-foreground: 215 16% 47%; /* #64748B */
+    --muted: 214 32% 93%; /* #EEF2F6 */
+    --muted-foreground: 215 16% 47%; /* #475569 */
 
-    /* Acento / Dourado Institucional */
-    --accent: 43 74% 49%; /* #D4AF37 Gold Diamond */
-    --accent-foreground: 222 47% 11%;
+    /* Acento / Dourado Institucional & Champagne */
+    --accent: 44 88% 90%; /* #FCF1D0 Creme */
+    --accent-foreground: 233 96% 11%;
 
     /* Alertas e Status */
-    --success: 150 100% 33%; /* #00A854 Green Online */
+    --success: 161 94% 24%; /* #047857 Verde Institucional */
     --success-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%; /* #EF4444 Red */
+    --destructive: 0 72% 51%; /* #DC2626 */
     --destructive-foreground: 0 0% 98%;
 
     /* Bordas e Inputs */
-    --border: 218 35% 91%; /* #E2E8F4 */
-    --input: 218 35% 91%;
-    --ring: 216 100% 50%;
+    --border: 214 32% 91%; /* #E2E8F0 */
+    --input: 214 32% 91%;
+    --ring: 222 53% 28%;
 
     --radius: 1rem;
   }
@@ -49,12 +52,12 @@
 
 @layer base {
   * {
-    border-color: #E2E8F4;
+    border-color: #E2E8F0;
   }
   body {
-    background-color: #F4F7FC;
-    color: #0A192F;
-    @apply antialiased font-sans selection:bg-[#0066FF] selection:text-white;
+    background-color: #F8FAFD;
+    color: #010736;
+    @apply antialiased font-sans selection:bg-[#22396F] selection:text-white;
   }
 
   /* Scrollbar customizada clean */
@@ -76,18 +79,18 @@
 
 @layer utilities {
   .bg-dyamond-sidebar {
-    background-color: #06152B;
+    background-color: #010736;
   }
   .bg-dyamond-canvas {
-    background-color: #F4F7FC;
+    background-color: #F8FAFD;
   }
   .card-dyamond {
     background-color: #FFFFFF;
-    border: 1px solid #E2E8F4;
+    border: 1px solid #E2E8F0;
     border-radius: 1.25rem;
-    box-shadow: 0 4px 20px -2px rgba(10, 25, 47, 0.04), 0 2px 6px -1px rgba(10, 25, 47, 0.02);
+    box-shadow: 0 4px 20px -2px rgba(1, 7, 54, 0.04), 0 2px 6px -1px rgba(1, 7, 54, 0.02);
   }
   .card-dyamond:hover {
-    box-shadow: 0 10px 30px -4px rgba(10, 25, 47, 0.08);
+    box-shadow: 0 10px 25px -4px rgba(1, 7, 54, 0.08), 0 4px 10px -2px rgba(1, 7, 54, 0.04);
   }
 }

@@ -19,59 +19,69 @@ export default {
     },
     extend: {
       colors: {
-        /* DESIGN SYSTEM OFICIAL DYAMOND ECOSSISTEMA */
+        /* IDENTIDADE VISUAL OFICIAL DYINVEST — PALETA CORPORATIVA OFICIAL */
+        dyinvest: {
+          midnight: "#010736",      // Azul Noturno Mais Profundo (Base Primária de Contraste)
+          deep: "#0D1C42",          // Azul Escuro Real (Sidebar e Destaques Institucionais)
+          royal: "#22396F",         // Azul Royal Corporativo (Elementos de Ação e Bordas de Foco)
+          cream: "#FCF1D0",         // Bege / Creme Suave (Superfícies de Destaque e Badges Nobres)
+          creamDark: "#E2D4A8",     // Borda e sombra de suporte ao Creme
+        },
+
+        /* DESIGN SYSTEM DYAMOND / DY INVEST ATUALIZADO */
         dyamond: {
-          // Sidebar Navy Profundo
-          sidebar: "#06152B",       // Fundo da sidebar navy escuro
-          sidebarHover: "#0E223D",  // Hover de itens da sidebar
-          sidebarActive: "#0066FF", // Azul royal elétrico para item ativo
-          sidebarText: "#8E9CAB",   // Texto inativo da sidebar
+          // Sidebar em Azul Noturno e Azul Escuro da Marca Dyinvest
+          sidebar: "#010736",       // #010736 (Paleta Dyinvest)
+          sidebarHover: "#0D1C42",  // #0D1C42 (Paleta Dyinvest)
+          sidebarActive: "#22396F", // #22396F (Paleta Dyinvest)
+          sidebarText: "#94A3B8",   // Texto inativo da sidebar
           sidebarTextActive: "#FFFFFF",
-          sidebarBorder: "#132742",
+          sidebarBorder: "#1E293B",
 
           // Canvas e Superfícies
-          canvas: "#F4F7FC",        // Fundo geral do sistema (cinza azulado clean)
-          canvasAlt: "#EEF3F9",
+          canvas: "#F8FAFD",        // Fundo suave de alta ergonomia
+          canvasAlt: "#F1F5F9",
           surface: "#FFFFFF",       // Cards e painéis brancos
-          surfaceHover: "#F8FAFD",
-          border: "#E2E8F4",        // Bordas sutis dos cards
-          borderSubtle: "#EDF2F9",
+          surfaceHover: "#F8FAFC",
+          border: "#E2E8F0",        // Bordas refinadas dos cards
+          borderSubtle: "#CBD5E1",
 
-          // Cores de Ação e Marca
-          blue: "#0066FF",          // Azul Dyamond primário (botões e destaques)
-          blueHover: "#0052CC",
-          blueLight: "#EBF3FF",     // Fundo de badges azuis
-          gold: "#D4AF37",          // Dourado institucional do diamante
-          goldLight: "#FAF3E0",     // Fundo champagne suave
+          // Cores de Ação e Marca Dyinvest
+          blue: "#22396F",          // Azul Corporativo Dyinvest
+          blueHover: "#0D1C42",
+          blueLight: "#EEF2F6",     // Fundo suave para botões e chips
+          gold: "#D4AF37",          // Dourado Institucional de Prestígio
+          goldLight: "#FCF1D0",     // Bege Nobre Dyinvest
           goldDark: "#AA8C2C",
 
           // Status e Indicadores
-          green: "#00A854",         // Verde status online e sucesso
-          greenLight: "#E6F7ED",    // Badge verde suave
-          amber: "#F59E0B",         // Em análise / pendente
+          green: "#047857",         // Verde institucional
+          greenLight: "#ECFDF5",    // Badge verde suave
+          amber: "#D97706",         // Em análise / pendente
           amberLight: "#FEF3C7",
-          red: "#EF4444",           // Erro e alertas críticos
+          red: "#DC2626",           // Erro e alertas
           redLight: "#FEE2E2",
 
           // Tipografia
-          textTitle: "#0A192F",     // Títulos de alto contraste
-          textBody: "#334155",      // Texto corrido
-          textMuted: "#64748B",     // Metadados e labels secundárias
-          textSubtle: "#94A3B8",    // Placeholders e rodapés
+          textTitle: "#010736",     // Azul noturno para títulos de alto impacto
+          textBody: "#1E293B",      // Texto corrido de alta legibilidade
+          textMuted: "#475569",     // Metadados e labels secundárias
+          textSubtle: "#64748B",    // Placeholders e rodapés
         },
+
         /* ALIASES RETROCOMPATÍVEIS */
         diamond: {
-          50: '#EBF3FF',
-          100: '#D6E6FF',
-          200: '#B0CEFF',
-          300: '#7AAEFF',
-          400: '#4288FF',
-          500: '#0066FF',
-          600: '#0052CC',
-          700: '#003E99',
-          800: '#0A192F',
-          900: '#06152B',
-          950: '#030B17',
+          50: '#F8FAFD',
+          100: '#EEF2F6',
+          200: '#CBD5E1',
+          300: '#94A3B8',
+          400: '#64748B',
+          500: '#22396F',
+          600: '#0D1C42',
+          700: '#010736',
+          800: '#010736',
+          900: '#010736',
+          950: '#00041C',
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -107,18 +117,15 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
       },
-      boxShadow: {
-        'dyamond-sm': '0 1px 3px rgba(10, 25, 47, 0.04), 0 1px 2px rgba(10, 25, 47, 0.02)',
-        'dyamond': '0 4px 20px -2px rgba(10, 25, 47, 0.05), 0 2px 6px -1px rgba(10, 25, 47, 0.02)',
-        'dyamond-card': '0 10px 30px -4px rgba(10, 25, 47, 0.06), 0 4px 10px -2px rgba(10, 25, 47, 0.03)',
-        'dyamond-blue': '0 8px 25px -4px rgba(0, 102, 255, 0.35)',
-      },
       borderRadius: {
-        '3xl': '1.5rem',
-        '4xl': '2rem',
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      fontFamily: {
+        sans: ["-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"],
+        display: ["-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
+        mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
       },
     },
   },

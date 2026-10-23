@@ -25,10 +25,10 @@ export function Topbar({ onToggleChat, isChatOpen }: TopbarProps) {
 
   return (
     <>
-      <header className="fixed top-0 z-20 flex h-20 w-full items-center justify-between border-b border-[#E2E8F4] bg-white px-6 sm:pl-72 transition-all">
-        {/* BUSCA UNIVERSAL DYAMOND */}
+      <header className="fixed top-0 z-20 flex h-20 w-full items-center justify-between border-b border-[#E2E8F0] bg-white px-6 sm:pl-72 transition-all">
+        {/* BUSCA UNIVERSAL DYINVEST */}
         <div className="flex items-center gap-4 flex-1 max-w-xl">
-          <button className="rounded-xl p-2 text-[#64748B] hover:bg-[#F4F7FC] sm:hidden transition-colors">
+          <button className="rounded-xl p-2 text-[#475569] hover:bg-[#F8FAFD] sm:hidden transition-colors">
             <Menu className="h-6 w-6" />
           </button>
 
@@ -36,10 +36,10 @@ export function Topbar({ onToggleChat, isChatOpen }: TopbarProps) {
             onClick={() => setIsCommandOpen(true)}
             className="relative w-full cursor-pointer group"
           >
-            <Search className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#94A3B8] group-hover:text-[#0066FF] transition-colors" />
-            <div className="w-full rounded-xl border border-[#E2E8F4] bg-[#F8FAFD] py-2.5 pl-10 pr-12 text-xs text-[#94A3B8] group-hover:border-[#0066FF] group-hover:bg-white transition-all flex items-center justify-between">
-              <span>Buscar cliente, proposta ou operação</span>
-              <kbd className="hidden sm:inline-flex items-center rounded-md border border-[#E2E8F4] bg-white px-1.5 py-0.5 text-[10px] font-semibold text-[#64748B]">
+            <Search className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#94A3B8] group-hover:text-[#22396F] transition-colors" />
+            <div className="w-full rounded-xl border border-[#E2E8F0] bg-[#F8FAFD] py-2.5 pl-10 pr-12 text-xs text-[#94A3B8] group-hover:border-[#22396F] group-hover:bg-white transition-all flex items-center justify-between">
+              <span>Buscar cooperado, proposta, contrato ou lote</span>
+              <kbd className="hidden sm:inline-flex items-center rounded-md border border-[#E2E8F0] bg-white px-1.5 py-0.5 text-[10px] font-bold text-[#22396F]">
                 Ctrl K
               </kbd>
             </div>
@@ -48,29 +48,29 @@ export function Topbar({ onToggleChat, isChatOpen }: TopbarProps) {
 
         {/* CONTROLES DA DIREITA: NOTIFICAÇÃO, PERFIL E STATUS ONLINE */}
         <div className="flex items-center gap-3 sm:gap-4 ml-4">
-          {/* Sino com badge vermelho */}
-          <button className="relative rounded-full p-2.5 text-[#64748B] hover:bg-[#F4F7FC] hover:text-[#0A192F] transition-colors">
+          {/* Sino com badge */}
+          <button className="relative rounded-full p-2.5 text-[#475569] hover:bg-[#F8FAFD] hover:text-[#010736] transition-colors">
             <Bell className="h-4 w-4" />
-            <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#EF4444] text-[9px] font-bold text-white">
+            <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#DC2626] text-[9px] font-bold text-white">
               3
             </span>
           </button>
 
           {/* User Avatar + Dropdown */}
           <div className="flex items-center gap-2.5 cursor-pointer pl-1">
-            <div className="w-8 h-8 rounded-full bg-[#0066FF] text-white flex items-center justify-center font-bold text-xs shadow-sm">
+            <div className="w-8 h-8 rounded-full bg-[#010736] text-[#FCF1D0] flex items-center justify-center font-bold text-xs shadow-sm border border-[#22396F]">
               FA
             </div>
             <div className="hidden sm:flex flex-col text-left leading-tight">
-              <span className="text-xs font-bold text-[#0A192F]">Fabiano Asaph</span>
-              <span className="text-[10px] text-[#64748B]">Administrador</span>
+              <span className="text-xs font-bold text-[#010736]">Fabiano Asaph</span>
+              <span className="text-[10px] text-[#475569]">Administrador Geral</span>
             </div>
             <ChevronDown className="h-3.5 w-3.5 text-[#94A3B8] hidden sm:block" />
           </div>
 
           {/* Badge: Operação online */}
-          <div className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#E6F7ED] border border-[#A7E8BD]/50 text-[#00A854] text-xs font-bold">
-            <span className="w-2 h-2 rounded-full bg-[#00A854] animate-pulse" />
+          <div className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#ECFDF5] border border-[#A7F3D0] text-[#047857] text-xs font-bold">
+            <span className="w-2 h-2 rounded-full bg-[#047857] animate-pulse" />
             <span>Operação online</span>
           </div>
         </div>

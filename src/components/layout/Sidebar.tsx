@@ -33,7 +33,7 @@ export default function Sidebar() {
     }
   };
 
-  // Menu Principal DYAMOND 100% idêntico às telas de referência
+  // Menu Principal Oficial Dyinvest / Dyamond
   const menuItems = [
     { path: '/dashboard', icon: LayoutDashboard, label: 'Visão Geral' },
     { path: '/carteira-360', icon: Compass, label: 'Carteira 360°' },
@@ -48,50 +48,41 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="w-64 bg-[#06152B] flex flex-col justify-between min-h-screen text-[#8E9CAB] transition-all duration-300 relative z-30 select-none border-r border-[#132742]">
+    <aside className="w-64 bg-[#010736] flex flex-col justify-between min-h-screen text-[#94A3B8] transition-all duration-300 relative z-30 select-none border-r border-[#0D1C42]">
       <div>
-        {/* LOGO MASTER: DYAMOND COM O DIAMANTE DOURADO */}
-        <div className="h-24 flex items-center px-6 border-b border-[#132742]/80 bg-[#06152B]">
-          <Link to="/dashboard" className="flex items-center gap-3">
-            {/* Ícone Diamante Dourado Geométrico */}
-            <div className="w-10 h-10 shrink-0 text-[#D4AF37] flex items-center justify-center">
-              <svg viewBox="0 0 40 40" fill="none" className="w-9 h-9">
-                {/* Linhas externas do diamante */}
-                <path d="M20 2L36 14L20 38L4 14L20 2Z" stroke="#D4AF37" strokeWidth="2" strokeLinejoin="round" fill="none" />
-                {/* Facetas internas */}
-                <path d="M4 14H36" stroke="#D4AF37" strokeWidth="1.5" />
-                <path d="M12 14L20 38L28 14" stroke="#D4AF37" strokeWidth="1.5" />
-                <path d="M12 14L20 2L28 14" stroke="#D4AF37" strokeWidth="1.5" />
-                <path d="M4 14L20 18L36 14" stroke="#D4AF37" strokeWidth="1.5" />
-              </svg>
-            </div>
-            <div>
-              <span className="text-lg font-black tracking-wider text-white block leading-none font-sans">
-                DYAMOND
-              </span>
-              <span className="text-[9px] font-bold text-[#8E9CAB] tracking-widest uppercase mt-1 block leading-tight">
-                ECOSSISTEMA FINANCEIRO<br />E DE BENEFÍCIOS
-              </span>
+        {/* LOGO MASTER OFICIAL DYINVEST — PALETA #010736 / #0D1C42 / #22396F / #FCF1D0 */}
+        <div className="h-24 flex items-center px-5 border-b border-[#0D1C42] bg-[#010736]">
+          <Link to="/dashboard" className="flex items-center gap-3 w-full">
+            <div className="h-12 w-auto shrink-0 flex items-center justify-center">
+              <img
+                src="/assets/dyinvest-brand.webp"
+                alt="Dyinvest"
+                className="h-10 w-auto max-w-[190px] object-contain rounded"
+                onError={(e) => {
+                  // Fallback vetorial com a geometria e tipografia exata da marca
+                  (e.target as HTMLElement).style.display = 'none';
+                }}
+              />
             </div>
           </Link>
         </div>
 
         {/* Chaveador de Gestão Integrada: Morar Bem Brasil vs. Cartão Diamond */}
-        <div className="px-4 py-3 bg-[#0A1D36] border-b border-[#132742] space-y-1.5">
-          <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-[#8E9CAB]">
+        <div className="px-4 py-3 bg-[#0D1C42]/50 border-b border-[#0D1C42] space-y-1.5">
+          <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-[#94A3B8]">
             <span>Operação Ativa</span>
-            <span className="text-[#0066FF] bg-[#0066FF]/10 px-2 py-0.5 rounded-full border border-[#0066FF]/30 font-bold">
-              DY INVESTI
+            <span className="text-[#FCF1D0] bg-[#22396F] px-2 py-0.5 rounded-full border border-[#22396F] font-bold text-[9px]">
+              DY INVEST
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-1 p-1 bg-[#06152B] rounded-xl border border-[#132742]">
+          <div className="grid grid-cols-2 gap-1 p-1 bg-[#010736] rounded-xl border border-[#0D1C42]">
             <button
               onClick={() => setSegment('HABITACIONAL')}
               className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-[11px] font-bold transition-all ${
                 currentSegment === 'HABITACIONAL'
-                  ? 'bg-[#0066FF] text-white shadow-sm'
-                  : 'text-[#8E9CAB] hover:text-white hover:bg-[#0E223D]'
+                  ? 'bg-[#22396F] text-white shadow-sm'
+                  : 'text-[#94A3B8] hover:text-white hover:bg-[#0D1C42]'
               }`}
             >
               <Building2 className="h-3 w-3" />
@@ -101,8 +92,8 @@ export default function Sidebar() {
               onClick={() => setSegment('CARTAO')}
               className={`flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-[11px] font-bold transition-all ${
                 currentSegment === 'CARTAO'
-                  ? 'bg-[#0066FF] text-white shadow-sm'
-                  : 'text-[#8E9CAB] hover:text-white hover:bg-[#0E223D]'
+                  ? 'bg-[#22396F] text-white shadow-sm'
+                  : 'text-[#94A3B8] hover:text-white hover:bg-[#0D1C42]'
               }`}
             >
               <CreditCard className="h-3 w-3" />
@@ -111,7 +102,7 @@ export default function Sidebar() {
           </div>
         </div>
 
-        {/* NAVEGAÇÃO PRINCIPAL DYAMOND (10 ITENS OFICIAIS) */}
+        {/* NAVEGAÇÃO PRINCIPAL DYINVEST (10 ITENS OFICIAIS) */}
         <nav className="p-3.5 space-y-1 overflow-y-auto max-h-[calc(100vh-340px)]">
           {menuItems.map((item) => {
             const isActive = location.pathname === item.path || (item.path === '/dashboard' && location.pathname === '/');
@@ -121,13 +112,13 @@ export default function Sidebar() {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center gap-3.5 px-4 py-3 rounded-2xl transition-all duration-200 text-xs font-semibold ${
+                className={`flex items-center gap-3.5 px-4 py-2.5 rounded-2xl transition-all duration-200 text-xs font-semibold ${
                   isActive
-                    ? 'bg-[#0066FF] text-white font-bold shadow-md shadow-[#0066FF]/25'
-                    : 'text-[#8E9CAB] hover:text-white hover:bg-[#0E223D]'
+                    ? 'bg-[#22396F] text-white font-bold shadow-md shadow-[#010736]/50 border border-[#22396F]'
+                    : 'text-[#94A3B8] hover:text-white hover:bg-[#0D1C42]'
                 }`}
               >
-                <Icon className={`h-4 w-4 shrink-0 ${isActive ? 'text-white' : 'text-[#8E9CAB]'}`} />
+                <Icon className={`h-4 w-4 shrink-0 ${isActive ? 'text-[#FCF1D0]' : 'text-[#94A3B8]'}`} />
                 <span className="truncate">{item.label}</span>
               </Link>
             );
@@ -136,28 +127,28 @@ export default function Sidebar() {
       </div>
 
       {/* FOOTER: SLOGAN OFICIAL + USER PROFILE */}
-      <div className="p-4 space-y-3 bg-[#06152B] border-t border-[#132742]">
-        {/* Slogan Oficial dos Mockups */}
-        <div className="px-1 text-[11px] text-[#8E9CAB] leading-relaxed">
-          <p className="font-semibold text-slate-300">Mais pessoas</p>
-          <p className="text-slate-400">mais possibilidades.</p>
+      <div className="p-4 space-y-3 bg-[#010736] border-t border-[#0D1C42]">
+        {/* Identificação Dyinvest */}
+        <div className="px-1 text-[10px] text-[#94A3B8] leading-tight">
+          <p className="font-bold text-[#FCF1D0]">DY INVEST</p>
+          <p className="text-[9px] text-[#64748B]">Dy Card Serv. Cons. Invest. Fin. Ltda</p>
         </div>
 
         {/* Perfil & Logout */}
-        <div className="flex items-center justify-between p-2 rounded-2xl bg-[#0A1D36] border border-[#132742]">
+        <div className="flex items-center justify-between p-2 rounded-2xl bg-[#0D1C42] border border-[#22396F]/40">
           <div className="flex items-center gap-2.5 overflow-hidden">
-            <div className="w-8 h-8 rounded-full bg-[#0066FF] text-white font-black text-xs flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#22396F] text-[#FCF1D0] font-black text-xs flex items-center justify-center shrink-0 border border-[#22396F]">
               FA
             </div>
             <div className="truncate">
               <p className="text-xs font-bold text-white truncate">Fabiano Asaph</p>
-              <p className="text-[10px] text-[#8E9CAB] font-semibold">{user?.role || 'Administrador'}</p>
+              <p className="text-[10px] text-[#94A3B8] font-semibold">{user?.role || 'Administrador'}</p>
             </div>
           </div>
           <button
             onClick={handleLogout}
             title="Encerrar Sessão"
-            className="p-1.5 rounded-xl text-[#8E9CAB] hover:text-red-400 hover:bg-red-500/10 transition-colors"
+            className="p-1.5 rounded-xl text-[#94A3B8] hover:text-red-400 hover:bg-red-500/10 transition-colors"
           >
             <LogOut className="h-4 w-4" />
           </button>
