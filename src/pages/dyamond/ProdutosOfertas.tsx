@@ -33,10 +33,10 @@ export default function ProdutosOfertas() {
       desc: 'Conta digital completa para empresas, com PIX, cobrança e muito mais.',
       icon: Building2,
       status: 'Ativo',
-      statusColor: 'bg-[#E6F7ED] text-[#00A854]',
+      statusColor: 'bg-[#ECFDF5] text-[#047857]',
       conversao: '24,8%',
       trend: '+ 12%',
-      color: '#0066FF',
+      color: '#22396F',
     },
     {
       id: 'p2',
@@ -44,10 +44,10 @@ export default function ProdutosOfertas() {
       desc: 'Mais controle e limite para o seu negócio.',
       icon: CreditCard,
       status: 'Ativo',
-      statusColor: 'bg-[#E6F7ED] text-[#00A854]',
+      statusColor: 'bg-[#ECFDF5] text-[#047857]',
       conversao: '18,6%',
       trend: '+ 9%',
-      color: '#0066FF',
+      color: '#22396F',
     },
     {
       id: 'p3',
@@ -55,10 +55,10 @@ export default function ProdutosOfertas() {
       desc: 'Capital para fazer o seu negócio crescer.',
       icon: TrendingUp,
       status: 'Ativo',
-      statusColor: 'bg-[#E6F7ED] text-[#00A854]',
+      statusColor: 'bg-[#ECFDF5] text-[#047857]',
       conversao: '14,2%',
       trend: '+ 28%',
-      color: '#00A854',
+      color: '#047857',
     },
     {
       id: 'p4',
@@ -66,10 +66,10 @@ export default function ProdutosOfertas() {
       desc: 'Vantagens exclusivas para você e sua equipe.',
       icon: Gift,
       status: 'Em expansão',
-      statusColor: 'bg-[#EBF3FF] text-[#0066FF]',
+      statusColor: 'bg-[#F8FAFD] text-[#22396F]',
       conversao: '31,5%',
       trend: '+ 16%',
-      color: '#D4AF37',
+      color: '#FCF1D0',
     },
   ];
 
@@ -84,7 +84,7 @@ export default function ProdutosOfertas() {
       vigencia: '01/04/2026 a 30/06/2026',
       conversao: '27,4%',
       status: 'Ativa',
-      statusColor: 'bg-[#E6F7ED] text-[#00A854]',
+      statusColor: 'bg-[#ECFDF5] text-[#047857]',
       icon: Building2,
     },
     {
@@ -96,7 +96,7 @@ export default function ProdutosOfertas() {
       vigencia: '10/03/2026 a 30/06/2026',
       conversao: '16,9%',
       status: 'Ativa',
-      statusColor: 'bg-[#E6F7ED] text-[#00A854]',
+      statusColor: 'bg-[#ECFDF5] text-[#047857]',
       icon: CreditCard,
     },
     {
@@ -108,7 +108,7 @@ export default function ProdutosOfertas() {
       vigencia: '01/04/2026 a 31/07/2026',
       conversao: '12,8%',
       status: 'Ativa',
-      statusColor: 'bg-[#E6F7ED] text-[#00A854]',
+      statusColor: 'bg-[#ECFDF5] text-[#047857]',
       icon: TrendingUp,
     },
     {
@@ -120,7 +120,7 @@ export default function ProdutosOfertas() {
       vigencia: '01/03/2026 a 31/12/2026',
       conversao: '33,1%',
       status: 'Ativa',
-      statusColor: 'bg-[#E6F7ED] text-[#00A854]',
+      statusColor: 'bg-[#ECFDF5] text-[#047857]',
       icon: Gift,
     },
     {
@@ -132,7 +132,7 @@ export default function ProdutosOfertas() {
       vigencia: '15/04/2026 a 15/08/2026',
       conversao: '22,7%',
       status: 'Programada',
-      statusColor: 'bg-[#EBF3FF] text-[#0066FF]',
+      statusColor: 'bg-[#F8FAFD] text-[#22396F]',
       icon: Building2,
     },
   ];
@@ -142,7 +142,7 @@ export default function ProdutosOfertas() {
       {/* HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-2">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#0A192F] tracking-tight font-sans">
+          <h1 className="text-2xl sm:text-3xl font-black text-[#010736] tracking-tight font-sans">
             Produtos e Ofertas
           </h1>
           <p className="text-xs sm:text-sm text-[#64748B] mt-0.5">
@@ -155,7 +155,7 @@ export default function ProdutosOfertas() {
       </div>
 
       {/* ABAS SUPERIORES */}
-      <div className="flex border-b border-[#E2E8F4] gap-6 text-xs font-bold">
+      <div className="flex border-b border-[#E2E8F0] gap-6 text-xs font-bold">
         {[
           { id: 'catalogo', label: 'Catálogo' },
           { id: 'campanhas', label: 'Campanhas' },
@@ -166,8 +166,8 @@ export default function ProdutosOfertas() {
             onClick={() => setActiveTab(tab.id as any)}
             className={`pb-3 transition-colors relative ${
               activeTab === tab.id
-                ? 'text-[#0066FF] border-b-2 border-[#0066FF]'
-                : 'text-[#64748B] hover:text-[#0A192F]'
+                ? 'text-[#22396F] border-b-2 border-[#22396F]'
+                : 'text-[#64748B] hover:text-[#010736]'
             }`}
           >
             {tab.label}
@@ -180,24 +180,24 @@ export default function ProdutosOfertas() {
         {produtosPrincipais.map((prod) => (
           <div
             key={prod.id}
-            className="rounded-2xl border border-[#E2EBE4] bg-white p-5 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow cursor-pointer group"
+            className="rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow cursor-pointer group"
           >
             <div>
               <div className="flex items-center justify-between mb-3">
-                <div className="w-10 h-10 rounded-xl bg-[#0066FF] text-white flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-[#22396F] text-white flex items-center justify-center">
                   <prod.icon className="w-5 h-5" />
                 </div>
-                <ChevronRight className="w-4 h-4 text-[#94A3B8] group-hover:text-[#0066FF] transition-colors" />
+                <ChevronRight className="w-4 h-4 text-[#94A3B8] group-hover:text-[#22396F] transition-colors" />
               </div>
-              <h3 className="text-sm font-black text-[#0A192F]">{prod.title}</h3>
+              <h3 className="text-sm font-black text-[#010736]">{prod.title}</h3>
               <p className="text-xs text-[#64748B] mt-1 line-clamp-2 leading-relaxed">{prod.desc}</p>
             </div>
 
-            <div className="pt-4 border-t border-[#E2EBE4] mt-4 flex items-center justify-between">
+            <div className="pt-4 border-t border-[#E2E8F0] mt-4 flex items-center justify-between">
               <div>
                 <span className="text-[10px] text-[#94A3B8] uppercase font-bold block">Conversão</span>
-                <span className="text-xs font-black text-[#0A192F]">{prod.conversao}</span>
-                <span className="text-[10px] text-[#00A854] font-bold ml-1">{prod.trend}</span>
+                <span className="text-xs font-black text-[#010736]">{prod.conversao}</span>
+                <span className="text-[10px] text-[#047857] font-bold ml-1">{prod.trend}</span>
               </div>
               <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${prod.statusColor}`}>
                 ● {prod.status}
@@ -210,15 +210,15 @@ export default function ProdutosOfertas() {
       {/* SEÇÃO PRINCIPAL: TABELA DE OFERTAS ATIVAS + FORM CRIAR CAMPANHA */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Tabela Ofertas Ativas (8 Colunas) */}
-        <div className="lg:col-span-8 rounded-2xl border border-[#E2EBE4] bg-white p-6 shadow-xs space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E2EBE4]">
+        <div className="lg:col-span-8 rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-xs space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#E2E8F0]">
             <div>
-              <h3 className="text-base font-black text-[#0A192F]">Ofertas ativas</h3>
+              <h3 className="text-base font-black text-[#010736]">Ofertas ativas</h3>
               <p className="text-xs text-[#64748B]">Acompanhe o desempenho das ofertas em comercialização.</p>
             </div>
 
             <div className="flex items-center gap-2">
-              <select className="px-3 py-1.5 rounded-xl border border-[#E2EBE4] bg-[#F8FAFD] text-xs font-semibold text-[#64748B] outline-none">
+              <select className="px-3 py-1.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFD] text-xs font-semibold text-[#64748B] outline-none">
                 <option>Todos os produtos</option>
                 <option>Conta & PIX</option>
                 <option>Cartão DYAMOND</option>
@@ -229,7 +229,7 @@ export default function ProdutosOfertas() {
                 <input
                   type="text"
                   placeholder="Buscar oferta..."
-                  className="pl-8 pr-3 py-1.5 text-xs rounded-xl border border-[#E2EBE4] bg-[#F8FAFD] outline-none text-[#0A192F]"
+                  className="pl-8 pr-3 py-1.5 text-xs rounded-xl border border-[#E2E8F0] bg-[#F8FAFD] outline-none text-[#010736]"
                 />
               </div>
             </div>
@@ -238,7 +238,7 @@ export default function ProdutosOfertas() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-[#E2EBE4] text-[#64748B] font-semibold text-[11px]">
+                <tr className="border-b border-[#E2E8F0] text-[#64748B] font-semibold text-[11px]">
                   <th className="pb-3">Produto</th>
                   <th className="pb-3">Oferta</th>
                   <th className="pb-3">Público</th>
@@ -249,29 +249,29 @@ export default function ProdutosOfertas() {
                   <th className="pb-3 text-right">Ações</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E2EBE4]/60 font-medium">
+              <tbody className="divide-y divide-[#E2E8F0]/60 font-medium">
                 {ofertasAtivas.map((of) => (
                   <tr key={of.id} className="hover:bg-[#F8FAFD] transition-colors">
                     <td className="py-3 pr-2">
                       <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 rounded-lg bg-[#EBF3FF] text-[#0066FF] flex items-center justify-center shrink-0">
+                        <div className="w-7 h-7 rounded-lg bg-[#F8FAFD] text-[#22396F] flex items-center justify-center shrink-0">
                           <of.icon className="w-3.5 h-3.5" />
                         </div>
-                        <span className="font-bold text-[#0A192F]">{of.produto}</span>
+                        <span className="font-bold text-[#010736]">{of.produto}</span>
                       </div>
                     </td>
-                    <td className="py-3 font-semibold text-[#0A192F]">{of.oferta}</td>
+                    <td className="py-3 font-semibold text-[#010736]">{of.oferta}</td>
                     <td className="py-3 text-[#64748B]">{of.publico}</td>
                     <td className="py-3 text-[#64748B] text-[11px]">{of.canal}</td>
                     <td className="py-3 text-[#64748B] text-[11px] whitespace-nowrap">{of.vigencia}</td>
-                    <td className="py-3 font-bold text-[#0A192F]">{of.conversao}</td>
+                    <td className="py-3 font-bold text-[#010736]">{of.conversao}</td>
                     <td className="py-3">
                       <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${of.statusColor}`}>
                         ● {of.status}
                       </span>
                     </td>
                     <td className="py-3 text-right text-[#94A3B8]">
-                      <span className="cursor-pointer hover:text-[#0A192F]">•••</span>
+                      <span className="cursor-pointer hover:text-[#010736]">•••</span>
                     </td>
                   </tr>
                 ))}
@@ -281,26 +281,26 @@ export default function ProdutosOfertas() {
         </div>
 
         {/* Card Lateral: Criar Campanha (4 Colunas) */}
-        <div className="lg:col-span-4 rounded-2xl border border-[#E2EBE4] bg-white p-6 shadow-xs space-y-4">
-          <div className="flex items-center gap-2.5 pb-2 border-b border-[#E2EBE4]">
-            <div className="w-8 h-8 rounded-xl bg-[#EBF3FF] text-[#0066FF] flex items-center justify-center">
+        <div className="lg:col-span-4 rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-xs space-y-4">
+          <div className="flex items-center gap-2.5 pb-2 border-b border-[#E2E8F0]">
+            <div className="w-8 h-8 rounded-xl bg-[#F8FAFD] text-[#22396F] flex items-center justify-center">
               <Share2 className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="text-sm font-black text-[#0A192F]">Criar campanha</h4>
+              <h4 className="text-sm font-black text-[#010736]">Criar campanha</h4>
               <p className="text-[11px] text-[#64748B]">Configure uma nova campanha e amplie resultados.</p>
             </div>
           </div>
 
           <div className="space-y-3 text-xs">
             <div className="space-y-1">
-              <label className="font-bold text-[#0A192F] flex items-center gap-1.5">
+              <label className="font-bold text-[#010736] flex items-center gap-1.5">
                 <Users className="w-3.5 h-3.5 text-[#64748B]" /> Público-alvo
               </label>
               <select
                 value={publicoAlvo}
                 onChange={(e) => setPublicoAlvo(e.target.value)}
-                className="w-full p-2.5 rounded-xl border border-[#E2EBE4] bg-[#F8FAFD] outline-none text-[#0A192F]"
+                className="w-full p-2.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFD] outline-none text-[#010736]"
               >
                 <option value="MEI e Microempresa">MEI e Microempresa</option>
                 <option value="PME e Corporativo">PME e Corporativo</option>
@@ -310,10 +310,10 @@ export default function ProdutosOfertas() {
             </div>
 
             <div className="space-y-1">
-              <label className="font-bold text-[#0A192F] flex items-center gap-1.5">
+              <label className="font-bold text-[#010736] flex items-center gap-1.5">
                 <Package className="w-3.5 h-3.5 text-[#64748B]" /> Produto
               </label>
-              <select className="w-full p-2.5 rounded-xl border border-[#E2EBE4] bg-[#F8FAFD] outline-none text-[#0A192F]">
+              <select className="w-full p-2.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFD] outline-none text-[#010736]">
                 <option>Conta & PIX</option>
                 <option>Cartão DYAMOND</option>
                 <option>Crédito Empresarial</option>
@@ -322,7 +322,7 @@ export default function ProdutosOfertas() {
             </div>
 
             <div className="space-y-2 pt-2">
-              <label className="font-bold text-[#0A192F] block">Canais de divulgação</label>
+              <label className="font-bold text-[#010736] block">Canais de divulgação</label>
               <div className="grid grid-cols-2 gap-2">
                 {[
                   { label: 'App DYAMOND', checked: true },
@@ -333,7 +333,7 @@ export default function ProdutosOfertas() {
                   { label: 'API', checked: false },
                 ].map((c, i) => (
                   <label key={i} className="flex items-center gap-2 text-[11px] text-[#64748B] cursor-pointer">
-                    <input type="checkbox" defaultChecked={c.checked} className="rounded text-[#0066FF]" />
+                    <input type="checkbox" defaultChecked={c.checked} className="rounded text-[#22396F]" />
                     <span>{c.label}</span>
                   </label>
                 ))}
@@ -342,7 +342,7 @@ export default function ProdutosOfertas() {
 
             <button
               onClick={() => alert('Campanha criada e programada com sucesso!')}
-              className="w-full py-3 rounded-xl bg-[#0066FF] hover:bg-[#0052CC] text-white text-xs font-bold transition-all shadow-md shadow-[#0066FF]/20 flex items-center justify-center gap-2 mt-4"
+              className="w-full py-3 rounded-xl bg-[#22396F] hover:bg-[#0D1C42] text-white text-xs font-bold transition-all shadow-md shadow-[#22396F]/20 flex items-center justify-center gap-2 mt-4"
             >
               ▶ Criar campanha
             </button>
@@ -351,31 +351,31 @@ export default function ProdutosOfertas() {
       </div>
 
       {/* SEÇÃO INFERIOR: MOTOR DE RECOMENDAÇÃO FLOWCHART */}
-      <div className="rounded-2xl border border-[#E2EBE4] bg-white p-6 shadow-xs space-y-4">
+      <div className="rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-xs space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-[#0066FF]" />
-            <h3 className="text-base font-black text-[#0A192F]">Motor de recomendação</h3>
+            <Sparkles className="w-5 h-5 text-[#22396F]" />
+            <h3 className="text-base font-black text-[#010736]">Motor de recomendação</h3>
             <span className="text-xs text-[#64748B]">Regras que transformam dados em oportunidades reais.</span>
           </div>
-          <span className="text-xs font-bold text-[#0066FF] cursor-pointer hover:underline flex items-center gap-1">
+          <span className="text-xs font-bold text-[#22396F] cursor-pointer hover:underline flex items-center gap-1">
             <Sliders className="w-3.5 h-3.5" /> Gerenciar regras
           </span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 pt-2">
           {[
-            { step: 'Perfil do cliente', desc: 'Análise de comportamento, perfil e necessidades.', icon: Users, bg: 'bg-[#EBF3FF]', color: 'text-[#0066FF]' },
-            { step: 'Elegibilidade', desc: 'Verificação de regras e critérios de cada produto.', icon: ShieldCheck, bg: 'bg-[#E6F7ED]', color: 'text-[#00A854]' },
+            { step: 'Perfil do cliente', desc: 'Análise de comportamento, perfil e necessidades.', icon: Users, bg: 'bg-[#F8FAFD]', color: 'text-[#22396F]' },
+            { step: 'Elegibilidade', desc: 'Verificação de regras e critérios de cada produto.', icon: ShieldCheck, bg: 'bg-[#ECFDF5]', color: 'text-[#047857]' },
             { step: 'Melhor oferta', desc: 'Seleção da oferta mais aderente com maior probabilidade.', icon: Sparkles, bg: 'bg-[#FEF3C7]', color: 'text-[#D97706]' },
             { step: 'Campanha', desc: 'Ativação automática nos canais mais eficientes.', icon: Share2, bg: 'bg-[#F3E8FF]', color: 'text-[#9333EA]' },
           ].map((flow, i) => (
-            <div key={i} className="p-4 rounded-xl border border-[#E2EBE4] bg-[#F8FAFD] space-y-2">
+            <div key={i} className="p-4 rounded-xl border border-[#E2E8F0] bg-[#F8FAFD] space-y-2">
               <div className="flex items-center gap-2.5">
                 <div className={`w-8 h-8 rounded-lg ${flow.bg} ${flow.color} flex items-center justify-center`}>
                   <flow.icon className="w-4 h-4" />
                 </div>
-                <p className="text-xs font-bold text-[#0A192F]">{flow.step}</p>
+                <p className="text-xs font-bold text-[#010736]">{flow.step}</p>
               </div>
               <p className="text-[11px] text-[#64748B] leading-relaxed">{flow.desc}</p>
             </div>

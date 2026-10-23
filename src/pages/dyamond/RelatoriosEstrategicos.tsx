@@ -34,8 +34,8 @@ export default function RelatoriosEstrategicos() {
   const [periodo, setPeriodo] = useState('12_meses');
 
   const kpis = [
-    { title: 'Receita gerada', value: 'R$ 3,84 mi', sub: 'vs. período anterior', trend: '+ 12%', icon: TrendingUp, bg: 'bg-[#E6F7ED]', color: 'text-[#00A854]' },
-    { title: 'Taxa de ativação', value: '74%', sub: 'vs. período anterior', trend: '+ 6 p.p.', icon: Users, bg: 'bg-[#EBF3FF]', color: 'text-[#0066FF]' },
+    { title: 'Receita gerada', value: 'R$ 3,84 mi', sub: 'vs. período anterior', trend: '+ 12%', icon: TrendingUp, bg: 'bg-[#ECFDF5]', color: 'text-[#047857]' },
+    { title: 'Taxa de ativação', value: '74%', sub: 'vs. período anterior', trend: '+ 6 p.p.', icon: Users, bg: 'bg-[#F8FAFD]', color: 'text-[#22396F]' },
     { title: 'Retenção', value: '87%', sub: 'vs. período anterior', trend: '+ 4 p.p.', icon: Award, bg: 'bg-[#FEF3C7]', color: 'text-[#D97706]' },
     { title: 'NPS', value: '92', sub: 'vs. período anterior', trend: '+ 8', icon: Award, bg: 'bg-[#FFE4E6]', color: 'text-[#E11D48]' },
   ];
@@ -58,8 +58,8 @@ export default function RelatoriosEstrategicos() {
 
   // Mix de Produtos (Donut Chart)
   const mixProdutos = [
-    { nome: 'Conta & PIX', pct: 32, valor: 'R$ 1,23 mi', cor: '#0066FF' },
-    { nome: 'Benefícios', pct: 24, valor: 'R$ 0,92 mi', cor: '#00A854' },
+    { nome: 'Conta & PIX', pct: 32, valor: 'R$ 1,23 mi', cor: '#22396F' },
+    { nome: 'Benefícios', pct: 24, valor: 'R$ 0,92 mi', cor: '#047857' },
     { nome: 'Crédito', pct: 18, valor: 'R$ 0,69 mi', cor: '#F59E0B' },
     { nome: 'Cartão', pct: 16, valor: 'R$ 0,61 mi', cor: '#9333EA' },
     { nome: 'Marketplace', pct: 10, valor: 'R$ 0,38 mi', cor: '#64748B' },
@@ -67,8 +67,8 @@ export default function RelatoriosEstrategicos() {
 
   // Desempenho por Canal (BarChart)
   const desempenhoCanal = [
-    { canal: 'Canal próprio', receita: 1.42, pct: '37%', cor: '#0066FF' },
-    { canal: 'Correspondentes', receita: 0.96, pct: '25%', cor: '#00A854' },
+    { canal: 'Canal próprio', receita: 1.42, pct: '37%', cor: '#22396F' },
+    { canal: 'Correspondentes', receita: 0.96, pct: '25%', cor: '#047857' },
     { canal: 'Parcerias', receita: 0.73, pct: '19%', cor: '#F59E0B' },
     { canal: 'Marketplace', receita: 0.50, pct: '13%', cor: '#9333EA' },
     { canal: 'Outros', receita: 0.23, pct: '6%', cor: '#64748B' },
@@ -88,7 +88,7 @@ export default function RelatoriosEstrategicos() {
       {/* HEADER DA PÁGINA */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#0A192F] tracking-tight font-sans">
+          <h1 className="text-2xl sm:text-3xl font-black text-[#010736] tracking-tight font-sans">
             Relatórios
           </h1>
           <p className="text-xs sm:text-sm text-[#64748B] mt-0.5">
@@ -99,13 +99,13 @@ export default function RelatoriosEstrategicos() {
         <div className="flex items-center gap-2.5">
           <button
             onClick={() => alert('Agendamento de relatório automático configurado')}
-            className="px-4 py-2.5 rounded-xl border border-[#E2EBE4] bg-white hover:bg-[#F8FAFD] text-xs font-bold text-[#0A192F] transition-all flex items-center gap-1.5 shadow-xs"
+            className="px-4 py-2.5 rounded-xl border border-[#E2E8F0] bg-white hover:bg-[#F8FAFD] text-xs font-bold text-[#010736] transition-all flex items-center gap-1.5 shadow-xs"
           >
             <Calendar className="w-4 h-4 text-[#64748B]" /> Agendar relatório
           </button>
           <button
             onClick={() => alert('Exportando relatório consolidado em PDF/Excel')}
-            className="px-4 py-2.5 rounded-xl bg-[#0066FF] hover:bg-[#0052CC] text-white text-xs font-bold transition-all shadow-md shadow-[#0066FF]/20 flex items-center gap-1.5"
+            className="px-4 py-2.5 rounded-xl bg-[#22396F] hover:bg-[#0D1C42] text-white text-xs font-bold transition-all shadow-md shadow-[#22396F]/20 flex items-center gap-1.5"
           >
             <Download className="w-4 h-4" /> Exportar
           </button>
@@ -115,12 +115,12 @@ export default function RelatoriosEstrategicos() {
       {/* 4 CARDS DE KPIS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {kpis.map((k, i) => (
-          <div key={i} className="rounded-2xl border border-[#E2E8F4] bg-white p-5 shadow-xs flex items-center justify-between hover:shadow-md transition-shadow">
+          <div key={i} className="rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-xs flex items-center justify-between hover:shadow-md transition-shadow">
             <div className="space-y-1">
               <span className="text-xs font-semibold text-[#64748B]">{k.title}</span>
-              <p className="text-2xl sm:text-3xl font-black text-[#0A192F] tracking-tight">{k.value}</p>
+              <p className="text-2xl sm:text-3xl font-black text-[#010736] tracking-tight">{k.value}</p>
               <div className="flex items-center gap-1.5 text-[11px]">
-                <span className="font-bold text-[#00A854] inline-flex items-center">
+                <span className="font-bold text-[#047857] inline-flex items-center">
                   ↑ {k.trend}
                 </span>
                 <span className="text-[#94A3B8]">{k.sub}</span>
@@ -136,20 +136,20 @@ export default function RelatoriosEstrategicos() {
       {/* SEÇÃO 2: EVOLUÇÃO DE RECEITA (7 COLUNAS) + MIX DE PRODUTOS DONUT (5 COLUNAS) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Gráfico de Linha Dupla: Receita e Clientes */}
-        <div className="lg:col-span-7 rounded-2xl border border-[#E2EBE4] bg-white p-6 shadow-xs flex flex-col justify-between">
+        <div className="lg:col-span-7 rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-xs flex flex-col justify-between">
           <div>
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#E2EBE4] gap-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#E2E8F0] gap-2">
               <div>
-                <h3 className="text-sm sm:text-base font-black text-[#0A192F]">Evolução de receita e clientes</h3>
+                <h3 className="text-sm sm:text-base font-black text-[#010736]">Evolução de receita e clientes</h3>
               </div>
               <div className="flex items-center gap-3">
-                <div className="flex items-center gap-1.5 text-xs font-semibold text-[#0A192F]">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#0066FF]" /> Receita (R$ mi)
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-[#010736]">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#22396F]" /> Receita (R$ mi)
                 </div>
-                <div className="flex items-center gap-1.5 text-xs font-semibold text-[#0A192F]">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#00A854]" /> Clientes (mil)
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-[#010736]">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#047857]" /> Clientes (mil)
                 </div>
-                <select className="px-2.5 py-1 text-[11px] font-bold rounded-lg border border-[#E2EBE4] bg-[#F8FAFD] outline-none text-[#64748B]">
+                <select className="px-2.5 py-1 text-[11px] font-bold rounded-lg border border-[#E2E8F0] bg-[#F8FAFD] outline-none text-[#64748B]">
                   <option>Últimos 12 meses</option>
                   <option>Últimos 6 meses</option>
                   <option>Ano atual</option>
@@ -160,14 +160,14 @@ export default function RelatoriosEstrategicos() {
             <div className="h-64 w-full pt-4">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={dadosEvolucao} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#EDF2F9" />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#EEF2F6" />
                   <XAxis dataKey="mes" tickLine={false} axisLine={false} tick={{ fill: '#94A3B8', fontSize: 11 }} />
                   <YAxis tickLine={false} axisLine={false} tick={{ fill: '#94A3B8', fontSize: 11 }} />
                   <Tooltip
-                    contentStyle={{ backgroundColor: '#06152B', borderRadius: '12px', border: 'none', color: '#fff', fontSize: '11px' }}
+                    contentStyle={{ backgroundColor: '#010736', borderRadius: '12px', border: 'none', color: '#fff', fontSize: '11px' }}
                   />
-                  <Line type="monotone" dataKey="receita" stroke="#0066FF" strokeWidth={3} dot={{ fill: '#0066FF', r: 3 }} />
-                  <Line type="monotone" dataKey="clientes" stroke="#00A854" strokeWidth={2} strokeDasharray="4 4" dot={{ fill: '#00A854', r: 3 }} />
+                  <Line type="monotone" dataKey="receita" stroke="#22396F" strokeWidth={3} dot={{ fill: '#22396F', r: 3 }} />
+                  <Line type="monotone" dataKey="clientes" stroke="#047857" strokeWidth={2} strokeDasharray="4 4" dot={{ fill: '#047857', r: 3 }} />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -175,11 +175,11 @@ export default function RelatoriosEstrategicos() {
         </div>
 
         {/* Mix de Produtos Donut Chart */}
-        <div className="lg:col-span-5 rounded-2xl border border-[#E2EBE4] bg-white p-6 shadow-xs flex flex-col justify-between">
+        <div className="lg:col-span-5 rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-xs flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between pb-3 border-b border-[#E2EBE4]">
-              <h3 className="text-sm sm:text-base font-black text-[#0A192F]">Mix de produtos</h3>
-              <select className="px-2.5 py-1 text-[11px] font-bold rounded-lg border border-[#E2EBE4] bg-[#F8FAFD] outline-none text-[#64748B]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E2E8F0]">
+              <h3 className="text-sm sm:text-base font-black text-[#010736]">Mix de produtos</h3>
+              <select className="px-2.5 py-1 text-[11px] font-bold rounded-lg border border-[#E2E8F0] bg-[#F8FAFD] outline-none text-[#64748B]">
                 <option>Últimos 12 meses</option>
                 <option>Últimos 6 meses</option>
               </select>
@@ -198,7 +198,7 @@ export default function RelatoriosEstrategicos() {
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute text-center leading-tight">
-                  <span className="text-xs font-black text-[#0A192F] block">R$ 3,84 mi</span>
+                  <span className="text-xs font-black text-[#010736] block">R$ 3,84 mi</span>
                   <span className="text-[10px] text-[#64748B]">em receita</span>
                 </div>
               </div>
@@ -213,7 +213,7 @@ export default function RelatoriosEstrategicos() {
                     </div>
                     <div className="flex items-center gap-2 font-mono text-[11px]">
                       <span className="text-[#94A3B8]">{m.pct}%</span>
-                      <strong className="text-[#0A192F]">{m.valor}</strong>
+                      <strong className="text-[#010736]">{m.valor}</strong>
                     </div>
                   </div>
                 ))}
@@ -226,11 +226,11 @@ export default function RelatoriosEstrategicos() {
       {/* SEÇÃO 3: DESEMPENHO POR CANAL (BARCHART) + TABELA RELATÓRIOS SALVOS */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Desempenho por Canal (5 Colunas) */}
-        <div className="lg:col-span-5 rounded-2xl border border-[#E2EBE4] bg-white p-6 shadow-xs flex flex-col justify-between">
+        <div className="lg:col-span-5 rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-xs flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between pb-3 border-b border-[#E2EBE4]">
-              <h3 className="text-sm sm:text-base font-black text-[#0A192F]">Desempenho por canal</h3>
-              <select className="px-2 py-1 text-[10px] font-bold rounded-lg border border-[#E2EBE4] bg-[#F8FAFD] outline-none text-[#64748B]">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E2E8F0]">
+              <h3 className="text-sm sm:text-base font-black text-[#010736]">Desempenho por canal</h3>
+              <select className="px-2 py-1 text-[10px] font-bold rounded-lg border border-[#E2E8F0] bg-[#F8FAFD] outline-none text-[#64748B]">
                 <option>Receita gerada (R$)</option>
                 <option>Conversão (%)</option>
               </select>
@@ -240,10 +240,10 @@ export default function RelatoriosEstrategicos() {
               {desempenhoCanal.map((d, idx) => (
                 <div key={idx} className="space-y-1">
                   <div className="flex justify-between text-xs">
-                    <span className="font-semibold text-[#0A192F]">{d.canal}</span>
-                    <strong className="text-[#0A192F]">R$ {d.receita.toFixed(2).replace('.', ',')} mi ({d.pct})</strong>
+                    <span className="font-semibold text-[#010736]">{d.canal}</span>
+                    <strong className="text-[#010736]">R$ {d.receita.toFixed(2).replace('.', ',')} mi ({d.pct})</strong>
                   </div>
-                  <div className="w-full bg-[#E2E8F4] h-2 rounded-full overflow-hidden">
+                  <div className="w-full bg-[#E2E8F0] h-2 rounded-full overflow-hidden">
                     <div className="h-full rounded-full transition-all" style={{ width: d.pct, backgroundColor: d.cor }} />
                   </div>
                 </div>
@@ -253,15 +253,15 @@ export default function RelatoriosEstrategicos() {
         </div>
 
         {/* Tabela de Relatórios Salvos (7 Colunas) */}
-        <div className="lg:col-span-7 rounded-2xl border border-[#E2EBE4] bg-white p-6 shadow-xs space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#E2EBE4]">
-            <h3 className="text-sm sm:text-base font-black text-[#0A192F]">Relatórios salvos</h3>
+        <div className="lg:col-span-7 rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-xs space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-[#E2E8F0]">
+            <h3 className="text-sm sm:text-base font-black text-[#010736]">Relatórios salvos</h3>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-[#E2EBE4] text-[#64748B] font-semibold text-[11px]">
+                <tr className="border-b border-[#E2E8F0] text-[#64748B] font-semibold text-[11px]">
                   <th className="pb-3">Nome do relatório</th>
                   <th className="pb-3">Periodicidade</th>
                   <th className="pb-3">Responsável</th>
@@ -269,15 +269,15 @@ export default function RelatoriosEstrategicos() {
                   <th className="pb-3 text-right">Ações</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E2EBE4]/60 font-medium">
+              <tbody className="divide-y divide-[#E2E8F0]/60 font-medium">
                 {relatoriosSalvos.map((rel, idx) => (
                   <tr key={idx} className="hover:bg-[#F8FAFD] transition-colors">
                     <td className="py-3 pr-2">
                       <div className="flex items-center gap-2.5">
-                        <div className="w-7 h-7 rounded-lg bg-[#EBF3FF] text-[#0066FF] flex items-center justify-center shrink-0">
+                        <div className="w-7 h-7 rounded-lg bg-[#F8FAFD] text-[#22396F] flex items-center justify-center shrink-0">
                           <rel.icon className="w-3.5 h-3.5" />
                         </div>
-                        <span className="font-bold text-[#0A192F]">{rel.nome}</span>
+                        <span className="font-bold text-[#010736]">{rel.nome}</span>
                       </div>
                     </td>
                     <td className="py-3 text-[#64748B]">{rel.peri}</td>
@@ -286,7 +286,7 @@ export default function RelatoriosEstrategicos() {
                     <td className="py-3 text-right">
                       <button
                         onClick={() => alert(`Baixando relatório: ${rel.nome}`)}
-                        className="p-1.5 rounded-lg text-[#64748B] hover:text-[#0066FF] hover:bg-[#EBF3FF] transition-colors"
+                        className="p-1.5 rounded-lg text-[#64748B] hover:text-[#22396F] hover:bg-[#F8FAFD] transition-colors"
                         title="Baixar relatório"
                       >
                         <Download className="w-4 h-4" />

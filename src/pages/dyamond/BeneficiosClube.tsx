@@ -35,18 +35,18 @@ export default function BeneficiosClube() {
   const [busca, setBusca] = useState('');
 
   const kpis = [
-    { title: 'Rede credenciada', value: '318', sub: 'parceiros ativos', icon: Building2, bg: 'bg-[#EBF3FF]', color: 'text-[#0066FF]' },
-    { title: 'Economia gerada', value: 'R$ 214 mil', sub: 'em 12 meses', icon: DollarSign, bg: 'bg-[#E6F7ED]', color: 'text-[#00A854]' },
-    { title: 'Utilização mensal', value: '64%', sub: 'dos beneficiários', icon: TrendingUp, bg: 'bg-[#EBF3FF]', color: 'text-[#0066FF]' },
+    { title: 'Rede credenciada', value: '318', sub: 'parceiros ativos', icon: Building2, bg: 'bg-[#F8FAFD]', color: 'text-[#22396F]' },
+    { title: 'Economia gerada', value: 'R$ 214 mil', sub: 'em 12 meses', icon: DollarSign, bg: 'bg-[#ECFDF5]', color: 'text-[#047857]' },
+    { title: 'Utilização mensal', value: '64%', sub: 'dos beneficiários', icon: TrendingUp, bg: 'bg-[#F8FAFD]', color: 'text-[#22396F]' },
   ];
 
   const categorias = [
-    { nome: 'Saúde', parceiros: '112 parceiros ativos', desc: 'Consultas, exames e bem-estar', icon: Heart, bg: 'bg-[#EBF3FF]', color: 'text-[#0066FF]' },
-    { nome: 'Farmácia', parceiros: '76 parceiros ativos', desc: 'Medicamentos e descontos', icon: Pill, bg: 'bg-[#E6F7ED]', color: 'text-[#00A854]' },
+    { nome: 'Saúde', parceiros: '112 parceiros ativos', desc: 'Consultas, exames e bem-estar', icon: Heart, bg: 'bg-[#F8FAFD]', color: 'text-[#22396F]' },
+    { nome: 'Farmácia', parceiros: '76 parceiros ativos', desc: 'Medicamentos e descontos', icon: Pill, bg: 'bg-[#ECFDF5]', color: 'text-[#047857]' },
     { nome: 'Educação', parceiros: '54 parceiros ativos', desc: 'Cursos, idiomas e capacitação', icon: GraduationCap, bg: 'bg-[#FEF3C7]', color: 'text-[#D97706]' },
     { nome: 'Lazer', parceiros: '48 parceiros ativos', desc: 'Cinema, parques e entretenimento', icon: Sparkles, bg: 'bg-[#F3E8FF]', color: 'text-[#9333EA]' },
     { nome: 'Assistência', parceiros: '62 parceiros ativos', desc: 'Residencial, automotiva e pessoal', icon: Shield, bg: 'bg-[#FFE4E6]', color: 'text-[#E11D48]' },
-    { nome: 'Viagens', parceiros: '36 parceiros ativos', desc: 'Hotéis, passagens e experiências', icon: Plane, bg: 'bg-[#EBF3FF]', color: 'text-[#0066FF]' },
+    { nome: 'Viagens', parceiros: '36 parceiros ativos', desc: 'Hotéis, passagens e experiências', icon: Plane, bg: 'bg-[#F8FAFD]', color: 'text-[#22396F]' },
   ];
 
   const solicitacoesRecentes = [
@@ -76,7 +76,7 @@ export default function BeneficiosClube() {
       {/* HEADER DA PÁGINA */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-2">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#0A192F] tracking-tight font-sans">
+          <h1 className="text-2xl sm:text-3xl font-black text-[#010736] tracking-tight font-sans">
             Benefícios
           </h1>
           <p className="text-xs sm:text-sm text-[#64748B] mt-0.5">
@@ -85,12 +85,12 @@ export default function BeneficiosClube() {
         </div>
         <div className="hidden sm:block text-right">
           <span className="text-xs text-[#64748B] block">Cuidar de pessoas</span>
-          <span className="text-xs font-bold text-[#0A192F]">também é um grande negócio.</span>
+          <span className="text-xs font-bold text-[#010736]">também é um grande negócio.</span>
         </div>
       </div>
 
       {/* HERO BANNER CLUBE DE BENEFÍCIOS DYAMOND */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#003B99] via-[#0052CC] to-[#0066FF] p-6 sm:p-7 text-white shadow-md">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#010736] via-[#0D1C42] to-[#22396F] p-6 sm:p-7 text-white shadow-md">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2 max-w-xl">
             <span className="text-[11px] font-bold uppercase tracking-wider text-white/80">
@@ -121,10 +121,10 @@ export default function BeneficiosClube() {
       {/* 3 CARDS DE KPIS */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {kpis.map((k, i) => (
-          <div key={i} className="rounded-2xl border border-[#E2E8F4] bg-white p-5 shadow-xs flex items-center justify-between hover:shadow-md transition-shadow">
+          <div key={i} className="rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-xs flex items-center justify-between hover:shadow-md transition-shadow">
             <div className="space-y-1">
               <span className="text-xs font-semibold text-[#64748B]">{k.title}</span>
-              <p className="text-2xl sm:text-3xl font-black text-[#0A192F] tracking-tight">{k.value}</p>
+              <p className="text-2xl sm:text-3xl font-black text-[#010736] tracking-tight">{k.value}</p>
               <p className="text-[11px] text-[#64748B]">{k.sub}</p>
             </div>
             <div className={`w-12 h-12 rounded-2xl ${k.bg} flex items-center justify-center shrink-0`}>
@@ -139,10 +139,10 @@ export default function BeneficiosClube() {
         {/* COLUNA ESQUERDA (8 COLUNAS): CATEGORIAS + TABELA + GRÁFICO */}
         <div className="lg:col-span-8 space-y-6">
           {/* Categorias de Benefícios */}
-          <div className="rounded-2xl border border-[#E2EBE4] bg-white p-6 shadow-xs space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E2EBE4]">
-              <h3 className="text-base font-black text-[#0A192F]">Categorias de benefícios</h3>
-              <span className="text-xs font-bold text-[#0066FF] cursor-pointer hover:underline">
+          <div className="rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-xs space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E2E8F0]">
+              <h3 className="text-base font-black text-[#010736]">Categorias de benefícios</h3>
+              <span className="text-xs font-bold text-[#22396F] cursor-pointer hover:underline">
                 Ver todos os parceiros →
               </span>
             </div>
@@ -151,17 +151,17 @@ export default function BeneficiosClube() {
               {categorias.map((cat, idx) => (
                 <div
                   key={idx}
-                  className="p-4 rounded-xl border border-[#E2EBE4] bg-[#F8FAFD] hover:bg-white hover:border-[#0066FF] hover:shadow-xs transition-all cursor-pointer space-y-2 group"
+                  className="p-4 rounded-xl border border-[#E2E8F0] bg-[#F8FAFD] hover:bg-white hover:border-[#22396F] hover:shadow-xs transition-all cursor-pointer space-y-2 group"
                 >
                   <div className="flex items-center justify-between">
                     <div className={`w-9 h-9 rounded-xl ${cat.bg} ${cat.color} flex items-center justify-center`}>
                       <cat.icon className="w-5 h-5" />
                     </div>
-                    <ChevronRight className="w-4 h-4 text-[#94A3B8] group-hover:text-[#0066FF] transition-colors" />
+                    <ChevronRight className="w-4 h-4 text-[#94A3B8] group-hover:text-[#22396F] transition-colors" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-[#0A192F]">{cat.nome}</h4>
-                    <p className="text-[11px] font-bold text-[#0066FF] mt-0.5">{cat.parceiros}</p>
+                    <h4 className="text-xs font-bold text-[#010736]">{cat.nome}</h4>
+                    <p className="text-[11px] font-bold text-[#22396F] mt-0.5">{cat.parceiros}</p>
                     <p className="text-[10px] text-[#64748B] mt-0.5">{cat.desc}</p>
                   </div>
                 </div>
@@ -172,31 +172,31 @@ export default function BeneficiosClube() {
           {/* Solicitações Recentes + Gráfico de Uso por Mês */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
             {/* Solicitações Recentes (7 Colunas) */}
-            <div className="md:col-span-7 rounded-2xl border border-[#E2EBE4] bg-white p-5 shadow-xs space-y-3">
-              <div className="flex items-center justify-between pb-2 border-b border-[#E2EBE4]">
-                <h4 className="text-xs font-black uppercase text-[#0A192F]">Solicitações recentes</h4>
-                <span className="text-[11px] font-bold text-[#0066FF] cursor-pointer hover:underline">Ver todas →</span>
+            <div className="md:col-span-7 rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-xs space-y-3">
+              <div className="flex items-center justify-between pb-2 border-b border-[#E2E8F0]">
+                <h4 className="text-xs font-black uppercase text-[#010736]">Solicitações recentes</h4>
+                <span className="text-[11px] font-bold text-[#22396F] cursor-pointer hover:underline">Ver todas →</span>
               </div>
 
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead>
-                    <tr className="border-b border-[#E2EBE4] text-[#64748B] font-semibold text-[10px]">
+                    <tr className="border-b border-[#E2E8F0] text-[#64748B] font-semibold text-[10px]">
                       <th className="pb-2">Data</th>
                       <th className="pb-2">Cliente</th>
                       <th className="pb-2">Benefício</th>
                       <th className="pb-2">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#E2EBE4]/60 font-medium">
+                  <tbody className="divide-y divide-[#E2E8F0]/60 font-medium">
                     {solicitacoesRecentes.map((s, idx) => (
                       <tr key={idx} className="hover:bg-[#F8FAFD]">
                         <td className="py-2.5 text-[#64748B] text-[11px] whitespace-nowrap">{s.data}</td>
-                        <td className="py-2.5 font-bold text-[#0A192F]">{s.cliente}</td>
-                        <td className="py-2.5 text-[#0A192F]">{s.beneficio}</td>
+                        <td className="py-2.5 font-bold text-[#010736]">{s.cliente}</td>
+                        <td className="py-2.5 text-[#010736]">{s.beneficio}</td>
                         <td className="py-2.5">
                           <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${
-                            s.status === 'Aprovada' ? 'bg-[#E6F7ED] text-[#00A854]' : 'bg-[#FEF3C7] text-[#D97706]'
+                            s.status === 'Aprovada' ? 'bg-[#ECFDF5] text-[#047857]' : 'bg-[#FEF3C7] text-[#D97706]'
                           }`}>
                             ● {s.status}
                           </span>
@@ -209,73 +209,73 @@ export default function BeneficiosClube() {
             </div>
 
             {/* Gráfico de Uso por Mês (5 Colunas) */}
-            <div className="md:col-span-5 rounded-2xl border border-[#E2EBE4] bg-white p-5 shadow-xs flex flex-col justify-between">
+            <div className="md:col-span-5 rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-xs flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between pb-2 border-b border-[#E2EBE4]">
-                  <h4 className="text-xs font-black uppercase text-[#0A192F]">Uso por mês</h4>
+                <div className="flex items-center justify-between pb-2 border-b border-[#E2E8F0]">
+                  <h4 className="text-xs font-black uppercase text-[#010736]">Uso por mês</h4>
                   <span className="text-[10px] text-[#64748B]">Últimos 12 meses</span>
                 </div>
 
                 <div className="h-44 w-full pt-2">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={dadosUso} margin={{ top: 5, right: 5, left: -25, bottom: 0 }}>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#EDF2F9" />
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#EEF2F6" />
                       <XAxis dataKey="mes" tickLine={false} axisLine={false} tick={{ fill: '#94A3B8', fontSize: 10 }} />
                       <YAxis tickLine={false} axisLine={false} tick={{ fill: '#94A3B8', fontSize: 10 }} />
-                      <Tooltip contentStyle={{ backgroundColor: '#06152B', borderRadius: '8px', border: 'none', color: '#fff', fontSize: '10px' }} />
-                      <Line type="monotone" dataKey="uso" stroke="#0066FF" strokeWidth={2.5} dot={{ fill: '#0066FF', r: 2.5 }} />
+                      <Tooltip contentStyle={{ backgroundColor: '#010736', borderRadius: '8px', border: 'none', color: '#fff', fontSize: '10px' }} />
+                      <Line type="monotone" dataKey="uso" stroke="#22396F" strokeWidth={2.5} dot={{ fill: '#22396F', r: 2.5 }} />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
               </div>
-              <div className="pt-2 border-t border-[#E2EBE4] text-right">
-                <span className="text-xs font-black text-[#0066FF]">Pico: 64% de utilização</span>
+              <div className="pt-2 border-t border-[#E2E8F0] text-right">
+                <span className="text-xs font-black text-[#22396F]">Pico: 64% de utilização</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* COLUNA DIREITA (4 COLUNAS): ELEGIBILIDADE DO CLIENTE */}
-        <div className="lg:col-span-4 rounded-2xl border border-[#E2EBE4] bg-white p-6 shadow-xs space-y-5">
-          <div className="flex items-center justify-between pb-3 border-b border-[#E2EBE4]">
-            <h3 className="text-base font-black text-[#0A192F]">Elegibilidade do cliente</h3>
-            <span className="text-xs font-bold text-[#0066FF] cursor-pointer hover:underline">
+        <div className="lg:col-span-4 rounded-2xl border border-[#E2E8F0] bg-white p-6 shadow-xs space-y-5">
+          <div className="flex items-center justify-between pb-3 border-b border-[#E2E8F0]">
+            <h3 className="text-base font-black text-[#010736]">Elegibilidade do cliente</h3>
+            <span className="text-xs font-bold text-[#22396F] cursor-pointer hover:underline">
               Alterar cliente
             </span>
           </div>
 
           {/* Dados do Cliente */}
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-[#EBF3FF] text-[#0066FF] font-black text-sm flex items-center justify-center shrink-0">
+            <div className="w-12 h-12 rounded-full bg-[#F8FAFD] text-[#22396F] font-black text-sm flex items-center justify-center shrink-0">
               RC
             </div>
             <div>
-              <p className="text-sm font-black text-[#0A192F]">Ricardo Costa</p>
+              <p className="text-sm font-black text-[#010736]">Ricardo Costa</p>
               <p className="text-[10px] text-[#94A3B8] font-mono">CPF 123.456.789-00</p>
               <p className="text-[10px] text-[#64748B]">Cliente desde 03/2022</p>
             </div>
           </div>
 
           {/* Plano Atual */}
-          <div className="p-3.5 rounded-xl border border-[#E2EBE4] bg-[#F8FAFD] space-y-1 text-xs">
+          <div className="p-3.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFD] space-y-1 text-xs">
             <div className="flex items-center justify-between">
               <span className="text-[10px] text-[#94A3B8] uppercase font-bold">Plano atual</span>
-              <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-[#E6F7ED] text-[#00A854]">
+              <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-[#ECFDF5] text-[#047857]">
                 ● Ativo
               </span>
             </div>
-            <p className="text-xs font-bold text-[#0A192F]">DYAMOND Mais</p>
+            <p className="text-xs font-bold text-[#010736]">DYAMOND Mais</p>
             <p className="text-[11px] text-[#64748B]">Cobertura completa com clube de benefícios</p>
-            <span className="text-[10px] text-[#0066FF] font-bold cursor-pointer hover:underline block pt-1">
+            <span className="text-[10px] text-[#22396F] font-bold cursor-pointer hover:underline block pt-1">
               Ver detalhes do plano →
             </span>
           </div>
 
           {/* Dependentes */}
-          <div className="space-y-2 pt-2 border-t border-[#E2EBE4]">
+          <div className="space-y-2 pt-2 border-t border-[#E2E8F0]">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-bold text-[#0A192F]">Dependentes (3)</span>
-              <span className="text-[10px] font-bold text-[#0066FF] cursor-pointer hover:underline">Gerenciar</span>
+              <span className="font-bold text-[#010736]">Dependentes (3)</span>
+              <span className="text-[10px] font-bold text-[#22396F] cursor-pointer hover:underline">Gerenciar</span>
             </div>
 
             <div className="space-y-1.5 text-xs">
@@ -284,33 +284,33 @@ export default function BeneficiosClube() {
                 { nome: 'Lucas Costa', parentesco: 'Filho', iniciais: 'LC' },
                 { nome: 'Mariana Costa', parentesco: 'Filha', iniciais: 'MC' },
               ].map((dep, idx) => (
-                <div key={idx} className="flex items-center justify-between p-2 rounded-xl border border-[#E2EBE4] bg-[#F8FAFD]">
+                <div key={idx} className="flex items-center justify-between p-2 rounded-xl border border-[#E2E8F0] bg-[#F8FAFD]">
                   <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-full bg-[#EBF3FF] text-[#0066FF] font-bold text-[10px] flex items-center justify-center">
+                    <div className="w-6 h-6 rounded-full bg-[#F8FAFD] text-[#22396F] font-bold text-[10px] flex items-center justify-center">
                       {dep.iniciais}
                     </div>
                     <div>
-                      <p className="font-bold text-[#0A192F] text-[11px] leading-tight">{dep.nome}</p>
+                      <p className="font-bold text-[#010736] text-[11px] leading-tight">{dep.nome}</p>
                       <span className="text-[10px] text-[#64748B]">{dep.parentesco}</span>
                     </div>
                   </div>
-                  <span className="text-[9px] font-bold text-[#00A854]">Ativo</span>
+                  <span className="text-[9px] font-bold text-[#047857]">Ativo</span>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Ações */}
-          <div className="space-y-2 pt-3 border-t border-[#E2EBE4]">
+          <div className="space-y-2 pt-3 border-t border-[#E2E8F0]">
             <button
               onClick={() => alert('Liberando benefício sob demanda para o associado')}
-              className="w-full py-3 rounded-xl bg-[#0066FF] hover:bg-[#0052CC] text-white text-xs font-bold transition-all shadow-md shadow-[#0066FF]/20 flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-xl bg-[#22396F] hover:bg-[#0D1C42] text-white text-xs font-bold transition-all shadow-md shadow-[#22396F]/20 flex items-center justify-center gap-2"
             >
               <Gift className="w-4 h-4" /> Liberar benefício
             </button>
             <button
               onClick={() => alert('Consultando elegibilidade completa do cliente nos birôs')}
-              className="w-full py-2.5 rounded-xl border border-[#E2EBE4] bg-white hover:bg-[#F8FAFD] text-[#0A192F] text-xs font-bold transition-all flex items-center justify-center gap-1.5"
+              className="w-full py-2.5 rounded-xl border border-[#E2E8F0] bg-white hover:bg-[#F8FAFD] text-[#010736] text-xs font-bold transition-all flex items-center justify-center gap-1.5"
             >
               <User className="w-3.5 h-3.5 text-[#64748B]" /> Consultar elegibilidade
             </button>
