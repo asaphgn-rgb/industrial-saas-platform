@@ -1,23 +1,16 @@
 import { useState, useEffect } from 'react';
 import {
-  CreditCard,
   Copy,
   Check,
-  RefreshCw,
-  Lock,
-  Unlock,
-  ShieldCheck,
+  PlusCircle,
   Eye,
   EyeOff,
-  Clock,
-  Sparkles,
-  AlertCircle,
-  PlusCircle,
-  ExternalLink,
   Wifi,
-  ChevronRight,
   Barcode,
-  QrCode
+  QrCode,
+  ShieldCheck,
+  Lock,
+  Unlock
 } from 'lucide-react';
 import { CartaoVirtualItem } from '@/types/cartao';
 
@@ -29,16 +22,15 @@ export default function CartaoVirtual() {
   const [cartaoVirtual, setCartaoVirtual] = useState<CartaoVirtualItem>({
     id: 'vcard-01',
     apelido: 'DYAMOND CARD Virtual · E-commerce & Recorrência',
-    numero_mascarado: '5582 •••• •••• 3019',
+    numero_mascarado: '5284 •••• •••• 7890',
     cvv_dinamico: '945',
     segundos_restantes_cvv: 52,
-    validade: '11/31',
+    validade: '12/30',
     limite_temporario: 15000.00,
     uso_unico: false,
     bloqueado: false
   });
 
-  // Contador dinâmico do CVV rotativo (padrão BaaS Tokenization)
   useEffect(() => {
     const timer = setInterval(() => {
       setSegundosRestantes(prev => {
@@ -65,10 +57,10 @@ export default function CartaoVirtual() {
     setCartaoVirtual({
       id: `vcard-${Date.now()}`,
       apelido: 'DYAMOND CARD Virtual · Uso Único Temporário',
-      numero_mascarado: `5582 •••• •••• ${novoFinal}`,
+      numero_mascarado: `5284 •••• •••• ${novoFinal}`,
       cvv_dinamico: novoCvv,
       segundos_restantes_cvv: 60,
-      validade: '12/31',
+      validade: '12/30',
       limite_temporario: 3500.00,
       uso_unico: true,
       bloqueado: false
@@ -109,79 +101,59 @@ export default function CartaoVirtual() {
       </div>
 
       <div className="grid gap-8 lg:grid-cols-2">
-        {/* Renderização do Cartão DYAMOND CARD Virtual */}
+        {/* Renderização do Cartão DYAMOND CARD Físico-Digital Oficial */}
         <div className="space-y-6">
-          <div className="relative aspect-[1.586/1] w-full rounded-3xl p-7 sm:p-8 bg-gradient-to-br from-[#010736] via-[#0D1C42] to-[#010736] text-white shadow-2xl overflow-hidden border border-[#22396F] flex flex-col justify-between group">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/10 via-transparent to-black/60 pointer-events-none" />
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#22396F]/30 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -left-16 -bottom-16 w-36 h-36 bg-[#FCF1D0]/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(125deg,transparent_0_46%,#FCF1D0_46%_48%,transparent_48%_100%)] pointer-events-none" />
+          <div className="relative aspect-[1.586/1] w-full rounded-3xl p-7 sm:p-8 text-white shadow-2xl overflow-hidden border border-[#22396F] flex flex-col justify-between group">
+            {/* Arte Oficial do Cartão (Imagem Integral de Fundo) */}
+            <img
+              src="/assets/dyamond-card-physical.png"
+              alt="DYAMOND CARD"
+              className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#010736]/30 via-transparent to-transparent pointer-events-none" />
 
-            <div className="flex items-center justify-between relative z-10">
-              <div className="flex items-center gap-3">
-                <div className="h-10 max-w-[170px] flex items-center">
-                  <img
-                    src="/assets/dyamond-card-logo.png"
-                    alt="DYAMOND CARD"
-                    className="h-9 w-auto object-contain rounded"
-                    onError={(e) => {
-                      (e.target as HTMLElement).style.display = 'none';
-                    }}
-                  />
-                </div>
-                <div className="border-l border-white/20 pl-2.5 hidden sm:block">
-                  <span className="block text-[8.5px] font-black uppercase tracking-[0.22em] text-[#FCF1D0]">
-                    DY INVEST
-                  </span>
-                  <p className="text-[9.5px] font-semibold text-white/70">Bandeira Oficial</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black bg-[#FCF1D0] text-[#010736] shadow-sm">
-                  DIGITAL ONLY
-                </span>
-                <Wifi className="size-5 rotate-90 text-[#FCF1D0]" />
-              </div>
+            {/* Topo do Cartão */}
+            <div className="relative z-10 flex items-start justify-end">
+              <span className="px-2.5 py-0.5 rounded-full text-[9px] font-black bg-[#010736]/70 backdrop-blur-md text-cyan-300 border border-white/20">
+                DIGITAL ONLY
+              </span>
             </div>
 
-            {/* Número e Dados Centrais */}
-            <div className="relative z-10 space-y-2 my-auto">
+            {/* Número Mascarado / Exibição */}
+            <div className="relative z-10 space-y-2 my-auto pt-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
               <div className="flex items-center justify-between">
-                <div className="w-11 h-8 rounded-lg bg-gradient-to-br from-[#FCF1D0] via-[#E2D4A8] to-[#D4AF37] border border-[#FCF1D0] shadow-inner flex items-center justify-center opacity-95">
-                  <div className="w-8 h-5 border border-[#8C6D23]/50 rounded grid grid-cols-2 gap-0.5 p-0.5" />
-                </div>
+                <p className="font-mono text-xl sm:text-2xl tracking-[0.22em] text-white font-bold">
+                  {mostrarNumero ? '5284 7312 3456 7890' : cartaoVirtual.numero_mascarado}
+                </p>
                 <button
                   onClick={() => setMostrarNumero(!mostrarNumero)}
-                  className="flex items-center gap-1.5 text-[11px] font-bold text-[#FCF1D0] hover:text-white transition-colors"
+                  className="p-2 rounded-xl bg-[#010736]/60 backdrop-blur-md hover:bg-[#010736]/80 text-white transition-colors border border-white/20"
+                  title={mostrarNumero ? 'Ocultar' : 'Exibir número completo'}
                 >
-                  {mostrarNumero ? <EyeOff className="size-3.5" /> : <Eye className="size-3.5" />}
-                  <span>{mostrarNumero ? "Ocultar" : "Exibir dados"}</span>
+                  {mostrarNumero ? <EyeOff className="h-4 w-4 text-cyan-300" /> : <Eye className="h-4 w-4 text-cyan-300" />}
                 </button>
               </div>
-
-              <p className="font-mono text-xl sm:text-2xl tracking-[0.18em] text-[#FCF1D0] drop-shadow font-bold">
-                {mostrarNumero ? '5582 8841 9412 3019' : cartaoVirtual.numero_mascarado}
-              </p>
             </div>
 
-            {/* Rodapé do Cartão */}
-            <div className="relative z-10 pt-3 border-t border-white/15 flex items-end justify-between text-xs">
+            {/* Rodapé do Cartão: Titular, Validade e CVV Dinâmico */}
+            <div className="relative z-10 flex items-end justify-between text-xs pt-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
               <div className="min-w-0 pr-2">
-                <p className="text-[9px] uppercase tracking-wider text-white/50 font-bold">Titular</p>
-                <p className="truncate font-bold uppercase tracking-wide text-white text-xs">FABIANO ASAPH C SILVA</p>
+                <p className="font-bold tracking-wider text-white text-[11px] truncate uppercase font-sans">
+                  FABIANO ASAPH
+                </p>
+                <p className="text-[9px] uppercase tracking-widest text-cyan-300 font-bold">CLIENTE DYAMOND</p>
               </div>
 
-              <div className="px-2">
-                <p className="text-[9px] uppercase tracking-wider text-white/50 font-bold">Validade</p>
-                <p className="font-mono font-bold text-white text-xs">{cartaoVirtual.validade}</p>
+              <div className="px-2 text-center">
+                <span className="text-[8px] uppercase tracking-wider text-slate-300 block font-semibold">VÁLIDO ATÉ</span>
+                <span className="font-mono font-bold text-white text-xs">{cartaoVirtual.validade}</span>
               </div>
 
               <div className="text-right">
-                <p className="text-[9px] uppercase tracking-wider text-white/50 font-bold">CVV Dinâmico</p>
-                <p className="font-mono font-black text-[#FCF1D0] text-xs">
-                  {cartaoVirtual.bloqueado ? '•••' : cartaoVirtual.cvv_dinamico} <span className="text-[9px] text-white/60 font-sans font-normal">({segundosRestantes}s)</span>
-                </p>
+                <span className="text-[8px] uppercase tracking-wider text-cyan-300 block font-bold">CVV DINÂMICO</span>
+                <span className="font-mono font-black text-cyan-300 text-xs">
+                  {cartaoVirtual.bloqueado ? '•••' : cartaoVirtual.cvv_dinamico} <span className="text-[8px] text-slate-300 font-sans font-normal">({segundosRestantes}s)</span>
+                </span>
               </div>
             </div>
           </div>
@@ -215,13 +187,13 @@ export default function CartaoVirtual() {
               <div className="flex items-center justify-between p-3.5 bg-[#F8FAFD] rounded-2xl border border-[#E2E8F0]">
                 <div>
                   <span className="text-[10px] font-bold text-[#64748B] uppercase tracking-wider block">Número do Cartão Virtual</span>
-                  <span className="font-mono text-sm font-black text-[#010736]">5582 8841 9412 3019</span>
+                  <span className="font-mono text-sm font-black text-[#010736]">5284 7312 3456 7890</span>
                 </div>
                 <button
-                  onClick={() => copiarTexto('5582884194123019', 'numero')}
+                  onClick={() => copiarTexto('5284731234567890', 'numero')}
                   className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white border border-[#CBD5E1] text-[#010736] hover:bg-[#F8FAFD] flex items-center gap-1.5 transition-colors shadow-sm"
                 >
-                  {copiado === 'numero' ? <Check className="h-3.5 w-3.5 text-[#047857]" /> : <Copy className="h-3.5 w-3.5" />}
+                  {copiado === 'numero' ? <Check className="h-3.5 w-3.5 text-[#047857]" /> : <Copy className="h-3.5 w-3.5 text-[#010736]" />}
                   {copiado === 'numero' ? 'Copiado!' : 'Copiar'}
                 </button>
               </div>
@@ -236,7 +208,7 @@ export default function CartaoVirtual() {
                     onClick={() => copiarTexto(cartaoVirtual.validade, 'validade')}
                     className="p-2 rounded-xl text-xs bg-white border border-[#CBD5E1] hover:bg-[#F8FAFD] text-[#010736] transition-colors shadow-sm"
                   >
-                    {copiado === 'validade' ? <Check className="h-3.5 w-3.5 text-[#047857]" /> : <Copy className="h-3.5 w-3.5" />}
+                    {copiado === 'validade' ? <Check className="h-3.5 w-3.5 text-[#047857]" /> : <Copy className="h-3.5 w-3.5 text-[#010736]" />}
                   </button>
                 </div>
 
@@ -249,7 +221,7 @@ export default function CartaoVirtual() {
                     onClick={() => copiarTexto(cartaoVirtual.cvv_dinamico, 'cvv')}
                     className="p-2 rounded-xl text-xs bg-white border border-[#CBD5E1] hover:bg-[#F8FAFD] text-[#010736] transition-colors shadow-sm"
                   >
-                    {copiado === 'cvv' ? <Check className="h-3.5 w-3.5 text-[#047857]" /> : <Copy className="h-3.5 w-3.5" />}
+                    {copiado === 'cvv' ? <Check className="h-3.5 w-3.5 text-[#047857]" /> : <Copy className="h-3.5 w-3.5 text-[#010736]" />}
                   </button>
                 </div>
               </div>
